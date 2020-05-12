@@ -1,30 +1,30 @@
 import matplotlib.pyplot as plt
 
 
-def plot_loop_symbols(z0=0, loop_radius=1.0, scale=1):
+def plot_loop_symbols(z0=0, loop_radius=1.0, scale=1, color='k'):
     # plot loop location major circles
     plt.plot(z0, loop_radius, 'o', fillstyle='none',
              linewidth=3 * scale, markersize=20 * scale,
-             color='black', markeredgewidth=3 * scale)
+             color=color, markeredgewidth=3 * scale)
     plt.plot(z0, -loop_radius, 'o', fillstyle='none',
              linewidth=3 * scale, markersize=20 * scale,
-             color='black', markeredgewidth=3 * scale)
+             color=color, markeredgewidth=3 * scale)
     # plot loop current direction
     plt.plot(z0, loop_radius, 'o', fillstyle='full',
              linewidth=3 * scale, markersize=7 * scale,
-             color='black', markeredgewidth=1 * scale)
+             color=color, markeredgewidth=1 * scale)
     plt.plot(z0, -loop_radius, 'x', fillstyle='none',
              linewidth=3 * scale, markersize=9 * scale,
-             color='black', markeredgewidth=3 * scale)
+             color=color, markeredgewidth=3 * scale)
     return
 
 
 def plot_magnetic_field_lines(z, y, B_z, B_y, xlabel='z [m]', ylabel='y [m]', title='$(B_z, B_y)$ vector field',
-                              start_points=None):
+                              start_points=None, color='k'):
     if start_points is not None:
-        plt.streamplot(z, y, B_z, B_y, color='b', density=5, linewidth=1, start_points=start_points)
+        plt.streamplot(z, y, B_z, B_y, color=color, density=5, linewidth=1, start_points=start_points)
     else:
-        plt.streamplot(z, y, B_z, B_y, color='b', density=2, linewidth=1)
+        plt.streamplot(z, y, B_z, B_y, color=color, density=2, linewidth=1)
 
     plt.show()
     if xlabel is not None:
