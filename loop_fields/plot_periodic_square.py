@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from aux_functions import fermi_dirac_periodic_square
+from loop_fields.aux_functions import fermi_dirac_periodic_square
 
 dx = 0.01
 

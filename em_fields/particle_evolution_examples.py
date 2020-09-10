@@ -2,11 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
+from em_fields.em_functions import get_radius, evolve_particle_in_em_fields
+
 plt.rcParams.update({'font.size': 14})
-
-from magnetic_field_functions import get_radius, evolve_particle_in_em_fields
-
-plt.rcParams.update({'font.size': 16})
+# plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
 plt.close('all')

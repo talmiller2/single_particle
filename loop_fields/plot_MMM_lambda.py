@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from aux_functions import fermi_dirac_periodic_square
-from magnetic_field_functions import get_current_loop_magnetic_field_cylindrical
-from plot_functions import plot_loop_symbols, plot_magnetic_field_lines
+from loop_fields.aux_functions import fermi_dirac_periodic_square
+from loop_fields.loop_functions import get_current_loop_magnetic_field_cylindrical
+from loop_fields.plot_functions import plot_loop_symbols, plot_magnetic_field_lines
 
 plt.close('all')
 

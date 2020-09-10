@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from magnetic_field_functions import get_current_loop_magnetic_field_cylindrical
-from plot_functions import plot_loop_symbols, plot_magnetic_field_lines
+from loop_fields.loop_functions import get_current_loop_magnetic_field_cylindrical
+from loop_fields.plot_functions import plot_loop_symbols, plot_magnetic_field_lines
 
 plt.rcParams.update({'font.size': 15})
 plt.close('all')
