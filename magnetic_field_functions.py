@@ -123,7 +123,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0,
 
 def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=1.0):
     """
-    Algorithm based on "Volume-preserving algorithms for charged particle dynamics"
+    Algorithm based on "2015 - He et al - Volume-preserving algorithms for charged particle dynamics"
     https://www.sciencedirect.com/science/article/pii/S0021999114007141
     """
     x_half = x_0 + dt * v_0 / 2.0
@@ -138,7 +138,8 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     b_y = B_half[1] / B_norm
     b_z = B_half[2] / B_norm
     b_half_tensor = np.array([[0, -b_z, b_y], [b_z, 0, -b_x], [-b_y, b_x, 0]])
-    omega_half = - q * B_norm / m
+    # omega_half = - q * B_norm / m # definition with minus from paper gives wrong right hand rule
+    omega_half = q * B_norm / m
     v_plus = np.dot(expm(dt * omega_half * b_half_tensor), v_minus)
     v_new = v_plus + dt * q / m / 2.0 * E_half
     x_new = x_half + dt / 2.0 * v_new

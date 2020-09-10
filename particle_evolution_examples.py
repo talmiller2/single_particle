@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
+plt.rcParams.update({'font.size': 14})
+
 from magnetic_field_functions import get_radius, evolve_particle_in_em_fields
 
 plt.rcParams.update({'font.size': 16})
@@ -11,7 +13,8 @@ plt.close('all')
 plot3d_exists = False
 # plot3d_exists = True
 
-example_system = 'helix'
+# example_system = 'helix'
+example_system = 'helix_with_RF'
 # example_system = '2d_static'
 # example_system = 'tokamak_banana'
 # example_system = 'tokamak_transit'
@@ -21,11 +24,88 @@ if example_system is 'helix':
     # helix movement in constant magnetic field
     # x_0 = np.array([0, 0, 0])
     x_0 = np.array([1, 0, 0])
-    v_0 = np.array([0, -1, 0.5])
+    # v_0 = np.array([0, -1, 0.5])
+    v_0 = np.array([0, 1, 0.5])
     dt = np.pi / 30
     num_steps = 200
     E_function = lambda x, t: 0
     B_function = lambda x, t: np.array([0, 0, 1])
+
+if example_system is 'helix_with_RF':
+    # helix movement in constant magnetic field
+    # x_0 = np.array([0, 0, 0])
+    x_0 = np.array([1, 0, 0])
+    # v_0 = np.array([0, -1, 0.5])
+    v_0 = np.array([0, 1, 0.5])
+    # v_0 = np.array([0, 1, -0.5])
+    # v_0 = np.array([0, 1, 0])
+    # v_0 = np.array([0, 0, 0])
+    dt = np.pi / 30
+    num_steps = 1000
+    m = 1.0
+    e = 1.0
+
+    # B_z = 0
+    B_z = 1.0
+    # B_z = -1.0
+
+    if B_z == 0:  # pick a default
+        anticlockwise = 1
+    else:
+        anticlockwise = np.sign(B_z)
+
+    # E_RF = 0.0
+    # E_RF = 0.01
+    # E_RF = 0.1
+    E_RF = 0.2
+    # E_RF = -0.2
+    # E_RF = -0.5
+    # E_RF = 1.0
+
+    phase_RF = 0
+    # phase_RF = np.pi / 4
+    # phase_RF = np.pi / 2
+    # phase_RF = np.pi
+
+    omega_cyclotron = e * np.abs(B_z) / m
+    if omega_cyclotron == 0:  # pick a default
+        omega = 1
+    else:
+        omega = omega_cyclotron  # resonance
+    # omega *= 1.1 # off resonance
+    # omega *= 0.9 # off resonance
+    # omega *= 0.5 # off resonance
+    # omega *= 2.0 # off resonance
+    # omega *= 0.1 # off resonance
+
+    # c = np.inf
+    # c = 3e8
+    c = 100
+    # c = 10
+
+    k = omega / c
+
+
+    # k = - omega / c
+    # k = 0
+
+    def E_function(x, t):
+        z = x[2]
+        return E_RF * np.array([anticlockwise * np.sin(k * z - omega * t + phase_RF),
+                                np.cos(k * z - omega * t + phase_RF),
+                                0])
+
+
+    def B_function(x, t):
+        B_axial = np.array([0, 0, B_z])
+        # B_RF = 1/c * k_hat cross E_RF
+        # https://en.wikipedia.org/wiki/Sinusoidal_plane-wave_solutions_of_the_electromagnetic_wave_equation
+        # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
+        z = x[2]
+        B_RF = E_RF / c * np.array([-np.sign(k) * np.cos(k * z - omega * t + phase_RF),
+                                    np.sign(k) * anticlockwise * np.sin(k * z - omega * t + phase_RF),
+                                    0])
+        return B_axial + B_RF
 
 elif example_system is '2d_static':
     # paper example 1: "2D dynamics in a static electromagnetic field"
@@ -114,15 +194,29 @@ R = np.sqrt(x ** 2 + y ** 2)
 v_norm = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
 
 ### Plots
-linewidth = 1
+linewidth = 2
 
 plt.figure(1)
-plt.plot(t, x, label='x', linewidth=linewidth)
-plt.plot(t, y, label='y', linewidth=linewidth)
-plt.plot(t, z, label='z', linewidth=linewidth)
+# plt.subplot(1,2,1)
+plt.plot(t, x, label='x', linewidth=linewidth, color='b')
+plt.plot(t, y, label='y', linewidth=linewidth, color='g')
+plt.plot(t, z, label='z', linewidth=linewidth, color='r')
+plt.plot(t, R, label='R', linewidth=linewidth, color='k')
 plt.legend()
 plt.xlabel('t')
 plt.ylabel('coordinate')
+plt.grid(True)
+plt.tight_layout()
+
+plt.figure(4)
+# plt.subplot(1,2,2)
+plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
+plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
+plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
+plt.plot(t, v_norm, label='$v_{norm}$', linewidth=linewidth, color='k')
+plt.legend()
+plt.xlabel('t')
+plt.ylabel('velocity')
 plt.grid(True)
 plt.tight_layout()
 
@@ -141,21 +235,20 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 
-plt.figure(4)
-plt.plot(t, vx, label='$v_x$', linewidth=linewidth)
-plt.plot(t, vy, label='$v_y$', linewidth=linewidth)
-plt.plot(t, vz, label='$v_z$', linewidth=linewidth)
-plt.plot(t, v_norm, '--', label='$v_{norm}$', linewidth=linewidth)
+plt.figure(5)
+E = 0.5 * v_norm ** 2.0
+# plt.plot(t, E / E[0], label='$E/E_0$', linewidth=linewidth)
+plt.plot(t, E, label='$E$', linewidth=linewidth)
 plt.legend()
 plt.xlabel('t')
-plt.ylabel('velocity')
+plt.ylabel('kinetic energy')
 plt.grid(True)
 plt.tight_layout()
 
 if plot3d_exists is True:
-    plt.figure(5)
+    plt.figure(6)
 else:
-    fig = plt.figure(5)
+    fig = plt.figure(6)
     ax = Axes3D(fig)
 ax.plot(x, y, z, label=example_system, linewidth=linewidth)
 ax.set_xlabel('x')
