@@ -2,7 +2,23 @@ import numpy as np
 from scipy.linalg import expm
 
 
-def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0,
+def get_thermal_velocity(T, m, kB_eV):
+    '''
+    Calculate the thermal velocity of particles according to 1/2*m*v_th^2 = 3/2*kB*T
+    T in eV, m in kg
+    '''
+    return np.sqrt(3.0 * kB_eV * T / m)
+
+
+def get_cyclotron_angular_frequency(q, B, m):
+    '''
+    Calculate the angular frequency of cyclotron / Larmor precession
+    q in Coulomb, B in Tesla, m in kg
+    '''
+    return np.abs(q * B / m)
+
+
+def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0, q=1.0, m=1.0,
                                  stop_criterion='steps', num_steps=None, t_max=None):
     """
     Advance a charged particle in time under the influence of E,B fields.
@@ -15,7 +31,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0,
     t = t_0
     for i in range(num_steps):
         x_new, v_new = particle_integration_step(x_list[-1], v_list[-1], t_list[-1],
-                                                 dt, E_function, B_function)
+                                                 dt, E_function, B_function, q=q, m=m)
         x_list += [x_new]
         v_list += [v_new]
         t += dt
