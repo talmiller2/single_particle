@@ -4,14 +4,13 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from em_fields.default_settings import define_default_settings
 from em_fields.em_functions import evolve_particle_in_em_fields, get_thermal_velocity, get_cyclotron_angular_frequency
+from em_fields.magnetic_forms import magnetic_field_jaeger
 
 plt.rcParams.update({'font.size': 14})
-# plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 plt.rcParams.update({'lines.linestyle': '-'})
 # plt.rcParams.update({'lines.linestyle': '--'})
-# plt.rcParams.update({'lines.linestyle': ':'})
-#
+
 plt.close('all')
 
 plot3d_exists = False
@@ -25,6 +24,8 @@ T_eV = 1e3
 kB_eV = settings['kB_eV']
 v_th = get_thermal_velocity(T_eV, m, kB_eV)
 
+Rm = 3.0
+
 # c = np.inf
 c = 3e8
 # c = 3e7
@@ -34,11 +35,11 @@ c = 3e8
 
 print('v_th / c = ', v_th / c)
 
-# B_z = 0 # Tesla
-B_z = 1.0  # Tesla
-# B_z = -1.0 # Tesla
+# B0 = 0 # Tesla
+B0 = 1.0  # Tesla
+# B0 = -1.0 # Tesla
 
-omega_cyclotron = get_cyclotron_angular_frequency(q, B_z, m)
+omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
 
 # v_0 = v_th * np.array([0, -1, 0.5])
@@ -59,7 +60,7 @@ v_z = v_0[2]
 t_max = l / v_z
 # t_max = min(t_max, 100 * tau_cyclotron)
 
-dt = tau_cyclotron / 50
+dt = tau_cyclotron / 50 / Rm
 # dt = tau_cyclotron / 200
 # num_steps = 1000
 num_steps = int(t_max / dt)
@@ -68,13 +69,14 @@ num_steps = int(t_max / dt)
 print('num_steps = ', num_steps)
 print('t_max = ', num_steps * dt, 's')
 
-if B_z == 0:  # pick a default
+if B0 == 0:  # pick a default
     anticlockwise = 1
 else:
-    anticlockwise = np.sign(B_z)
+    anticlockwise = np.sign(B0)
 
 # E_RF = 0.0
 E_RF = 1  # kV/m
+# E_RF = 5  # kV/m
 # E_RF = 10  # kV/m
 # E_RF = 100  # kV/m
 E_RF *= 1e3  # the SI units is V/m
@@ -110,11 +112,15 @@ def E_function(x, t):
 
 
 def B_function(x, t):
-    B_axial = np.array([0, 0, B_z])
+    use_transverse_fields = True
+    # B_axial = magnetic_field_constant(B0)
+    # B_axial = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    B_axial = magnetic_field_jaeger(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    # B_axial = magnetic_field_post(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+
     # B_RF = 1/c * k_hat cross E_RF
     # https://en.wikipedia.org/wiki/Sinusoidal_plane-wave_solutions_of_the_electromagnetic_wave_equation
     # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
-    z = x[2]
     B_RF = E_RF / c * np.array([-np.sign(k) * np.cos(k * z - omega * t + phase_RF),
                                 np.sign(k) * anticlockwise * np.sin(k * z - omega * t + phase_RF),
                                 0])

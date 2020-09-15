@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
-from em_fields.em_functions import get_radius, evolve_particle_in_em_fields
+from em_fields.em_functions import evolve_particle_in_em_fields
+from em_fields.magnetic_forms import get_radius
 
 plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
@@ -44,9 +45,9 @@ if example_system is 'helix_with_RF':
     m = 1.0
     e = 1.0
 
-    # B_z = 0
+    # B0 = 0
     B_z = 1.0
-    # B_z = -1.0
+    # B0 = -1.0
 
     if B_z == 0:  # pick a default
         anticlockwise = 1

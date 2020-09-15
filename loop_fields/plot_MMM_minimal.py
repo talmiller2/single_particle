@@ -123,11 +123,11 @@ def calc_mirror_ratio(lambda_MMM, DC_current, AC_current, negative_AC_current=0,
         loop_current = loop_current_list[i]
         z0 = z0_list[i]
 
-        B_r, B_z = get_current_loop_magnetic_field_cylindrical(rr, zz, z0=z0, loop_radius=loop_radius,
-                                                               loop_current=loop_current)
+        B_r, B0 = get_current_loop_magnetic_field_cylindrical(rr, zz, z0=z0, loop_radius=loop_radius,
+                                                              loop_current=loop_current)
 
         B_r_tot += B_r
-        B_z_tot += B_z
+        B_z_tot += B0
 
     label = '$I_{DC}$ = ' + str(DC_current / I0) \
             + ', $I_{AC}$ = ' + str(AC_current / I0) \
@@ -226,33 +226,12 @@ for ind_lambda, lambda_MMM in enumerate(lambda_MMM_array):
         B0, B_max_0, B_min_0, Rm_0 = calc_mirror_ratio(lambda_MMM, DC_current=DC_current_0, AC_current=AC_current_0,
                                                        negative_AC_current=negative_AC_current_0)
 
-        # AC_current = AC_current_0 * B0 / B_min_0
-        # DC_current = 0
-        # B0, B_max, B_min, Rm = calc_mirror_ratio(lambda_MMM, DC_current=DC_current, AC_current=AC_current,
-        #                                          negative_AC_current=negative_AC_current_0)
-        # Rm_only_AC_array[ind_AC] = Rm
 
         DC_current = I0 * (B0 - B_min_0) / B0
         required_DC_array[ind_AC] = DC_current
         B0, B_max, B_min, Rm = calc_mirror_ratio(lambda_MMM, DC_current=DC_current, AC_current=AC_current_0,
                                                  negative_AC_current=negative_AC_current_0)
         Rm_AC_and_DC_array[ind_AC] = Rm
-
-        # DC_current_0 = 0
-        # AC_current_0 = 5 * I0
-        # negative_AC_current_0 = 5 * I0
-        # B0, B_max_0, B_min_0, Rm_0 = calc_mirror_ratio(lambda_MMM, DC_current=DC_current_0, AC_current=AC_current_0,
-        #                                                negative_AC_current=negative_AC_current_0)
-        #
-        # AC_current = AC_current_0 * np.abs(B0 / B_min_0)
-        # negative_AC_current = negative_AC_current_0 * np.abs(B0 / B_min_0)
-        # DC_current = 0
-        # B0, B_max, B_min, Rm = calc_mirror_ratio(lambda_MMM, DC_current=DC_current, AC_current=AC_current,
-        #                                          negative_AC_current=negative_AC_current)
-        #
-        # DC_current = I0 * (B0 - B_min_0) / B0
-        # B0, B_max, B_min, Rm = calc_mirror_ratio(lambda_MMM, DC_current=DC_current, AC_current=AC_current_0,
-        #                                          negative_AC_current=negative_AC_current_0)
 
     plt.figure(1)
     plt.plot(AC_current_array / I0, required_DC_array, '-o', linewidth=2, linestyle=linestyle, label=label)

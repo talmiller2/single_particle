@@ -73,6 +73,3 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     x_new = x_half + dt / 2.0 * v_new
     return x_new, v_new
 
-
-def get_radius(x):
-    return np.sqrt(x[0] ** 2 + x[1] ** 2)

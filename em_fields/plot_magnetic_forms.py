@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from em_fields.magnetic_forms import magnetic_field_logan, magnetic_field_jaeger, magnetic_field_post
+
 plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
@@ -19,16 +21,16 @@ Rm = 3
 # Rm = 7
 # Rm = 10
 
-# magnetic fields from Logan et al, 1972
-gamma = Rm - 1
-lamda = 5.5
-B_logan = 1 / Rm * (1 + gamma * np.sin(np.pi * z / l) ** 2.0)
-B_post = 1 / Rm * (1 + gamma * np.exp(- lamda * np.sin(np.pi * (z - l / 2) / l) ** 2.0))
+x = np.array([z, z, z])
 
-# magnetic field from Jaeger et al, 1972
-# B_jaeger = 1 / Rm * (2 - np.cos(2 * np.pi * z / l))
-# modified to make more sense for general Rm
-B_jaeger = 1 / Rm * (1 + (Rm - 1) / 2.0 * (1 - np.cos(2 * np.pi * z / l)))
+B = magnetic_field_logan(x, 1, Rm, l)
+B_logan = B[2]
+
+B = magnetic_field_jaeger(x, 1, Rm, l)
+B_jaeger = B[2]
+
+B = magnetic_field_post(x, 1, Rm, l)
+B_post = B[2]
 
 # plot axial magnetic fields
 plt.figure(1)
