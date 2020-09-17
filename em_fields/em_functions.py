@@ -19,34 +19,38 @@ def get_cyclotron_angular_frequency(q, B, m):
 
 
 def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0, q=1.0, m=1.0,
-                                 stop_criterion='steps', num_steps=None, t_max=None):
+                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=False):
     """
     Advance a charged particle in time under the influence of E,B fields.
     """
     if stop_criterion == 'time':
         num_steps = t_max / dt
-    x_list = [x_0]
-    v_list = [v_0]
-    t_list = [t_0]
     t = t_0
-    for i in range(num_steps):
-        x_new, v_new = particle_integration_step(x_list[-1], v_list[-1], t_list[-1],
-                                                 dt, E_function, B_function, q=q, m=m)
-        x_list += [x_new]
-        v_list += [v_new]
-        t += dt
-        t_list += [t]
 
-    t = np.array(t_list)
-    x_list = np.array(x_list)
-    v_list = np.array(v_list)
-    x = x_list[:, 0]
-    y = x_list[:, 1]
-    z = x_list[:, 2]
-    vx = v_list[:, 0]
-    vy = v_list[:, 1]
-    vz = v_list[:, 2]
-    return t, x, y, z, vx, vy, vz
+    # define a dictionary that will collect all the particles history as it goes
+    hist = {}
+    hist['x'] = [x_0]
+    hist['v'] = [v_0]
+    hist['t'] = [t_0]
+    if return_fields is True:
+        hist['E'] = [E_function(x_0, t_0)]
+        hist['B'] = [B_function(x_0, t_0)]
+
+    for i in range(num_steps):
+        x_new, v_new = particle_integration_step(hist['x'][-1], hist['v'][-1], hist['t'][-1],
+                                                 dt, E_function, B_function, q=q, m=m)
+        hist['x'] += [x_new]
+        hist['v'] += [v_new]
+        t += dt
+        hist['t'] += [t]
+
+        if return_fields is True:
+            hist['E'] += [E_function(x_new, t)]
+            hist['B'] += [B_function(x_new, t)]
+
+    for key in hist:
+        hist[key] = np.array(hist[key])
+    return hist
 
 
 def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=1.0):
@@ -72,4 +76,3 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     v_new = v_plus + dt * q / m / 2.0 * E_half
     x_new = x_half + dt / 2.0 * v_new
     return x_new, v_new
-

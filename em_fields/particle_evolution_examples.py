@@ -14,8 +14,8 @@ plot3d_exists = False
 # plot3d_exists = True
 
 # example_system = 'helix'
-example_system = 'helix_with_RF'
-# example_system = '2d_static'
+# example_system = 'helix_with_RF'
+example_system = '2d_static'
 # example_system = 'tokamak_banana'
 # example_system = 'tokamak_transit'
 # example_system = 'magnetic_mirror'
@@ -189,7 +189,15 @@ elif example_system in ['magnetic_mirror']:
 else:
     raise ValueError('invalid example_system = ' + example_system)
 
-t, x, y, z, vx, vy, vz = evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, num_steps=num_steps)
+hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, num_steps=num_steps)
+t = hist['t']
+x = hist['x'][:, 0]
+y = hist['x'][:, 1]
+z = hist['x'][:, 2]
+vx = hist['v'][:, 0]
+vy = hist['v'][:, 1]
+vz = hist['v'][:, 2]
+
 R = np.sqrt(x ** 2 + y ** 2)
 v_norm = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
 
