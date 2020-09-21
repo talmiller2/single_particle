@@ -166,14 +166,6 @@ elif example_system in ['magnetic_mirror']:
     dt = np.pi / 30
     num_steps = int(5e3)
 
-
-    # dt = np.pi / 100
-    # num_steps = int(2e4)
-
-    def E_function(x, t):
-        return np.array([0, 0, 0])
-
-
     def B_function(x, t):
         R = get_radius(x)
         # return np.array([0, 0, 1 + np.sin(x[2]/10)])
@@ -184,6 +176,10 @@ elif example_system in ['magnetic_mirror']:
         B_x = B_r * x[0] / R
         B_y = B_r * x[1] / R
         return np.array([B_x, B_y, B_z])
+
+
+    def E_function(x, t):
+        return np.array([0, 0, 0])
 
 
 else:
