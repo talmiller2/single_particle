@@ -15,8 +15,8 @@ I_cube_DC = 40e3  # A
 # I_tube_AC = 0  # A
 # I_tube_AC = 40e3  # A
 
-# I_tube_DC = 50e3  # A
-# I_tube_AC = 50e3  # A
+I_tube_DC = 50e3  # A
+I_tube_AC = 50e3  # A
 
 # I_tube_DC = 40e3  # A
 # I_tube_AC = 40e3  # A
@@ -50,6 +50,7 @@ z2_tube = z1_tube + num_cells * wavelength
 dr = 0.1e-2
 r = np.arange(-1.5 * r_tube_DC, 1.5 * r_tube_DC, dr)
 # r = np.array([0])
+r_cm = r * 1e2
 
 dl = wavelength / 50
 z_calc_B_1 = -2 * r_cube_DC
@@ -160,12 +161,47 @@ plt.grid(True)
 # plot magnetic field profile on axis
 B_z_on_axis = B_z_tot[int(B_z_tot.shape[0] / 2), :]
 plt.figure(3)
-plt.plot(z_cm, B_z_tot[int(B_z_tot.shape[0] / 2), :],
+plt.plot(z_cm, B_z_on_axis,
          label='phase = ' + str(phase / np.pi) + '$\\pi$')
-plt.xlabel([z_calc_B_1, z_calc_B_2])
 plt.xlabel('z [cm]')
 plt.ylabel('$B_z$ [Tesla]')
-plt.title('Axial magnetic field on axis', size=15)
-# plt.tight_layout()
+plt.title('$B_z$ as a function of $z$', size=15)
+plt.tight_layout()
+plt.legend()
+plt.grid(True)
+
+# plot magnetic Bz as a function of r
+plt.figure(4)
+# z_search_list = [-10, -5, 0, 20, 25, 30]
+z_search_list = [-11, 19, 21, 22, 24, 26]
+for z_search in z_search_list:
+    ind_curr_z = np.where(z_cm > z_search)[0][0]
+    curr_z = '{:.2f}'.format(z_cm[ind_curr_z])
+    B_z_radial = B_z_tot[:, ind_curr_z]
+    # B_z_radial = B_z_tot[int(B_z_tot.shape[1] / 2):, ind_curr_z] # half the r vec
+    # label = 'z = ' + str(curr_z) + 'cm, phase = ' + str(phase / np.pi) + '$\\pi$'
+    label = 'z = ' + str(curr_z) + 'cm'
+    plt.plot(r_cm, B_z_radial, label=label)
+plt.xlabel('r [cm]')
+plt.ylabel('$B_z$ [Tesla]')
+plt.title('$B_z$ as a function of $r$', size=15)
+plt.tight_layout()
+plt.legend()
+plt.grid(True)
+
+# plot magnetic Br as a function of r
+plt.figure(5)
+z_search_list = [-11, 19, 21, 22, 24, 26]
+for z_search in z_search_list:
+    ind_curr_z = np.where(z_cm > z_search)[0][0]
+    curr_z = '{:.2f}'.format(z_cm[ind_curr_z])
+    B_r_radial = B_r_tot[:, ind_curr_z]
+    # label = 'z = ' + str(curr_z) + 'cm, phase = ' + str(phase / np.pi) + '$\\pi$'
+    label = 'z = ' + str(curr_z) + 'cm'
+    plt.plot(r_cm, B_r_radial, label=label)
+plt.xlabel('r [cm]')
+plt.ylabel('$B_r$ [Tesla]')
+plt.title('$B_r$ as a function of $r$', size=15)
+plt.tight_layout()
 plt.legend()
 plt.grid(True)

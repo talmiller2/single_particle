@@ -44,7 +44,7 @@ angle_to_z_axis = 1.01 * loss_cone_angle  # deg
 # angle_to_z_axis = 1.5 * loss_cone_angle # deg
 # angle_to_z_axis = 1.10 * loss_cone_angle # deg
 # angle_to_z_axis = 1.2 * loss_cone_angle # deg
-# angle_to_z_axis = 2 * loss_cone_angle # deg
+# # angle_to_z_axis = 2 * loss_cone_angle # deg
 # angle_to_z_axis = 90 # deg
 print('angle_to_z_axis = ' + str(angle_to_z_axis) + ' degrees')
 
