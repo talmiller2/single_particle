@@ -79,9 +79,13 @@ save_dir += '_' + str(RF_type)
 save_dir += '_ERF_' + str(E_RF_kVm)
 save_dir += '_detune_' + str(alpha_detune)
 
-v_abs_list = v_th * np.linspace(0.5, 1.5, 11)
-angle_to_z_axis_list = [i for i in range(0, 181, 5)]
-phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+# v_abs_list = v_th * np.linspace(0.5, 1.5, 11)
+# angle_to_z_axis_list = [i for i in range(0, 181, 5)]
+# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+
+v_abs_list = v_th * np.linspace(0.5, 1.5, 3)
+angle_to_z_axis_list = [i for i in range(0, 181, 30)]
+phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1
 total_number_of_combinations *= len(v_abs_list)
@@ -98,7 +102,7 @@ for v_abs in v_abs_list:
             run_name = ''
             run_name += 'v_' + '{:.1f}'.format(v_abs / v_th)
             run_name += '_angle_' + str(angle_to_z_axis)
-            run_name += '_phaseRF_' + '{:.1f}'.format(phase_RF / np.pi)
+            run_name += '_phaseRF_' + '{:.2f}'.format(phase_RF / np.pi)
             print('run_name = ' + run_name)
 
             settings['v_abs'] = v_abs
