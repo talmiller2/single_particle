@@ -124,8 +124,8 @@ for RF_type in RF_type_list:
                     # l = 0.5  # m (interaction length)
                     # l = 1.0  # m (interaction length)
                     # l = 2.0  # m (interaction length)
-                    l = 5.0  # m (interaction length)
-                    # l = 10.0  # m (interaction length)
+                    # l = 5.0  # m (interaction length)
+                    l = 10.0  # m (interaction length)
                     # l = 100.0  # m (interaction length)
 
                     cyclotron_radius = np.linalg.norm(v_0) / omega_cyclotron

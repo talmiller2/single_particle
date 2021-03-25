@@ -7,7 +7,7 @@ def get_thermal_velocity(T, m, kB_eV):
     Calculate the thermal velocity of particles according to 1/2*m*v_th^2 = 3/2*kB*T
     T in eV, m in kg
     '''
-    return np.sqrt(3.0 * kB_eV * T / m)
+    return np.sqrt(kB_eV * T / m)
 
 
 def get_cyclotron_angular_frequency(q, B, m):
@@ -18,7 +18,7 @@ def get_cyclotron_angular_frequency(q, B, m):
     return np.abs(q * B / m)
 
 
-def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0, q=1.0, m=1.0,
+def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dict=None, t_0=0, q=1.0, m=1.0,
                                  stop_criterion='steps', num_steps=None, t_max=None, return_fields=False):
     """
     Advance a charged particle in time under the influence of E,B fields.
@@ -27,44 +27,47 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, t_0=0, q=
         num_steps = t_max / dt
     t = t_0
 
+    if field_dict is None:
+        field_dict = {}
+
     # define a dictionary that will collect all the particles history as it goes
     hist = {}
     hist['x'] = [x_0]
     hist['v'] = [v_0]
     hist['t'] = [t_0]
     if return_fields is True:
-        hist['E'] = [E_function(x_0, t_0)]
-        hist['B'] = [B_function(x_0, t_0)]
+        hist['E'] = [E_function(x_0, t_0, **field_dict)]
+        hist['B'] = [B_function(x_0, t_0, **field_dict)]
 
     for i in range(num_steps):
         x_new, v_new = particle_integration_step(hist['x'][-1], hist['v'][-1], hist['t'][-1],
-                                                 dt, E_function, B_function, q=q, m=m)
+                                                 dt, E_function, B_function, q=q, m=m, field_dict=field_dict)
         hist['x'] += [x_new]
         hist['v'] += [v_new]
         t += dt
         hist['t'] += [t]
 
         if return_fields is True:
-            hist['E'] += [E_function(x_new, t)]
-            hist['B'] += [B_function(x_new, t)]
+            hist['E'] += [E_function(x_new, t, **field_dict)]
+            hist['B'] += [B_function(x_new, t, **field_dict)]
 
     for key in hist:
         hist[key] = np.array(hist[key])
     return hist
 
 
-def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=1.0):
+def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=1.0, field_dict=None):
     """
     Algorithm based on "2015 - He et al - Volume-preserving algorithms for charged particle dynamics"
     https://www.sciencedirect.com/science/article/pii/S0021999114007141
     """
     x_half = x_0 + dt * v_0 / 2.0
     t_half = t + dt / 2.0
-    E_half = E_function(x_half, t_half)
-    # E_half = E_function(x_half, t)
+    E_half = E_function(x_half, t_half, **field_dict)
+    # E_half = E_function(x_half, t, **field_dict)
     v_minus = v_0 + dt * q / m / 2.0 * E_half
-    B_half = B_function(x_half, t_half)
-    # B_half = B_function(x_half, t)
+    B_half = B_function(x_half, t_half, **field_dict)
+    # B_half = B_function(x_half, t, **field_dict)
     B_norm = np.linalg.norm(B_half)
     b_x = B_half[0] / B_norm
     b_y = B_half[1] / B_norm

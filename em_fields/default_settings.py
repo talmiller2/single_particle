@@ -14,6 +14,7 @@ def define_default_settings(settings=None):
     settings['e'] = 1.60217662e-19  # Coulomb (elementary charge)
     settings['kB_eV'] = settings['kB_K'] * settings['eV_to_K']  # J/eV (numerically same as e)
     settings['eps0'] = 8.85418781e-12  # Farad/m^2 (vacuum permittivity)
+    settings['c'] = 3e8  # m/s
 
     ### plasma parameters5
     if 'gas_name' not in settings:

@@ -10,10 +10,6 @@ def get_transverse_magnetic_fields(x, dBz_dz):
     Based on Maxwell equation div(B)=0
     https://www.tcd.ie/Physics/people/Peter.Gallagher/lectures/PlasmaPhysics/Lecture5_single_particle.pdf
     """
-    # r = get_radius(x)
-    # Br = -0.5 * r * dBz_dz
-    # Bx = x[0] / r * Br
-    # By = x[1] / r * Br
     Bx = -0.5 * x[0] * dBz_dz
     By = -0.5 * x[1] * dBz_dz
     return Bx, By
@@ -82,3 +78,18 @@ def magnetic_field_post(x, B0, Rm, l, use_transverse_fields=True, z0=0):
     else:
         Bx, By = 0, 0
     return np.array([Bx, By, Bz])
+
+
+def get_mirror_magnetic_field(x, B0, Rm, l, use_transverse_fields=True, z0=0, mirror_field_type='logan'):
+    """
+    Single function that calls the various forms of mirror field: logan, jaeger or post.
+    """
+    if mirror_field_type == 'logan':
+        B_mirror = magnetic_field_logan(x, B0, Rm, l, z0=z0, use_transverse_fields=use_transverse_fields)
+    elif mirror_field_type == 'jaeger':
+        B_mirror = magnetic_field_jaeger(x, B0, Rm, l, z0=z0, use_transverse_fields=use_transverse_fields)
+    elif mirror_field_type == 'post':
+        B_mirror = magnetic_field_post(x, B0, Rm, l, z0=z0, use_transverse_fields=use_transverse_fields)
+    else:
+        raise TypeError('invalid mirror_type: ' + str(mirror_field_type))
+    return B_mirror

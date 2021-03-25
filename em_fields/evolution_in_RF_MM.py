@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 from em_fields.default_settings import define_default_settings
 from em_fields.em_functions import evolve_particle_in_em_fields, get_thermal_velocity, get_cyclotron_angular_frequency
@@ -36,7 +35,7 @@ c = 3e8
 # c = 100
 # c = 10
 
-print('v_th / c = ', v_th / c)
+# print('v_th / c = ', v_th / c)
 
 # B0 = 0 # Tesla
 # B0 = 0.01  # Tesla
@@ -49,21 +48,31 @@ B0 = 0.1  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
 
-# angle_to_z_axis = 0  # deg
+angle_to_z_axis = 0  # deg
 # angle_to_z_axis = 0.1 * loss_cone_angle # deg
 # angle_to_z_axis = 0.2 * loss_cone_angle # deg
-angle_to_z_axis = 0.5 * loss_cone_angle  # deg
+# angle_to_z_axis = 0.5 * loss_cone_angle  # deg
+# angle_to_z_axis = 0.7 * loss_cone_angle # deg
 # angle_to_z_axis = 0.95 * loss_cone_angle # deg
 # angle_to_z_axis = 0.99 * loss_cone_angle # deg
 # angle_to_z_axis = loss_cone_angle # deg
 # angle_to_z_axis = 1.01 * loss_cone_angle # deg
 # angle_to_z_axis = 1.10 * loss_cone_angle # deg
 # angle_to_z_axis = 1.5 * loss_cone_angle # deg
+# angle_to_z_axis = 20
+# angle_to_z_axis = 30
+# angle_to_z_axis = 45
+# angle_to_z_axis = 60
+# angle_to_z_axis = 80
+# angle_to_z_axis = 135
+# angle_to_z_axis = 160
+angle_to_z_axis = 180
 # angle_to_z_axis = 90
 # angle_to_z_axis = 70
 # angle_to_z_axis = 60
 # angle_to_z_axis = 80
-angle_to_z_axis = 180 - angle_to_z_axis  # going in the negative direction
+# angle_to_z_axis = 180 - angle_to_z_axis  # going in the negative direction
+
 print('angle_to_z_axis = ' + str(angle_to_z_axis) + ' degrees')
 
 angle_to_z_axis_rad = angle_to_z_axis / 360 * 2 * np.pi
@@ -83,26 +92,24 @@ v_0_norm = np.linalg.norm(v_0)
 # l = 0.5  # m (interaction length)
 # l = 1.0  # m (interaction length)
 # l = 2.0  # m (interaction length)
-l = 5.0  # m (interaction length)
-# l = 10.0  # m (interaction length)
+# l = 5.0  # m (interaction length)
+l = 10.0  # m (interaction length)
 # l = 100.0  # m (interaction length)
 
 
 cyclotron_radius = np.linalg.norm(v_0) / omega_cyclotron
 print('cyclotron_radius = ' + str(cyclotron_radius) + ' m')
-x_0 = np.array([0, 0, 0])
-# x_0 = cyclotron_radius * np.array([1, 0, 0])
-# x_0 = cyclotron_radius * np.array([0, 0, 0])
-# x_0 = np.array([0, 0, 0])
-# x_0 = np.array([0, 0, 0.5])
-# x_0 = np.array([0, 0, 0])
 
 r_0 = 0
 # r_0 = cyclotron_radius
-# r_0 = 0.5
-# x_0 = np.array([r_0, 0, 0 * l])
-# x_0 = np.array([r_0, 0, 0.2 * l])
-x_0 = np.array([r_0, 0, 0.5 * l])
+# r_0 = 0.1 * l
+# r_0 = 0.3 * l
+# r_0 = 0.4 * l
+# r_0 = 0.5 * l
+# z_0 = 0.0 * l
+# z_0 = 0.2 * l
+z_0 = 0.5 * l
+x_0 = np.array([r_0, 0, z_0])
 
 z_0 = x_0[2]
 # z_0 = 0
@@ -113,28 +120,35 @@ v_z = v_0[2]
 # t_max = 3 * l / v_z
 # t_max = 5 * l / v_z
 # t_max = 10 * l / v_z
-t_max = 20 * l / v_z
+# t_max = 20 * l / v_z
 # t_max = 30 * l / v_z
+t_max = 50 * l / v_z
+t_max = abs(t_max)
 # t_max = min(t_max, 100 * tau_cyclotron)
-t_max = np.abs(t_max)
 
 # dt = tau_cyclotron / 50 / Rm
+# dt = tau_cyclotron / 300
 # dt = tau_cyclotron / 200
-dt = tau_cyclotron / 20
+# dt = tau_cyclotron / 150
+dt = tau_cyclotron / 100
+# dt = tau_cyclotron / 50
+# dt = tau_cyclotron / 20
+# dt = tau_cyclotron / 40
 # dt = tau_cyclotron / 10
 # num_steps = 1000
 num_steps = int(t_max / dt)
 # num_steps = min(num_steps, 10000)
-num_steps = min(num_steps, 20000)
+# num_steps = min(num_steps, 20000)
 # num_steps = 10000
 
 print('num_steps = ', num_steps)
 print('t_max = ', num_steps * dt, 's')
 
 # RF definitions
-E_RF = 0
+# E_RF = 0
 # E_RF = 1  # kV/m
-E_RF = 3  # kV/m
+E_RF = 2  # kV/m
+# E_RF = 3  # kV/m
 # E_RF = 5  # kV/m
 # E_RF = 10  # kV/m
 # E_RF = 15  # kV/m
@@ -205,9 +219,9 @@ def B_function(x, t):
     # use_transverse_fields = False
 
     # B_mirror = magnetic_field_constant(B0)
-    # B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
     # B_mirror = magnetic_field_jaeger(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
-    B_mirror = magnetic_field_post(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    # B_mirror = magnetic_field_post(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
 
     # B_RF = 1/c * k_hat cross E_RF
     # https://en.wikipedia.org/wiki/Sinusoidal_plane-wave_solutions_of_the_electromagnetic_wave_equation
@@ -254,8 +268,10 @@ Ez = hist['E'][:, 2] / 1e3
 ### Plots
 linewidth = 2
 
-plt.figure(1)
-# plt.subplot(1,2,1)
+# plt.figure(1)
+# plt.figure(num=1, figsize=(15, 6))
+plt.figure(num=1, figsize=(12, 5))
+plt.subplot(1, 2, 1)
 # plt.plot(t, x, label='x', linewidth=linewidth, color='b')
 # plt.plot(t, y, label='y', linewidth=linewidth, color='g')
 plt.plot(t, R, label='$R/r_{cyc}$', linewidth=linewidth, color='b')
@@ -263,98 +279,101 @@ plt.plot(t, z, label='$z/l$', linewidth=linewidth, color='r')
 plt.legend()
 plt.xlabel('t / $\\tau_{cyc}$')
 # plt.ylabel('coordinate / $r_{cyc}$')
+plt.title('$E_{RF}$=' + str(E_RF / 1e3) + 'kV/m, $\\theta$=' + str(angle_to_z_axis) + '$\degree$')
 plt.ylabel('coordinate (normalized)')
 plt.grid(True)
 plt.tight_layout()
 
-plt.figure(4)
-# plt.subplot(1,2,2)
-# plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
-# plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
-v_r = np.sqrt(vx ** 2 + vy ** 2)
-plt.plot(t, v_r, label='$v_r$', linewidth=linewidth, color='b')
-v_perp_loss_cone = v_norm * Rm ** (-0.5)
-plt.plot(t, v_perp_loss_cone, label='$v_{r,LC}$', linewidth=linewidth, linestyle='--', color='c')
-plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
-plt.plot(t, v_norm, label='$v_{norm}$', linewidth=linewidth, color='k')
-plt.legend()
-plt.xlabel('t / $\\tau_{cyc}$')
-plt.ylabel('velocity / $v_{th}$')
-plt.grid(True)
-plt.tight_layout()
-
-plt.figure(2)
-plt.plot(x, y, linewidth=linewidth)
-plt.xlabel('x / $r_{cyc}$')
-plt.ylabel('y / $r_{cyc}$')
-plt.grid(True)
-plt.tight_layout()
-
-plt.figure(3)
-plt.plot(R, z, linewidth=linewidth)
-# plt.xlabel('R / $r_{cyc}$')
-# plt.ylabel('z / $r_{cyc}$')
-plt.xlabel('R (normalized)')
-plt.ylabel('z (normalized)')
-plt.grid(True)
+# plt.figure(4)
+# # plt.subplot(1,2,2)
+# # plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
+# # plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
+# v_r = np.sqrt(vx ** 2 + vy ** 2)
+# plt.plot(t, v_r, label='$v_r$', linewidth=linewidth, color='b')
+# v_perp_loss_cone = v_norm * Rm ** (-0.5)
+# plt.plot(t, v_perp_loss_cone, label='$v_{r,LC}$', linewidth=linewidth, linestyle='--', color='c')
+# plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
+# plt.plot(t, v_norm, label='$v_{norm}$', linewidth=linewidth, color='k')
 # plt.legend()
-plt.tight_layout()
-
-plt.figure(5)
-E_kin = 0.5 * v_norm ** 2.0
-# plt.plot(t, E / E[0], linewidth=linewidth)
-plt.plot(t, (E_kin - E_kin[0]) / E_kin[0] * 100, linewidth=linewidth, color='k')
-plt.xlabel('t / $\\tau_{cyc}$')
-# plt.ylabel('$E / E_0$')
-plt.ylabel('kinetic energy % change')
-plt.grid(True)
-plt.tight_layout()
-print('energy change: ' + str((E_kin[-1] - E_kin[0]) / E_kin[0] * 100) + '%')
-
-plt.figure(6)
+# plt.xlabel('t / $\\tau_{cyc}$')
+# plt.ylabel('velocity / $v_{th}$')
+# plt.grid(True)
+# plt.tight_layout()
+#
+# plt.figure(2)
+# plt.plot(x, y, linewidth=linewidth)
+# plt.xlabel('x / $r_{cyc}$')
+# plt.ylabel('y / $r_{cyc}$')
+# plt.grid(True)
+# plt.tight_layout()
+#
+# plt.figure(3)
+# plt.plot(R, z, linewidth=linewidth)
+# # plt.xlabel('R / $r_{cyc}$')
+# # plt.ylabel('z / $r_{cyc}$')
+# plt.xlabel('R (normalized)')
+# plt.ylabel('z (normalized)')
+# plt.grid(True)
+# # plt.legend()
+# plt.tight_layout()
+#
+# plt.figure(5)
+# E_kin = 0.5 * v_norm ** 2.0
+# # plt.plot(t, E / E[0], linewidth=linewidth)
+# plt.plot(t, (E_kin - E_kin[0]) / E_kin[0] * 100, linewidth=linewidth, color='k')
+# plt.xlabel('t / $\\tau_{cyc}$')
+# # plt.ylabel('$E / E_0$')
+# plt.ylabel('kinetic energy % change')
+# plt.grid(True)
+# plt.tight_layout()
+# print('energy change: ' + str((E_kin[-1] - E_kin[0]) / E_kin[0] * 100) + '%')
+#
+# plt.figure(6)
 # plt.plot(t, B[:, 0], label='$B_x$', linewidth=linewidth, color='b')
 # plt.plot(t, B[:, 1], label='$B_y$', linewidth=linewidth, color='g')
-plt.plot(t, B[:, 0], label='$B_r$', linewidth=linewidth, color='b')
-plt.plot(t, B[:, 2], label='$B_z$', linewidth=linewidth, color='r')
-plt.xlabel('t / $\\tau_{cyc}$')
-plt.ylabel('Tesla')
-plt.grid(True)
-plt.tight_layout()
-plt.legend()
-
-if plot3d_exists is True:
-    plt.figure(7)
-else:
-    fig = plt.figure(7)
-    ax = Axes3D(fig)
-ax.plot(x, y, z, linewidth=linewidth)
-# ax.set_xlabel('x')
-# ax.set_ylabel('y')
-# ax.set_zlabel('z')
-ax.set_xlabel('x (normalized)')
-ax.set_ylabel('y (normalized)')
-ax.set_zlabel('z (normalized)')
-ax.set_title('particle 3d trajectory')
+# plt.plot(t, B[:, 0], label='$B_r$', linewidth=linewidth, color='b')
+# plt.plot(t, B[:, 2], label='$B_z$', linewidth=linewidth, color='r')
+# plt.xlabel('t / $\\tau_{cyc}$')
+# plt.ylabel('Tesla')
+# plt.grid(True)
+# plt.tight_layout()
 # plt.legend()
+#
+# if plot3d_exists is True:
+#     plt.figure(7)
+# else:
+#     fig = plt.figure(7)
+#     ax = Axes3D(fig)
+# ax.plot(x, y, z, linewidth=linewidth)
+# # ax.set_xlabel('x')
+# # ax.set_ylabel('y')
+# # ax.set_zlabel('z')
+# ax.set_xlabel('x (normalized)')
+# ax.set_ylabel('y (normalized)')
+# ax.set_zlabel('z (normalized)')
+# ax.set_title('particle 3d trajectory')
+# # plt.legend()
+#
+# plt.figure(8)
+# plt.plot(t, Ex, label='$E_x$', linewidth=linewidth, color='b')
+# plt.plot(t, Ey, label='$E_y$', linewidth=linewidth, color='r')
+# # Er = np.sign(Ex) * np.sqrt(Ex ** 2 + Ey ** 2)
+# # r = np.sqrt(x ** 2 + y ** 2)
+# # Er = r / x * Ex
+# # plt.plot(t, Er, label='$E_r$', linewidth=linewidth, color='k')
+# plt.xlabel('t / $\\tau_{cyc}$')
+# plt.ylabel('$kV/m$')
+# plt.grid(True)
+# plt.tight_layout()
+# plt.legend()
+#
 
-plt.figure(8)
-plt.plot(t, Ex, label='$E_x$', linewidth=linewidth, color='b')
-plt.plot(t, Ey, label='$E_y$', linewidth=linewidth, color='r')
-# Er = np.sign(Ex) * np.sqrt(Ex ** 2 + Ey ** 2)
-# r = np.sqrt(x ** 2 + y ** 2)
-# Er = r / x * Ex
-# plt.plot(t, Er, label='$E_r$', linewidth=linewidth, color='k')
-plt.xlabel('t / $\\tau_{cyc}$')
-plt.ylabel('$kV/m$')
-plt.grid(True)
-plt.tight_layout()
-plt.legend()
-
-plt.figure(9)
-# plt.plot(t, R, label='$R/r_{cyc}$', linewidth=linewidth, color='b')
-plt.plot(t, z, label='$z/l$', linewidth=linewidth, color='r')
+# plt.figure(9)
+plt.subplot(1, 2, 2)
+E_kin = 0.5 * v_norm ** 2.0
 plt.plot(t, E_kin / E_kin[0], label='$E/E_0$', linewidth=linewidth, color='k')
 plt.xlabel('t / $\\tau_{cyc}$')
+plt.ylabel('$E/E_0$')
 plt.grid(True)
 plt.tight_layout()
-plt.legend()
+# plt.legend()
