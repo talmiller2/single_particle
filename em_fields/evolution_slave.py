@@ -26,8 +26,8 @@ v_0 = settings['v_abs'] * np.array([0, np.sin(angle_to_z_axis_rad), np.cos(angle
 t_max = settings['cyclotron_periods'] * settings['tau_cyclotron']
 dt = settings['tau_cyclotron'] / 100
 num_steps = int(t_max / dt)
-# print('num_steps = ', num_steps)
-# print('t_max = ', num_steps * dt, 's')
+print('num_steps = ', num_steps)
+print('t_max = ', num_steps * dt, 's')
 
 hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                     num_steps=num_steps, q=settings['q'], m=settings['m'], field_dict=field_dict)
