@@ -5,7 +5,7 @@ from slurmpy.slurmpy import Slurm
 from em_fields.slurm_functions import get_script_evolution_slave
 
 pwd = os.getcwd()
-evolution_slace_script = get_script_evolution_slave()
+evolution_slave_script = get_script_evolution_slave()
 
 import matplotlib.pyplot as plt
 
@@ -127,7 +127,7 @@ for v_abs in v_abs_list:
             os.makedirs(settings['save_dir'], exist_ok=True)
             os.chdir(settings['save_dir'])
 
-            command = evolution_slace_script \
+            command = evolution_slave_script \
                       + ' --settings "' + str(settings) + '"' \
                       + ' --field_dict "' + str(field_dict) + '"'
             s = Slurm(run_name, slurm_kwargs=slurm_kwargs)

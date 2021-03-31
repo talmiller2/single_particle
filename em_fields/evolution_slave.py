@@ -11,6 +11,8 @@ from em_fields.em_functions import evolve_particle_in_em_fields
 parser = argparse.ArgumentParser()
 parser.add_argument('--settings', help='settings (dict) for the maxwell simulation',
                     type=str, required=True)
+parser.add_argument('--field_dict', help='field_dict do define the field the particle will experience',
+                    type=str, required=True)
 
 args = parser.parse_args()
 print('args.settings = ' + str(args.settings))
