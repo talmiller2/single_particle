@@ -69,6 +69,7 @@ elif RF_type == 'traveling':
     k = omega / v_RF
 
 cyclotron_periods = 1000
+settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
 save_dir += 'tmax_' + str(cyclotron_periods)
