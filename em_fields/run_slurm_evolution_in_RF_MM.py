@@ -45,7 +45,7 @@ B0 = 0.1  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
 settings['r_0'] = r_0
-settings['r_0'] = r_0
+settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
