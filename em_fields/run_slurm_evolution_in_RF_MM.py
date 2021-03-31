@@ -25,7 +25,7 @@ plt.close('all')
 settings = define_default_settings()
 c = settings['c']
 m = settings['mi']
-q = settings['Z_ion'] * settings['e']  # Coulomb
+q = settings['q']
 T_keV = 3.0
 T_eV = T_keV * 1e3
 kB_eV = settings['kB_eV']

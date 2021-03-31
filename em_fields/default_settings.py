@@ -24,6 +24,7 @@ def define_default_settings(settings=None):
         # settings['ionization_level'] = None
     settings['me'], settings['mp'], settings['mi'], settings['A_atomic_weight'], settings['Z_ion'] \
         = define_plasma_parameters(gas_name=settings['gas_name'], ionization_level=settings['ionization_level'])
+    settings['q'] = settings['Z_ion'] * settings['e']  # Coulomb
 
     return settings
 
