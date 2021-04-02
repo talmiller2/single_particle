@@ -32,7 +32,7 @@ print('num_steps = ', num_steps)
 print('t_max = ', num_steps * dt, 's')
 
 hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
-                                    num_steps=num_steps, q=settings['q'], m=settings['m'], field_dict=field_dict)
+                                    num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
 z = hist['x'][:, 2]
 z_end = z[-1]
 print('z_end = ' + str(z_end))
