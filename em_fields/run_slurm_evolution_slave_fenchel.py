@@ -83,6 +83,8 @@ save_dir += '_ERF_' + str(E_RF_kVm)
 save_dir += '_detune_' + str(alpha_detune)
 
 settings['save_dir'] = main_folder + '/' + save_dir
+os.makedirs(settings['save_dir'], exist_ok=True)
+os.chdir(settings['save_dir'])
 
 # v_abs_list = settings['v_th'] * np.linspace(0.5, 1.5, 11)
 # angle_to_z_axis_list = [i for i in range(0, 181, 5)]
@@ -111,8 +113,8 @@ for v_abs in v_abs_list:
             mat_dict['phase_RF'][cnt] = phase_RF
             cnt += 1
 
-points_file = main_folder + '/points.mat'
-savemat(points_file, mat_dict)
+settings['points_file'] = settings['save_dir'] + '/points.mat'
+savemat(settings['points_file'], mat_dict)
 
 # divide the points to a given number of cpus
 num_cpus = 100
@@ -153,9 +155,6 @@ for ind_set, points_set in enumerate(points_set_list):
     field_dict['omega'] = omega
     # field_dict['phase_RF'] = phase_RF # changed within the slave script
     field_dict['c'] = c
-
-    os.makedirs(settings['save_dir'], exist_ok=True)
-    os.chdir(settings['save_dir'])
 
     command = evolution_slave_fenchel_script \
               + ' --settings "' + str(settings) + '"' \
