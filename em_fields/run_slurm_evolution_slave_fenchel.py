@@ -75,7 +75,7 @@ settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
 save_dir += 'tmax_' + str(cyclotron_periods)
-save_dir += 'B0_' + str(B0)
+save_dir += '_B0_' + str(B0)
 save_dir += '_Rm_' + str(Rm)
 save_dir += '_T_' + str(T_keV)
 save_dir += '_' + str(RF_type)
