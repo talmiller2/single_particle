@@ -29,7 +29,7 @@ for ind_point in settings['points_set']:
     print('ind_point: ' + str(ind_point))
 
     # extract the parameters that vary
-    settings['v_abs'] = mat_dict['v_abs'][0][ind_point]
+    settings['v_abs'] = settings['v_th'] * mat_dict['v_abs'][0][ind_point]
     settings['angle_to_z_axis'] = mat_dict['angle_to_z_axis'][0][ind_point]
     field_dict['phase_RF'] = mat_dict['phase_RF'][0][ind_point]
     print('v_abs: ' + str(settings['v_abs']))
@@ -50,13 +50,11 @@ for ind_point in settings['points_set']:
     t_max = settings['cyclotron_periods'] * settings['tau_cyclotron']
     dt = settings['tau_cyclotron'] / 100
     num_steps = int(t_max / dt)
-    # print('num_steps = ', num_steps)
-    # print('t_max = ', num_steps * dt, 's')
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
     z = hist['x'][:, 2]
-    z_end = z[-1]
+    z_end = np.array(z[-1])
     print('z_end = ' + str(z_end))
 
     # save results to file
