@@ -29,9 +29,12 @@ for ind_point in settings['points_set']:
     print('ind_point: ' + str(ind_point))
 
     # extract the parameters that vary
-    settings['v_abs'] = mat_dict['phase_RF'][ind_point]
+    settings['v_abs'] = mat_dict['v_abs'][ind_point]
     settings['angle_to_z_axis'] = mat_dict['angle_to_z_axis'][ind_point]
     field_dict['phase_RF'] = mat_dict['phase_RF'][ind_point]
+    print('v_abs: ' + str(settings['v_abs']))
+    print('angle_to_z_axis: ' + str(settings['angle_to_z_axis']))
+    print('phase_RF: ' + str(field_dict['phase_RF']))
 
     run_name = ''
     run_name += 'v_' + '{:.1f}'.format(settings['v_abs'] / settings['v_th'])
