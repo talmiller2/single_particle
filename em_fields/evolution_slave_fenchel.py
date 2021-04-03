@@ -54,7 +54,7 @@ for ind_point in settings['points_set']:
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
     z = hist['x'][:, 2]
-    z_end = np.array(z[-1])
+    z_end = np.array([z[-1]])
     print('z_end = ' + str(z_end))
 
     # save results to file

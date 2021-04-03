@@ -161,4 +161,4 @@ for ind_set, points_set in enumerate(points_set_list):
     s = Slurm(run_name, slurm_kwargs=slurm_kwargs)
     s.run(command)
     cnt += 1
-    print('run # ' + str(cnt) + ' / ' + str(total_number_of_combinations))
+    print('set # ' + str(cnt) + ' / ' + str(num_sets))
