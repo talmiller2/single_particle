@@ -4,7 +4,6 @@ from slurmpy.slurmpy import Slurm
 
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 
-pwd = os.getcwd()
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
@@ -163,5 +162,3 @@ for ind_set, points_set in enumerate(points_set_list):
     s.run(command)
     cnt += 1
     print('run # ' + str(cnt) + ' / ' + str(total_number_of_combinations))
-
-    os.chdir(pwd)

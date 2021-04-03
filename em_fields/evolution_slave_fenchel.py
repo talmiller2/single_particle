@@ -60,5 +60,5 @@ for ind_point in settings['points_set']:
     print('z_end = ' + str(z_end))
 
     # save results to file
-    save_file_path = settings['save_dir'] + '/' + settings['run_name'] + '.txt'
+    save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
     np.savetxt(save_file_path, z_end)
