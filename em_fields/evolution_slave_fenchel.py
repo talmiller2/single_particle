@@ -37,8 +37,8 @@ for ind_point in settings['points_set']:
     print('phase_RF: ' + str(field_dict['phase_RF']))
 
     run_name = ''
-    run_name += 'v_' + '{:.1f}'.format(settings['v_abs'] / settings['v_th'])
-    run_name += '_angle_' + str(settings['angle_to_z_axis'])
+    run_name += 'v_' + '{:.2f}'.format(settings['v_abs'] / settings['v_th'])
+    run_name += '_angle_' + str(int(settings['angle_to_z_axis']))
     run_name += '_phaseRF_' + '{:.2f}'.format(field_dict['phase_RF'] / np.pi)
     print('run_name = ' + run_name)
 
@@ -53,10 +53,14 @@ for ind_point in settings['points_set']:
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
-    z = hist['x'][:, 2]
-    z_end = np.array([z[-1]])
+    z_end = hist['x'][:, 2][-1]
     print('z_end = ' + str(z_end))
 
+    v_abs_fin = np.linalg.norm(hist['v'][-1])
+    energy_end = (v_abs_fin / settings['v_abs']) ** 2.0
+    print('energy_end = ' + str(energy_end))
+
     # save results to file
+    save_array = np.array([z_end, energy_end])
     save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
-    np.savetxt(save_file_path, z_end)
+    np.savetxt(save_file_path, save_array)

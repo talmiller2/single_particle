@@ -18,7 +18,7 @@ slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
 
-main_folder = '/home/talm/code/single_particle/slurm_runs/set1/'
+main_folder = '/home/talm/code/single_particle/slurm_runs/'
 
 plt.close('all')
 
@@ -64,7 +64,9 @@ if RF_type == 'uniform':
     omega = omega_cyclotron  # resonance
     k = omega / c
 elif RF_type == 'traveling':
-    alpha_detune = 2
+    # alpha_detune = 2
+    alpha_detune = 3
+    # alpha_detune = 1.5
     omega = alpha_detune * omega_cyclotron  # resonance
     v_RF = alpha_detune / (alpha_detune - 1) * settings['v_th']
     k = omega / v_RF
@@ -85,12 +87,13 @@ settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
 os.chdir(settings['save_dir'])
 
-v_abs_list = np.linspace(0.5, 1.5, 11)
+v_abs_list = np.linspace(0.5, 1.5, 21)
 angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
 
-# v_abs_list = np.linspace(0.5, 1.5, 3)
-# angle_to_z_axis_list = [i for i in range(0, 181, 30)]
+# for testings
+# v_abs_list = np.linspace(0.5, 1.5, 2)
+# angle_to_z_axis_list = [i for i in range(0, 181, 50)]
 # phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1

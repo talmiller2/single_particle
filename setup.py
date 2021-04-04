@@ -5,6 +5,7 @@ setup(
     author="Tal Miller",
     author_email="talmiller@gmail.com",
     packages=['em_fields', 'loop_fields'],
+    # package_data={'em_fields': ['evolution_slave.py']},
     scripts=['em_fields/evolution_slave.py', 'em_fields/evolution_slave_fenchel.py'],
 )
 
