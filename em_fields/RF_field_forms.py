@@ -33,12 +33,20 @@ def E_RF_function(x, t, **field_dict):
     E_RF = field_dict['E_RF']
     anticlockwise = field_dict['anticlockwise']
     z_0 = field_dict['z_0']
-    k = field_dict['k']
-    omega = field_dict['omega']
     phase_RF = field_dict['phase_RF']
-    E_RF_vector = E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-                                   np.cos(k * (z - z_0) - omega * t + phase_RF),
-                                   0])
+
+    # k = field_dict['k']
+    # omega = field_dict['omega']
+    # E_RF_vector = E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
+    #                                 np.cos(k * (z - z_0) - omega * t + phase_RF),
+    #                                 0])
+
+    # TODO: allow for a superposition
+    E_RF_vector = 0
+    for k, omega in zip(field_dict['k'], field_dict['omega']):
+        E_RF_vector += E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
+                                        np.cos(k * (z - z_0) - omega * t + phase_RF),
+                                        0])
     return E_RF_vector
 
 

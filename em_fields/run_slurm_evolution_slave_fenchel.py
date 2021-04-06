@@ -41,8 +41,8 @@ print('loss_cone_angle = ' + str(loss_cone_angle))
 # define system parameters
 
 l = 10.0  # m (interaction length)
-# r_0 = 0.0 * l
-r_0 = 0.1 * l
+r_0 = 0.0 * l
+# r_0 = 0.1 * l
 # r_0 = 0.2 * l
 # r_0 = 0.3 * l
 z_0 = 0.5 * l
@@ -54,7 +54,8 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
-E_RF_kVm = 2  # kV/m
+# E_RF_kVm = 2  # kV/m
+E_RF_kVm = 1  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
 
 if B0 == 0:  # pick a default
@@ -69,12 +70,18 @@ if RF_type == 'uniform':
     omega = omega_cyclotron  # resonance
     k = omega / c
 elif RF_type == 'traveling':
-    # alpha_detune = 2
-    alpha_detune = 3
-    # alpha_detune = 1.5
-    omega = alpha_detune * omega_cyclotron  # resonance
-    v_RF = alpha_detune / (alpha_detune - 1) * settings['v_th']
-    k = omega / v_RF
+    # alpha_detune_list = [2]
+    # alpha_detune_list = [3]
+    # alpha_detune_list = [1.5]
+    # alpha_detune_list = [2, 4]
+    alpha_detune_list = [2, 3]
+    omega = []
+    v_RF = []
+    k = []
+    for alpha_detune in alpha_detune_list:
+        omega += [alpha_detune * omega_cyclotron]  # resonance
+        v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th']]
+        k += [omega[-1] / v_RF[-1]]
 
 cyclotron_periods = 1000
 settings['cyclotron_periods'] = cyclotron_periods
@@ -88,7 +95,8 @@ save_dir += '_Rm_' + str(Rm)
 save_dir += '_T_' + str(T_keV)
 save_dir += '_' + str(RF_type)
 save_dir += '_ERF_' + str(E_RF_kVm)
-save_dir += '_detune_' + str(alpha_detune)
+# save_dir += '_detune_' + str(alpha_detune)
+save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in alpha_detune_list])
 
 settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
@@ -162,7 +170,6 @@ for ind_set, points_set in enumerate(points_set_list):
     field_dict['z_0'] = z_0
     field_dict['k'] = k
     field_dict['omega'] = omega
-    # field_dict['phase_RF'] = phase_RF # changed within the slave script
     field_dict['c'] = c
 
     command = evolution_slave_fenchel_script \
