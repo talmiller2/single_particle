@@ -14,11 +14,13 @@ plt.rcParams.update({'font.size': 12})
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set1/'
+save_dir += '/set2/'
+
 # set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_0_detune_2'
 
 # set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_detune_2'
 # set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_3_detune_2'
-set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_5_detune_2'
+# set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_5_detune_2'
 
 # set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_detune_3'
 # set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_5_detune_3'
@@ -29,6 +31,9 @@ set_name = 'tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_5_detune_2'
 
 # set_name = 'tmax_1000_B0_0.3_Rm_3.0_T_3.0_traveling_ERF_2_detune_2'
 # set_name = 'tmax_1000_B0_1.0_Rm_3.0_T_3.0_traveling_ERF_2_detune_2'
+
+# set_name = 'r0_0.1_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_detune_3'
+set_name = 'r0_0.2_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_detune_3'
 
 save_dir += set_name
 
@@ -69,6 +74,7 @@ for ind_v_abs, v_abs in enumerate(v_abs_list):
             E_mat[ind_v_abs, ind_angle, ind_phase] = compiled_mat_dict['E'][0][cnt]
             cnt += 1
 ind_phase = 0
+# ind_phase = 2
 z_mat = z_mat[:, :, ind_phase].T
 E_mat = E_mat[:, :, ind_phase].T
 
@@ -90,11 +96,12 @@ for i in range(len(angle_to_z_axis_list_labels)):
 vmin = -30
 vmax = 30
 # plt.figure(1)
-plt.figure()
+# plt.figure()
 # plt.figure(1, figsize=(13, 5))
 # plt.figure(2, figsize=(13, 5))
-# plt.figure(figsize=(13, 5))
+plt.figure(figsize=(8, 3))
 plt.subplot(1, 2, 1)
+# plt.subplot(3, 2, 5)
 sns.heatmap(z_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_list_labels, cmap=cmap, vmin=vmin,
             vmax=vmax)
 plt.xlabel('$v/v_{th}$')
@@ -107,6 +114,7 @@ vmin = 0.5
 vmax = 2
 # plt.figure(2)
 plt.subplot(1, 2, 2)
+# plt.subplot(3, 2, 6)
 sns.heatmap(E_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_list_labels, cmap=cmap, vmin=vmin,
             vmax=vmax)
 plt.xlabel('$v/v_{th}$')

@@ -17,13 +17,13 @@ total_number_of_combinations *= len(angle_to_z_axis_list)
 total_number_of_combinations *= len(phase_RF_list)
 
 # run over dirs and compile the runs where needed
-dirs = [curr_dir for curr_dir in os.listdir(save_dir) if os.path.isdir(curr_dir)]
-for dir in dirs:
-    curr_dir_full = save_dir + '/' + dir
+run_dirs = [curr_dir for curr_dir in os.listdir(save_dir) if os.path.isdir(curr_dir)]
+for curr_dir in run_dirs:
+    curr_dir_full = save_dir + '/' + curr_dir
     complied_mat_file = curr_dir_full + '.mat'
 
     if not os.path.exists(complied_mat_file):
-        print(dir)
+        print(curr_dir)
         compiled_mat_dict = {}
         compiled_mat_dict['z'] = np.nan * np.zeros(total_number_of_combinations)
         compiled_mat_dict['E'] = np.nan * np.zeros(total_number_of_combinations)

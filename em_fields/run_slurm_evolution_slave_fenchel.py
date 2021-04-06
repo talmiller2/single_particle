@@ -80,8 +80,8 @@ cyclotron_periods = 1000
 settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
-save_dir += 'r0_' + str(r_0)
-save_dir += '_z0_' + str(z_0)
+save_dir += 'r0_' + str(r_0 / l)
+save_dir += '_z0_' + str(z_0 / l)
 save_dir += '_tmax_' + str(cyclotron_periods)
 save_dir += '_B0_' + str(B0)
 save_dir += '_Rm_' + str(Rm)
