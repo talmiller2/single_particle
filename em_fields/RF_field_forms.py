@@ -34,14 +34,6 @@ def E_RF_function(x, t, **field_dict):
     anticlockwise = field_dict['anticlockwise']
     z_0 = field_dict['z_0']
     phase_RF = field_dict['phase_RF']
-
-    # k = field_dict['k']
-    # omega = field_dict['omega']
-    # E_RF_vector = E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-    #                                 np.cos(k * (z - z_0) - omega * t + phase_RF),
-    #                                 0])
-
-    # TODO: allow for a superposition
     E_RF_vector = 0
     for k, omega in zip(field_dict['k'], field_dict['omega']):
         E_RF_vector += E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
@@ -67,17 +59,11 @@ def B_RF_function(x, t, **field_dict):
     E_RF = field_dict['E_RF']
     anticlockwise = field_dict['anticlockwise']
     z_0 = field_dict['z_0']
-    k = field_dict['k']
-    omega = field_dict['omega']
     phase_RF = field_dict['phase_RF']
     c = field_dict['c']
-    B_RF = E_RF / c * np.array([-np.sign(k) * np.cos(k * (z - z_0) - omega * t + phase_RF),
-                                np.sign(k) * anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-                                0])
-    return B_mirror + B_RF
-
-# def fun(**args):
-#     x = args['x']
-#     return x
-#
-# fun(**{'x': 2})
+    B_RF_vector = 0
+    for k, omega in zip(field_dict['k'], field_dict['omega']):
+        B_RF_vector += E_RF / c * np.array([-np.sign(k) * np.cos(k * (z - z_0) - omega * t + phase_RF),
+                                            np.sign(k) * anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
+                                            0])
+    return B_mirror + B_RF_vector

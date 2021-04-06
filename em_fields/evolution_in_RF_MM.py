@@ -100,10 +100,10 @@ l = 10.0  # m (interaction length)
 cyclotron_radius = np.linalg.norm(v_0) / omega_cyclotron
 print('cyclotron_radius = ' + str(cyclotron_radius) + ' m')
 
-# r_0 = 0
+r_0 = 0
 # r_0 = cyclotron_radius
 # r_0 = 0.1 * l
-r_0 = 0.3 * l
+# r_0 = 0.3 * l
 # r_0 = 0.4 * l
 # r_0 = 0.5 * l
 # z_0 = 0.0 * l
@@ -126,7 +126,7 @@ v_z = v_0[2]
 # t_max = abs(t_max)
 # t_max = min(t_max, 100 * tau_cyclotron)
 # t_max = 1000 * tau_cyclotron
-t_max = 300 * tau_cyclotron
+t_max = 20 * tau_cyclotron
 
 # dt = tau_cyclotron / 50 / Rm
 # dt = tau_cyclotron / 300
