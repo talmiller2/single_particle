@@ -54,8 +54,9 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
-# E_RF_kVm = 2  # kV/m
-E_RF_kVm = 1  # kV/m
+# E_RF_kVm = 1  # kV/m
+E_RF_kVm = 2  # kV/m
+# E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
 
 if B0 == 0:  # pick a default
@@ -70,11 +71,13 @@ if RF_type == 'uniform':
     omega = omega_cyclotron  # resonance
     k = omega / c
 elif RF_type == 'traveling':
-    # alpha_detune_list = [2]
+    alpha_detune_list = [2]
+    # alpha_detune_list = [2.718]
     # alpha_detune_list = [3]
     # alpha_detune_list = [1.5]
     # alpha_detune_list = [2, 4]
-    alpha_detune_list = [2, 3]
+    # alpha_detune_list = [2, 3]
+    # alpha_detune_list = [2, 2.718]
     omega = []
     v_RF = []
     k = []
