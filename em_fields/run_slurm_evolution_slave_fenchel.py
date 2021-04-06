@@ -55,8 +55,8 @@ settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
 # E_RF_kVm = 1  # kV/m
-E_RF_kVm = 2  # kV/m
-# E_RF_kVm = 4  # kV/m
+# E_RF_kVm = 2  # kV/m
+E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
 
 if B0 == 0:  # pick a default
@@ -71,13 +71,15 @@ if RF_type == 'uniform':
     omega = omega_cyclotron  # resonance
     k = omega / c
 elif RF_type == 'traveling':
-    alpha_detune_list = [2]
+    # alpha_detune_list = [2]
     # alpha_detune_list = [2.718]
+    alpha_detune_list = [3.141]
     # alpha_detune_list = [3]
     # alpha_detune_list = [1.5]
     # alpha_detune_list = [2, 4]
     # alpha_detune_list = [2, 3]
     # alpha_detune_list = [2, 2.718]
+    # alpha_detune_list = [2.718, 3.141]
     omega = []
     v_RF = []
     k = []
@@ -100,6 +102,8 @@ save_dir += '_' + str(RF_type)
 save_dir += '_ERF_' + str(E_RF_kVm)
 # save_dir += '_detune_' + str(alpha_detune)
 save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in alpha_detune_list])
+
+print('save_dir: ' + str(save_dir))
 
 settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
@@ -136,8 +140,10 @@ for v_abs in v_abs_list:
 settings['points_file'] = settings['save_dir'] + '/points.mat'
 savemat(settings['points_file'], mat_dict)
 
-# divide the points to a given number of cpus
-num_cpus = 100
+# divide the points to a given number of cpus (250 is max in partition core)
+# num_cpus = 50
+# num_cpus = 100
+num_cpus = 125
 num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
 num_extra_points = np.mod(total_number_of_combinations, num_cpus)
 
