@@ -7,6 +7,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set1/'
 save_dir += '/set2/'
 
+os.chdir(save_dir)
+
 v_abs_list = np.linspace(0.5, 1.5, 21)
 angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
@@ -35,7 +37,11 @@ for curr_dir in run_dirs:
                     run_name += 'v_' + '{:.2f}'.format(v_abs)
                     run_name += '_angle_' + str(angle_to_z_axis)
                     run_name += '_phaseRF_' + '{:.2f}'.format(phase_RF / np.pi)
-                    data = np.loadtxt(curr_dir_full + '/' + run_name + '.txt')
+                    try:
+                        data = np.loadtxt(curr_dir_full + '/' + run_name + '.txt')
+                    except:
+                        print('failed to load ' + run_name + ', setting NaNs instead.')
+                        data = [np.nan, np.nan]
                     compiled_mat_dict['z'][cnt] = data[0]
                     compiled_mat_dict['E'][cnt] = data[1]
                     cnt += 1
