@@ -19,6 +19,8 @@ slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'testing'}
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
+# main_folder += '/set1/'
+main_folder += '/set2/'
 
 plt.close('all')
 
@@ -39,7 +41,10 @@ print('loss_cone_angle = ' + str(loss_cone_angle))
 # define system parameters
 
 l = 10.0  # m (interaction length)
-r_0 = 0
+# r_0 = 0.0 * l
+r_0 = 0.1 * l
+# r_0 = 0.2 * l
+# r_0 = 0.3 * l
 z_0 = 0.5 * l
 B0 = 0.1  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
@@ -75,7 +80,9 @@ cyclotron_periods = 1000
 settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
-save_dir += 'tmax_' + str(cyclotron_periods)
+save_dir += 'r0_' + str(r_0)
+save_dir += '_z0_' + str(z_0)
+save_dir += '_tmax_' + str(cyclotron_periods)
 save_dir += '_B0_' + str(B0)
 save_dir += '_Rm_' + str(Rm)
 save_dir += '_T_' + str(T_keV)
