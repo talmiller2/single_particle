@@ -9,7 +9,7 @@ plt.rcParams.update({'axes.labelpad': 15})
 plt.rcParams.update({'lines.linestyle': '-'})
 # plt.rcParams.update({'lines.linestyle': '--'})
 
-plt.close('all')
+# plt.close('all')
 
 plot3d_exists = False
 # plot3d_exists = True
@@ -39,18 +39,19 @@ c = 3e8
 
 # B0 = 0 # Tesla
 # B0 = 0.01  # Tesla
-B0 = 0.1  # Tesla
+# B0 = 0.1  # Tesla
 # B0 = 0.2  # Tesla
-# B0 = 1.0  # Tesla
+# B0 = 0.5  # Tesla
+B0 = 1.0  # Tesla
 # B0 = -1.0 # Tesla
 # B0 = 5.0  # Tesla
 
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
 
-# angle_to_z_axis = 0  # deg
+angle_to_z_axis = 0  # deg
 # angle_to_z_axis = 0.1 * loss_cone_angle # deg
-angle_to_z_axis = 0.2 * loss_cone_angle  # deg
+# angle_to_z_axis = 0.2 * loss_cone_angle  # deg
 # angle_to_z_axis = 0.5 * loss_cone_angle  # deg
 # angle_to_z_axis = 0.7 * loss_cone_angle # deg
 # angle_to_z_axis = 0.95 * loss_cone_angle # deg
@@ -119,7 +120,9 @@ v_z = v_0[2]
 # t_max = l / v_z
 # t_max = 3 * l / v_z
 # t_max = 5 * l / v_z
-t_max = 10 * l / v_z
+# t_max = 10 * l / v_z
+# t_max = 5 * l / v_th
+t_max = 10 * l / v_th
 # t_max = 20 * l / v_z
 # t_max = 30 * l / v_z
 # t_max = 50 * l / v_z
@@ -128,14 +131,15 @@ t_max = 10 * l / v_z
 # t_max = 1000 * tau_cyclotron
 # t_max = 20 * tau_cyclotron
 # t_max = 100 * tau_cyclotron
+# t_max = 1000 * tau_cyclotron
 
 # dt = tau_cyclotron / 50 / Rm
 # dt = tau_cyclotron / 300
 # dt = tau_cyclotron / 200
 # dt = tau_cyclotron / 150
-dt = tau_cyclotron / 100
+# dt = tau_cyclotron / 100
 # dt = tau_cyclotron / 50
-# dt = tau_cyclotron / 20
+dt = tau_cyclotron / 20
 # dt = tau_cyclotron / 40
 # dt = tau_cyclotron / 10
 # num_steps = 1000

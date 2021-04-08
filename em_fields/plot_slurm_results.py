@@ -59,7 +59,9 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # set_name = 'r0_0.0_z0_0.3_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
 
 save_dir += '/set3/'
-set_name = 'tmax_566_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
+# set_name = 'tmax_566_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
+# set_name = 'tmax_566_B0_0.1_T_3.0_traveling_ERF_2_alpha_2.718'
+set_name = 'tmax_566_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718'
 
 save_dir += set_name
 
@@ -69,8 +71,8 @@ save_dir += set_name
 # angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 # phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
 
-v_abs_list = np.linspace(0.5, 1.5, 11)
-angle_to_z_axis_list = [i for i in range(0, 181, 10)]
+v_abs_list = np.linspace(0.7, 1.3, 21)
+angle_to_z_axis_list = [i for i in range(0, 91, 5)]
 phase_RF_list = np.array([0]) * np.pi
 
 # phase_RF = 0
@@ -146,9 +148,11 @@ sns.heatmap(z_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_li
             vmax=vmax)
 plt.xlabel('$v/v_{th}$')
 plt.ylabel('$\\theta_z$')
-plt.title('$z$')
+plt.title('end $z$')
 # plt.title(set_name)
 # plt.tight_layout()
+
+angle_to_z_axis_list_labels = []
 
 # vmin = 0.5
 # vmax = 2
@@ -158,25 +162,25 @@ vmax = None
 # plt.subplot(1, 2, 2)
 plt.subplot(1, 4, 2)
 # plt.subplot(3, 2, 6)
-sns.heatmap(E_mat, xticklabels=v_abs_list_labels, cmap=cmap, vmin=vmin,
+sns.heatmap(E_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_list_labels, cmap=cmap, vmin=vmin,
             vmax=vmax)
 plt.xlabel('$v/v_{th}$')
 # plt.ylabel('$\\theta_z$')
-plt.title('$E$')
+plt.title('end $E$')
 
 vmin = None
 vmax = None
 plt.subplot(1, 4, 3)
-sns.heatmap(v_r_mean_mat, xticklabels=v_abs_list_labels, cmap=cmap, vmin=vmin,
+sns.heatmap(v_r_mean_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_list_labels, cmap=cmap, vmin=vmin,
             vmax=vmax)
-# plt.xlabel('$v/v_{th}$')
-plt.ylabel('$\\theta_z$')
+plt.xlabel('$v/v_{th}$')
+# plt.ylabel('$\\theta_z$')
 plt.title('mean $v_r$')
 
 vmin = None
 vmax = None
 plt.subplot(1, 4, 4)
-sns.heatmap(v_z_mean_mat, xticklabels=v_abs_list_labels, cmap=cmap, vmin=vmin,
+sns.heatmap(v_z_mean_mat, xticklabels=v_abs_list_labels, yticklabels=angle_to_z_axis_list_labels, cmap=cmap, vmin=vmin,
             vmax=vmax)
 plt.xlabel('$v/v_{th}$')
 # plt.ylabel('$\\theta_z$')

@@ -14,8 +14,8 @@ os.chdir(save_dir)
 # angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 # phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
 
-v_abs_list = np.linspace(0.5, 1.5, 11)
-angle_to_z_axis_list = [i for i in range(0, 181, 10)]
+v_abs_list = np.linspace(0.7, 1.3, 21)
+angle_to_z_axis_list = [i for i in range(0, 91, 5)]
 phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1

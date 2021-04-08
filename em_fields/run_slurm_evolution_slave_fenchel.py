@@ -49,6 +49,7 @@ r_0 = 0.0 * l
 z_0 = 0.0 * l
 # z_0 = 0.5 * l
 B0 = 0.1  # Tesla
+# B0 = 1.0  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
 settings['r_0'] = r_0
@@ -56,8 +57,8 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
-E_RF_kVm = 0  # kV/m
-# E_RF_kVm = 1  # kV/m
+# E_RF_kVm = 0  # kV/m
+E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 2  # kV/m
 # E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
@@ -92,7 +93,7 @@ elif RF_type == 'traveling':
         k += [omega[-1] / v_RF[-1]]
 
 # cyclotron_periods = 1000
-cyclotron_periods = int(10 * l / (0.5 * settings['v_th']) / tau_cyclotron)
+cyclotron_periods = int(10 * l / settings['v_th'] / tau_cyclotron)
 settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
@@ -123,8 +124,8 @@ os.chdir(settings['save_dir'])
 # angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 # phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
 
-v_abs_list = np.linspace(0.5, 1.5, 11)
-angle_to_z_axis_list = [i for i in range(0, 181, 10)]
+v_abs_list = np.linspace(0.7, 1.3, 21)
+angle_to_z_axis_list = [i for i in range(0, 91, 5)]
 phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1
@@ -173,7 +174,8 @@ for i in range(num_sets):
 # run the slave_fenchel scripts on multiple cpus
 cnt = 0
 for ind_set, points_set in enumerate(points_set_list):
-    run_name = 'set_' + str(ind_set)
+    # run_name = 'set_' + str(ind_set)
+    run_name = save_dir + '_set_' + str(ind_set)
     print('run_name = ' + run_name)
 
     settings['points_set'] = points_set
