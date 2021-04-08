@@ -68,10 +68,8 @@ for ind_point in settings['points_set']:
     v_y = hist['v'][:, 1]
     v_z = hist['v'][:, 2]
     v_r = np.sqrt(v_x ** 2 + v_y ** 2)
-    # v_r_mean = np.mean(v_r) / settings['v_abs']
-    # v_z_mean = np.mean(v_z) / settings['v_abs']
-    v_r_mean = np.mean(v_r) / v_r[0]
-    v_z_mean = np.mean(v_z) / v_z[0]
+    v_r_mean = np.mean(v_r) / settings['v_abs']
+    v_z_mean = np.mean(v_z) / settings['v_abs']
 
     # save results to file
     save_array = np.array([z_end, energy_end, v_r_mean, v_z_mean])

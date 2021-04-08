@@ -59,15 +59,18 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # set_name = 'r0_0.0_z0_0.3_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
 
 save_dir += '/set3/'
-set_name = '_tmax_566_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
+set_name = 'tmax_566_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
 
 save_dir += set_name
 
 # plt.close('all')
 
-v_abs_list = np.linspace(0.5, 1.5, 21)
-angle_to_z_axis_list = [i for i in range(0, 181, 5)]
+# v_abs_list = np.linspace(0.5, 1.5, 21)
+# angle_to_z_axis_list = [i for i in range(0, 181, 5)]
 # phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+
+v_abs_list = np.linspace(0.5, 1.5, 11)
+angle_to_z_axis_list = [i for i in range(0, 181, 10)]
 phase_RF_list = np.array([0]) * np.pi
 
 # phase_RF = 0
