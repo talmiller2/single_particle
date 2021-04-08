@@ -98,7 +98,8 @@ settings['cyclotron_periods'] = cyclotron_periods
 save_dir = ''
 # save_dir += 'r0_' + str(r_0 / l)
 # save_dir += '_z0_' + str(z_0 / l)
-save_dir += '_tmax_' + str(cyclotron_periods)
+# save_dir += '_tmax_' + str(cyclotron_periods)
+save_dir += 'tmax_' + str(cyclotron_periods)
 save_dir += '_B0_' + str(B0)
 # save_dir += '_Rm_' + str(Rm)
 save_dir += '_T_' + str(T_keV)
@@ -113,15 +114,18 @@ settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
 os.chdir(settings['save_dir'])
 
-v_abs_list = np.linspace(0.5, 1.5, 21)
-angle_to_z_axis_list = [i for i in range(0, 181, 5)]
-# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
-phase_RF_list = np.array([0]) * np.pi
-
 # for testings
 # v_abs_list = np.linspace(0.5, 1.5, 2)
 # angle_to_z_axis_list = [i for i in range(0, 181, 50)]
 # phase_RF_list = np.array([0]) * np.pi
+
+# v_abs_list = np.linspace(0.5, 1.5, 21)
+# angle_to_z_axis_list = [i for i in range(0, 181, 5)]
+# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+
+v_abs_list = np.linspace(0.5, 1.5, 11)
+angle_to_z_axis_list = [i for i in range(0, 181, 10)]
+phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1
 total_number_of_combinations *= len(v_abs_list)
@@ -147,8 +151,8 @@ savemat(settings['points_file'], mat_dict)
 
 # divide the points to a given number of cpus (250 is max in partition core)
 # num_cpus = 50
-# num_cpus = 100
-num_cpus = 125
+num_cpus = 100
+# num_cpus = 125
 num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
 num_extra_points = np.mod(total_number_of_combinations, num_cpus)
 
