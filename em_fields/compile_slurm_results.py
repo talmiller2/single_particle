@@ -5,13 +5,15 @@ from scipy.io import savemat
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set1/'
-save_dir += '/set2/'
+# save_dir += '/set2/'
+save_dir += '/set3/'
 
 os.chdir(save_dir)
 
 v_abs_list = np.linspace(0.5, 1.5, 21)
 angle_to_z_axis_list = [i for i in range(0, 181, 5)]
-phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+phase_RF_list = np.array([0]) * np.pi
 
 total_number_of_combinations = 1
 total_number_of_combinations *= len(v_abs_list)
@@ -29,6 +31,8 @@ for curr_dir in run_dirs:
         compiled_mat_dict = {}
         compiled_mat_dict['z'] = np.nan * np.zeros(total_number_of_combinations)
         compiled_mat_dict['E'] = np.nan * np.zeros(total_number_of_combinations)
+        compiled_mat_dict['v_r_mean'] = np.nan * np.zeros(total_number_of_combinations)
+        compiled_mat_dict['v_z_mean'] = np.nan * np.zeros(total_number_of_combinations)
         cnt = 0
         for v_abs in v_abs_list:
             for angle_to_z_axis in angle_to_z_axis_list:
@@ -41,9 +45,11 @@ for curr_dir in run_dirs:
                         data = np.loadtxt(curr_dir_full + '/' + run_name + '.txt')
                     except:
                         print('failed to load ' + run_name + ', setting NaNs instead.')
-                        data = [np.nan, np.nan]
+                        data = [np.nan, np.nan, np.nan, np.nan]
                     compiled_mat_dict['z'][cnt] = data[0]
                     compiled_mat_dict['E'][cnt] = data[1]
+                    compiled_mat_dict['v_r_mean'][cnt] = data[2]
+                    compiled_mat_dict['v_z_mean'][cnt] = data[3]
                     cnt += 1
 
         savemat(complied_mat_file, compiled_mat_dict)

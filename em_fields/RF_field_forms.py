@@ -3,28 +3,6 @@ import numpy as np
 from em_fields.magnetic_forms import get_mirror_magnetic_field
 
 
-def define_default_field_dict(field_dict):
-    field_dict = {}
-
-    ### mirror definitions
-    B0 = 0.1  # Tesla
-
-    if 'B0' not in field_dict:
-        field_dict['B0'] = 0.1  # Tesla
-
-    ### RF definitions
-
-    # field_dict['RF_type'] = 'uniform'
-    field_dict['RF_type'] = 'traveling'
-
-    if field_dict['B0'] != 0:
-        field_dict['anticlockwise'] = np.sign(field_dict['B0'])
-    else:
-        field_dict['anticlockwise'] = 1.0
-
-    return field_dict
-
-
 def E_RF_function(x, t, **field_dict):
     """
     Electric field of planar RF wave in the z direction.

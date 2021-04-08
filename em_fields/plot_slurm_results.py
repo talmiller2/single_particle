@@ -42,11 +42,20 @@ save_dir += '/set2/'
 
 # set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_alpha_2'
 # set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_alpha_2.718'
-set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_1_alpha_2_2.718'
+# set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_1_alpha_2_2.718'
+
+# set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_alpha_2.718'
+
 
 # set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2'
 # set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
+# set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_3.141'
 # set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_alpha_2_2.718'
+# set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_2_alpha_2.718_3.141'
+
+# set_name = 'r0_0.0_z0_0.5_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
+# set_name = 'r0_0.0_z0_0.0_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
+set_name = 'r0_0.0_z0_0.3_tmax_1000_B0_0.1_Rm_3.0_T_3.0_traveling_ERF_4_alpha_2.718'
 
 save_dir += set_name
 

@@ -20,7 +20,8 @@ slurm_kwargs = {'partition': 'core'}  # default
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set1/'
-main_folder += '/set2/'
+# main_folder += '/set2/'
+main_folder += '/set3/'
 
 plt.close('all')
 
@@ -45,7 +46,8 @@ r_0 = 0.0 * l
 # r_0 = 0.1 * l
 # r_0 = 0.2 * l
 # r_0 = 0.3 * l
-z_0 = 0.5 * l
+z_0 = 0.0 * l
+# z_0 = 0.5 * l
 B0 = 0.1  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
 tau_cyclotron = 2 * np.pi / omega_cyclotron
@@ -54,9 +56,10 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
+E_RF_kVm = 0  # kV/m
 # E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 2  # kV/m
-E_RF_kVm = 4  # kV/m
+# E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
 
 if B0 == 0:  # pick a default
@@ -72,8 +75,8 @@ if RF_type == 'uniform':
     k = omega / c
 elif RF_type == 'traveling':
     # alpha_detune_list = [2]
-    # alpha_detune_list = [2.718]
-    alpha_detune_list = [3.141]
+    alpha_detune_list = [2.718]
+    # alpha_detune_list = [3.141]
     # alpha_detune_list = [3]
     # alpha_detune_list = [1.5]
     # alpha_detune_list = [2, 4]
@@ -88,15 +91,16 @@ elif RF_type == 'traveling':
         v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th']]
         k += [omega[-1] / v_RF[-1]]
 
-cyclotron_periods = 1000
+# cyclotron_periods = 1000
+cyclotron_periods = int(10 * l / (0.5 * settings['v_th']) / tau_cyclotron)
 settings['cyclotron_periods'] = cyclotron_periods
 
 save_dir = ''
-save_dir += 'r0_' + str(r_0 / l)
-save_dir += '_z0_' + str(z_0 / l)
+# save_dir += 'r0_' + str(r_0 / l)
+# save_dir += '_z0_' + str(z_0 / l)
 save_dir += '_tmax_' + str(cyclotron_periods)
 save_dir += '_B0_' + str(B0)
-save_dir += '_Rm_' + str(Rm)
+# save_dir += '_Rm_' + str(Rm)
 save_dir += '_T_' + str(T_keV)
 save_dir += '_' + str(RF_type)
 save_dir += '_ERF_' + str(E_RF_kVm)
@@ -111,7 +115,8 @@ os.chdir(settings['save_dir'])
 
 v_abs_list = np.linspace(0.5, 1.5, 21)
 angle_to_z_axis_list = [i for i in range(0, 181, 5)]
-phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+phase_RF_list = np.array([0]) * np.pi
 
 # for testings
 # v_abs_list = np.linspace(0.5, 1.5, 2)
@@ -173,7 +178,8 @@ for ind_set, points_set in enumerate(points_set_list):
     field_dict['B0'] = B0
     field_dict['Rm'] = Rm
     field_dict['l'] = l
-    field_dict['mirror_field_type'] = 'logan'
+    # field_dict['mirror_field_type'] = 'logan'
+    field_dict['mirror_field_type'] = 'const'
     field_dict['E_RF'] = E_RF
     field_dict['anticlockwise'] = anticlockwise
     field_dict['z_0'] = z_0

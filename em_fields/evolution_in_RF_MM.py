@@ -106,9 +106,9 @@ r_0 = 0
 # r_0 = 0.3 * l
 # r_0 = 0.4 * l
 # r_0 = 0.5 * l
-# z_0 = 0.0 * l
+z_0 = 0.0 * l
 # z_0 = 0.2 * l
-z_0 = 0.5 * l
+# z_0 = 0.5 * l
 x_0 = np.array([r_0, 0, z_0])
 
 z_0 = x_0[2]
@@ -119,14 +119,15 @@ v_z = v_0[2]
 # t_max = l / v_z
 # t_max = 3 * l / v_z
 # t_max = 5 * l / v_z
-# t_max = 10 * l / v_z
+t_max = 10 * l / v_z
 # t_max = 20 * l / v_z
 # t_max = 30 * l / v_z
 # t_max = 50 * l / v_z
 # t_max = abs(t_max)
 # t_max = min(t_max, 100 * tau_cyclotron)
 # t_max = 1000 * tau_cyclotron
-t_max = 20 * tau_cyclotron
+# t_max = 20 * tau_cyclotron
+# t_max = 100 * tau_cyclotron
 
 # dt = tau_cyclotron / 50 / Rm
 # dt = tau_cyclotron / 300
@@ -200,7 +201,8 @@ elif RF_type == 'traveling':
 
     # alpha_detune = 1.1
     # alpha_detune = 1.5
-    alpha_detune = 2.0
+    # alpha_detune = 2.0
+    alpha_detune = 2.718
     omega = alpha_detune * omega_cyclotron  # resonance
 
     # v_RF = alpha_detune / (alpha_detune - 1) * np.abs(v_z)
@@ -221,7 +223,8 @@ def B_function(x, t):
     # use_transverse_fields = False
 
     # B_mirror = magnetic_field_constant(B0)
-    B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    B_mirror = np.array([0, 0, B0])
+    # B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
     # B_mirror = magnetic_field_jaeger(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
     # B_mirror = magnetic_field_post(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
 
@@ -267,13 +270,21 @@ Ex = hist['E'][:, 0] / 1e3
 Ey = hist['E'][:, 1] / 1e3
 Ez = hist['E'][:, 2] / 1e3
 
+v_r = np.sqrt(vx ** 2 + vy ** 2)
+v_perp_loss_cone = v_norm * Rm ** (-0.5)
+
+print('mean(v_r) = ' + str(np.mean(v_r)))
+print('mean(v_z) = ' + str(np.mean(vz)))
+
 ### Plots
 linewidth = 2
 
 # plt.figure(1)
 # plt.figure(num=1, figsize=(15, 6))
-plt.figure(num=1, figsize=(12, 5))
-plt.subplot(1, 2, 1)
+# plt.figure(num=1, figsize=(12, 5))
+# plt.subplot(1, 2, 1)
+plt.figure(num=1, figsize=(16, 5))
+plt.subplot(1, 3, 1)
 # plt.plot(t, x, label='x', linewidth=linewidth, color='b')
 # plt.plot(t, y, label='y', linewidth=linewidth, color='g')
 plt.plot(t, R, label='$R/r_{cyc}$', linewidth=linewidth, color='b')
@@ -281,26 +292,26 @@ plt.plot(t, z, label='$z/l$', linewidth=linewidth, color='r')
 plt.legend()
 plt.xlabel('t / $\\tau_{cyc}$')
 # plt.ylabel('coordinate / $r_{cyc}$')
-plt.title('$E_{RF}$=' + str(E_RF / 1e3) + 'kV/m, $\\theta$=' + str(angle_to_z_axis) + '$\degree$')
+plt.title('$E_{RF}$=' + str(E_RF / 1e3) + 'kV/m, $\\theta$=' + '{:.2f}'.format(angle_to_z_axis) + '$\degree$')
 plt.ylabel('coordinate (normalized)')
 plt.grid(True)
 plt.tight_layout()
 
 # plt.figure(4)
-# # plt.subplot(1,2,2)
-# # plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
-# # plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
-# v_r = np.sqrt(vx ** 2 + vy ** 2)
-# plt.plot(t, v_r, label='$v_r$', linewidth=linewidth, color='b')
-# v_perp_loss_cone = v_norm * Rm ** (-0.5)
+# plt.subplot(1,2,2)
+plt.subplot(1, 3, 3)
+# plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
+# plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
+
+plt.plot(t, v_r, label='$v_r$', linewidth=linewidth, color='b')
 # plt.plot(t, v_perp_loss_cone, label='$v_{r,LC}$', linewidth=linewidth, linestyle='--', color='c')
-# plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
+plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
 # plt.plot(t, v_norm, label='$v_{norm}$', linewidth=linewidth, color='k')
-# plt.legend()
-# plt.xlabel('t / $\\tau_{cyc}$')
-# plt.ylabel('velocity / $v_{th}$')
-# plt.grid(True)
-# plt.tight_layout()
+plt.legend()
+plt.xlabel('t / $\\tau_{cyc}$')
+plt.ylabel('velocity / $v_{th}$')
+plt.grid(True)
+plt.tight_layout()
 #
 # plt.figure(2)
 # plt.plot(x, y, linewidth=linewidth)
@@ -371,7 +382,8 @@ plt.tight_layout()
 #
 
 # plt.figure(9)
-plt.subplot(1, 2, 2)
+# plt.subplot(1, 2, 2)
+plt.subplot(1, 3, 2)
 E_kin = 0.5 * v_norm ** 2.0
 plt.plot(t, E_kin / E_kin[0], label='$E/E_0$', linewidth=linewidth, color='k')
 plt.xlabel('t / $\\tau_{cyc}$')

@@ -90,6 +90,8 @@ def get_mirror_magnetic_field(x, B0, Rm, l, use_transverse_fields=True, z0=0, mi
         B_mirror = magnetic_field_jaeger(x, B0, Rm, l, z0=z0, use_transverse_fields=use_transverse_fields)
     elif mirror_field_type == 'post':
         B_mirror = magnetic_field_post(x, B0, Rm, l, z0=z0, use_transverse_fields=use_transverse_fields)
+    elif mirror_field_type == 'const':
+        B_mirror = np.array([0, 0, B0])
     else:
         raise TypeError('invalid mirror_type: ' + str(mirror_field_type))
     return B_mirror

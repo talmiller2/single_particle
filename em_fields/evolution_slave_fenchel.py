@@ -53,14 +53,25 @@ for ind_point in settings['points_set']:
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
+
+    # end position
     z_end = hist['x'][:, 2][-1]
     print('z_end = ' + str(z_end))
 
+    # end energy
     v_abs_fin = np.linalg.norm(hist['v'][-1])
     energy_end = (v_abs_fin / settings['v_abs']) ** 2.0
     print('energy_end = ' + str(energy_end))
 
+    # mean velocity
+    v_x = hist['v'][:, 0]
+    v_y = hist['v'][:, 1]
+    v_z = hist['v'][:, 2]
+    v_r = np.sqrt(v_x ** 2 + v_y ** 2)
+    v_r_mean = np.mean(v_r) / settings['v_abs']
+    v_z_mean = np.mean(v_z) / settings['v_abs']
+
     # save results to file
-    save_array = np.array([z_end, energy_end])
+    save_array = np.array([z_end, energy_end, v_r_mean, v_z_mean])
     save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
     np.savetxt(save_file_path, save_array)
