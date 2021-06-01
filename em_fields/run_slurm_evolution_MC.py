@@ -180,6 +180,7 @@ for ind_set, points_set in enumerate(points_set_list):
     field_dict['k'] = k
     field_dict['omega'] = omega
     field_dict['c'] = c
+    field_dict['phase_RF'] = 0
 
     command = evolution_slave_fenchel_script \
               + ' --settings "' + str(settings) + '"' \
