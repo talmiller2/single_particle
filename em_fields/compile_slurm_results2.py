@@ -13,7 +13,8 @@ run_dirs = [curr_dir for curr_dir in os.listdir(save_dir) if os.path.isdir(curr_
 for curr_dir in run_dirs:
     curr_dir_full = save_dir + '/' + curr_dir
 
-    if not os.path.exists(complied_mat_file):
+    compiled_mat_file = curr_dir_full + '.mat'
+    if not os.path.exists(compiled_mat_file):
         print(curr_dir)
 
         # extract the total number of points in this folder
@@ -37,5 +38,4 @@ for curr_dir in run_dirs:
             except:
                 print('failed to load ' + run_name + ', skipping to next one.')
 
-        complied_mat_file = curr_dir_full + '.mat'
-        savemat(complied_mat_file, mat_dict)
+        savemat(compiled_mat_file, mat_dict)
