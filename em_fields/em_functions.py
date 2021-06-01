@@ -4,10 +4,11 @@ from scipy.linalg import expm
 
 def get_thermal_velocity(T, m, kB_eV):
     '''
-    Calculate the thermal velocity of particles according to 1/2*m*v_th^2 = 3/2*kB*T
+    The thermal velocity of particles according to 1/2*m*v_th^2 = 3/2*kB*T would give v_th=sqrt(3kBT/m), as we use in
+    the mm rate eqs model. But here we want to use the Maxwell Boltzmann most probable velocity which has sqrt(2)
     T in eV, m in kg
     '''
-    return np.sqrt(kB_eV * T / m)
+    return np.sqrt(2 * kB_eV * T / m)
 
 
 def get_cyclotron_angular_frequency(q, B, m):
@@ -73,7 +74,7 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     b_y = B_half[1] / B_norm
     b_z = B_half[2] / B_norm
     b_half_tensor = np.array([[0, -b_z, b_y], [b_z, 0, -b_x], [-b_y, b_x, 0]])
-    # omega_half = - q * B_norm / m # definition with minus from paper gives wrong right hand rule
+    # omega_half = - q * B_norm / m # definition with minus from paper is inconsistent with "right hand rule"
     omega_half = q * B_norm / m
     v_plus = np.dot(expm(dt * omega_half * b_half_tensor), v_minus)
     v_new = v_plus + dt * q / m / 2.0 * E_half

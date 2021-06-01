@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 from em_fields.default_settings import define_default_settings
-from em_fields.em_functions import evolve_particle_in_em_fields, get_thermal_velocity, get_cyclotron_angular_frequency
+from em_fields.em_functions import evolve_particle_in_em_fields, get_cyclotron_angular_frequency
 from em_fields.magnetic_forms import *
 
 plt.rcParams.update({'font.size': 14})
@@ -20,7 +20,8 @@ q = settings['Z_ion'] * settings['e']  # Coulomb
 # T_eV = 1e3
 T_eV = 3e3
 kB_eV = settings['kB_eV']
-v_th = get_thermal_velocity(T_eV, m, kB_eV)
+# v_th = get_thermal_velocity(T_eV, m, kB_eV)
+v_th = np.sqrt(2 * T_eV * kB_eV / m)
 
 Rm = 3.0
 print('Rm = ' + str(Rm))
@@ -39,10 +40,10 @@ c = 3e8
 
 # B0 = 0 # Tesla
 # B0 = 0.01  # Tesla
-# B0 = 0.1  # Tesla
+B0 = 0.1  # Tesla
 # B0 = 0.2  # Tesla
 # B0 = 0.5  # Tesla
-B0 = 1.0  # Tesla
+# B0 = 1.0  # Tesla
 # B0 = -1.0 # Tesla
 # B0 = 5.0  # Tesla
 
@@ -107,9 +108,9 @@ r_0 = 0
 # r_0 = 0.3 * l
 # r_0 = 0.4 * l
 # r_0 = 0.5 * l
-z_0 = 0.0 * l
+# z_0 = 0.0 * l
 # z_0 = 0.2 * l
-# z_0 = 0.5 * l
+z_0 = 0.5 * l
 x_0 = np.array([r_0, 0, z_0])
 
 z_0 = x_0[2]
@@ -152,10 +153,10 @@ print('num_steps = ', num_steps)
 print('t_max = ', num_steps * dt, 's')
 
 # RF definitions
-# E_RF = 0
+E_RF = 0
 # E_RF = 1  # kV/m
-E_RF = 2  # kV/m
-# E_RF = 3  # kV/m
+# E_RF = 2  # kV/m
+E_RF = 3  # kV/m
 # E_RF = 5  # kV/m
 # E_RF = 10  # kV/m
 # E_RF = 15  # kV/m
@@ -206,7 +207,10 @@ elif RF_type == 'traveling':
     # alpha_detune = 1.1
     # alpha_detune = 1.5
     # alpha_detune = 2.0
+    # alpha_detune = 1.234
+    # alpha_detune = 1.111
     alpha_detune = 2.718
+    # alpha_detune = 3.141
     omega = alpha_detune * omega_cyclotron  # resonance
 
     # v_RF = alpha_detune / (alpha_detune - 1) * np.abs(v_z)
@@ -227,8 +231,8 @@ def B_function(x, t):
     # use_transverse_fields = False
 
     # B_mirror = magnetic_field_constant(B0)
-    B_mirror = np.array([0, 0, B0])
-    # B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
+    # B_mirror = np.array([0, 0, B0])
+    B_mirror = magnetic_field_logan(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
     # B_mirror = magnetic_field_jaeger(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
     # B_mirror = magnetic_field_post(x, B0, Rm, l, use_transverse_fields=use_transverse_fields)
 

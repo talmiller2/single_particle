@@ -2,9 +2,9 @@ import os
 
 from slurmpy.slurmpy import Slurm
 
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
+from em_fields.slurm_functions import get_script_evolution_slave_fenchel2
 
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
+evolution_slave_fenchel_script = get_script_evolution_slave_fenchel2()
 
 import matplotlib.pyplot as plt
 
@@ -13,15 +13,14 @@ from em_fields.em_functions import get_thermal_velocity, get_cyclotron_angular_f
 
 import numpy as np
 from scipy.io import savemat
+from scipy.stats import maxwell
 
 slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
-# main_folder += '/set1/'
-# main_folder += '/set2/'
-main_folder += '/set3/'
+main_folder += '/set4/'
 
 plt.close('all')
 
@@ -46,8 +45,8 @@ r_0 = 0.0 * l
 # r_0 = 0.1 * l
 # r_0 = 0.2 * l
 # r_0 = 0.3 * l
-z_0 = 0.0 * l
-# z_0 = 0.5 * l
+# z_0 = 0.0 * l
+z_0 = 0.5 * l
 B0 = 0.1  # Tesla
 # B0 = 1.0  # Tesla
 omega_cyclotron = get_cyclotron_angular_frequency(q, B0, m)
@@ -57,8 +56,8 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
-# E_RF_kVm = 0  # kV/m
-E_RF_kVm = 1  # kV/m
+E_RF_kVm = 0  # kV/m
+# E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 2  # kV/m
 # E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
@@ -115,37 +114,30 @@ settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
 os.chdir(settings['save_dir'])
 
-# for testings
-# v_abs_list = np.linspace(0.5, 1.5, 2)
-# angle_to_z_axis_list = [i for i in range(0, 181, 50)]
-# phase_RF_list = np.array([0]) * np.pi
+total_number_of_combinations = 1000
 
-# v_abs_list = np.linspace(0.5, 1.5, 21)
-# angle_to_z_axis_list = [i for i in range(0, 181, 5)]
-# phase_RF_list = np.array([0, 0.25, 0.5]) * np.pi
+# sampling velocity from Maxwell-Boltzmann
+m = settings['mi']
+T_keV = 3.0
+# T_keV = 10.0
+T_eV = T_keV * 1e3
+kB_eV = settings['kB_eV']
+scale = np.sqrt(kB_eV * T_eV / m)
+v_abs_samples = maxwell.rvs(size=total_number_of_combinations, scale=scale)
 
-v_abs_list = np.linspace(0.7, 1.3, 21)
-angle_to_z_axis_list = [i for i in range(0, 91, 5)]
-phase_RF_list = np.array([0]) * np.pi
+# sampling a random direction
+rand_unit_vec = np.random.randn(total_number_of_combinations, 3)
+for i in range(total_number_of_combinations):
+    rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
 
-total_number_of_combinations = 1
-total_number_of_combinations *= len(v_abs_list)
-total_number_of_combinations *= len(angle_to_z_axis_list)
-total_number_of_combinations *= len(phase_RF_list)
+# total velocity vector
+v_0 = rand_unit_vec
+for i in range(total_number_of_combinations):
+    v_0[i, :] *= v_abs_samples[i]
 
 # create and save the points file to be run later
 mat_dict = {}
-mat_dict['v_abs'] = np.zeros(total_number_of_combinations)
-mat_dict['angle_to_z_axis'] = np.zeros(total_number_of_combinations)
-mat_dict['phase_RF'] = np.zeros(total_number_of_combinations)
-cnt = 0
-for v_abs in v_abs_list:
-    for angle_to_z_axis in angle_to_z_axis_list:
-        for phase_RF in phase_RF_list:
-            mat_dict['v_abs'][cnt] = v_abs
-            mat_dict['angle_to_z_axis'][cnt] = angle_to_z_axis
-            mat_dict['phase_RF'][cnt] = phase_RF
-            cnt += 1
+mat_dict['v_0'] = v_0
 
 settings['points_file'] = settings['save_dir'] + '/points.mat'
 savemat(settings['points_file'], mat_dict)
@@ -156,10 +148,6 @@ num_cpus = 100
 # num_cpus = 125
 num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
 num_extra_points = np.mod(total_number_of_combinations, num_cpus)
-
-# num_cpus = 10
-# num_points_per_cpu = 0
-# num_extra_points = 3
 
 points_set_list = []
 index_first = 0
