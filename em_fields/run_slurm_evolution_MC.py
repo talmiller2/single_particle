@@ -1,4 +1,5 @@
 import os
+import pickle
 
 from slurmpy.slurmpy import Slurm
 
@@ -27,8 +28,13 @@ plt.close('all')
 settings = {}
 
 settings = define_default_settings()
-field_dict = define_default_field(settings)
 
+field_dict = {}
+field_dict['E_RF_kVm'] = 0  # kV/m
+# field_dict['E_RF_kVm'] = 2  # kV/m
+# field_dict['E_RF_kVm'] = 4  # kV/m
+
+field_dict = define_default_field(settings, field_dict=field_dict)
 
 # simulation duration
 sim_cyclotron_periods = int(20 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
@@ -48,12 +54,14 @@ settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
 os.chdir(settings['save_dir'])
 
-settings_file = settings['save_dir'] + '/settings.mat'
-savemat(settings_file, settings)
-field_dict_file = settings['save_dir'] + '/field_dict.mat'
-savemat(field_dict_file, field_dict)
+settings_file = settings['save_dir'] + '/settings.pickle'
+with open(settings_file, 'wb') as handle:
+    pickle.dump(settings, handle, protocol=pickle.HIGHEST_PROTOCOL)
+field_dict_file = settings['save_dir'] + '/field_dict.pickle'
+with open(field_dict_file, 'wb') as handle:
+    pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-total_number_of_combinations = 200
+total_number_of_combinations = 2000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])

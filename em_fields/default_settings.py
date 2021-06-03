@@ -51,7 +51,7 @@ def define_default_field(settings, field_dict=None):
     field_dict['mirror_field_type'] = 'logan'
     # field_dict['mirror_field_type'] = 'const'
     if 'Rm' not in field_dict:
-        field_dict['Rm'] = 3.0  # mirror ratio
+        field_dict['Rm'] = 2.0  # mirror ratio
     if 'B0' not in field_dict:
         field_dict['B0'] = 0.1  # Tesla
     field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])

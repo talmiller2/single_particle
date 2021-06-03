@@ -12,10 +12,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 save_dir += '/set4/'
 
-# set_name = 'tmax_200_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
-set_name = 'tmax_2003_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718_v2'
-# set_name = 'tmax_200_B0_0.1_T_3.0_traveling_ERF_2_alpha_2.718'
-# set_name = 'tmax_200_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718'
+set_name = 'tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718'
 
 save_dir += set_name
 # plt.close('all')
@@ -34,12 +31,19 @@ settings = data_dict['settings']
 field_dict = data_dict['field_dict']
 
 # draw trajectories for several particles
+num_particles = len(data_dict['z'])
 # ind_points = [0, 1, 2, 4, 5]
-ind_points = [0]
+# ind_points = [0]
 # ind_points = [4]
 # ind_points = range(5)
+# ind_points = range(10)
 # ind_points = range(20, 30)
 # ind_points = range(30, 40)
+ind_points = range(num_particles)
+
+cnt_rlc = 0
+cnt_llc = 0
+cnt_t = 0
 
 # fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(8, 3))
 fig = plt.figure(1, figsize=(16, 6))
@@ -57,36 +61,51 @@ for ind_point in ind_points:
     v_axial = data_dict['v_axial'][ind_point, :]
 
     # calculate if a particle is initially in right loss cone
-    # in_loss_cone = (E_transverse[0] / E[0] - 1 / Rm) > 0
-    # positive_z_velocity = mat_dict['v_0'][ind_point, 2] > 0
-    in_loss_cone = (v_transverse[0] / v[0] - field_dict['Rm'] ** (-0.5)) > 0
+    in_loss_cone = (v_transverse[0] / v[0] - field_dict['Rm'] ** (-0.5)) < 0
     positive_z_velocity = data_dict['v_0'][ind_point, 2] > 0
 
     if in_loss_cone and positive_z_velocity:
+        cnt_rlc += 1
         linestyle = '-'
         linewidth = 2
+        do_plot = True
+        # do_plot = False
     elif in_loss_cone and not positive_z_velocity:
+        cnt_llc += 1
         linestyle = ':'
         linewidth = 2
+        # do_plot = True
+        do_plot = False
     else:
+        cnt_t += 1
         linestyle = '--'
         linewidth = 1
+        # do_plot = True
+        do_plot = False
 
     # plots
-    ax1.plot(z / settings['l'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
-    ax1.set_xlabel('t')
-    ax1.set_ylabel('$z/l$')
-    ax1.legend()
+    if do_plot:
+        ax1.plot(z / settings['l'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
+        ax1.set_xlabel('t')
+        ax1.set_ylabel('$z/l$')
+        ax1.legend()
 
-    # ax2.plot(E / E_avg, label=ind_point, linestyle=linestyle, linewidth=linewidth)
-    # ax2.set_xlabel('t')
-    # ax2.set_ylabel('$E/E_{avg}$')
-    # ax2.legend()
-    #
-    # ax3.plot(E_transverse / E_avg, label=ind_point, linestyle=linestyle, linewidth=linewidth)
-    # ax3.set_xlabel('t')
-    # ax3.set_ylabel('$E_{transverse}/E_{avg}$')
-    # ax3.legend()
+        ax2.plot(v / settings['v_th'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
+        ax2.set_xlabel('t')
+        ax2.set_ylabel('$v/v_{th}$')
+        # ax2.legend()
+
+        ax3.plot(v_transverse / settings['v_th'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
+        ax3.set_xlabel('t')
+        ax3.set_ylabel('$v_{transverse}/v_{th}$')
+        # ax3.legend()
 
 fig.tight_layout()
 # fig.legend()
+
+right_loss_cone_fraction = cnt_rlc / num_particles
+print('right_loss_cone_fraction = ' + str(right_loss_cone_fraction))
+left_loss_cone_fraction = cnt_rlc / num_particles
+print('right_loss_cone_fraction = ' + str(right_loss_cone_fraction))
+trapped_fraction = cnt_t / num_particles
+print('trapped_fraction = ' + str(trapped_fraction))

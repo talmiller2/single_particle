@@ -57,8 +57,6 @@ for ind_point in settings['points_set']:
     num_snapshots = 30
     t_array = []
     z_array = []
-    # E_array = []
-    # E_transverse_array = []
     v_array = []
     v_transverse_array = []
     v_axial_array = []
@@ -82,26 +80,14 @@ for ind_point in settings['points_set']:
         v_axial = hist['v'][i, 2]
         v_axial_array += [v_axial]
 
-        # # energy (total)
-        # v_abs = np.linalg.norm(hist['v'][i])
-        # E = 0.5 * settings['mi'] * v_abs ** 2.0
-        # E_array += [E]
-        #
-        # # energy (transverse)
-        # v_transverse_abs = np.linalg.norm(hist['v'][i, 0:2])
-        # E_transverse = 0.5 * settings['mi'] * v_transverse_abs ** 2.0
-        # E_transverse_array += [E_transverse]
 
     # save results of point to file
-    # save_array = np.array([z_array, E_array, E_transverse_array])
     save_array = np.array([z_array, v_array, v_transverse_array, v_axial_array])
     save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
     np.savetxt(save_file_path, save_array)
 
     # perform compilation of results at the process level as well to make it faster after
     set_mat_dict['z'] += [z_array]
-    # set_mat_dict['E'] += [E_array]
-    # set_mat_dict['E_transverse'] += [E_transverse_array]
     set_mat_dict['v'] += [v_array]
     set_mat_dict['v_transverse'] += [v_transverse_array]
     set_mat_dict['v_axial'] += [v_axial_array]
