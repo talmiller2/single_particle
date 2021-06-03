@@ -24,7 +24,7 @@ for curr_dir in run_dirs:
         print(curr_dir + 'in compilation progess.')
 
         # extract the total number of sets in this folder
-        num_set_files = len(glob.glob(curr_dir + '/set*'))
+        num_set_files = len(glob.glob(curr_dir + '/set_*'))
         set_files = [curr_dir + '/set_' + str(ind_set) for ind_set in range(num_set_files)]
 
         # define the mat_dict where all data will be compiled
