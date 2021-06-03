@@ -47,11 +47,19 @@ def define_default_field(settings, field_dict=None):
     if field_dict == None:
         field_dict = {}
 
+    # single mirror properties
+    field_dict['mirror_field_type'] = 'logan'
+    # field_dict['mirror_field_type'] = 'const'
+    if 'Rm' not in field_dict:
+        field_dict['Rm'] = 3.0  # mirror ratio
     if 'B0' not in field_dict:
         field_dict['B0'] = 0.1  # Tesla
     field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
     field_dict['tau_cyclotron'] = 2 * np.pi / field_dict['omega_cyclotron']
+    field_dict['l'] = settings['l']
+    field_dict['z_0'] = settings['z_0']
 
+    # RF properties
     if 'E_RF_kVm' not in field_dict:
         field_dict['E_RF_kVm'] = 0  # kV/m
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m
@@ -79,12 +87,7 @@ def define_default_field(settings, field_dict=None):
             v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th']]
             k_RF += [omega_RF[-1] / v_RF[-1]]
 
-    field_dict['l'] = settings['l']
-    field_dict['l'] = settings['l']
-    field_dict['z_0'] = settings['z_0']
     field_dict['c'] = settings['c']
-    field_dict['mirror_field_type'] = 'logan'
-    # field_dict['mirror_field_type'] = 'const'
     field_dict['phase_RF'] = 0
     field_dict['omega_RF'] = omega_RF
     field_dict['k_RF'] = k_RF
