@@ -13,7 +13,7 @@ def E_RF_function(x, t, **field_dict):
     z_0 = field_dict['z_0']
     phase_RF = field_dict['phase_RF']
     E_RF_vector = 0
-    for k, omega in zip(field_dict['k'], field_dict['omega']):
+    for k, omega in zip(field_dict['k_RF'], field_dict['omega_RF']):
         E_RF_vector += E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
                                         np.cos(k * (z - z_0) - omega * t + phase_RF),
                                         0])
@@ -40,7 +40,7 @@ def B_RF_function(x, t, **field_dict):
     phase_RF = field_dict['phase_RF']
     c = field_dict['c']
     B_RF_vector = 0
-    for k, omega in zip(field_dict['k'], field_dict['omega']):
+    for k, omega in zip(field_dict['k_RF'], field_dict['omega_RF']):
         B_RF_vector += E_RF / c * np.array([-np.sign(k) * np.cos(k * (z - z_0) - omega * t + phase_RF),
                                             np.sign(k) * anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
                                             0])
