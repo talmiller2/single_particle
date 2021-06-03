@@ -30,12 +30,11 @@ settings = define_default_settings()
 field_dict = define_default_field(settings)
 
 # simulation duration
-# cyclotron_periods = 1000
-cyclotron_periods = int(100 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
-settings['cyclotron_periods'] = cyclotron_periods
+sim_cyclotron_periods = int(100 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
+settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
 save_dir = ''
-save_dir += 'tmax_' + str(settings['cyclotron_periods'])
+save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
 save_dir += '_B0_' + str(field_dict['B0'])
 save_dir += '_T_' + str(settings['T_keV'])
 save_dir += '_' + str(field_dict['RF_type'])

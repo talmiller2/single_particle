@@ -42,7 +42,7 @@ for ind_point in settings['points_set']:
     x_0 = np.array([settings['r_0'], 0, settings['z_0']])
     v_0 = mat_dict['v_0'][ind_point]
 
-    t_max = field_dict['cyclotron_periods'] * field_dict['tau_cyclotron']
+    t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
     dt = field_dict['tau_cyclotron'] / 20
     num_steps = int(t_max / dt)
 
