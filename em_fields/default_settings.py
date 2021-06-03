@@ -64,8 +64,8 @@ def define_default_field(settings, field_dict=None):
     # field_dict['RF_type'] = 'uniform'
     field_dict['RF_type'] = 'traveling'
     if field_dict['RF_type'] == 'uniform':
-        omega = field_dict['omega_cyclotron']  # resonance
-        k = omega / settings['c']
+        omega_RF = field_dict['omega_cyclotron']  # resonance
+        k_RF = omega_RF / settings['c']
     elif field_dict['RF_type'] == 'traveling':
         # field_dict['alpha_detune_list'] = [2]
         field_dict['alpha_detune_list'] = [2.718]
@@ -80,11 +80,14 @@ def define_default_field(settings, field_dict=None):
             k_RF += [omega_RF[-1] / v_RF[-1]]
 
     field_dict['l'] = settings['l']
+    field_dict['l'] = settings['l']
     field_dict['z_0'] = settings['z_0']
     field_dict['c'] = settings['c']
     field_dict['mirror_field_type'] = 'logan'
     # field_dict['mirror_field_type'] = 'const'
     field_dict['phase_RF'] = 0
+    field_dict['omega_RF'] = omega_RF
+    field_dict['k_RF'] = k_RF
 
     return field_dict
 
