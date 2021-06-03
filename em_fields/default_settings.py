@@ -49,8 +49,8 @@ def define_default_field(settings, field_dict=None):
 
     if 'B0' not in field_dict:
         field_dict['B0'] = 0.1  # Tesla
-    field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], settings['B0'], settings['mi'])
-    field_dict['tau_cyclotron'] = 2 * np.pi / settings['omega_cyclotron']
+    field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
+    field_dict['tau_cyclotron'] = 2 * np.pi / field_dict['omega_cyclotron']
 
     if 'E_RF_kVm' not in field_dict:
         field_dict['E_RF_kVm'] = 0  # kV/m
@@ -59,23 +59,23 @@ def define_default_field(settings, field_dict=None):
     if field_dict['B0'] == 0:  # pick a default
         field_dict['anticlockwise'] = 1
     else:
-        field_dict['anticlockwise'] = np.sign(settings['B0'])
+        field_dict['anticlockwise'] = np.sign(field_dict['B0'])
 
-    # RF_type = 'uniform'
-    RF_type = 'traveling'
-    if RF_type == 'uniform':
+    # field_dict['RF_type'] = 'uniform'
+    field_dict['RF_type'] = 'traveling'
+    if field_dict['RF_type'] == 'uniform':
         omega = field_dict['omega_cyclotron']  # resonance
         k = omega / settings['c']
-    elif RF_type == 'traveling':
-        # settings['alpha_detune_list'] = [2]
-        settings['alpha_detune_list'] = [2.718]
-        # settings['alpha_detune_list'] = [2, 2.718]
-        # settings['alpha_detune_list'] = [2.718, 3.141]
+    elif field_dict['RF_type'] == 'traveling':
+        # field_dict['alpha_detune_list'] = [2]
+        field_dict['alpha_detune_list'] = [2.718]
+        # field_dict['alpha_detune_list'] = [2, 2.718]
+        # field_dict['alpha_detune_list'] = [2.718, 3.141]
         omega_RF = []
         v_RF = []
         k_RF = []
-        for alpha_detune in settings['alpha_detune_list']:
-            omega_RF += [alpha_detune * settings['omega_cyclotron']]  # resonance
+        for alpha_detune in field_dict['alpha_detune_list']:
+            omega_RF += [alpha_detune * field_dict['omega_cyclotron']]  # resonance
             v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th']]
             k_RF += [omega_RF[-1] / v_RF[-1]]
 
@@ -86,7 +86,7 @@ def define_default_field(settings, field_dict=None):
     # field_dict['mirror_field_type'] = 'const'
     field_dict['phase_RF'] = 0
 
-    return settings
+    return field_dict
 
 
 def define_plasma_parameters(gas_name='hydrogen', ionization_level=1):
