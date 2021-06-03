@@ -21,8 +21,9 @@ settings = ast.literal_eval(args.settings)
 print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
 
-# load the points to run
-mat_dict = loadmat(settings['run_info_file'])
+# load data for runs
+runs_dict_file = settings['save_dir'] + '/runs_dict.mat'
+runs_dict = loadmat(runs_dict_file)
 
 # define the mat_dict where all data will be compiled
 compiled_set_file = settings['save_dir'] + '/set_' + str(settings['ind_set']) + '.mat'
@@ -43,7 +44,7 @@ for ind_point in settings['points_set']:
 
     # initial location and velocity of particle
     x_0 = np.array([settings['r_0'], 0, settings['z_0']])
-    v_0 = mat_dict['v_0'][ind_point]
+    v_0 = runs_dict['v_0'][ind_point]
 
     t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
     dt = field_dict['tau_cyclotron'] / 20
