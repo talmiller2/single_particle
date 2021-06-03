@@ -32,7 +32,7 @@ for curr_dir in run_dirs:
         # loop over all saved runs and collect their data
         for ind_point in range(total_number_of_combinations):
             run_name = 'ind_' + str(ind_point)
-            if np.mod(ind_point, int(total_number_of_combinations / 100.0)):
+            if np.mod(ind_point, int(total_number_of_combinations / 10.0)) == 0:
                 print('loading point #' + str(ind_point) + ' / ' + str(total_number_of_combinations))
             try:
                 data = np.loadtxt(curr_dir_full + '/' + run_name + '.txt')
