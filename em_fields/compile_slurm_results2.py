@@ -14,8 +14,10 @@ for curr_dir in run_dirs:
     curr_dir_full = save_dir + '/' + curr_dir
 
     compiled_mat_file = curr_dir_full + '.mat'
-    if not os.path.exists(compiled_mat_file):
-        print(curr_dir)
+    if os.path.exists(compiled_mat_file):
+        print(curr_dir + ' already compiled, skipping.')
+    else:
+        print(curr_dir + 'in compilation progess.')
 
         # extract the total number of points in this folder
         points_file = curr_dir_full + '/points.mat'
@@ -30,6 +32,8 @@ for curr_dir in run_dirs:
         # loop over all saved runs and collect their data
         for ind_point in range(total_number_of_combinations):
             run_name = 'ind_' + str(ind_point)
+            if np.mod(ind_point, int(total_number_of_combinations / 100.0)):
+                print('loading point #' + str(ind_point) + ' / ' + str(total_number_of_combinations))
             try:
                 data = np.loadtxt(curr_dir_full + '/' + run_name + '.txt')
                 mat_dict['z'] += [data[0, :]]

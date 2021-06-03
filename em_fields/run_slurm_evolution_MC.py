@@ -56,10 +56,10 @@ settings['z_0'] = z_0
 settings['tau_cyclotron'] = tau_cyclotron
 
 # RF definitions
-E_RF_kVm = 0  # kV/m
+# E_RF_kVm = 0  # kV/m
 # E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 2  # kV/m
-# E_RF_kVm = 4  # kV/m
+E_RF_kVm = 4  # kV/m
 E_RF = E_RF_kVm * 1e3  # the SI units is V/m
 
 if B0 == 0:  # pick a default
@@ -114,7 +114,7 @@ settings['save_dir'] = main_folder + '/' + save_dir
 os.makedirs(settings['save_dir'], exist_ok=True)
 os.chdir(settings['save_dir'])
 
-total_number_of_combinations = 1000
+total_number_of_combinations = 10000
 
 # sampling velocity from Maxwell-Boltzmann
 m = settings['mi']
@@ -143,9 +143,7 @@ settings['points_file'] = settings['save_dir'] + '/points.mat'
 savemat(settings['points_file'], mat_dict)
 
 # divide the points to a given number of cpus (250 is max in partition core)
-# num_cpus = 50
 num_cpus = 100
-# num_cpus = 125
 num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
 num_extra_points = np.mod(total_number_of_combinations, num_cpus)
 
@@ -162,10 +160,10 @@ for i in range(num_sets):
 # run the slave_fenchel scripts on multiple cpus
 cnt = 0
 for ind_set, points_set in enumerate(points_set_list):
-    # run_name = 'set_' + str(ind_set)
-    run_name = save_dir + '_set_' + str(ind_set)
+    run_name = 'set_' + str(ind_set) + '_' + save_dir
     print('run_name = ' + run_name)
 
+    settings['ind_set'] = ind_set
     settings['points_set'] = points_set
 
     field_dict = {}

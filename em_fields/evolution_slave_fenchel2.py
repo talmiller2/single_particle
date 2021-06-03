@@ -4,7 +4,7 @@ import argparse
 import ast
 
 import numpy as np
-from scipy.io import loadmat
+from scipy.io import savemat, loadmat
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
 from em_fields.em_functions import evolve_particle_in_em_fields
@@ -23,6 +23,13 @@ field_dict = ast.literal_eval(args.field_dict)
 
 # load the points to run
 mat_dict = loadmat(settings['points_file'])
+
+# define the mat_dict where all data will be compiled
+compiled_set_file = settings['save_dir'] + '/set_' + str(settings['ind_set']) + '.mat'
+set_mat_dict = {}
+set_mat_dict['z'] = []
+set_mat_dict['E'] = []
+set_mat_dict['E_transverse'] = []
 
 # loop over points for current process
 for ind_point in settings['points_set']:
@@ -62,7 +69,14 @@ for ind_point in settings['points_set']:
         E_transverse = 0.5 * settings['mi'] * v_transverse_abs ** 2.0
         E_transverse_array += [E_transverse]
 
-    # save results to file
+    # save results of point to file
     save_array = np.array([z_array, E_array, E_transverse_array])
     save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
     np.savetxt(save_file_path, save_array)
+
+    # perform compilation of results at the process level as well to make it faster after
+    set_mat_dict['z'] += [z_array]
+    set_mat_dict['E'] += [E_array]
+    set_mat_dict['E_transverse'] += [E_transverse_array]
+
+savemat(compiled_set_file, set_mat_dict)
