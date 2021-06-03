@@ -28,8 +28,11 @@ mat_dict = loadmat(settings['run_info_file'])
 compiled_set_file = settings['save_dir'] + '/set_' + str(settings['ind_set']) + '.mat'
 set_mat_dict = {}
 set_mat_dict['z'] = []
-set_mat_dict['E'] = []
-set_mat_dict['E_transverse'] = []
+# set_mat_dict['E'] = []
+# set_mat_dict['E_transverse'] = []
+set_mat_dict['v'] = []
+set_mat_dict['v_transverse'] = []
+set_mat_dict['v_axial'] = []
 
 # loop over points for current process
 for ind_point in settings['points_set']:
@@ -53,7 +56,7 @@ for ind_point in settings['points_set']:
     num_snapshots = 30
     t_array = []
     z_array = []
-    E_array = []
+    # E_array = []
     # E_transverse_array = []
     v_array = []
     v_transverse_array = []
