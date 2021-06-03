@@ -24,8 +24,8 @@ for curr_dir in run_dirs:
         set_files = glob.glob(curr_dir + '/set*')
 
         # define the mat_dict where all data will be compiled
-        points_file = curr_dir_full + '/points.mat'
-        mat_dict = loadmat(points_file)
+        run_info_file = curr_dir_full + '/run_info.mat'
+        mat_dict = loadmat(run_info_file)
 
         # loop over all saved sets and combine their data
         for ind_set, set_file in enumerate(set_files):
