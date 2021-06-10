@@ -13,17 +13,36 @@ plt.rcParams.update({'font.size': 12})
 set_names = []
 set_labels = []
 
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718']
-set_labels += ['MB $E_{RF}=0$']
-
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718']
-set_labels += ['MB $E_{RF}=4kV/m$']
-
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718']
+# set_labels += ['MB $E_{RF}=0$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718']
+# set_labels += ['MB $E_{RF}=4kV/m$']
 # set_names += ['tmax_400_B0_0.1_T_3.0_nonMB__traveling_ERF_0_alpha_2.718']
 # set_labels += ['nonMB $E_{RF}=0$']
-#
 # set_names += ['tmax_400_B0_0.1_T_3.0_nonMB__traveling_ERF_4_alpha_2.718']
 # set_labels += ['nonMB $E_{RF}=4kV/m$']
+
+
+set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_1.359_vz_1']
+set_labels += ['MB no RF']
+
+set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_vz_1']
+set_labels += ['MB $4kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_1.359_1.359_vz_1_1_1']
+# set_labels += ['MB $12kV/m, \\alpha=1.359$']
+
+set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
+set_labels += ['MB $4kV/m, \\alpha=1.359$, v=0.7,1,1.3']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_vz_1']
+# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_2.718_2.718_vz_1_1_1']
+# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_2.718_2.718_vz_1_1.3_0.7']
+# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
 
 
 for set_ind in range(len(set_names)):
@@ -32,7 +51,8 @@ for set_ind in range(len(set_names)):
 
     save_dir = '/Users/talmiller/Downloads/single_particle/'
 
-    save_dir += '/set4/'
+    # save_dir += '/set4/'
+    save_dir += '/set5/'
 
     save_dir += set_name
     # plt.close('all')
@@ -227,7 +247,8 @@ for set_ind in range(len(set_names)):
         z_vec = np.append(z_vec, data_dict['z'][inds_curr, k] / settings['l'])
     plt.figure(5, figsize=(10, 5))
     plt.subplot(1, len(set_names), set_ind + 1)
-    bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 20)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
+    bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
     # bins = 50
     plt.hist2d(t_vec, z_vec, bins=bins)
     if set_ind == 0:

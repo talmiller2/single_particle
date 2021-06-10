@@ -31,8 +31,8 @@ settings = define_default_settings()
 
 field_dict = {}
 field_dict['E_RF_kVm'] = 0  # kV/m
-# field_dict['E_RF_kVm'] = 2  # kV/m
-# field_dict['E_RF_kVm'] = 4  # kV/m
+# field_dict['E_RF_kVm'] = 1  # kV/m
+# field_dict['E_RF_kVm'] = 3  # kV/m
 field_dict['v_z_factor_list'] = [1]
 # field_dict['v_z_factor_list'] = [1, 1.3, 0.7]
 # field_dict['alpha_detune_list'] = [2.718 for i in range(len(field_dict['v_z_factor_list']))]
@@ -67,7 +67,7 @@ field_dict_file = settings['save_dir'] + '/field_dict.pickle'
 with open(field_dict_file, 'wb') as handle:
     pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-total_number_of_combinations = 1000
+total_number_of_combinations = 10000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])

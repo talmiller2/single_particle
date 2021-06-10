@@ -6,7 +6,7 @@ import numpy as np
 from scipy.io import loadmat
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
-save_dir += '/set4/'
+save_dir += '/set5/'
 
 os.chdir(save_dir)
 
