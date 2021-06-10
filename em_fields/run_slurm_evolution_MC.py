@@ -1,6 +1,7 @@
 import os
 import pickle
 
+from scipy.stats import maxwell
 from slurmpy.slurmpy import Slurm
 
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel2
@@ -29,9 +30,13 @@ settings = {}
 settings = define_default_settings()
 
 field_dict = {}
-# field_dict['E_RF_kVm'] = 0  # kV/m
+field_dict['E_RF_kVm'] = 0  # kV/m
 # field_dict['E_RF_kVm'] = 2  # kV/m
-field_dict['E_RF_kVm'] = 4  # kV/m
+# field_dict['E_RF_kVm'] = 4  # kV/m
+field_dict['v_z_factor_list'] = [1]
+# field_dict['v_z_factor_list'] = [1, 1.3, 0.7]
+# field_dict['alpha_detune_list'] = [2.718 for i in range(len(field_dict['v_z_factor_list']))]
+field_dict['alpha_detune_list'] = [1.359 for i in range(len(field_dict['v_z_factor_list']))]
 
 field_dict = define_default_field(settings, field_dict=field_dict)
 
@@ -43,10 +48,11 @@ save_dir = ''
 save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
 save_dir += '_B0_' + str(field_dict['B0'])
 save_dir += '_T_' + str(settings['T_keV'])
-save_dir += '_nonMB_'
+# save_dir += '_nonMB'
 save_dir += '_' + str(field_dict['RF_type'])
 save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
 save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
+save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
 
 print('save_dir: ' + str(save_dir))
 
@@ -61,12 +67,12 @@ field_dict_file = settings['save_dir'] + '/field_dict.pickle'
 with open(field_dict_file, 'wb') as handle:
     pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-total_number_of_combinations = 2000
+total_number_of_combinations = 10000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
-# v_abs_samples = maxwell.rvs(size=total_number_of_combinations, scale=scale)
-v_abs_samples = settings['v_th'] * np.ones(total_number_of_combinations)  # testing constant velocity
+v_abs_samples = maxwell.rvs(size=total_number_of_combinations, scale=scale)
+# v_abs_samples = settings['v_th'] * np.ones(total_number_of_combinations)  # testing constant velocity
 
 # sampling a random direction
 rand_unit_vec = np.random.randn(total_number_of_combinations, 3)
@@ -84,7 +90,7 @@ runs_dict_file = settings['save_dir'] + '/runs_dict.mat'
 savemat(runs_dict_file, runs_dict)
 
 # divide the points to a given number of cpus (250 is max in partition core)
-num_cpus = 100
+num_cpus = 50
 num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
 num_extra_points = np.mod(total_number_of_combinations, num_cpus)
 

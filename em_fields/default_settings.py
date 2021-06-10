@@ -75,18 +75,19 @@ def define_default_field(settings, field_dict=None):
         omega_RF = field_dict['omega_cyclotron']  # resonance
         k_RF = omega_RF / settings['c']
     elif field_dict['RF_type'] == 'traveling':
-        # field_dict['alpha_detune_list'] = [2]
-        field_dict['alpha_detune_list'] = [2.718]
-        # field_dict['alpha_detune_list'] = [2, 2.718]
-        # field_dict['alpha_detune_list'] = [2.718, 3.141]
+        if 'alpha_detune_list' not in field_dict:
+            field_dict['alpha_detune_list'] = [2.718]
+            # field_dict['alpha_detune_list'] = [2.718, 3.141]
+        if 'v_z_factor_list' not in field_dict:
+            field_dict['v_z_factor_list'] = [1]
+            # field_dict['v_z_factor_list'] = [1, 1]
         omega_RF = []
         v_RF = []
         k_RF = []
-        for alpha_detune in field_dict['alpha_detune_list']:
+        for alpha_detune, v_z_factor in zip(field_dict['alpha_detune_list'], field_dict['v_z_factor_list']):
             omega_RF += [alpha_detune * field_dict['omega_cyclotron']]  # resonance
-            v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th']]
+            v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th'] * v_z_factor]
             k_RF += [omega_RF[-1] / v_RF[-1]]
-
     field_dict['c'] = settings['c']
     field_dict['phase_RF'] = 0
     field_dict['omega_RF'] = omega_RF
