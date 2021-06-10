@@ -47,7 +47,7 @@ for ind_point in settings['points_set']:
     v_0 = runs_dict['v_0'][ind_point]
 
     t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
-    dt = field_dict['tau_cyclotron'] / 20
+    dt = field_dict['tau_cyclotron'] / 10
     num_steps = int(t_max / dt)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
