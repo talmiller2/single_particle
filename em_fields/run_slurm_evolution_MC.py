@@ -20,7 +20,7 @@ slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'testing'}
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
-main_folder += '/set4/'
+main_folder += '/set5/'
 
 plt.close('all')
 
@@ -91,7 +91,7 @@ theta = np.arccos(2 * v - 1)  # latitude
 x = np.cos(phi) * np.sin(theta)
 y = np.sin(phi) * np.sin(theta)
 z = np.cos(theta)
-rand_unit_vec = np.array([x, y, z])
+rand_unit_vec = np.array([x, y, z]).T
 
 # total velocity vector
 v_0 = rand_unit_vec
