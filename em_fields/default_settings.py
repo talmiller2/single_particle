@@ -87,11 +87,13 @@ def define_default_field(settings, field_dict=None):
         phase_RF = []
         cnt = 1
         for alpha_detune, v_z_factor in zip(field_dict['alpha_detune_list'], field_dict['v_z_factor_list']):
-            omega_RF += [alpha_detune * field_dict['omega_cyclotron']]  # resonance
+            alpha_detune *= (1 + np.pi / 100)  # make any detuning parameter irrational to avoid higher order resonances
+            omega_RF += [alpha_detune * field_dict['omega_cyclotron']]
             v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th'] * v_z_factor]
             k_RF += [omega_RF[-1] / v_RF[-1]]
             # phase_RF += [0]
-            phase_RF += [np.pi * cnt ** (np.e - 1) / len(field_dict['alpha_detune_list'])]  # out of sync RF fields
+            phase_RF += [np.pi * cnt ** (np.e - 1) / len(
+                field_dict['alpha_detune_list'])]  # pull the different RF waves out of sync
             cnt += 1
 
     field_dict['c'] = settings['c']

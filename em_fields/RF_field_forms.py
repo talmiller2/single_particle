@@ -36,7 +36,6 @@ def B_RF_function(x, t, **field_dict):
     E_RF = field_dict['E_RF']
     anticlockwise = field_dict['anticlockwise']
     z_0 = field_dict['z_0']
-    phase_RF = field_dict['phase_RF']
     c = field_dict['c']
     B_RF_vector = 0
     for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):

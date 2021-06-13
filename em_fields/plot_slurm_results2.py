@@ -52,9 +52,19 @@ set_labels += ['no RF']
 
 set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2']
 set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_15_alpha_1.359_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2_phase_scramble']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
 #
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_15_alpha_1.359_vz_2']
-set_labels += ['$3kV/m, \\alpha=1.359$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2.0']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_1.359_1.359_vz_1_1.5_2_phase_scramble']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
 
 # set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.234_vz_2']
 # set_labels += ['$3kV/m, \\alpha=1.359$']
