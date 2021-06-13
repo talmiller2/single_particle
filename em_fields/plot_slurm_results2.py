@@ -24,25 +24,59 @@ set_labels = []
 
 
 set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_1.359_vz_1']
-set_labels += ['MB no RF']
+set_labels += ['no RF']
 
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_vz_1']
-set_labels += ['MB $4kV/m, \\alpha=1.359$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_1_alpha_1.359_vz_1']
+# set_labels += ['$1kV/m, \\alpha=1.359$']
 
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_1.359_1.359_vz_1_1_1']
-# set_labels += ['MB $12kV/m, \\alpha=1.359$']
-
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
-set_labels += ['MB $4kV/m, \\alpha=1.359$, v=0.7,1,1.3']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_vz_1']
-# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_vz_1']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
 #
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_2.718_2.718_vz_1_1_1']
-# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_1']
+# set_labels += ['$9kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2.5']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
 #
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718_2.718_2.718_vz_1_1.3_0.7']
-# set_labels += ['MB $E_{RF}=4kV/m, \\alpha=2.718$']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_3']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_6_alpha_1.359_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2']
+set_labels += ['$3kV/m, \\alpha=1.359$']
+#
+set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_15_alpha_1.359_vz_2']
+set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.234_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_2.718_vz_2']
+# set_labels += ['$3kV/m, \\alpha=1.359$']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_1_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
+# set_labels += ['$1kV/m, \\alpha=1.359$, v-spread']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
+# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2.0']
+# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_2.718_2.718_2.718_vz_1_1.3_0.7']
+# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
+#
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_2.718_2.718_2.718_vz_1_1.5_2.0']
+# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
 
 
 for set_ind in range(len(set_names)):
@@ -254,10 +288,11 @@ for set_ind in range(len(set_names)):
     if set_ind == 0:
         plt.ylabel('$z/l$')
     plt.xlabel('$t/\\tau_{cyc}$')
-    plt.title(set_label)
+    # plt.title(set_label)
+    plt.title(set_ind)
     plt.tight_layout()
 
-    # # plot 2d histogram of particles in different v, t
+    # plot 2d histogram of particles in different v, t
     # t_vec = []
     # v_vec = []
     # for k in range(len(t_array)):
@@ -280,3 +315,26 @@ for set_ind in range(len(set_names)):
     # plt.tight_layout()
 
     # TODO: Up to time T, how many particles were stopped (z direction flipped), and what is the average z it happend in?
+
+    # plot what particle % passed some z threshold, as a function of t
+
+    # z_cutoff_list = [5, 10, 20]
+    z_cutoff_list = [10]
+    for ind_z_cutoff, z_cutoff in enumerate(z_cutoff_list):
+        percent_escaped = np.zeros(len(cnt_rlc_array))
+        for k in range(len(t_array)):
+            # t_vec += t_array
+            # t_vec = np.append(t_vec, t_array / field_dict['tau_cyclotron'])
+            inds_curr = inds_rlc
+            # inds_curr = inds_trap
+            # inds_curr = inds_llc
+            percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] > z_cutoff)[0]) / len(
+                inds_curr)
+
+        plt.figure(7 + ind_z_cutoff)
+        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=set_ind)
+        plt.xlabel('$t/\\tau_{cyc}$')
+        plt.ylabel('% passed')
+        plt.title('$z_{cut}/l$=' + str(z_cutoff))
+        plt.grid(True)
+        plt.legend()

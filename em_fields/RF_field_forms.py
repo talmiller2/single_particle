@@ -11,9 +11,8 @@ def E_RF_function(x, t, **field_dict):
     E_RF = field_dict['E_RF']
     anticlockwise = field_dict['anticlockwise']
     z_0 = field_dict['z_0']
-    phase_RF = field_dict['phase_RF']
     E_RF_vector = 0
-    for k, omega in zip(field_dict['k_RF'], field_dict['omega_RF']):
+    for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
         E_RF_vector += E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
                                         np.cos(k * (z - z_0) - omega * t + phase_RF),
                                         0])
