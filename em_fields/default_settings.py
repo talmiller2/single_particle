@@ -64,6 +64,9 @@ def define_default_field(settings, field_dict=None):
         field_dict['E_RF_kVm'] = 0  # kV/m
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m
 
+    if 'nullify_RF_magnetic_field' not in field_dict:
+        field_dict['nullify_RF_magnetic_field'] = False
+
     if field_dict['B0'] == 0:  # pick a default
         field_dict['anticlockwise'] = 1
     else:

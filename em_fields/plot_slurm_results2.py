@@ -11,87 +11,20 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 12})
 
 set_names = []
-set_labels = []
+# set_labels = []
+# set_labels += ['no RF']
 
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718']
-# set_labels += ['MB $E_{RF}=0$']
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_4_alpha_2.718']
-# set_labels += ['MB $E_{RF}=4kV/m$']
-# set_names += ['tmax_400_B0_0.1_T_3.0_nonMB__traveling_ERF_0_alpha_2.718']
-# set_labels += ['nonMB $E_{RF}=0$']
-# set_names += ['tmax_400_B0_0.1_T_3.0_nonMB__traveling_ERF_4_alpha_2.718']
-# set_labels += ['nonMB $E_{RF}=4kV/m$']
-
-
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_1.359_vz_1']
-set_labels += ['no RF']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_1_alpha_1.359_vz_1']
-# set_labels += ['$1kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_vz_1']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_1']
-# set_labels += ['$9kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2.5']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_3']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_6_alpha_1.359_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_vz_2']
-set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_15_alpha_1.359_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2_phase_scramble']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2.0']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.359_1.359_1.359_vz_1_1.5_2_phase_scramble']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_1.234_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_9_alpha_2.718_vz_2']
-# set_labels += ['$3kV/m, \\alpha=1.359$']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_1_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
-# set_labels += ['$1kV/m, \\alpha=1.359$, v-spread']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.3_0.7']
-# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_1.359_1.359_1.359_vz_1_1.5_2.0']
-# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_2.718_2.718_2.718_vz_1_1.3_0.7']
-# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
-#
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_3_alpha_2.718_2.718_2.718_vz_1_1.5_2.0']
-# set_labels += ['$3kV/m, \\alpha=1.359$, v-spread']
+set_names += ['tmax_601_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_2']  # no RF
+set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
+set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_2']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_vz_1_2']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_1.1_vz_1_1.5_2']
 
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
-    set_label = set_labels[set_ind]
+    # set_label = set_labels[set_ind]
+    set_label = set_name.split('T_3.0_')[-1]
 
     save_dir = '/Users/talmiller/Downloads/single_particle/'
 
@@ -291,8 +224,8 @@ for set_ind in range(len(set_names)):
         z_vec = np.append(z_vec, data_dict['z'][inds_curr, k] / settings['l'])
     plt.figure(5, figsize=(10, 5))
     plt.subplot(1, len(set_names), set_ind + 1)
-    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
-    bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
+    bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
     # bins = 50
     plt.hist2d(t_vec, z_vec, bins=bins)
     if set_ind == 0:
@@ -327,7 +260,6 @@ for set_ind in range(len(set_names)):
     # TODO: Up to time T, how many particles were stopped (z direction flipped), and what is the average z it happend in?
 
     # plot what particle % passed some z threshold, as a function of t
-
     # z_cutoff_list = [5, 10, 20]
     z_cutoff_list = [10]
     for ind_z_cutoff, z_cutoff in enumerate(z_cutoff_list):
@@ -342,7 +274,9 @@ for set_ind in range(len(set_names)):
                 inds_curr)
 
         plt.figure(7 + ind_z_cutoff)
-        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=set_ind)
+        # label = set_ind
+        label = set_label
+        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label)
         plt.xlabel('$t/\\tau_{cyc}$')
         plt.ylabel('% passed')
         plt.title('$z_{cut}/l$=' + str(z_cutoff))

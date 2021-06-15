@@ -29,17 +29,21 @@ def B_RF_function(x, t, **field_dict):
     mirror_field_type = field_dict['mirror_field_type']
     B_mirror = get_mirror_magnetic_field(x, B0, Rm, l, mirror_field_type=mirror_field_type)
 
-    # B_RF = 1/c * k_hat cross E_RF
-    # https://en.wikipedia.org/wiki/Sinusoidal_plane-wave_solutions_of_the_electromagnetic_wave_equation
-    # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
-    z = x[2]
-    E_RF = field_dict['E_RF']
-    anticlockwise = field_dict['anticlockwise']
-    z_0 = field_dict['z_0']
-    c = field_dict['c']
-    B_RF_vector = 0
-    for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
-        B_RF_vector += E_RF / c * np.array([-np.sign(k) * np.cos(k * (z - z_0) - omega * t + phase_RF),
-                                            np.sign(k) * anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-                                            0])
+    if field_dict['nullify_RF_magnetic_field']:
+        B_RF_vector = 0
+    else:
+        # B_RF = 1/c * k_hat cross E_RF
+        # https://en.wikipedia.org/wiki/Sinusoidal_plane-wave_solutions_of_the_electromagnetic_wave_equation
+        # https://en.wikipedia.org/wiki/List_of_trigonometric_identities
+        z = x[2]
+        E_RF = field_dict['E_RF']
+        anticlockwise = field_dict['anticlockwise']
+        z_0 = field_dict['z_0']
+        c = field_dict['c']
+        B_RF_vector = 0
+        for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
+            B_RF_vector += E_RF / c * np.array([-np.sign(k) * np.cos(k * (z - z_0) - omega * t + phase_RF),
+                                                np.sign(k) * anticlockwise * np.sin(
+                                                    k * (z - z_0) - omega * t + phase_RF),
+                                                0])
     return B_mirror + B_RF_vector

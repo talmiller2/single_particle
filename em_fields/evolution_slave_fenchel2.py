@@ -54,7 +54,7 @@ for ind_point in settings['points_set']:
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
 
     # save snapshots of key simulation metrics
-    num_snapshots = 50
+    num_snapshots = 25
     t_array = []
     z_array = []
     v_array = []
