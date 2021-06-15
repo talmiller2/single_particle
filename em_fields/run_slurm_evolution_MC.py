@@ -31,16 +31,18 @@ settings = define_default_settings()
 
 field_dict = {}
 
-field_dict['E_RF_kVm'] = 0  # kV/m
+# field_dict['E_RF_kVm'] = 0  # kV/m
 # field_dict['E_RF_kVm'] = 1  # kV/m
+field_dict['E_RF_kVm'] = 3  # kV/m
 # field_dict['E_RF_kVm'] = 5  # kV/m
 # field_dict['E_RF_kVm'] = 10  # kV/m
 
-field_dict['v_z_factor_list'] = [1]
-# field_dict['v_z_factor_list'] = [2]
+# field_dict['v_z_factor_list'] = [1]
+field_dict['v_z_factor_list'] = [2]
 # field_dict['v_z_factor_list'] = [1, 2]
 # field_dict['v_z_factor_list'] = [1, 1.5, 2]
 
+# field_dict['alpha_detune_list'] = [1 for i in range(len(field_dict['v_z_factor_list']))]
 field_dict['alpha_detune_list'] = [1.1 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.3 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.7 for i in range(len(field_dict['v_z_factor_list']))]
@@ -60,10 +62,12 @@ save_dir += '_B0_' + str(field_dict['B0'])
 save_dir += '_T_' + str(settings['T_keV'])
 # save_dir += '_nonMB'
 # save_dir += '_' + str(field_dict['RF_type'])
-save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
-save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
-save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
-# save_dir += '_zeroBRF'
+if field_dict['E_RF_kVm'] > 0:
+    save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
+    save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
+    save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
+if field_dict['nullify_RF_magnetic_field']:
+    save_dir += '_zeroBRF'
 
 print('save_dir: ' + str(save_dir))
 

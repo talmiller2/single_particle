@@ -14,12 +14,29 @@ set_names = []
 # set_labels = []
 # set_labels += ['no RF']
 
-set_names += ['tmax_601_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_2']  # no RF
-set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
-set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_2']
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_vz_1_2']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_2']
 # set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_1.1_vz_1_1.5_2']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_vz_1_2']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
+# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_2']
 
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_1.1_vz_1_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_1.1_1.1_vz_1_1.5_2']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_2_vz_1']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1.1_vz_1']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.3_vz_1_zeroBRF']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.3_vz_1']
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
