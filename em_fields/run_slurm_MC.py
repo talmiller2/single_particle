@@ -149,5 +149,5 @@ for ind_set, points_set in enumerate(points_set_list):
               + ' --field_dict "' + str(field_dict) + '"'
     s = Slurm(run_name, slurm_kwargs=slurm_kwargs)
     s.run(command)
-    cnt += 1
     print('run set # ' + str(cnt) + ' / ' + str(num_sets))
+    cnt += 1
