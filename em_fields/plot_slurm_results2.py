@@ -10,9 +10,15 @@ import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 12})
 
+save_dir_main = '/Users/talmiller/Downloads/single_particle/'
+# save_dir_main += '/set4/'
+save_dir_main += '/set5/'
+
 set_names = []
-# set_labels = []
-# set_labels += ['no RF']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718']
+# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_2_alpha_2.718']
+
 
 # set_names += ['tmax_601_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_2']
 # set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_1.1_vz_1_1.5_2']
@@ -28,14 +34,19 @@ set_names = []
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_3_alpha_1.1_vz_1']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_3_alpha_1.1_vz_2']
 
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.5_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.7_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_1']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_2_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.5_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.7_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_1']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_2_vz_1']
+
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_2']
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2']
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_2']
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_2']
 
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_1']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
@@ -53,12 +64,7 @@ for set_ind in range(len(set_names)):
     # set_label = set_labels[set_ind]
     set_label = set_name.split('T_3.0_')[-1]
 
-    save_dir = '/Users/talmiller/Downloads/single_particle/'
-
-    # save_dir += '/set4/'
-    save_dir += '/set5/'
-
-    save_dir += set_name
+    save_dir = save_dir_main + set_name
     # plt.close('all')
 
     # load runs data
@@ -195,13 +201,13 @@ for set_ind in range(len(set_names)):
     # plt.legend()
 
     # TODO: average z plot of each population
-    z_avg_rlc = 0 * t_array
-    z_avg_llc = 0 * t_array
-    z_avg_trap = 0 * t_array
-    for ind_t in range(num_times):
-        z_avg_rlc[ind_t] = np.mean(data_dict['z'][inds_rlc, ind_t])
-        z_avg_llc[ind_t] = np.mean(data_dict['z'][inds_llc, ind_t])
-        z_avg_trap[ind_t] = np.mean(data_dict['z'][inds_trap, ind_t])
+    # z_avg_rlc = 0 * t_array
+    # z_avg_llc = 0 * t_array
+    # z_avg_trap = 0 * t_array
+    # for ind_t in range(num_times):
+    #     z_avg_rlc[ind_t] = np.mean(data_dict['z'][inds_rlc, ind_t])
+    #     z_avg_llc[ind_t] = np.mean(data_dict['z'][inds_llc, ind_t])
+    #     z_avg_trap[ind_t] = np.mean(data_dict['z'][inds_trap, ind_t])
 
     # plt.figure(3)
     # plt.plot(t_array / field_dict['tau_cyclotron'], z_avg_rlc /  settings['l'], label='right LC')
@@ -252,6 +258,8 @@ for set_ind in range(len(set_names)):
     plt.figure(5, figsize=(10, 5))
     plt.subplot(1, len(set_names), set_ind + 1)
     bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-2, 2, 40)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-20, 2, 40)]
     # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
     # bins = 50
     plt.hist2d(t_vec, z_vec, bins=bins)
@@ -289,6 +297,8 @@ for set_ind in range(len(set_names)):
     # plot what particle % passed some z threshold, as a function of t
     # z_cutoff_list = [5, 10, 20]
     z_cutoff_list = [10]
+    # z_cutoff_list = [5]
+    # z_cutoff_list = [-2]
     for ind_z_cutoff, z_cutoff in enumerate(z_cutoff_list):
         percent_escaped = np.zeros(len(cnt_rlc_array))
         for k in range(len(t_array)):
@@ -297,13 +307,14 @@ for set_ind in range(len(set_names)):
             inds_curr = inds_rlc
             # inds_curr = inds_trap
             # inds_curr = inds_llc
-            percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] > z_cutoff)[0]) / len(
-                inds_curr)
+            percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] > z_cutoff)[0])
+            # percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] < z_cutoff)[0])
+            percent_escaped[k] /= len(inds_curr)
 
         plt.figure(7 + ind_z_cutoff)
         # label = set_ind
         label = set_label
-        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label)
+        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label, linestyle='--')
         plt.xlabel('$t/\\tau_{cyc}$')
         plt.ylabel('% passed')
         plt.title('$z_{cut}/l$=' + str(z_cutoff))

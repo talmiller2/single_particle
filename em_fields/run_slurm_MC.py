@@ -21,6 +21,7 @@ slurm_kwargs = {'partition': 'core'}  # default
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
 main_folder += '/set5/'
+# main_folder += '/set6/'
 
 plt.close('all')
 
@@ -82,7 +83,8 @@ field_dict_file = settings['save_dir'] + '/field_dict.pickle'
 with open(field_dict_file, 'wb') as handle:
     pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-total_number_of_combinations = 20000
+# total_number_of_combinations = 20000
+total_number_of_combinations = 1000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
