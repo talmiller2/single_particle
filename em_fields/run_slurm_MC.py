@@ -44,10 +44,14 @@ field_dict['v_z_factor_list'] = [2]
 # field_dict['v_z_factor_list'] = [1, 1.5, 2]
 
 # field_dict['alpha_detune_list'] = [1 for i in range(len(field_dict['v_z_factor_list']))]
-field_dict['alpha_detune_list'] = [1.1 for i in range(len(field_dict['v_z_factor_list']))]
+# field_dict['alpha_detune_list'] = [1.1 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.3 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.7 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [2 for i in range(len(field_dict['v_z_factor_list']))]
+field_dict['alpha_detune_list'] = [0.95 for i in range(len(field_dict['v_z_factor_list']))]
+# field_dict['alpha_detune_list'] = [0.96 for i in range(len(field_dict['v_z_factor_list']))]
+# field_dict['alpha_detune_list'] = [0.97 for i in range(len(field_dict['v_z_factor_list']))]
+# field_dict['alpha_detune_list'] = [0.98 for i in range(len(field_dict['v_z_factor_list']))]
 
 # field_dict['nullify_RF_magnetic_field'] = True
 

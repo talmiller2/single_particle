@@ -22,6 +22,7 @@ set_names = []
 v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
 # v_loop_list = v_loop_list[0:2]
+# v_loop_list = v_loop_list[3:6]
 # alpha_loop_list = alpha_loop_list[0:2]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
@@ -30,6 +31,7 @@ rlc_percent_passed = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 for ind_v, v_loop in enumerate(v_loop_list):
     for ind_alpha, alpha_loop in enumerate(alpha_loop_list):
         run_name = 'tmax_400_B0_0.1_T_3.0_ERF_1_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
+        # run_name = 'tmax_400_B0_0.1_T_3.0_ERF_10_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
         save_dir = save_dir_main + run_name
 
         # load runs data
@@ -85,7 +87,7 @@ for ind_v, v_loop in enumerate(v_loop_list):
             label = run_name
             plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label, linestyle='-')
             plt.xlabel('$t/\\tau_{cyc}$')
-            plt.ylabel('% passed')
+            plt.ylabel('rightLC %passed $z_{cut}/l$=' + str(z_cutoff))
             plt.title('$z_{cut}/l$=' + str(z_cutoff))
             plt.grid(True)
             # plt.legend()
@@ -94,7 +96,9 @@ for ind_v, v_loop in enumerate(v_loop_list):
 
 # 2d plot of % passed particles as a function of v, alpha
 plt.figure()
-sns.heatmap(rlc_percent_passed, xticklabels=v_loop_list, yticklabels=alpha_loop_list)
+# vmin, vmax = 0, 20
+vmin, vmax = 30, 100
+sns.heatmap(rlc_percent_passed.T, xticklabels=v_loop_list, yticklabels=alpha_loop_list, vmin=vmin, vmax=vmax)
 plt.xlabel('$v/v_{th}$')
 plt.ylabel('$\\alpha$')
 plt.title('rightLC %passed $z_{cut}/l$=' + str(z_cutoff) + ' at $t/\\tau_{cyc}$=' + str(
