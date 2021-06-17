@@ -23,15 +23,15 @@ v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
 # v_loop_list = v_loop_list[0:2]
 # v_loop_list = v_loop_list[3:6]
-# alpha_loop_list = alpha_loop_list[0:2]
+alpha_loop_list = [alpha_loop_list[3]]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 rlc_percent_passed = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 
 for ind_v, v_loop in enumerate(v_loop_list):
     for ind_alpha, alpha_loop in enumerate(alpha_loop_list):
-        run_name = 'tmax_400_B0_0.1_T_3.0_ERF_1_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
-        # run_name = 'tmax_400_B0_0.1_T_3.0_ERF_10_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
+        # run_name = 'tmax_400_B0_0.1_T_3.0_ERF_1_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
+        run_name = 'tmax_400_B0_0.1_T_3.0_ERF_10_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
         save_dir = save_dir_main + run_name
 
         # load runs data
@@ -96,8 +96,8 @@ for ind_v, v_loop in enumerate(v_loop_list):
 
 # 2d plot of % passed particles as a function of v, alpha
 plt.figure()
-# vmin, vmax = 0, 20
-vmin, vmax = 30, 100
+vmin, vmax = 0, 10
+# vmin, vmax = 30, 100
 sns.heatmap(rlc_percent_passed.T, xticklabels=v_loop_list, yticklabels=alpha_loop_list, vmin=vmin, vmax=vmax)
 plt.xlabel('$v/v_{th}$')
 plt.ylabel('$\\alpha$')

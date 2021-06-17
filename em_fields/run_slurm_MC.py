@@ -43,12 +43,12 @@ field_dict['v_z_factor_list'] = [2]
 # field_dict['v_z_factor_list'] = [1, 2]
 # field_dict['v_z_factor_list'] = [1, 1.5, 2]
 
-# field_dict['alpha_detune_list'] = [1 for i in range(len(field_dict['v_z_factor_list']))]
+field_dict['alpha_detune_list'] = [1 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.1 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.3 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [1.7 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [2 for i in range(len(field_dict['v_z_factor_list']))]
-field_dict['alpha_detune_list'] = [0.95 for i in range(len(field_dict['v_z_factor_list']))]
+# field_dict['alpha_detune_list'] = [0.95 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [0.96 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [0.97 for i in range(len(field_dict['v_z_factor_list']))]
 # field_dict['alpha_detune_list'] = [0.98 for i in range(len(field_dict['v_z_factor_list']))]
@@ -73,6 +73,7 @@ if field_dict['E_RF_kVm'] > 0:
     save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
 if field_dict['nullify_RF_magnetic_field']:
     save_dir += '_zeroBRF'
+save_dir += '_sample4pi'
 
 print('save_dir: ' + str(save_dir))
 
@@ -87,8 +88,8 @@ field_dict_file = settings['save_dir'] + '/field_dict.pickle'
 with open(field_dict_file, 'wb') as handle:
     pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-# total_number_of_combinations = 20000
-total_number_of_combinations = 1000
+total_number_of_combinations = 20000
+# total_number_of_combinations = 1000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
@@ -101,18 +102,18 @@ for i in range(total_number_of_combinations):
     rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
 
 # sampling a random direction but only within the right-LC
-u = np.random.rand(total_number_of_combinations)
-v = np.random.rand(total_number_of_combinations)
-theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
-v_min = (np.cos(theta_max) + 1) / 2
-v *= (1 - v_min)
-v += v_min
-phi = 2 * np.pi * u  # longitude
-theta = np.arccos(2 * v - 1)  # latitude
-x = np.cos(phi) * np.sin(theta)
-y = np.sin(phi) * np.sin(theta)
-z = np.cos(theta)
-rand_unit_vec = np.array([x, y, z]).T
+# u = np.random.rand(total_number_of_combinations)
+# v = np.random.rand(total_number_of_combinations)
+# theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
+# v_min = (np.cos(theta_max) + 1) / 2
+# v *= (1 - v_min)
+# v += v_min
+# phi = 2 * np.pi * u  # longitude
+# theta = np.arccos(2 * v - 1)  # latitude
+# x = np.cos(phi) * np.sin(theta)
+# y = np.sin(phi) * np.sin(theta)
+# z = np.cos(theta)
+# rand_unit_vec = np.array([x, y, z]).T
 
 # total velocity vector
 v_0 = rand_unit_vec
