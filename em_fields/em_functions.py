@@ -13,10 +13,19 @@ def get_thermal_velocity(T, m, kB_eV):
 
 def get_cyclotron_angular_frequency(q, B, m):
     '''
-    Calculate the angular frequency of cyclotron / Larmor precession
+    Calculate the angular frequency of cyclotron / Larmor precession (of ion on electron, depending on m)
     q in Coulomb, B in Tesla, m in kg
     '''
     return np.abs(q * B / m)
+
+
+def get_plasma_frequency(ne, qe, me, eps0):
+    '''
+    Calculate the angular frequency of plasma oscillations / Langmuir waves of the electrons
+    qe in Coulomb, me in kg, ne the number density of electrons in m^-3, eps0 is the vacuum permittivity [Farad/m^2]
+    Sources: https://en.wikipedia.org/wiki/Plasma_oscillation, Nicholson
+    '''
+    return np.sqrt(qe ** 2 * ne / me / eps0)
 
 
 def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dict=None, t_0=0, q=1.0, m=1.0,

@@ -32,8 +32,8 @@ settings = define_default_settings()
 field_dict = {}
 
 # field_dict['E_RF_kVm'] = 0  # kV/m
-# field_dict['E_RF_kVm'] = 1  # kV/m
-field_dict['E_RF_kVm'] = 3  # kV/m
+field_dict['E_RF_kVm'] = 1  # kV/m
+# field_dict['E_RF_kVm'] = 3  # kV/m
 # field_dict['E_RF_kVm'] = 5  # kV/m
 # field_dict['E_RF_kVm'] = 10  # kV/m
 
