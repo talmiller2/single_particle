@@ -51,16 +51,9 @@ for v_loop in v_loop_list:
         # field_dict['E_RF_kVm'] = 5  # kV/m
         # field_dict['E_RF_kVm'] = 10  # kV/m
 
-        # field_dict['v_z_factor_list'] = [1]
-        field_dict['v_z_factor_list'] = [2]
-        # field_dict['v_z_factor_list'] = [1, 2]
-        # field_dict['v_z_factor_list'] = [1, 1.5, 2]
+        field_dict['v_z_factor_list'] = [v_loop]
 
-        # field_dict['alpha_detune_list'] = [1 for i in range(len(field_dict['v_z_factor_list']))]
-        field_dict['alpha_detune_list'] = [1.1 for i in range(len(field_dict['v_z_factor_list']))]
-        # field_dict['alpha_detune_list'] = [1.3 for i in range(len(field_dict['v_z_factor_list']))]
-        # field_dict['alpha_detune_list'] = [1.7 for i in range(len(field_dict['v_z_factor_list']))]
-        # field_dict['alpha_detune_list'] = [2 for i in range(len(field_dict['v_z_factor_list']))]
+        field_dict['alpha_detune_list'] = [alpha_loop for i in range(len(field_dict['v_z_factor_list']))]
 
         # field_dict['nullify_RF_magnetic_field'] = True
 
@@ -162,5 +155,5 @@ for v_loop in v_loop_list:
                       + ' --field_dict "' + str(field_dict) + '"'
             s = Slurm(run_name, slurm_kwargs=slurm_kwargs)
             s.run(command)
-            cnt += 1
             print('run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
+            cnt += 1
