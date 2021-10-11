@@ -2,6 +2,7 @@ import pickle
 
 import numpy as np
 
+from em_fields.magnetic_forms import get_mirror_magnetic_field
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
@@ -44,11 +45,11 @@ set_names = []
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_2_vz_1']
 
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_2']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.95_vz_2']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.96_vz_2']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.97_vz_2']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.98_vz_2']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.95_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.96_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.97_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.98_vz_2']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_2']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_2']
 
@@ -61,6 +62,11 @@ set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2']
 
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1_zeroBRF']
+
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2_sample4pi']
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_2_sample4pi']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1_vz_2_sample4pi']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1.3_vz_2_sample4pi']
 
 
 for set_ind in range(len(set_names)):
@@ -133,7 +139,6 @@ for set_ind in range(len(set_names)):
         # calculate if a particle is initially in right loss cone
         LC_cutoff = field_dict['Rm'] ** (-0.5)
         in_loss_cone = v_transverse[0] / v[0] < LC_cutoff
-        # positive_z_velocity = data_dict['v_0'][ind_point, 2] > 0
         positive_z_velocity = v_axial[0] > 0
 
         if in_loss_cone and positive_z_velocity:
@@ -154,6 +159,7 @@ for set_ind in range(len(set_names)):
             linewidth = 1
             # do_plot = True
             do_plot = False
+
 
         # record the fractions of particles in each population as a function of time
         if in_loss_cone and positive_z_velocity:
@@ -204,7 +210,7 @@ for set_ind in range(len(set_names)):
     # plt.xlabel('$t/\\tau_{cyc}$')
     # plt.legend()
 
-    # TODO: average z plot of each population
+    ## average z plot of each population
     # z_avg_rlc = 0 * t_array
     # z_avg_llc = 0 * t_array
     # z_avg_trap = 0 * t_array
@@ -221,7 +227,7 @@ for set_ind in range(len(set_names)):
     # plt.ylabel('$z/l$')
     # plt.legend()
 
-    # TODO: histogram of z values in several different times
+    ## histogram of z values in several different times
     # plt.figure(4, figsize=(6,3))
     # plt.figure(4, figsize=(6,6))
     # # plt.subplot(2,1,1)
@@ -254,73 +260,169 @@ for set_ind in range(len(set_names)):
     for k in range(len(t_array)):
         # t_vec += t_array
         # t_vec = np.append(t_vec, t_array / field_dict['tau_cyclotron'])
+        # inds_curr = inds_rlc
+        # inds_curr = inds_trap
+        # inds_curr = inds_llc
+        inds_curr = inds_rlc + inds_trap + inds_llc
+        t_vec = np.append(t_vec, t_array[k] / field_dict['tau_cyclotron'] * np.ones(len(inds_curr)))
+        z_vec = np.append(z_vec, data_dict['z'][inds_curr, k] / settings['l'])
+    # plt.figure(5, figsize=(10, 5))
+    # plt.subplot(1, len(set_names), set_ind + 1)
+    # # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
+    # # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-1, 3, 40)]
+    # # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-10, 10, 20)]
+    # # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-20, 2, 40)]
+    # # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(2, 20, 40)]
+    # # bins = 50
+    # plt.hist2d(t_vec, z_vec, bins=bins)
+    # if set_ind == 0:
+    #     plt.ylabel('$z/l$')
+    # plt.xlabel('$t/\\tau_{cyc}$')
+    # # plt.title(set_label)
+    # plt.title(set_ind)
+    # plt.tight_layout()
+
+    # plot 2d histogram of particles in different v, t
+    t_vec = []
+    v_vec = []
+    for k in range(len(t_array)):
+        # t_vec += t_array
+        # t_vec = np.append(t_vec, t_array / field_dict['tau_cyclotron'])
         inds_curr = inds_rlc
         # inds_curr = inds_trap
         # inds_curr = inds_llc
         t_vec = np.append(t_vec, t_array[k] / field_dict['tau_cyclotron'] * np.ones(len(inds_curr)))
-        z_vec = np.append(z_vec, data_dict['z'][inds_curr, k] / settings['l'])
-    plt.figure(5, figsize=(10, 5))
-    plt.subplot(1, len(set_names), set_ind + 1)
-    bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 40, 40)]
-    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-2, 2, 40)]
-    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(-20, 2, 40)]
-    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
-    # bins = 50
-    plt.hist2d(t_vec, z_vec, bins=bins)
-    if set_ind == 0:
-        plt.ylabel('$z/l$')
-    plt.xlabel('$t/\\tau_{cyc}$')
-    # plt.title(set_label)
-    plt.title(set_ind)
-    plt.tight_layout()
-
-    # plot 2d histogram of particles in different v, t
-    # t_vec = []
-    # v_vec = []
-    # for k in range(len(t_array)):
-    #     # t_vec += t_array
-    #     # t_vec = np.append(t_vec, t_array / field_dict['tau_cyclotron'])
-    #     inds_curr = inds_rlc
-    #     # inds_curr = inds_trap
-    #     # inds_curr = inds_llc
-    #     t_vec = np.append(t_vec, t_array[k] / field_dict['tau_cyclotron'] * np.ones(len(inds_curr)))
-    #     v_vec = np.append(v_vec, data_dict['v'][inds_curr, k] / settings['v_th'])
+        v_vec = np.append(v_vec, data_dict['v'][inds_curr, k] / settings['v_th'])
     # plt.figure(6, figsize=(10,5))
     # plt.subplot(1, len(set_names), set_ind+1)
-    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 10, 40)]
+    # bins = [1 + t_array / field_dict['tau_cyclotron'], np.linspace(0, 20, 40)]
     # # bins = 50
     # plt.hist2d(t_vec, v_vec, bins=bins)
     # if set_ind == 0:
     #     plt.ylabel('$v/v_{th}$')
     # plt.xlabel('$t/\\tau_{cyc}$')
-    # plt.title(set_label)
+    # plt.title(set_ind)
     # plt.tight_layout()
 
-    # TODO: Up to time T, how many particles were stopped (z direction flipped), and what is the average z it happend in?
-
+    ## Up to time T, how many particles were stopped (z direction flipped), and what is the average z it happend in?
     # plot what particle % passed some z threshold, as a function of t
+    # z_cutoff_list = [2, 4 ,6]
     # z_cutoff_list = [5, 10, 20]
-    z_cutoff_list = [10]
-    # z_cutoff_list = [5]
-    # z_cutoff_list = [-2]
+    # z_cutoff_list = [10]
+    z_cutoff_list = [5]
+    # z_cutoff_list = [-5]
     for ind_z_cutoff, z_cutoff in enumerate(z_cutoff_list):
         percent_escaped = np.zeros(len(cnt_rlc_array))
         for k in range(len(t_array)):
             # t_vec += t_array
             # t_vec = np.append(t_vec, t_array / field_dict['tau_cyclotron'])
-            inds_curr = inds_rlc
+            # inds_curr = inds_rlc
             # inds_curr = inds_trap
             # inds_curr = inds_llc
+            inds_curr = inds_rlc + inds_trap + inds_llc
             percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] > z_cutoff)[0])
             # percent_escaped[k] = 100 * len(np.where(data_dict['z'][inds_curr, k] / settings['l'] < z_cutoff)[0])
             percent_escaped[k] /= len(inds_curr)
 
-        plt.figure(7 + ind_z_cutoff)
+        # plt.figure(7 + ind_z_cutoff)
+        plt.figure(7)
         # label = set_ind
-        label = set_label
-        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label, linestyle='--')
+        # label = set_label
+        label = set_label + ', $z_{cut}/l$=' + str(z_cutoff)
+        # label = '$z_{cut}/l$=' + str(z_cutoff)
+        if set_ind == 0:
+            linestyle = '-'
+        else:
+            linestyle = '--'
+        plt.plot(t_array / field_dict['tau_cyclotron'], percent_escaped, label=label, linestyle=linestyle)
         plt.xlabel('$t/\\tau_{cyc}$')
         plt.ylabel('% passed')
-        plt.title('$z_{cut}/l$=' + str(z_cutoff))
+        # plt.title('$z_{cut}/l$=' + str(z_cutoff))
         plt.grid(True)
         plt.legend()
+
+    # calculate the magnetic field during evolution to check the loss cone status
+    loss_cone_condition_mat = np.zeros([len(ind_points), len(t_array)])
+
+    loss_cone_condition_h1_mat = np.zeros([len(ind_points), len(t_array)])
+    loss_cone_condition_h2_mat = np.zeros([len(ind_points), len(t_array)])
+
+    for ind_point in ind_points:
+
+        t = t_array
+        z = data_dict['z'][ind_point, :]
+        v = data_dict['v'][ind_point, :]
+        v_r = data_dict['v_transverse'][ind_point, :]
+        B0 = field_dict['B0']
+        Rm = field_dict['Rm']
+        B_max = B0 * Rm
+        l = field_dict['l']
+        mirror_field_type = field_dict['mirror_field_type']
+        Bz = []
+        loss_cone_condition = []
+        loss_cone_condition_h1 = []
+        loss_cone_condition_h2 = []
+        for iz, z_curr in enumerate(z):
+            x_curr = np.array([0, 0, z_curr])
+            B = get_mirror_magnetic_field(x_curr, B0, Rm, l, use_transverse_fields=True, z0=0,
+                                          mirror_field_type=mirror_field_type)
+            Bz_curr = B[2]
+            Bz += [Bz_curr]
+            # Rm_curr = Bz_curr / B_max
+            Rm_curr = B_max / Bz_curr
+            loss_cone_condition += [(v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0)]
+            loss_cone_condition_h1 += [(v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0) / 2]
+            loss_cone_condition_h2 += [
+                ((v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0) / 2) * ((v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0))]
+
+        loss_cone_condition_mat[ind_point, :] = np.array(loss_cone_condition)
+
+        loss_cone_condition_h1_mat[ind_point, :] = np.array(loss_cone_condition_h1)
+        loss_cone_condition_h2_mat[ind_point, :] = np.array(loss_cone_condition_h2)
+
+    percent_stay_right = np.zeros(len(t_array))
+    for k in range(len(t_array)):
+        percent_stay_right[k] = len(np.where(loss_cone_condition_mat[inds_rlc, k] < 0)[0])
+    percent_stay_right *= 100.0 / len(inds_rlc)
+
+    percent_stay_left = np.zeros(len(t_array))
+    for k in range(len(t_array)):
+        percent_stay_left[k] = len(np.where(loss_cone_condition_mat[inds_llc, k] < 0)[0])
+    percent_stay_left *= 100.0 / len(inds_llc)
+
+    percent_stay_trapped = np.zeros(len(t_array))
+    for k in range(len(t_array)):
+        percent_stay_trapped[k] = len(np.where(loss_cone_condition_mat[inds_trap, k] >= 0)[0])
+    percent_stay_trapped *= 100.0 / len(inds_trap)
+
+    # fit exponents
+    # p = np.polyfit(t_array, np.log(percent_stay_right), 1, w=np.sqrt(percent_stay_right))
+    p = np.polyfit(t_array[0:3], percent_stay_right[0:3], 1)
+    lin_fit = np.polyval(p, t_array)
+    lin_fit[np.where(lin_fit <= 0)] = np.nan
+
+    plt.figure(8)
+    if set_ind == 0:
+        color = 'b'
+    else:
+        color = 'r'
+    set_label = ''
+    label = set_label + ' right'
+    plt.plot(t_array / field_dict['tau_cyclotron'], percent_stay_right, label=label, color=color, linestyle='-')
+    # plt.plot(t_array / field_dict['tau_cyclotron'], np.exp(np.polyval(p, t_array)), label=label, color='k', linestyle='-')
+    # plt.plot(t_array / field_dict['tau_cyclotron'], np.polyval(p, t_array), label=label, color='k', linestyle='-')
+    plt.plot(t_array / field_dict['tau_cyclotron'], lin_fit, label=label + ' slope', color='k', linestyle='--')
+
+    label = set_label + ' left'
+    plt.plot(t_array / field_dict['tau_cyclotron'], percent_stay_left, label=label, color=color, linestyle='--')
+    label = set_label + ' trapped'
+    plt.plot(t_array / field_dict['tau_cyclotron'], percent_stay_trapped, label=label, color=color, linestyle=':')
+    plt.xlabel('$t/\\tau_{cyc}$')
+    plt.ylabel('% that stay in original population')
+    plt.title('using loss cone criteria')
+    plt.grid(True)
+    plt.legend()
+    # plt.yscale('log')
+    # plt.xscale('log')
+    plt.tight_layout()

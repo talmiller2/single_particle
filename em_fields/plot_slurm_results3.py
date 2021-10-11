@@ -30,8 +30,8 @@ rlc_percent_passed = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 
 for ind_v, v_loop in enumerate(v_loop_list):
     for ind_alpha, alpha_loop in enumerate(alpha_loop_list):
-        # run_name = 'tmax_400_B0_0.1_T_3.0_ERF_1_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
-        run_name = 'tmax_400_B0_0.1_T_3.0_ERF_10_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
+        run_name = 'tmax_400_B0_0.1_T_3.0_ERF_1_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
+        # run_name = 'tmax_400_B0_0.1_T_3.0_ERF_10_alpha_' + str(alpha_loop) + '_vz_' + str(v_loop)
         save_dir = save_dir_main + run_name
 
         # load runs data
@@ -67,9 +67,9 @@ for ind_v, v_loop in enumerate(v_loop_list):
                 inds_trap += [ind_point]
 
         # plot what particle % passed some z threshold, as a function of t
-        # z_cutoff_list = [5, 10, 20]
+        z_cutoff_list = [5, 10, 20]
         # z_cutoff_list = [10]
-        z_cutoff_list = [5]
+        # z_cutoff_list = [5]
         # z_cutoff_list = [-2]
         for ind_z_cutoff, z_cutoff in enumerate(z_cutoff_list):
             percent_escaped = np.zeros(len(t_array))
