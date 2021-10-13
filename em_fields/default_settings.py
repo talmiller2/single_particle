@@ -32,9 +32,9 @@ def define_default_settings(settings=None):
         settings['T_keV'] = 3.0
     settings['T_eV'] = settings['T_keV'] * 1e3
     settings['v_th'] = get_thermal_velocity(settings['T_eV'], settings['mi'], settings['kB_eV'])
-    if 'Rm' not in settings:
-        settings['Rm'] = 3.0
-    settings['loss_cone_angle'] = np.arcsin(settings['Rm'] ** (-0.5)) * 360 / (2 * np.pi)
+    # if 'Rm' not in settings:
+    #     settings['Rm'] = 3.0
+    # settings['loss_cone_angle'] = np.arcsin(settings['Rm'] ** (-0.5)) * 360 / (2 * np.pi)
 
     settings['l'] = 10.0  # m (MM cell size)
     settings['r_0'] = 0.0 * settings['l']

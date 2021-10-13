@@ -345,9 +345,6 @@ for set_ind in range(len(set_names)):
     # calculate the magnetic field during evolution to check the loss cone status
     loss_cone_condition_mat = np.zeros([len(ind_points), len(t_array)])
 
-    loss_cone_condition_h1_mat = np.zeros([len(ind_points), len(t_array)])
-    loss_cone_condition_h2_mat = np.zeros([len(ind_points), len(t_array)])
-
     for ind_point in ind_points:
 
         t = t_array
@@ -361,8 +358,6 @@ for set_ind in range(len(set_names)):
         mirror_field_type = field_dict['mirror_field_type']
         Bz = []
         loss_cone_condition = []
-        loss_cone_condition_h1 = []
-        loss_cone_condition_h2 = []
         for iz, z_curr in enumerate(z):
             x_curr = np.array([0, 0, z_curr])
             B = get_mirror_magnetic_field(x_curr, B0, Rm, l, use_transverse_fields=True, z0=0,
@@ -372,14 +367,8 @@ for set_ind in range(len(set_names)):
             # Rm_curr = Bz_curr / B_max
             Rm_curr = B_max / Bz_curr
             loss_cone_condition += [(v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0)]
-            loss_cone_condition_h1 += [(v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0) / 2]
-            loss_cone_condition_h2 += [
-                ((v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0) / 2) * ((v_r[iz] / v[iz]) ** 2.0 - (Rm_curr) ** (-1.0))]
 
         loss_cone_condition_mat[ind_point, :] = np.array(loss_cone_condition)
-
-        loss_cone_condition_h1_mat[ind_point, :] = np.array(loss_cone_condition_h1)
-        loss_cone_condition_h2_mat[ind_point, :] = np.array(loss_cone_condition_h2)
 
     percent_stay_right = np.zeros(len(t_array))
     for k in range(len(t_array)):
