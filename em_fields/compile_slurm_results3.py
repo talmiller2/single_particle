@@ -42,26 +42,27 @@ for curr_dir in run_dirs:
         # loop over all saved sets and combine their data
         for ind_set, set_file in enumerate(set_files):
             print('set # ' + str(ind_set))
-            keys = [key for key in set_mat_dict.keys() if '__' not in key]
 
             if settings['set_save_format'] == 'mat':
                 # in this format all data was saved as 2d matrices
-                set_mat_dict = loadmat(set_file + '.mat')
+                set_dict = loadmat(set_file + '.mat')
+                keys = [key for key in set_dict.keys() if '__' not in key]
                 for key in keys:
                     if ind_set == 0:
-                        data_dict[key] = set_mat_dict[key]
+                        data_dict[key] = set_dict[key]
                     else:
-                        data_dict[key] = np.vstack([data_dict[key], set_mat_dict[key]])
+                        data_dict[key] = np.vstack([data_dict[key], set_dict[key]])
 
             elif settings['set_save_format'] == 'pickle':
                 # in this format all data was saved as lists (treat cases where lengths are not equal)
                 with open(set_file + '.pickle', 'rb') as fid:
-                    data_dict = pickle.load(fid)
+                    set_dict = pickle.load(fid)
+                keys = [key for key in set_dict.keys() if '__' not in key]
                 for key in keys:
                     if ind_set == 0:
-                        data_dict[key] = set_mat_dict[key]
+                        data_dict[key] = set_dict[key]
                     else:
-                        data_dict[key] += set_mat_dict[key]
+                        data_dict[key] += set_dict[key]
 
             else:
                 raise ValueError('invalid set_save_format: ' + str(settings['set_save_format']))
