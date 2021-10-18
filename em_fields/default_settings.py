@@ -29,11 +29,13 @@ def define_default_settings(settings=None):
 
     # system parameters
     if 'T_keV' not in settings:
-        settings['T_keV'] = 3.0
+        # settings['T_keV'] = 3.0
+        settings['T_keV'] = 10.0
     settings['T_eV'] = settings['T_keV'] * 1e3
     settings['v_th'] = get_thermal_velocity(settings['T_eV'], settings['mi'], settings['kB_eV'])
     if 'l' not in settings:
-        settings['l'] = 10.0  # m (MM cell size)
+        settings['l'] = 1.0  # m (MM cell size)
+        # settings['l'] = 10.0  # m (MM cell size)
     if 'r_0' not in settings:
         settings['r_0'] = 0.0 * settings['l']
     if 'z_0' not in settings:
@@ -43,8 +45,8 @@ def define_default_settings(settings=None):
     if 'time_step_tau_cyclotron_divisions' not in settings:
         settings['time_step_tau_cyclotron_divisions'] = 20.0
     if 'trajectory_save_method' not in settings:
-        settings['trajectory_save_method'] = 'intervals'
-        # settings['trajectory_save_method'] = 'min_B'
+        # settings['trajectory_save_method'] = 'intervals'
+        settings['trajectory_save_method'] = 'min_B'
     if settings['trajectory_save_method'] == 'intervals':
         settings['num_snapshots'] = 25
     if 'set_save_format' not in settings:
@@ -71,7 +73,8 @@ def define_default_field(settings, field_dict=None):
         field_dict['Rm'] = 2.0  # mirror ratio
     field_dict['loss_cone_angle'] = np.arcsin(field_dict['Rm'] ** (-0.5)) * 360 / (2 * np.pi)
     if 'B0' not in field_dict:
-        field_dict['B0'] = 0.1  # Tesla
+        # field_dict['B0'] = 0.1  # Tesla
+        field_dict['B0'] = 1.0  # Tesla
     field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
     field_dict['tau_cyclotron'] = 2 * np.pi / field_dict['omega_cyclotron']
     field_dict['l'] = settings['l']

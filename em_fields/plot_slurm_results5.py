@@ -72,24 +72,16 @@ set_names = []
 
 
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_mat']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_mat_snapminB']
+set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_mat_snapminB']
 # set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_pickle']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_pickle_snapminB']
+# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_pickle_snapminB']
+
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
-    # set_label = set_labels[set_ind]
-    set_label = set_name.split('T_3.0_')[-1]
-
     save_dir = save_dir_main + set_name
 
     # load runs data
-
-    # mat_file = save_dir + '.mat'
-    # mat_dict = loadmat(mat_file)
-    # settings = mat_dict['settings']
-    # field_dict = mat_dict['field_dict']
-
     data_dict_file = save_dir + '.pickle'
     with open(data_dict_file, 'rb') as fid:
         data_dict = pickle.load(fid)
@@ -136,22 +128,13 @@ for set_ind in range(len(set_names)):
 
         pass
 
-    t_array = data_dict['t'][0, :]
-    num_times = len(t_array)
-
-    inds_rlc = []
-    inds_llc = []
-    inds_trap = []
-
-    cnt_rlc_array = 0 * t_array
-    cnt_llc_array = 0 * t_array
-    cnt_trap_array = 0 * t_array
-
     for ind_point in ind_points:
-        z = data_dict['z'][ind_point, :]
-        v = data_dict['v'][ind_point, :]
-        v_transverse = data_dict['v_transverse'][ind_point, :]
-        v_axial = data_dict['v_axial'][ind_point, :]
+        t = np.array(data_dict['t'][ind_point])
+        z = np.array(data_dict['z'][ind_point])
+        v = np.array(data_dict['v'][ind_point])
+        v_transverse = np.array(data_dict['v_transverse'][ind_point])
+        v_axial = np.array(data_dict['v_axial'][ind_point])
+        Bz = np.array(data_dict['Bz'][ind_point])
 
         # calculate if a particle is initially in right loss cone
         # LC_cutoff = field_dict['Rm'] ** (-0.5)
@@ -161,57 +144,22 @@ for set_ind in range(len(set_names)):
         positive_z_velocity = v_axial[0] > 0
 
         if in_loss_cone and positive_z_velocity:  # right loss cone
-            inds_rlc += [ind_point]
             linestyle = '-'
             linewidth = 1
             do_plot = True
             # do_plot = False
         elif in_loss_cone and not positive_z_velocity:  # left loss cone
-            inds_llc += [ind_point]
             # linestyle = ':'
             linestyle = '-'
             linewidth = 1
             do_plot = True
             # do_plot = False
         else:  # trapped
-            inds_trap += [ind_point]
             # linestyle = '--'
             linestyle = '-'
             linewidth = 1
             do_plot = True
             # do_plot = False
-
-        # t_array = data_dict['t'][0, :]
-        # B0 = field_dict['B0']
-        # Rm = field_dict['Rm']
-        # B_max = B0 * Rm
-        # l = field_dict['l']
-        # mirror_field_type = field_dict['mirror_field_type']
-        # Bz = []
-        # for iz, z_curr in enumerate(z):
-        #     x_curr = np.array([0, 0, z_curr])
-        #     B = get_mirror_magnetic_field(x_curr, B0, Rm, l, mirror_field_type=mirror_field_type)
-        #     Bz_curr = B[2]
-        #     Bz += [Bz_curr]
-        #
-        # # pick only times where particle is close to cell center / minimal mirror magnetic field
-        # Bz = np.array(Bz)
-        # # inds_cell_center = np.where(abs((Bz- B0)/B0) < 0.01)
-        # # t_array = t_array[inds_cell_center]
-        # # z = z[inds_cell_center]
-        # # v = v[inds_cell_center]
-        # # # v_axial = v_axial[inds_cell_center]
-        # # v_axial = abs(v_axial[inds_cell_center])
-        # # v_transverse = v_transverse[inds_cell_center]
-        # # Bz = Bz[inds_cell_center]
-
-        Bz = data_dict['Bz'][ind_point, :]
-
-        # transform each point on the trajectory to what it would be at the magnetic field minimum
-        # v_transverse_tag = v_transverse * np.sqrt(B0 / Bz)
-        # v_axial_tag = np.sqrt(v_axial ** 2 + v_transverse ** 2 * (1 - B0 / Bz))
-        # v_transverse = v_transverse_tag
-        # v_axial = v_axial_tag
 
         if not positive_z_velocity:  # draw points that started with negative velocity, on negative side of the plot
             v_axial *= -1
@@ -258,7 +206,7 @@ for set_ind in range(len(set_names)):
             plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
 
             plt.figure(5)
-            plt.plot(t_array / field_dict['tau_cyclotron'], Bz, label=ind_point, linestyle=linestyle,
+            plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
                      linewidth=linewidth)
 
             # E = (v / settings['v_th']) ** 2

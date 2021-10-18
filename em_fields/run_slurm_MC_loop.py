@@ -22,15 +22,18 @@ slurm_kwargs = {'partition': 'core'}  # default
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set5/'
 # main_folder += '/set6/'
-main_folder += '/set7/'
+main_folder += '/set7_T_10keV_B0_1T_Rm_2/'
 
 plt.close('all')
 
 # v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 # alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
 
-v_loop_list = [1.5]
-alpha_loop_list = [1.5]
+v_loop_list = [1]
+alpha_loop_list = [1]
+
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -45,13 +48,12 @@ for v_loop in v_loop_list:
 
         # define settings
         settings = {}
-
         settings = define_default_settings()
 
         field_dict = {}
 
-        # field_dict['E_RF_kVm'] = 0  # kV/m
-        field_dict['E_RF_kVm'] = 1  # kV/m
+        field_dict['E_RF_kVm'] = 0  # kV/m
+        # field_dict['E_RF_kVm'] = 1  # kV/m
         # field_dict['E_RF_kVm'] = 2  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
         # field_dict['E_RF_kVm'] = 10  # kV/m
@@ -69,21 +71,19 @@ for v_loop in v_loop_list:
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         save_dir = ''
-        save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
-        save_dir += '_B0_' + str(field_dict['B0'])
-        save_dir += '_T_' + str(settings['T_keV'])
-        # save_dir += '_nonMB'
-        # save_dir += '_' + str(field_dict['RF_type'])
+        # save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
+        # save_dir += '_B0_' + str(field_dict['B0'])
+        # save_dir += '_T_' + str(settings['T_keV'])
+
         if field_dict['E_RF_kVm'] > 0:
-            save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
+            save_dir += 'ERF_' + str(field_dict['E_RF_kVm'])
             save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
             save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
+        else:
+            save_dir = 'ERF_0'
+
         if field_dict['nullify_RF_magnetic_field']:
             save_dir += '_zeroBRF'
-
-        settings['set_save_format'] = 'mat'
-        # settings['set_save_format'] = 'pickle'
-        save_dir += '_save_' + settings['set_save_format']
 
         print('save_dir: ' + str(save_dir))
 
@@ -98,8 +98,9 @@ for v_loop in v_loop_list:
         with open(field_dict_file, 'wb') as handle:
             pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-        total_number_of_points = 40
+        # total_number_of_points = 40
         # total_number_of_points = 1000
+        total_number_of_points = 10000
         # total_number_of_points = 20000
 
         # define absolute velocities of particles
@@ -149,7 +150,8 @@ for v_loop in v_loop_list:
         savemat(points_dict_file, points_dict)
 
         # divide the points to a given number of cpus (250 is max in partition core)
-        num_cpus = 2
+        # num_cpus = 2
+        num_cpus = 15
         # num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
