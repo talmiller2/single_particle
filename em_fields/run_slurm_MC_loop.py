@@ -21,12 +21,17 @@ slurm_kwargs = {'partition': 'core'}  # default
 
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set5/'
-main_folder += '/set6/'
+# main_folder += '/set6/'
+main_folder += '/set7/'
 
 plt.close('all')
 
-v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
-alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
+# v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
+# alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
+
+v_loop_list = [1.5]
+alpha_loop_list = [1.5]
+
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
 
@@ -46,10 +51,10 @@ for v_loop in v_loop_list:
         field_dict = {}
 
         # field_dict['E_RF_kVm'] = 0  # kV/m
-        # field_dict['E_RF_kVm'] = 1  # kV/m
-        # field_dict['E_RF_kVm'] = 3  # kV/m
+        field_dict['E_RF_kVm'] = 1  # kV/m
+        # field_dict['E_RF_kVm'] = 2  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
-        field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 10  # kV/m
 
         field_dict['v_z_factor_list'] = [v_loop]
 
@@ -76,6 +81,10 @@ for v_loop in v_loop_list:
         if field_dict['nullify_RF_magnetic_field']:
             save_dir += '_zeroBRF'
 
+        settings['set_save_format'] = 'mat'
+        # settings['set_save_format'] = 'pickle'
+        save_dir += '_save_' + settings['set_save_format']
+
         print('save_dir: ' + str(save_dir))
 
         settings['save_dir'] = main_folder + '/' + save_dir
@@ -89,47 +98,61 @@ for v_loop in v_loop_list:
         with open(field_dict_file, 'wb') as handle:
             pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-        # total_number_of_combinations = 20000
-        total_number_of_combinations = 1000
+        total_number_of_points = 40
+        # total_number_of_points = 1000
+        # total_number_of_points = 20000
 
-        # sampling velocity from Maxwell-Boltzmann
-        scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
-        v_abs_samples = maxwell.rvs(size=total_number_of_combinations, scale=scale)
-        # v_abs_samples = settings['v_th'] * np.ones(total_number_of_combinations)  # testing constant velocity
+        # define absolute velocities of particles
+        if settings['absolute_velocity_sampling_type'] == 'const_vth':
+            # using constant absolute velocity
+            v_abs_samples = settings['v_th'] * np.ones(total_number_of_points)
+        elif settings['absolute_velocity_sampling_type'] == 'maxwell':
+            # sampling velocity from Maxwell-Boltzmann
+            scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
+            v_abs_samples = maxwell.rvs(size=total_number_of_points, scale=scale)
+        else:
+            raise ValueError('invalid absolute_velocity_sampling_type :'
+                             + str(settings['absolute_velocity_sampling_type']))
 
-        # sampling a random direction
-        rand_unit_vec = np.random.randn(total_number_of_combinations, 3)
-        for i in range(total_number_of_combinations):
-            rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
-
-        # sampling a random direction but only within the right-LC
-        u = np.random.rand(total_number_of_combinations)
-        v = np.random.rand(total_number_of_combinations)
-        theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
-        v_min = (np.cos(theta_max) + 1) / 2
-        v *= (1 - v_min)
-        v += v_min
-        phi = 2 * np.pi * u  # longitude
-        theta = np.arccos(2 * v - 1)  # latitude
-        x = np.cos(phi) * np.sin(theta)
-        y = np.sin(phi) * np.sin(theta)
-        z = np.cos(theta)
-        rand_unit_vec = np.array([x, y, z]).T
+        # define velocity directions of particles
+        if settings['direction_velocity_sampling_type'] == '4pi':
+            # sampling a random 4 pi direction
+            rand_unit_vec = np.random.randn(total_number_of_points, 3)
+            for i in range(total_number_of_points):
+                rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
+        elif settings['direction_velocity_sampling_type'] == 'right_loss_cone':
+            # sampling a random direction but only within the right-LC
+            u = np.random.rand(total_number_of_points)
+            v = np.random.rand(total_number_of_points)
+            theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
+            v_min = (np.cos(theta_max) + 1) / 2
+            v *= (1 - v_min)
+            v += v_min
+            phi = 2 * np.pi * u  # longitude
+            theta = np.arccos(2 * v - 1)  # latitude
+            x = np.cos(phi) * np.sin(theta)
+            y = np.sin(phi) * np.sin(theta)
+            z = np.cos(theta)
+            rand_unit_vec = np.array([x, y, z]).T
+        else:
+            raise ValueError('invalid direction_velocity_sampling_type :'
+                             + str(settings['direction_velocity_sampling_type']))
 
         # total velocity vector
         v_0 = rand_unit_vec
-        for i in range(total_number_of_combinations):
+        for i in range(total_number_of_points):
             v_0[i, :] *= v_abs_samples[i]
 
         # create and save the points file to be run later
-        runs_dict = {'v_0': v_0}
-        runs_dict_file = settings['save_dir'] + '/runs_dict.mat'
-        savemat(runs_dict_file, runs_dict)
+        points_dict = {'v_0': v_0}
+        points_dict_file = settings['save_dir'] + '/points_dict.mat'
+        savemat(points_dict_file, points_dict)
 
         # divide the points to a given number of cpus (250 is max in partition core)
         num_cpus = 2
-        num_points_per_cpu = int(np.floor(1.0 * total_number_of_combinations / num_cpus))
-        num_extra_points = np.mod(total_number_of_combinations, num_cpus)
+        # num_cpus = 50
+        num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
+        num_extra_points = np.mod(total_number_of_points, num_cpus)
 
         points_set_list = []
         index_first = 0

@@ -17,7 +17,7 @@ for curr_dir in run_dirs:
     if os.path.exists(compiled_mat_file):
         print(curr_dir + ' already compiled, skipping.')
     else:
-        print(curr_dir + 'in compilation progess.')
+        print(curr_dir + 'in compilation progress.')
 
         # extract the total number of points in this folder
         points_file = curr_dir_full + '/points.mat'

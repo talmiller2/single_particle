@@ -2,9 +2,11 @@
 
 import argparse
 import ast
+import pickle
 
 import numpy as np
 from scipy.io import savemat, loadmat
+from scipy.signal import find_peaks
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
 from em_fields.em_functions import evolve_particle_in_em_fields
@@ -22,18 +24,19 @@ print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
 
 # load data for runs
-runs_dict_file = settings['save_dir'] + '/runs_dict.mat'
+runs_dict_file = settings['save_dir'] + '/points_dict.mat'
 runs_dict = loadmat(runs_dict_file)
 
-# define the mat_dict where all data will be compiled
-compiled_set_file = settings['save_dir'] + '/set_' + str(settings['ind_set']) + '.mat'
-set_mat_dict = {}
-set_mat_dict['z'] = []
-# set_mat_dict['E'] = []
-# set_mat_dict['E_transverse'] = []
-set_mat_dict['v'] = []
-set_mat_dict['v_transverse'] = []
-set_mat_dict['v_axial'] = []
+# define the construct where this set's data will be saved
+compiled_set_file_without_suffix = settings['save_dir'] + '/set_' + str(settings['ind_set'])
+
+set_data_dict = {}
+set_data_dict['t'] = []
+set_data_dict['z'] = []
+set_data_dict['v'] = []
+set_data_dict['v_transverse'] = []
+set_data_dict['v_axial'] = []
+set_data_dict['Bz'] = []
 
 # loop over points for current process
 for ind_point in settings['points_set']:
@@ -47,20 +50,30 @@ for ind_point in settings['points_set']:
     v_0 = runs_dict['v_0'][ind_point]
 
     t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
-    dt = field_dict['tau_cyclotron'] / 20
+    dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     num_steps = int(t_max / dt)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
 
     # save snapshots of key simulation metrics
-    num_snapshots = 25
+    if settings['trajectory_save_method'] == 'intervals':
+        inds_samples = range(0, num_steps, int(num_steps / settings['num_snapshots']))
+    elif settings['trajectory_save_method'] == 'min_B':
+        Bz = hist['B'][:, 2]
+        inds_samples = find_peaks(-abs(Bz - field_dict['B0']))[0]
+    else:
+        raise ValueError('invalid option for trajectory_save_method: ' + str(settings['trajectory_save_method']))
+
+    # sample the trajectory
     t_array = []
     z_array = []
     v_array = []
     v_transverse_array = []
     v_axial_array = []
-    for i in range(0, num_steps, int(num_steps / num_snapshots)):
+    Bz_array = []
+
+    for i in inds_samples:
         # time
         t_array += [hist['t'][i]]
 
@@ -80,17 +93,22 @@ for ind_point in settings['points_set']:
         v_axial = hist['v'][i, 2]
         v_axial_array += [v_axial]
 
-
-    # save results of point to file
-    save_array = np.array([z_array, v_array, v_transverse_array, v_axial_array])
-    save_file_path = settings['save_dir'] + '/' + run_name + '.txt'
-    np.savetxt(save_file_path, save_array)
+        # magnetic field (axial)
+        Bz = hist['B'][i, 2]
+        Bz_array += [Bz]
 
     # perform compilation of results at the process level as well to make it faster after
-    set_mat_dict['z'] += [z_array]
-    set_mat_dict['v'] += [v_array]
-    set_mat_dict['v_transverse'] += [v_transverse_array]
-    set_mat_dict['v_axial'] += [v_axial_array]
+    set_data_dict['t'] += [t_array]
+    set_data_dict['z'] += [z_array]
+    set_data_dict['v'] += [v_array]
+    set_data_dict['v_transverse'] += [v_transverse_array]
+    set_data_dict['v_axial'] += [v_axial_array]
+    set_data_dict['Bz'] += [Bz_array]
 
-set_mat_dict['t'] = t_array
-savemat(compiled_set_file, set_mat_dict)
+if settings['set_save_format'] == 'mat':
+    savemat(compiled_set_file_without_suffix + '.mat', set_data_dict)
+elif settings['set_save_format'] == 'pickle':
+    with open(compiled_set_file_without_suffix + '.pickle', 'wb') as handle:
+        pickle.dump(set_data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+else:
+    raise ValueError('invalid set_save_format: ' + str(settings['set_save_format']))

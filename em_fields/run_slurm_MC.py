@@ -89,12 +89,12 @@ with open(field_dict_file, 'wb') as handle:
     pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 total_number_of_combinations = 20000
-# total_number_of_combinations = 1000
+# total_number_of_points = 1000
 
 # sampling velocity from Maxwell-Boltzmann
 scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
 v_abs_samples = maxwell.rvs(size=total_number_of_combinations, scale=scale)
-# v_abs_samples = settings['v_th'] * np.ones(total_number_of_combinations)  # testing constant velocity
+# v_abs_samples = settings['v_th'] * np.ones(total_number_of_points)  # testing constant velocity
 
 # sampling a random direction
 rand_unit_vec = np.random.randn(total_number_of_combinations, 3)
@@ -102,8 +102,8 @@ for i in range(total_number_of_combinations):
     rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
 
 # sampling a random direction but only within the right-LC
-# u = np.random.rand(total_number_of_combinations)
-# v = np.random.rand(total_number_of_combinations)
+# u = np.random.rand(total_number_of_points)
+# v = np.random.rand(total_number_of_points)
 # theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
 # v_min = (np.cos(theta_max) + 1) / 2
 # v *= (1 - v_min)
@@ -122,7 +122,7 @@ for i in range(total_number_of_combinations):
 
 # create and save the points file to be run later
 runs_dict = {'v_0': v_0}
-runs_dict_file = settings['save_dir'] + '/runs_dict.mat'
+runs_dict_file = settings['save_dir'] + '/points_dict.mat'
 savemat(runs_dict_file, runs_dict)
 
 # divide the points to a given number of cpus (250 is max in partition core)
