@@ -29,7 +29,7 @@ def get_plasma_frequency(ne, qe, me, eps0):
 
 
 def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dict=None, t_0=0, q=1.0, m=1.0,
-                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=False):
+                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=True):
     """
     Advance a charged particle in time under the influence of E,B fields.
     """
