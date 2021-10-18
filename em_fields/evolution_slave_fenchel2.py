@@ -6,7 +6,8 @@ import pickle
 
 import numpy as np
 from scipy.io import savemat, loadmat
-from scipy.signal import find_peaks
+# from scipy.signal import find_peaks # only supported above scipy 1.1
+from scipy.signal import argrelextrema
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
 from em_fields.em_functions import evolve_particle_in_em_fields
@@ -61,7 +62,8 @@ for ind_point in settings['points_set']:
         inds_samples = range(0, num_steps, int(num_steps / settings['num_snapshots']))
     elif settings['trajectory_save_method'] == 'min_B':
         Bz = hist['B'][:, 2]
-        inds_samples = find_peaks(-abs(Bz - field_dict['B0']))[0]
+        # inds_samples = find_peaks(-abs(Bz - field_dict['B0']))[0] # only supported above scipy 1.1
+        inds_samples = argrelextrema(abs(Bz - field_dict['B0']), np.less)[0]
     else:
         raise ValueError('invalid option for trajectory_save_method: ' + str(settings['trajectory_save_method']))
 
