@@ -8,7 +8,7 @@ from scipy.io import loadmat
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
 # save_dir += '/set6/'
-save_dir += '/set7/'
+save_dir += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 
 os.chdir(save_dir)
 

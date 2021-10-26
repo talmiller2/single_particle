@@ -15,67 +15,28 @@ plt.close('all')
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set4/'
 # save_dir_main += '/set5/'
-save_dir_main += '/set7/'
+save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'  # TODO: remember to change the name in the cluster folder
 
 set_names = []
 
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_0_alpha_2.718']
-# set_names += ['tmax_400_B0_0.1_T_3.0_traveling_ERF_2_alpha_2.718']
+# ERF = 0
+ERF = 10
+# ERF = 30
 
+# alpha = 1.0
+# alpha = 1.2
+# alpha = 1.5
+alpha = 2.0
 
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_2']
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_1.1_vz_1_1.5_2']
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_1.1_vz_1_2']
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
-# set_names += ['tmax_601_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_2']
+# vz_res = 0.5
+# vz_res = 1.0
+# vz_res = 1.5
+vz_res = 2.0
 
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_1.1_vz_1_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_1.1_1.1_vz_1_1.5_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_3_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_3_alpha_1.1_vz_2']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.5_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.7_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_2_vz_1']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.9_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.95_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.96_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.97_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_0.98_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_2']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.7_vz_2']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_0_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_3_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1.1_vz_1']
-
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_5_alpha_1.1_vz_1_zeroBRF']
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1_vz_2_sample4pi']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.3_vz_2_sample4pi']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1_vz_2_sample4pi']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_10_alpha_1.3_vz_2_sample4pi']
-
-
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_mat']
-set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_mat_snapminB']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_pickle']
-# set_names += ['tmax_400_B0_0.1_T_3.0_ERF_1_alpha_1.5_vz_1.5_save_pickle_snapminB']
-
+if ERF > 0:
+    set_names += ['ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
+else:
+    set_names += ['ERF_0']
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
@@ -96,13 +57,13 @@ for set_ind in range(len(set_names)):
     # ind_points = range(5)
     # ind_points = range(10)
     # ind_points = range(20)
-    # ind_points = range(100)
+    ind_points = range(100)
     # ind_points = range(300)
     # ind_points = range(1000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
     # ind_points = range(30, 40)
-    ind_points = range(num_particles)
+    # ind_points = range(num_particles)
 
     # do_particles_plot = False
     do_particles_plot = True
@@ -129,12 +90,27 @@ for set_ind in range(len(set_names)):
         pass
 
     for ind_point in ind_points:
-        t = np.array(data_dict['t'][ind_point])
-        z = np.array(data_dict['z'][ind_point])
-        v = np.array(data_dict['v'][ind_point])
-        v_transverse = np.array(data_dict['v_transverse'][ind_point])
-        v_axial = np.array(data_dict['v_axial'][ind_point])
-        Bz = np.array(data_dict['Bz'][ind_point])
+        # skip = 1
+        # skip = 2
+        # num_snapshots = len(data_dict['t'][ind_point])
+        # t = np.array(data_dict['t'][ind_point])[0::skip]
+        # z = np.array(data_dict['z'][ind_point])[0::skip]
+        # v = np.array(data_dict['v'][ind_point])[0::skip]
+        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[0::skip]
+        # v_axial = np.array(data_dict['v_axial'][ind_point])[0::skip]
+        # Bz = np.array(data_dict['Bz'][ind_point])[0::skip]
+
+        # pick only the indices where v_axial is the same direction as the initial v_axial
+        vz = np.array(data_dict['v_axial'][ind_point])
+        # positive_z_velocity = np.sign(vz[0])
+        positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
+        inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
+        t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
+        z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
+        v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
+        v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
+        v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
+        Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
 
         # calculate if a particle is initially in right loss cone
         # LC_cutoff = field_dict['Rm'] ** (-0.5)
@@ -161,8 +137,8 @@ for set_ind in range(len(set_names)):
             do_plot = True
             # do_plot = False
 
-        if not positive_z_velocity:  # draw points that started with negative velocity, on negative side of the plot
-            v_axial *= -1
+        # if not positive_z_velocity:  # draw points that started with negative velocity, on negative side of the plot
+        #     v_axial *= -1
 
         # plots
         if do_plot and do_particles_plot:
@@ -205,9 +181,9 @@ for set_ind in range(len(set_names)):
                      )
             plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
 
-            plt.figure(5)
-            plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
-                     linewidth=linewidth)
+            # plt.figure(5)
+            # plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
+            #          linewidth=linewidth)
 
             # E = (v / settings['v_th']) ** 2
             # E_transverse = (v_transverse / settings['v_th']) ** 2
@@ -239,21 +215,99 @@ for set_ind in range(len(set_names)):
         # plt.ylabel('$z/l$')
         # plt.tight_layout()
 
+        # check for all initial trajectories, if they can resonate down the mirror
+
+        # vz_test = 1.5
+        # vt_test = 0.5
+        # v_tilde = vz_res / (alpha - 1.0)
+        # determinant =  4 * alpha ** 2 * v_tilde ** 4 - 4 * (v_tilde ** 2 + vt_test ** 2) * (alpha ** 2 * v_tilde ** 2 - vz_test ** 2 - vz_test ** 2)
+        # B_sol1 = ( 2 * alpha + v_tilde ** 2 + np.sqrt(determinant) ) / (2 * (v_tilde ** 2 + vt_test ** 2))
+        # B_sol2 = ( 2 * alpha - v_tilde ** 2 + np.sqrt(determinant) ) / (2 * (v_tilde ** 2 + vt_test ** 2))
+        #
+        # if (B_sol1 >= 1 and B_sol1 <= field_dict['Rm']) or (B_sol2 >= 1 and B_sol2 <= field_dict['Rm']):
+        #     left_going_resonates = True
+        # else:
+        #     left_going_resonates = False
+
+        # vz_arr = - np.linspace(0, 4, 40)
+        # vt_arr = np.linspace(0, 4, 40)
+        vz_arr = - np.linspace(0, 3, 100)
+        vt_arr = np.linspace(0, 3, 100)
+
+        # vz_valid = []
+        # vt_valid = []
+        # for vz_test in vz_arr:
+        #     for vt_test in vt_arr:
+        #         left_going_resonates = False
+        #
+        #         v_tilde = vz_res / (alpha - 1.0)
+        #         determinant = 4 * alpha ** 2 * v_tilde ** 4 - 4 * (v_tilde ** 2 + vt_test ** 2) * (
+        #                     alpha ** 2 * v_tilde ** 2 - vz_test ** 2 - vz_test ** 2)
+        #         if determinant >= 0:
+        #             B_sol1 = (2 * alpha * v_tilde ** 2 + np.sqrt(determinant)) / (2 * (v_tilde ** 2 + vt_test ** 2))
+        #             B_sol2 = (2 * alpha * v_tilde ** 2 - np.sqrt(determinant)) / (2 * (v_tilde ** 2 + vt_test ** 2))
+        #             if (B_sol1 >= 1 and B_sol1 <= field_dict['Rm']) or (B_sol2 >= 1 and B_sol2 <= field_dict['Rm']):
+        #             # if1 (B_sol1 >= 1 and B_sol1 <= field_dict['Rm']):
+        #             # if (B_sol2 >= 1 and B_sol2 <= field_dict['Rm']):
+        #                 left_going_resonates = True
+        #             # if B_sol1 < 0 or B_sol2 < 0:
+        #             #     print('vz=' + str(vz_test) + ', vt=' + str(vt_test) + ': B_sols=' + str(B_sol1) + ',' + str(B_sol2))
+        #
+        #         if left_going_resonates:
+        #             vz_valid += [vz_test]
+        #             vt_valid += [vt_test]
+
+        vt_min_array = np.zeros(len(vz_arr))
+        vt_max_array = np.zeros(len(vz_arr))
+        for ind_vz, vz_test in enumerate(vz_arr):
+            vt_valid_points = []
+            for vt_test in vt_arr:
+                left_going_resonates = False
+
+                v_tilde = vz_res / (alpha - 1.0)
+                determinant = 4 * alpha ** 2 * v_tilde ** 4 - 4 * (v_tilde ** 2 + vt_test ** 2) * (
+                        alpha ** 2 * v_tilde ** 2 - vz_test ** 2 - vz_test ** 2)
+                if determinant >= 0:
+                    B_sol1 = (2 * alpha * v_tilde ** 2 + np.sqrt(determinant)) / (2 * (v_tilde ** 2 + vt_test ** 2))
+                    B_sol2 = (2 * alpha * v_tilde ** 2 - np.sqrt(determinant)) / (2 * (v_tilde ** 2 + vt_test ** 2))
+                    if (B_sol1 >= 1 and B_sol1 <= field_dict['Rm']) or (B_sol2 >= 1 and B_sol2 <= field_dict['Rm']):
+                        # if (B_sol1 >= 1) or (B_sol2 >= 1):
+                        # if1 (B_sol1 >= 1 and B_sol1 <= field_dict['Rm']):
+                        # if (B_sol2 >= 1 and B_sol2 <= field_dict['Rm']):
+                        left_going_resonates = True
+                    # if B_sol1 < 0 or B_sol2 < 0:
+                    #     print('vz=' + str(vz_test) + ', vt=' + str(vt_test) + ': B_sols=' + str(B_sol1) + ',' + str(B_sol2))
+                    # if B_sol1 > 0 and B_sol2 > 0:
+                    #     print('vz=' + str(vz_test) + ', vt=' + str(vt_test) + ': B_sols=' + str(B_sol1) + ',' + str(B_sol2))
+
+                if left_going_resonates:
+                    vt_valid_points += [vt_test]
+
+            vt_min_array[ind_vz] = np.min(vt_valid_points)
+            vt_max_array[ind_vz] = np.max(vt_valid_points)
+
         plt.figure(4)
-        plt.plot(np.linspace(0, 2, 10), np.sqrt(1 / (field_dict['Rm'] - 1.0)) * np.linspace(0, 2, 10), '-k',
-                 linewidth=3)
-        plt.plot(-np.linspace(0, 2, 10), np.sqrt(1 / (field_dict['Rm'] - 1.0)) * np.linspace(0, 2, 10), '-k',
-                 linewidth=3)
+        v_arr = np.linspace(0, 3, 100)
+        plt.plot(v_arr, np.sqrt(1 / (field_dict['Rm'] - 1.0)) * v_arr, '-k', linewidth=3)
+        plt.plot(-v_arr, np.sqrt(1 / (field_dict['Rm'] - 1.0)) * v_arr, '-k', linewidth=3)
+        # plt.plot(vz_res + 0 * v_arr, v_arr, '--k', linewidth=3)
+        # plt.plot(v_arr, np.sqrt((v_arr ** 2.0 - vz_res ** 2.0) / (field_dict['Rm'] ** 2.0 - 1.0)) , '--k', linewidth=3)
+        # plt.plot(-vz_res + 0 * v_arr, v_arr, '--k', linewidth=3)
+        # plt.plot(-v_arr, np.sqrt((v_arr ** 2.0 - vz_res ** 2.0) / (field_dict['Rm'] ** 2.0 - 1.0)), '--k', linewidth=3)
+        # plt.scatter(vz_valid, vt_valid, color='m', s=2)
+        # plt.scatter(vz_res + 0 * vt_arr, vt_arr, color='m', s=2)
+        plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='m', alpha=0.5)
+        plt.plot(vz_res + 0 * vt_arr, vt_arr, color='m', linewidth=3, alpha=0.5)
         plt.grid(True)
         plt.xlabel('$v_{\parallel}/v_{th}$')
         plt.ylabel('$v_{\perp}/v_{th}$')
         plt.tight_layout()
 
-        plt.figure(5)
-        plt.grid(True)
-        plt.xlabel('$t/\\tau_{cyc}$')
-        plt.ylabel('$B_z$')
-        plt.tight_layout()
+        # plt.figure(5)
+        # plt.grid(True)
+        # plt.xlabel('$t/\\tau_{cyc}$')
+        # plt.ylabel('$B_z$')
+        # plt.tight_layout()
 
         # ax1.grid(True)
         # ax1.set_xlabel('$t/\\tau_{cyc}$')
