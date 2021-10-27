@@ -17,8 +17,8 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set5/'
 # save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 # save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
-# save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m_take2/'
-save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
+# save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
+save_dir_main += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
 
 set_names = []
 
@@ -30,17 +30,17 @@ ERF = 10
 # alpha = 0.8
 # alpha = 1.0
 # alpha = 1.2
-alpha = 1.5
+# alpha = 1.5
 # alpha = 2.0
-# alpha = 2.5
+alpha = 2.5
+# alpha = 3.0
 
 # vz_res = 0.5
 # vz_res = 1.0
-vz_res = 1.5
+# vz_res = 1.5
 # vz_res = 2.0
 # vz_res = 2.5
-# vz_res = 3.0
-
+vz_res = 3.0
 
 omega_RF_over_omega_cyc_0 = alpha
 v_RF = vz_res * alpha / (alpha - 1.0)
@@ -66,14 +66,14 @@ for set_ind in range(len(set_names)):
     # draw trajectories for several particles
     num_particles = len(data_dict['z'])
     # ind_points = [0, 1, 2, 4, 5]
-    ind_points = [0]
+    # ind_points = [0]
     # ind_points = [3]
     # ind_points = range(5)
     # ind_points = range(10)
     # ind_points = range(20)
     # ind_points = range(100)
     # ind_points = range(300)
-    # ind_points = range(1000)
+    ind_points = range(1000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
     # ind_points = range(30, 40)

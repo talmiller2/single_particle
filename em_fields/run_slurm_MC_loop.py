@@ -23,8 +23,9 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set5/'
 # main_folder += '/set6/'
 # main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
-main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
 # main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
+main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
 
 plt.close('all')
 
@@ -34,14 +35,14 @@ plt.close('all')
 # v_loop_list = [1]
 # alpha_loop_list = [1]
 
-v_loop_list = [1.5]
-alpha_loop_list = [1.5]
+# v_loop_list = [1.5]
+# alpha_loop_list = [1.5]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
-# v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5]
+v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -60,11 +61,9 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
-        field_dict['E_RF_kVm'] = 0  # kV/m
-        # field_dict['E_RF_kVm'] = 1  # kV/m
-        # field_dict['E_RF_kVm'] = 2  # kV/m
-        # field_dict['E_RF_kVm'] = 5  # kV/m
-        # field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 0  # kV/m
+        field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 30  # kV/m
 
         field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
@@ -78,7 +77,7 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict=field_dict)
 
         # simulation duration
-        sim_cyclotron_periods = int(20 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
+        sim_cyclotron_periods = int(100 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         save_dir = ''
@@ -111,7 +110,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 1000
+        # total_number_of_points = 1000
+        total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
