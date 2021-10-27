@@ -2,11 +2,11 @@
 
 import argparse
 import ast
+import copy
 import pickle
 
 import numpy as np
 from scipy.io import savemat, loadmat
-# from scipy.signal import find_peaks # only supported above scipy 1.1
 from scipy.signal import argrelextrema
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
@@ -23,6 +23,9 @@ print('args.settings = ' + str(args.settings))
 settings = ast.literal_eval(args.settings)
 print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
+
+field_dict_no_B_RF = copy.deepcopy(field_dict)
+field_dict_no_B_RF['nullify_RF_magnetic_field'] = True
 
 # load data for runs
 runs_dict_file = settings['save_dir'] + '/points_dict.mat'
@@ -62,8 +65,32 @@ for ind_point in settings['points_set']:
         inds_samples = range(0, num_steps, int(num_steps / settings['num_snapshots']))
     elif settings['trajectory_save_method'] == 'min_B':
         Bz = hist['B'][:, 2]
-        # inds_samples = find_peaks(-abs(Bz - field_dict['B0']))[0] # only supported above scipy 1.1
         inds_samples = argrelextrema(abs(Bz - field_dict['B0']), np.less)[0]
+    elif settings['trajectory_save_method'] == 'min_B_mirror_const_vz_sign':
+
+        # TODO: switch to calculaing B_mirror as well, not the total B, and also pick only where the intersection is same as initial direction
+
+        # B0 = field_dict['B0']
+        # Rm = field_dict['Rm']
+        # l = field_dict['l']
+        # mirror_field_type = field_dict['mirror_field_type']
+        # x = hist['x']
+        # B_mirror = []
+        # for x_curr in x:
+        #     B_mirror += [get_mirror_magnetic_field(x, B0, Rm, l, mirror_field_type=mirror_field_type)]
+
+        B_mirror = []
+        for x_curr, t_curr in zip(hist['x'], hist['t']):
+            B_mirror += [B_RF_function(x_curr, t_curr, **field_dict_no_B_RF)]
+        Bz_mirror = np.array(B_mirror)[:, 2]
+        inds_Bz_mirror_extrema = argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0]
+
+        vz = hist['v'][:, 2]
+        vz_0 = v_0[2]
+        inds_const_vz_sign = np.where(np.sign(vz) == np.sign(vz_0))[0]
+
+        inds_samples = list(set(inds_Bz_mirror_extrema) & set(inds_const_vz_sign))  # combine both conditions
+
     else:
         raise ValueError('invalid option for trajectory_save_method: ' + str(settings['trajectory_save_method']))
 

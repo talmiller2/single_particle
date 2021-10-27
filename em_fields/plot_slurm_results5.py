@@ -15,7 +15,7 @@ plt.close('all')
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set4/'
 # save_dir_main += '/set5/'
-save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'  # TODO: remember to change the name in the cluster folder
+save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 
 set_names = []
 

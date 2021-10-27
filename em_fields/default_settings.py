@@ -46,7 +46,8 @@ def define_default_settings(settings=None):
         settings['time_step_tau_cyclotron_divisions'] = 20.0
     if 'trajectory_save_method' not in settings:
         # settings['trajectory_save_method'] = 'intervals'
-        settings['trajectory_save_method'] = 'min_B'
+        # settings['trajectory_save_method'] = 'min_B'
+        settings['trajectory_save_method'] = 'min_B_mirror_const_vz_sign'
     if settings['trajectory_save_method'] == 'intervals':
         settings['num_snapshots'] = 25
     if 'set_save_format' not in settings:

@@ -22,18 +22,22 @@ slurm_kwargs = {'partition': 'core'}  # default
 main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set5/'
 # main_folder += '/set6/'
-main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
+# main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
+main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
 
 plt.close('all')
 
 # v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 # alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
 
-# v_loop_list = [1]
-# alpha_loop_list = [1]
+v_loop_list = [1]
+alpha_loop_list = [1]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0]
-alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
+
+# v_loop_list = [0.3, 0.5, 1.0, 1.5, 2.0, 3.0]
+# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -52,11 +56,11 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
-        field_dict['E_RF_kVm'] = 0  # kV/m
+        # field_dict['E_RF_kVm'] = 0  # kV/m
         # field_dict['E_RF_kVm'] = 1  # kV/m
         # field_dict['E_RF_kVm'] = 2  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
-        # field_dict['E_RF_kVm'] = 10  # kV/m
+        field_dict['E_RF_kVm'] = 10  # kV/m
 
         field_dict['v_z_factor_list'] = [v_loop]
 
