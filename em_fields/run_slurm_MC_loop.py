@@ -109,9 +109,9 @@ for v_loop in v_loop_list:
         with open(field_dict_file, 'wb') as handle:
             pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-        total_number_of_points = 1
+        # total_number_of_points = 1
         # total_number_of_points = 40
-        # total_number_of_points = 1000
+        total_number_of_points = 1000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -165,9 +165,9 @@ for v_loop in v_loop_list:
         savemat(points_dict_file, points_dict)
 
         # divide the points to a given number of cpus (250 is max in partition core)
-        num_cpus = 1
+        # num_cpus = 1
         # num_cpus = 2
-        # num_cpus = 10
+        num_cpus = 10
         # num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
