@@ -24,6 +24,7 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set6/'
 # main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 
 plt.close('all')
 
@@ -61,6 +62,9 @@ for v_loop in v_loop_list:
         # field_dict['E_RF_kVm'] = 2  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
         field_dict['E_RF_kVm'] = 10  # kV/m
+
+        field_dict['phase_RF_addition'] = 0
+        # field_dict['phase_RF_addition'] = np.pi
 
         field_dict['v_z_factor_list'] = [v_loop]
 
@@ -127,6 +131,7 @@ for v_loop in v_loop_list:
                 rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
         elif settings['direction_velocity_sampling_type'] == 'right_loss_cone':
             # sampling a random direction but only within the right-LC
+            np.random.seed(0)
             u = np.random.rand(total_number_of_points)
             v = np.random.rand(total_number_of_points)
             theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi

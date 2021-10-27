@@ -10,13 +10,14 @@ import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 12})
 
-plt.close('all')
+# plt.close('all')
 
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set4/'
 # save_dir_main += '/set5/'
 # save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 
 set_names = []
 
@@ -27,17 +28,23 @@ ERF = 10
 # alpha = 0.6
 # alpha = 0.8
 # alpha = 1.0
-# alpha = 1.2
-alpha = 1.5
+alpha = 1.2
+# alpha = 1.5
 # alpha = 2.0
-# alpha = 3.0
+# alpha = 2.5
 
 # vz_res = 0.5
 # vz_res = 1.0
-# vz_res = 1.5
-vz_res = 2.0
+vz_res = 1.5
+# vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
+
+
+omega_RF_over_omega_cyc_0 = alpha
+v_RF = vz_res * alpha / (alpha - 1.0)
+print('vz_res/v_th = ' + str(vz_res) + ', alpha = ' + str(alpha))
+print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + '{:.2f}'.format(v_RF))
 
 if ERF > 0:
     set_names += ['ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
@@ -64,8 +71,8 @@ for set_ind in range(len(set_names)):
     # ind_points = range(10)
     # ind_points = range(20)
     # ind_points = range(100)
-    # ind_points = range(300)
-    ind_points = range(1000)
+    ind_points = range(300)
+    # ind_points = range(1000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
     # ind_points = range(30, 40)
@@ -114,19 +121,19 @@ for set_ind in range(len(set_names)):
         v_axial = np.array(data_dict['v_axial'][ind_point])
         Bz = np.array(data_dict['Bz'][ind_point])
 
-        if len(data_dict['t'][ind_point]) > 0:
+        # pick only the indices where v_axial is the same direction as the initial v_axial
+        vz = np.array(data_dict['v_axial'][ind_point])
+        # # positive_z_velocity = np.sign(vz[0])
+        # positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
+        # inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
+        # t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
+        # z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
+        # v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
+        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
+        # v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
+        # Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
 
-            # pick only the indices where v_axial is the same direction as the initial v_axial
-            vz = np.array(data_dict['v_axial'][ind_point])
-            # # positive_z_velocity = np.sign(vz[0])
-            # positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
-            # inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
-            # t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
-            # z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
-            # v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
-            # v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
-            # v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
-            # Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
+        if len(t) > 0:
 
             # calculate if a particle is initially in right loss cone
             # LC_cutoff = field_dict['Rm'] ** (-0.5)
@@ -194,7 +201,9 @@ for set_ind in range(len(set_names)):
                 plt.plot(v_axial / settings['v_th'], v_transverse / settings['v_th'], label=ind_point,
                          linewidth=linewidth,
                          # linestyle=linestyle,
-                         linestyle='none', marker='o', markersize=2,
+                         linestyle='none',
+                         # linestyle='-',
+                         marker='o', markersize=2,
                          )
                 plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
 

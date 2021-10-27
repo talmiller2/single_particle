@@ -106,6 +106,9 @@ def define_default_field(settings, field_dict=None):
         if 'v_z_factor_list' not in field_dict:
             field_dict['v_z_factor_list'] = [1]
             # field_dict['v_z_factor_list'] = [1, 1]
+        if 'phase_RF_addition' not in field_dict:
+            field_dict['phase_RF_addition'] = 0
+
         omega_RF = []
         v_RF = []
         k_RF = []
@@ -116,9 +119,9 @@ def define_default_field(settings, field_dict=None):
             omega_RF += [alpha_detune * field_dict['omega_cyclotron']]
             v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th'] * v_z_factor]
             k_RF += [omega_RF[-1] / v_RF[-1]]
-            # phase_RF += [0]
-            phase_RF += [np.pi * cnt ** (np.e - 1) / len(
-                field_dict['alpha_detune_list'])]  # pull the different RF waves out of sync
+            # pull the different RF waves out of sync
+            phase_RF += [np.pi * cnt ** (np.e - 1) / len(field_dict['alpha_detune_list'])
+                         + field_dict['phase_RF_addition']]
             cnt += 1
 
     field_dict['c'] = settings['c']

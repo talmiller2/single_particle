@@ -10,6 +10,7 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set6/'
 # save_dir += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 save_dir += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 
 os.chdir(save_dir)
 
