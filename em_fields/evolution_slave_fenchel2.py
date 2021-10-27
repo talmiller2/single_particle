@@ -73,7 +73,8 @@ for ind_point in settings['points_set']:
         Bz_mirror = np.array(B_mirror)[:, 2]
         inds_Bz_mirror_extrema = argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0]
         print('inds_Bz_mirror_extrema = ' + str(inds_Bz_mirror_extrema))  # TODO: test
-        inds_Bz_mirror_extrema = [0] + inds_Bz_mirror_extrema  # add the initial time
+        # inds_Bz_mirror_extrema = [0] + inds_Bz_mirror_extrema  # add the initial time
+        inds_Bz_mirror_extrema.insert(0, 0)
         print('inds_Bz_mirror_extrema = ' + str(inds_Bz_mirror_extrema))  # TODO: test
 
         vz = hist['v'][:, 2]
@@ -83,6 +84,9 @@ for ind_point in settings['points_set']:
 
         inds_samples = list(set(inds_Bz_mirror_extrema) & set(inds_const_vz_sign))  # combine both conditions
         print('inds_samples = ' + str(inds_samples))  # TODO: test
+
+        # add the initial time
+        inds_samples
 
     else:
         raise ValueError('invalid option for trajectory_save_method: ' + str(settings['trajectory_save_method']))
