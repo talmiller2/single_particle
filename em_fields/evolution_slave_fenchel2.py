@@ -67,23 +67,12 @@ for ind_point in settings['points_set']:
         Bz = hist['B'][:, 2]
         inds_samples = argrelextrema(abs(Bz - field_dict['B0']), np.less)[0]
     elif settings['trajectory_save_method'] == 'min_B_mirror_const_vz_sign':
-
-        # TODO: switch to calculaing B_mirror as well, not the total B, and also pick only where the intersection is same as initial direction
-
-        # B0 = field_dict['B0']
-        # Rm = field_dict['Rm']
-        # l = field_dict['l']
-        # mirror_field_type = field_dict['mirror_field_type']
-        # x = hist['x']
-        # B_mirror = []
-        # for x_curr in x:
-        #     B_mirror += [get_mirror_magnetic_field(x, B0, Rm, l, mirror_field_type=mirror_field_type)]
-
         B_mirror = []
         for x_curr, t_curr in zip(hist['x'], hist['t']):
             B_mirror += [B_RF_function(x_curr, t_curr, **field_dict_no_B_RF)]
         Bz_mirror = np.array(B_mirror)[:, 2]
         inds_Bz_mirror_extrema = argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0]
+        inds_Bz_mirror_extrema = [0] + inds_Bz_mirror_extrema  # add the initial time
 
         vz = hist['v'][:, 2]
         vz_0 = v_0[2]

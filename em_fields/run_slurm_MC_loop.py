@@ -30,14 +30,14 @@ plt.close('all')
 # v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 # alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
 
-v_loop_list = [1]
-alpha_loop_list = [1]
+# v_loop_list = [1]
+# alpha_loop_list = [1]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
-# v_loop_list = [0.3, 0.5, 1.0, 1.5, 2.0, 3.0]
-# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0]
+v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -103,8 +103,8 @@ for v_loop in v_loop_list:
             pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         # total_number_of_points = 40
-        # total_number_of_points = 1000
-        total_number_of_points = 10000
+        total_number_of_points = 1000
+        # total_number_of_points = 10000
         # total_number_of_points = 20000
 
         # define absolute velocities of particles
@@ -155,7 +155,7 @@ for v_loop in v_loop_list:
 
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 2
-        num_cpus = 15
+        num_cpus = 10
         # num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)

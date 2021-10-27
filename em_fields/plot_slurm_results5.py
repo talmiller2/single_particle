@@ -15,7 +15,8 @@ plt.close('all')
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set4/'
 # save_dir_main += '/set5/'
-save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
+save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
 
 set_names = []
 
@@ -23,15 +24,20 @@ set_names = []
 ERF = 10
 # ERF = 30
 
+# alpha = 0.6
+# alpha = 0.8
 # alpha = 1.0
 # alpha = 1.2
-# alpha = 1.5
-alpha = 2.0
+alpha = 1.5
+# alpha = 2.0
+# alpha = 3.0
 
 # vz_res = 0.5
 # vz_res = 1.0
 # vz_res = 1.5
 vz_res = 2.0
+# vz_res = 2.5
+# vz_res = 3.0
 
 if ERF > 0:
     set_names += ['ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
@@ -57,9 +63,9 @@ for set_ind in range(len(set_names)):
     # ind_points = range(5)
     # ind_points = range(10)
     # ind_points = range(20)
-    ind_points = range(100)
+    # ind_points = range(100)
     # ind_points = range(300)
-    # ind_points = range(1000)
+    ind_points = range(1000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
     # ind_points = range(30, 40)
@@ -89,10 +95,11 @@ for set_ind in range(len(set_names)):
 
         pass
 
+    # for ind_point in ind_points:
     for ind_point in ind_points:
         # skip = 1
-        # skip = 2
-        # num_snapshots = len(data_dict['t'][ind_point])
+        # # skip = 2
+        # # num_snapshots = len(data_dict['t'][ind_point])
         # t = np.array(data_dict['t'][ind_point])[0::skip]
         # z = np.array(data_dict['z'][ind_point])[0::skip]
         # v = np.array(data_dict['v'][ind_point])[0::skip]
@@ -100,98 +107,108 @@ for set_ind in range(len(set_names)):
         # v_axial = np.array(data_dict['v_axial'][ind_point])[0::skip]
         # Bz = np.array(data_dict['Bz'][ind_point])[0::skip]
 
-        # pick only the indices where v_axial is the same direction as the initial v_axial
-        vz = np.array(data_dict['v_axial'][ind_point])
-        # positive_z_velocity = np.sign(vz[0])
-        positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
-        inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
-        t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
-        z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
-        v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
-        v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
-        v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
-        Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
+        t = np.array(data_dict['t'][ind_point])
+        z = np.array(data_dict['z'][ind_point])
+        v = np.array(data_dict['v'][ind_point])
+        v_transverse = np.array(data_dict['v_transverse'][ind_point])
+        v_axial = np.array(data_dict['v_axial'][ind_point])
+        Bz = np.array(data_dict['Bz'][ind_point])
 
-        # calculate if a particle is initially in right loss cone
-        # LC_cutoff = field_dict['Rm'] ** (-0.5)
-        # in_loss_cone = v_transverse[0] / v[0] < LC_cutoff
-        in_loss_cone = (v_transverse[0] / v[0]) ** 2 < 1 / field_dict['Rm']
-        # in_loss_cone = (v_transverse[0] / v_axial[0]) ** 2 < 1 / (field_dict['Rm'] - 1.0)
-        positive_z_velocity = v_axial[0] > 0
+        if len(data_dict['t'][ind_point]) > 0:
 
-        if in_loss_cone and positive_z_velocity:  # right loss cone
-            linestyle = '-'
-            linewidth = 1
-            do_plot = True
-            # do_plot = False
-        elif in_loss_cone and not positive_z_velocity:  # left loss cone
-            # linestyle = ':'
-            linestyle = '-'
-            linewidth = 1
-            do_plot = True
-            # do_plot = False
-        else:  # trapped
-            # linestyle = '--'
-            linestyle = '-'
-            linewidth = 1
-            do_plot = True
-            # do_plot = False
+            # pick only the indices where v_axial is the same direction as the initial v_axial
+            vz = np.array(data_dict['v_axial'][ind_point])
+            # # positive_z_velocity = np.sign(vz[0])
+            # positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
+            # inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
+            # t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
+            # z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
+            # v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
+            # v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
+            # v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
+            # Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
 
-        # if not positive_z_velocity:  # draw points that started with negative velocity, on negative side of the plot
-        #     v_axial *= -1
+            # calculate if a particle is initially in right loss cone
+            # LC_cutoff = field_dict['Rm'] ** (-0.5)
+            # in_loss_cone = v_transverse[0] / v[0] < LC_cutoff
+            in_loss_cone = (v_transverse[0] / v[0]) ** 2 < 1 / field_dict['Rm']
+            # in_loss_cone = (v_transverse[0] / v_axial[0]) ** 2 < 1 / (field_dict['Rm'] - 1.0)
+            positive_z_velocity = v_axial[0] > 0
 
-        # plots
-        if do_plot and do_particles_plot:
-            # ax1.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
-            # ax1.set_xlabel('$t/\\tau_{cyc}$')
-            # ax1.set_ylabel('$z/l$')
-            #
-            # ax2.plot(t_array / field_dict['tau_cyclotron'], v / settings['v_th'], label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
-            # ax2.set_xlabel('$t/\\tau_{cyc}$')
-            # ax2.set_ylabel('$|v|/v_{th}$')
-            #
-            # ax3.plot(t_array / field_dict['tau_cyclotron'], v_transverse / settings['v_th'], label=ind_point,
-            #          linestyle=linestyle, linewidth=linewidth)
-            # ax3.set_xlabel('$t/\\tau_{cyc}$')
-            # ax3.set_ylabel('$v_{\perp}/v_{th}$')
-            #
-            # # ax4.plot(v_axial / settings['v_th'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
-            # ax4.plot(t_array / field_dict['tau_cyclotron'], v_transverse / v, label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
-            # ax4.set_xlabel('$t/\\tau_{cyc}$')
-            # # ax4.set_ylabel('$v_{z}/v_{th}$')
-            # ax4.set_ylabel('$v_{\perp}/|v|$')
+            if in_loss_cone and positive_z_velocity:  # right loss cone
+                linestyle = '-'
+                linewidth = 1
+                do_plot = True
+                # do_plot = False
+            elif in_loss_cone and not positive_z_velocity:  # left loss cone
+                # linestyle = ':'
+                linestyle = '-'
+                linewidth = 1
+                do_plot = True
+                # do_plot = False
+            else:  # trapped
+                # linestyle = '--'
+                linestyle = '-'
+                linewidth = 1
+                do_plot = True
+                # do_plot = False
 
-            # plt.figure(2)
-            # E = (v / settings['v_th']) ** 2
-            # E_transverse = (v_transverse / settings['v_th']) ** 2
-            # plt.plot(t_array / field_dict['tau_cyclotron'], E_transverse, label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
-            #
-            # plt.figure(3)
-            # plt.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth, marker='o', markersize=2,)
+            # if not positive_z_velocity:  # draw points that started with negative velocity, on negative side of the plot
+            #     v_axial *= -1
 
-            plt.figure(4)
-            plt.plot(v_axial / settings['v_th'], v_transverse / settings['v_th'], label=ind_point, linewidth=linewidth,
-                     # linestyle=linestyle,
-                     linestyle='none', marker='o', markersize=2,
-                     )
-            plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
+            # plots
+            if do_plot and do_particles_plot:
+                # ax1.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+                # ax1.set_xlabel('$t/\\tau_{cyc}$')
+                # ax1.set_ylabel('$z/l$')
+                #
+                # ax2.plot(t_array / field_dict['tau_cyclotron'], v / settings['v_th'], label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+                # ax2.set_xlabel('$t/\\tau_{cyc}$')
+                # ax2.set_ylabel('$|v|/v_{th}$')
+                #
+                # ax3.plot(t_array / field_dict['tau_cyclotron'], v_transverse / settings['v_th'], label=ind_point,
+                #          linestyle=linestyle, linewidth=linewidth)
+                # ax3.set_xlabel('$t/\\tau_{cyc}$')
+                # ax3.set_ylabel('$v_{\perp}/v_{th}$')
+                #
+                # # ax4.plot(v_axial / settings['v_th'], label=ind_point, linestyle=linestyle, linewidth=linewidth)
+                # ax4.plot(t_array / field_dict['tau_cyclotron'], v_transverse / v, label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+                # ax4.set_xlabel('$t/\\tau_{cyc}$')
+                # # ax4.set_ylabel('$v_{z}/v_{th}$')
+                # ax4.set_ylabel('$v_{\perp}/|v|$')
 
-            # plt.figure(5)
-            # plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
+                # plt.figure(2)
+                # E = (v / settings['v_th']) ** 2
+                # E_transverse = (v_transverse / settings['v_th']) ** 2
+                # plt.plot(t_array / field_dict['tau_cyclotron'], E_transverse, label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+                #
+                # plt.figure(3)
+                # plt.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth, marker='o', markersize=2,)
 
-            # E = (v / settings['v_th']) ** 2
-            # E_transverse = (v_transverse / settings['v_th']) ** 2
-            # ax1.plot(t_array / field_dict['tau_cyclotron'], E_transverse, label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
-            #
-            # ax2.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
-            #          linewidth=linewidth)
+                plt.figure(4)
+                plt.plot(v_axial / settings['v_th'], v_transverse / settings['v_th'], label=ind_point,
+                         linewidth=linewidth,
+                         # linestyle=linestyle,
+                         linestyle='none', marker='o', markersize=2,
+                         )
+                plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
+
+                # plt.figure(5)
+                # plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+
+                # E = (v / settings['v_th']) ** 2
+                # E_transverse = (v_transverse / settings['v_th']) ** 2
+                # ax1.plot(t_array / field_dict['tau_cyclotron'], E_transverse, label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
+                #
+                # ax2.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth)
 
     if do_particles_plot:
         # ax1.grid(True)
@@ -231,7 +248,8 @@ for set_ind in range(len(set_names)):
 
         # vz_arr = - np.linspace(0, 4, 40)
         # vt_arr = np.linspace(0, 4, 40)
-        vz_arr = - np.linspace(0, 3, 100)
+
+        vz_arr = - np.sign(alpha - 1) * np.linspace(0, 3, 100)
         vt_arr = np.linspace(0, 3, 100)
 
         # vz_valid = []
@@ -283,8 +301,12 @@ for set_ind in range(len(set_names)):
                 if left_going_resonates:
                     vt_valid_points += [vt_test]
 
-            vt_min_array[ind_vz] = np.min(vt_valid_points)
-            vt_max_array[ind_vz] = np.max(vt_valid_points)
+            if len(vt_valid_points) > 0:
+                vt_min_array[ind_vz] = np.min(vt_valid_points)
+                vt_max_array[ind_vz] = np.max(vt_valid_points)
+            else:
+                vt_min_array[ind_vz] = np.nan
+                vt_max_array[ind_vz] = np.nan
 
         plt.figure(4)
         v_arr = np.linspace(0, 3, 100)
