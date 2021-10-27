@@ -16,8 +16,8 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set4/'
 # save_dir_main += '/set5/'
 # save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
-save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
-# save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
+# save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 
 set_names = []
 
@@ -65,13 +65,13 @@ for set_ind in range(len(set_names)):
     # draw trajectories for several particles
     num_particles = len(data_dict['z'])
     # ind_points = [0, 1, 2, 4, 5]
-    # ind_points = [0]
+    ind_points = [0]
     # ind_points = [3]
     # ind_points = range(5)
     # ind_points = range(10)
     # ind_points = range(20)
     # ind_points = range(100)
-    ind_points = range(300)
+    # ind_points = range(300)
     # ind_points = range(1000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
@@ -327,8 +327,8 @@ for set_ind in range(len(set_names)):
         # plt.plot(-v_arr, np.sqrt((v_arr ** 2.0 - vz_res ** 2.0) / (field_dict['Rm'] ** 2.0 - 1.0)), '--k', linewidth=3)
         # plt.scatter(vz_valid, vt_valid, color='m', s=2)
         # plt.scatter(vz_res + 0 * vt_arr, vt_arr, color='m', s=2)
-        plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='m', alpha=0.5)
-        plt.plot(vz_res + 0 * vt_arr, vt_arr, color='m', linewidth=3, alpha=0.5)
+        # plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='m', alpha=0.5)
+        # plt.plot(vz_res + 0 * vt_arr, vt_arr, color='m', linewidth=3, alpha=0.5)
         plt.grid(True)
         plt.xlabel('$v_{\parallel}/v_{th}$')
         plt.ylabel('$v_{\perp}/v_{th}$')

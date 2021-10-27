@@ -34,11 +34,14 @@ plt.close('all')
 # v_loop_list = [1]
 # alpha_loop_list = [1]
 
+v_loop_list = [1.5]
+alpha_loop_list = [1.5]
+
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -111,6 +114,9 @@ for v_loop in v_loop_list:
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
+        # allow reproducibility
+        np.random.seed(0)
+
         # define absolute velocities of particles
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             # using constant absolute velocity
@@ -131,7 +137,6 @@ for v_loop in v_loop_list:
                 rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
         elif settings['direction_velocity_sampling_type'] == 'right_loss_cone':
             # sampling a random direction but only within the right-LC
-            np.random.seed(0)
             u = np.random.rand(total_number_of_points)
             v = np.random.rand(total_number_of_points)
             theta_max = settings['loss_cone_angle'] / 360 * 2 * np.pi
@@ -160,8 +165,8 @@ for v_loop in v_loop_list:
 
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 2
-        num_cpus = 10
-        # num_cpus = 50
+        # num_cpus = 10
+        num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
 
