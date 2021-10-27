@@ -72,6 +72,7 @@ for ind_point in settings['points_set']:
             B_mirror += [B_RF_function(x_curr, t_curr, **field_dict_no_B_RF)]
         Bz_mirror = np.array(B_mirror)[:, 2]
         inds_Bz_mirror_extrema = argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0]
+        print('inds_Bz_mirror_extrema = ' + str(inds_Bz_mirror_extrema))  # TODO: test
         inds_Bz_mirror_extrema = [0] + inds_Bz_mirror_extrema  # add the initial time
         print('inds_Bz_mirror_extrema = ' + str(inds_Bz_mirror_extrema))  # TODO: test
 
