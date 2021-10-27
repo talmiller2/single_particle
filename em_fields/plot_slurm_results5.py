@@ -17,6 +17,7 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set5/'
 # save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 # save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m_take2/'
 save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 
 set_names = []
@@ -28,8 +29,8 @@ ERF = 10
 # alpha = 0.6
 # alpha = 0.8
 # alpha = 1.0
-alpha = 1.2
-# alpha = 1.5
+# alpha = 1.2
+alpha = 1.5
 # alpha = 2.0
 # alpha = 2.5
 

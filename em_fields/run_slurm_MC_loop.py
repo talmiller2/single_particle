@@ -60,11 +60,11 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
-        # field_dict['E_RF_kVm'] = 0  # kV/m
+        field_dict['E_RF_kVm'] = 0  # kV/m
         # field_dict['E_RF_kVm'] = 1  # kV/m
         # field_dict['E_RF_kVm'] = 2  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
-        field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 10  # kV/m
 
         field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
