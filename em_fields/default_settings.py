@@ -59,6 +59,9 @@ def define_default_settings(settings=None):
     if 'direction_velocity_sampling_type' not in settings:
         # settings['direction_velocity_sampling_type'] = 'right_loss_cone'
         settings['direction_velocity_sampling_type'] = '4pi'
+    if 'apply_random_RF_phase' not in settings:
+        # settings['apply_random_RF_phase'] = False
+        settings['apply_random_RF_phase'] = True
 
     return settings
 

@@ -10,6 +10,7 @@ from scipy.io import savemat, loadmat
 from scipy.signal import argrelextrema
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
+from em_fields.default_settings import define_default_field
 from em_fields.em_functions import evolve_particle_in_em_fields
 
 parser = argparse.ArgumentParser()
@@ -56,6 +57,10 @@ for ind_point in settings['points_set']:
     t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     num_steps = int(t_max / dt)
+
+    if settings['apply_random_RF_phase']:
+        field_dict['phase_RF_addition'] = runs_dict['phase_RF'][ind_point]
+        field_dict = define_default_field(settings, field_dict=field_dict)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)

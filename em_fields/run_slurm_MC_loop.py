@@ -25,7 +25,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
 # main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
 # main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
-main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
+# main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
+main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
 
 plt.close('all')
 
@@ -62,7 +63,9 @@ for v_loop in v_loop_list:
         field_dict = {}
 
         # field_dict['E_RF_kVm'] = 0  # kV/m
-        field_dict['E_RF_kVm'] = 10  # kV/m
+        field_dict['E_RF_kVm'] = 1  # kV/m
+        # field_dict['E_RF_kVm'] = 5  # kV/m
+        # field_dict['E_RF_kVm'] = 10  # kV/m
         # field_dict['E_RF_kVm'] = 30  # kV/m
 
         field_dict['phase_RF_addition'] = 0
@@ -110,8 +113,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        # total_number_of_points = 1000
-        total_number_of_points = 2000
+        total_number_of_points = 1000
+        # total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -158,9 +161,13 @@ for v_loop in v_loop_list:
         v_0 = rand_unit_vec
         for i in range(total_number_of_points):
             v_0[i, :] *= v_abs_samples[i]
+        points_dict = {'v_0': v_0}
+
+        # random RF phases for each particle
+        if settings['apply_random_RF_phase']:
+            points_dict['phase_RF'] = 2 * np.pi * np.random.rand(total_number_of_points)
 
         # create and save the points file to be run later
-        points_dict = {'v_0': v_0}
         points_dict_file = settings['save_dir'] + '/points_dict.mat'
         savemat(points_dict_file, points_dict)
 
