@@ -43,8 +43,8 @@ alpha = 1.5
 
 # vz_res = 0.5
 # vz_res = 1.0
-# vz_res = 1.5
-vz_res = 2.0
+vz_res = 1.5
+# vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
 
@@ -210,17 +210,17 @@ for set_ind in range(len(set_names)):
                 crossing_happend = np.sum(v_perp_minus_LC > 0) > 0 and np.sum(v_perp_minus_LC < 0)
                 # if crossing_happend and positive_z_velocity:
                 # if positive_z_velocity:
-                # if positive_z_velocity and v_perp_minus_LC[0] < 0:
-                # if True:
-                if np.any(abs(v_axial / settings['v_th']) < 0.1):  # testing
+                if positive_z_velocity and v_perp_minus_LC[0] < 0:
+                    # if True:
+                    # if np.any(abs(v_axial / settings['v_th']) < 0.1):  # testing
 
                     x_array = t / field_dict['tau_cyclotron']
                     # x_array = z / settings['l']
 
                     # y_array = v_transverse / settings['v_th']
                     # y_array = v_axial / settings['v_th']
-                    # y_array = v_perp_minus_LC
-                    y_array = Bz
+                    y_array = v_perp_minus_LC
+                    # y_array = Bz
 
                     plt.plot(x_array, y_array, label=ind_point, linestyle=linestyle,
                              linewidth=linewidth,
