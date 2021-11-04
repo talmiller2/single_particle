@@ -39,8 +39,8 @@ plt.close('all')
 # v_loop_list = [1]
 # alpha_loop_list = [1]
 
-# v_loop_list = [1.5]
-# alpha_loop_list = [1.5]
+v_loop_list = [1.5]
+alpha_loop_list = [1.5]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
@@ -48,8 +48,8 @@ plt.close('all')
 # v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 # alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0]
-alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -66,7 +66,7 @@ for v_loop in v_loop_list:
         settings = {}
         settings['trajectory_save_method'] = 'intervals'
 
-        settings = define_default_settings()
+        settings = define_default_settings(settings)
 
         field_dict = {}
 
@@ -88,7 +88,7 @@ for v_loop in v_loop_list:
 
         # field_dict['nullify_RF_magnetic_field'] = True
 
-        field_dict = define_default_field(settings, field_dict=field_dict)
+        field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
         sim_cyclotron_periods = int(100 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
@@ -186,9 +186,10 @@ for v_loop in v_loop_list:
         # num_cpus = 1
         # num_cpus = 2
         # num_cpus = 10
-        num_cpus = 15
+        # num_cpus = 15
         # num_cpus = 30
         # num_cpus = 50
+        num_cpus = 200
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
 
