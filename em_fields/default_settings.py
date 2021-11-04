@@ -49,7 +49,7 @@ def define_default_settings(settings=None):
         # settings['trajectory_save_method'] = 'min_B'
         settings['trajectory_save_method'] = 'min_B_mirror_const_vz_sign'
     if settings['trajectory_save_method'] == 'intervals':
-        settings['num_snapshots'] = 50
+        settings['num_snapshots'] = 300
     if 'set_save_format' not in settings:
         # settings['set_save_format'] = 'mat'
         settings['set_save_format'] = 'pickle'

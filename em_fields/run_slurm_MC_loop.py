@@ -29,7 +29,7 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
 # main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
 # main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
-main_folder += '/set14_T_B0_1T_Rm_2_l_1m_randphase_save_intervals/'
+main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 
 plt.close('all')
 
@@ -73,10 +73,10 @@ for v_loop in v_loop_list:
         field_dict['Rm'] = 2.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
 
-        # field_dict['E_RF_kVm'] = 0  # kV/m
+        field_dict['E_RF_kVm'] = 0  # kV/m
         # field_dict['E_RF_kVm'] = 1  # kV/m
         # field_dict['E_RF_kVm'] = 5  # kV/m
-        field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 10  # kV/m
         # field_dict['E_RF_kVm'] = 100  # kV/m
 
         # field_dict['phase_RF_addition'] = 0
@@ -91,20 +91,22 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        sim_cyclotron_periods = int(100 * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
+        # tnax_mirror_lens = 100
+        tnax_mirror_lens = 300
+        sim_cyclotron_periods = int(tnax_mirror_lens * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         save_dir = ''
         # save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
         # save_dir += '_B0_' + str(field_dict['B0'])
         # save_dir += '_T_' + str(settings['T_keV'])
-
+        save_dir += 'Rm_' + str(int(field_dict['Rm']))
         if field_dict['E_RF_kVm'] > 0:
-            save_dir += 'ERF_' + str(field_dict['E_RF_kVm'])
+            save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
             save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
             save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
         else:
-            save_dir = 'ERF_0'
+            save_dir = '_ERF_0'
 
         if field_dict['nullify_RF_magnetic_field']:
             save_dir += '_zeroBRF'
@@ -124,8 +126,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 1000
-        # total_number_of_points = 2000
+        # total_number_of_points = 1000
+        total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -185,11 +187,12 @@ for v_loop in v_loop_list:
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 1
         # num_cpus = 2
+        num_cpus = 5
         # num_cpus = 10
         # num_cpus = 15
         # num_cpus = 30
         # num_cpus = 50
-        num_cpus = 200
+        # num_cpus = 200
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
 
