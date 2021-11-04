@@ -27,7 +27,9 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 # main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
 # main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
-main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
+# main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
+# main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
+main_folder += '/set14_T_B0_1T_Rm_2_l_1m_randphase_save_intervals/'
 
 plt.close('all')
 
@@ -62,11 +64,14 @@ for v_loop in v_loop_list:
 
         # define settings
         settings = {}
+        settings['trajectory_save_method'] = 'intervals'
+
         settings = define_default_settings()
 
         field_dict = {}
 
-        field_dict['Rm'] = 4.0  # mirror ratio
+        field_dict['Rm'] = 2.0  # mirror ratio
+        # field_dict['Rm'] = 4.0  # mirror ratio
 
         # field_dict['E_RF_kVm'] = 0  # kV/m
         # field_dict['E_RF_kVm'] = 1  # kV/m
@@ -180,8 +185,8 @@ for v_loop in v_loop_list:
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 1
         # num_cpus = 2
-        num_cpus = 10
         # num_cpus = 10
+        num_cpus = 15
         # num_cpus = 30
         # num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
