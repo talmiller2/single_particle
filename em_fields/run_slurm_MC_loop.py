@@ -26,7 +26,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
 # main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
 # main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
-main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
+# main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
+main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
 
 plt.close('all')
 
@@ -42,8 +43,11 @@ plt.close('all')
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
+
+v_loop_list = [0.5, 1.0, 1.5, 2.0]
+alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -62,13 +66,15 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
-        # field_dict['E_RF_kVm'] = 0  # kV/m
-        field_dict['E_RF_kVm'] = 1  # kV/m
-        # field_dict['E_RF_kVm'] = 5  # kV/m
-        # field_dict['E_RF_kVm'] = 10  # kV/m
-        # field_dict['E_RF_kVm'] = 30  # kV/m
+        field_dict['Rm'] = 4.0  # mirror ratio
 
-        field_dict['phase_RF_addition'] = 0
+        # field_dict['E_RF_kVm'] = 0  # kV/m
+        # field_dict['E_RF_kVm'] = 1  # kV/m
+        # field_dict['E_RF_kVm'] = 5  # kV/m
+        field_dict['E_RF_kVm'] = 10  # kV/m
+        # field_dict['E_RF_kVm'] = 100  # kV/m
+
+        # field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
 
         field_dict['v_z_factor_list'] = [v_loop]
@@ -113,8 +119,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 1000
-        # total_number_of_points = 2000
+        # total_number_of_points = 1000
+        total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -175,6 +181,8 @@ for v_loop in v_loop_list:
         # num_cpus = 1
         # num_cpus = 2
         num_cpus = 10
+        # num_cpus = 10
+        # num_cpus = 30
         # num_cpus = 50
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)

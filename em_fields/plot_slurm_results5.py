@@ -1,6 +1,7 @@
 import pickle
 
 import numpy as np
+from scipy.interpolate import interp1d
 
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 
@@ -24,6 +25,8 @@ save_dir_main += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
 set_names = []
 
 # ERF = 0
+# ERF = 1
+# ERF = 5
 ERF = 10
 # ERF = 30
 
@@ -37,9 +40,9 @@ alpha = 1.5
 # alpha = 3.0
 
 # vz_res = 0.5
-vz_res = 1.0
+# vz_res = 1.0
 # vz_res = 1.5
-# vz_res = 2.0
+vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
 
@@ -71,12 +74,13 @@ for set_ind in range(len(set_names)):
     # ind_points = [3]
     # ind_points = [801]
     # ind_points = [537, 752, 802]
+    ind_points = [1, 4]
     # ind_points = range(5)
     # ind_points = range(10)
     # ind_points = range(20)
     # ind_points = range(100)
     # ind_points = range(300)
-    ind_points = range(1000)
+    # ind_points = range(1000)
     # ind_points = range(2000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
@@ -107,7 +111,9 @@ for set_ind in range(len(set_names)):
 
         pass
 
-    # for ind_point in ind_points:
+    t_over_tau_common = np.linspace(0, 1050, 1000)
+    v_perp_minus_LC_list = []
+
     for ind_point in ind_points:
         # skip = 1
         # # skip = 2
@@ -119,38 +125,15 @@ for set_ind in range(len(set_names)):
         # v_axial = np.array(data_dict['v_axial'][ind_point])[0::skip]
         # Bz = np.array(data_dict['Bz'][ind_point])[0::skip]
 
-        t = np.array(data_dict['t'][ind_point])
-        z = np.array(data_dict['z'][ind_point])
-        v = np.array(data_dict['v'][ind_point])
-        v_transverse = np.array(data_dict['v_transverse'][ind_point])
-        v_axial = np.array(data_dict['v_axial'][ind_point])
-        Bz = np.array(data_dict['Bz'][ind_point])
+        # inds_trajectory = range(len(data_dict['t'][ind_point]))
+        inds_trajectory = np.argsort(data_dict['t'][ind_point])
 
-        # t = np.array(data_dict['t'][ind_point])[0:int(len(t)/2)]
-        # z = np.array(data_dict['z'][ind_point])[0:int(len(t)/2)]
-        # v = np.array(data_dict['v'][ind_point])[0:int(len(t)/2)]
-        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[0:int(len(t)/2)]
-        # v_axial = np.array(data_dict['v_axial'][ind_point])[0:int(len(t)/2)]
-        # Bz = np.array(data_dict['Bz'][ind_point])[0:int(len(t)/2)]
-
-        # t = np.array(data_dict['t'][ind_point])[int(len(t)/2)::]
-        # z = np.array(data_dict['z'][ind_point])[int(len(t)/2)::]
-        # v = np.array(data_dict['v'][ind_point])[int(len(t)/2)::]
-        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[int(len(t)/2)::]
-        # v_axial = np.array(data_dict['v_axial'][ind_point])[int(len(t)/2)::]
-        # Bz = np.array(data_dict['Bz'][ind_point])[int(len(t)/2)::]
-
-        # pick only the indices where v_axial is the same direction as the initial v_axial
-        vz = np.array(data_dict['v_axial'][ind_point])
-        # # positive_z_velocity = np.sign(vz[0])
-        # positive_z_velocity = np.sign(data_dict['v_0'][ind_point, 2])
-        # inds_in_trajectory = np.where(vz * positive_z_velocity > 0)[0]
-        # t = np.array(data_dict['t'][ind_point])[inds_in_trajectory]
-        # z = np.array(data_dict['z'][ind_point])[inds_in_trajectory]
-        # v = np.array(data_dict['v'][ind_point])[inds_in_trajectory]
-        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_in_trajectory]
-        # v_axial = np.array(data_dict['v_axial'][ind_point])[inds_in_trajectory]
-        # Bz = np.array(data_dict['Bz'][ind_point])[inds_in_trajectory]
+        t = np.array(data_dict['t'][ind_point])[inds_trajectory]
+        z = np.array(data_dict['z'][ind_point])[inds_trajectory]
+        v = np.array(data_dict['v'][ind_point])[inds_trajectory]
+        v_transverse = np.array(data_dict['v_transverse'][ind_point])[inds_trajectory]
+        v_axial = np.array(data_dict['v_axial'][ind_point])[inds_trajectory]
+        Bz = np.array(data_dict['Bz'][ind_point])[inds_trajectory]
 
         if len(t) > 0:
 
@@ -216,16 +199,47 @@ for set_ind in range(len(set_names)):
                 # plt.plot(t_array / field_dict['tau_cyclotron'], z / settings['l'], label=ind_point, linestyle=linestyle,
                 #          linewidth=linewidth, marker='o', markersize=2,)
 
+                plt.figure(3)
+                # plt.plot(t / field_dict['tau_cyclotron'], v_transverse / settings['v_th'], label=ind_point, linestyle=linestyle,
+                #          linewidth=linewidth, marker='o', markersize=2,)
+                # check if the was ever a crossing of the LC for this particle
+                v_perp_minus_LC = (v_transverse - abs(v_axial) * np.sqrt(1 / (field_dict['Rm'] - 1.0))) / settings[
+                    'v_th']
+                crossing_happend = np.sum(v_perp_minus_LC > 0) > 0 and np.sum(v_perp_minus_LC < 0)
+                # if crossing_happend and positive_z_velocity:
+                # if positive_z_velocity:
+                # if positive_z_velocity and v_perp_minus_LC[0] < 0:
+                # if True:
+                if np.any(abs(v_axial / settings['v_th']) < 0.1):  # testing
+
+                    x_array = t / field_dict['tau_cyclotron']
+                    # x_array = z / settings['l']
+
+                    # y_array = v_transverse / settings['v_th']
+                    # y_array = v_axial / settings['v_th']
+                    # y_array = v_perp_minus_LC
+                    y_array = Bz
+
+                    plt.plot(x_array, y_array, label=ind_point, linestyle=linestyle,
+                             linewidth=linewidth,
+                             marker='o',
+                             # marker=None,
+                             markersize=2)
+
+                    interp_fun = interp1d(t / field_dict['tau_cyclotron'], v_perp_minus_LC, bounds_error=False,
+                                          fill_value=np.nan)
+                    v_perp_minus_LC_list += [interp_fun(t_over_tau_common)]
+
                 plt.figure(4)
                 plt.plot(v_axial / settings['v_th'], v_transverse / settings['v_th'], label=ind_point,
                          linewidth=linewidth,
                          # linestyle=linestyle,
-                         linestyle='none',
-                         # linestyle='-',
+                         # linestyle='none',
+                         linestyle='-',
                          marker='o', markersize=2,
                          )
                 plt.plot(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], 'ko', markersize=2)
-                # plt.text(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], str(ind_point))
+                plt.text(v_axial[0] / settings['v_th'], v_transverse[0] / settings['v_th'], str(ind_point))
 
                 # plt.figure(5)
                 # plt.plot(t / field_dict['tau_cyclotron'], Bz, '-o', label=ind_point, linestyle=linestyle,
@@ -327,7 +341,13 @@ for set_ind in range(len(set_names)):
                     for B_sol in [B_sol1, B_sol2]:
                         if B_sol >= B0 and B_sol <= B_max:
                             vz_B_sol = v_RF * (1 - B_sol / B0 / omega_RF_over_omega_cyc_0)
-                            if np.sign(vz_B_sol) == np.sign(vz_test):
+                            # if np.sign(vz_B_sol) == np.sign(vz_test):
+                            #     resonance_possible = True
+
+                            in_loss_cone = vt_test < np.sqrt(1 / (field_dict['Rm'] - 1.0)) * abs(vz_test)
+                            if not in_loss_cone:
+                                resonance_possible = True
+                            elif np.sign(vz_B_sol) == np.sign(vz_test):
                                 resonance_possible = True
 
                 if resonance_possible:
@@ -340,6 +360,17 @@ for set_ind in range(len(set_names)):
                 vt_min_array[ind_vz] = np.nan
                 vt_max_array[ind_vz] = np.nan
 
+        plt.figure(3)
+        # v_perp_minus_LC_list = np.array(v_perp_minus_LC_list)
+        # plt.plot(t_over_tau_common, np.nanmean(v_perp_minus_LC_list, axis=0), '-k', linewidth=2)
+        plt.grid(True)
+        # plt.xlabel('$t/\\tau_{cyc}$')
+        # plt.xlabel('z/l')
+        # plt.ylabel('$v_{\\perp}/v_{th}$')
+        # plt.ylabel('($v_{\\perp}-LC)/v_{th}$')
+        # plt.ylabel('z/l')
+        plt.tight_layout()
+
         plt.figure(4)
         v_arr = np.linspace(0, 3, 100)
         plt.plot(v_arr, np.sqrt(1 / (field_dict['Rm'] - 1.0)) * v_arr, '-k', linewidth=3)
@@ -349,7 +380,7 @@ for set_ind in range(len(set_names)):
         # plt.plot(-vz_res + 0 * v_arr, v_arr, '--k', linewidth=3)
         # plt.plot(-v_arr, np.sqrt((v_arr ** 2.0 - vz_res ** 2.0) / (field_dict['Rm'] ** 2.0 - 1.0)), '--k', linewidth=3)
         # plt.scatter(vz_valid, vt_valid, color='m', s=2)
-        plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='m', alpha=0.3)
+        plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='grey', alpha=0.3)
         # plt.plot(vz_res + 0 * vt_arr, vt_arr, linestyle='--', color='m', linewidth=3, alpha=0.3)
         plt.grid(True)
         plt.xlabel('$v_{\parallel}/v_{th}$')
