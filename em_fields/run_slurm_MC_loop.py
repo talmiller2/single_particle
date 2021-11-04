@@ -106,7 +106,7 @@ for v_loop in v_loop_list:
             save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
             save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
         else:
-            save_dir = '_ERF_0'
+            save_dir += '_ERF_0'
 
         if field_dict['nullify_RF_magnetic_field']:
             save_dir += '_zeroBRF'
