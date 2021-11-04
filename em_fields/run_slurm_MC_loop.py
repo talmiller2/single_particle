@@ -37,8 +37,8 @@ plt.close('all')
 # v_loop_list = [1]
 # alpha_loop_list = [1]
 
-# v_loop_list = [1.5]
-# alpha_loop_list = [1.5]
+v_loop_list = [1.5]
+alpha_loop_list = [1.5]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
@@ -46,8 +46,8 @@ plt.close('all')
 # v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 # alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0]
-alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))

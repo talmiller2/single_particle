@@ -78,12 +78,19 @@ for ind_point in settings['points_set']:
         for x_curr, t_curr in zip(hist['x'], hist['t']):
             B_mirror += [B_RF_function(x_curr, t_curr, **field_dict_no_B_RF)]
         Bz_mirror = np.array(B_mirror)[:, 2]
-        # filter to only look for the extrema near the points where the magnetic field is close to minimum anyway,
-        # to cancel possible glitches in the argrelextrema function
-        inds_B_close_to_min = np.where(abs((Bz_mirror - field_dict['B0']) / field_dict['B0']) < 0.1)[0]
-        Bz_mirror = Bz_mirror[inds_B_close_to_min]
+
+        # TODO: delete
+        # # filter to only look for the extrema near the points where the magnetic field is close to minimum anyway,
+        # # to cancel possible glitches in the argrelextrema function
+        # inds_B_close_to_min = np.where(abs((Bz_mirror - field_dict['B0']) / field_dict['B0']) < 0.1)[0]
+        # Bz_mirror = Bz_mirror[inds_B_close_to_min]
+
         inds_Bz_mirror_extrema = list(argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0])
         inds_Bz_mirror_extrema.insert(0, 0)  # add the initial point
+
+        # filter to only look for the extrema near the points where the magnetic field is close to minimum anyway,
+        # to cancel possible glitches in the argrelextrema function
+        inds_B_close_to_min = np.where(abs((Bz_mirror - field_dict['B0']) / field_dict['B0']) < 0.05)[0]
 
         # pick the indices
         vz = hist['v'][:, 2]
@@ -91,7 +98,9 @@ for ind_point in settings['points_set']:
         inds_const_vz_sign = np.where(np.sign(vz) == np.sign(vz_0))[0]
 
         # combine the conditions
-        inds_samples = list(set(inds_Bz_mirror_extrema) & set(inds_const_vz_sign))  # combine both conditions
+        # inds_samples = list(set(inds_Bz_mirror_extrema) & set(inds_const_vz_sign))  # TODO: delete
+        inds_samples = list(
+            set(inds_Bz_mirror_extrema) & set(inds_B_close_to_min) & set(inds_const_vz_sign))  # combine both conditions
         inds_samples.sort()  # to make the lists monotonic with evolution times
 
     else:
