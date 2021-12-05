@@ -14,21 +14,16 @@ import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 12})
 
-plt.close('all')
+# plt.close('all')
 
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
-# save_dir_main += '/set4/'
-# save_dir_main += '/set5/'
-# save_dir_main += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
-# save_dir_main += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
-# save_dir_main += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
-# save_dir_main += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
-# save_dir_main += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
-# save_dir_main += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
-# save_dir_main += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
-save_dir_main += '/set14_T_B0_1T_Rm_2_l_1m_randphase_save_intervals/'
+# save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
+save_dir_main += '/set15_T_B0_1T_l_1m_Post_intervals/'
 
 set_names = []
+
+Rm = 2
+# Rm = 4
 
 # ERF = 0
 # ERF = 1
@@ -41,17 +36,22 @@ ERF = 10
 # alpha = 0.8
 # alpha = 1.0
 # alpha = 1.2
-# alpha = 1.5
-alpha = 2.0
+alpha = 1.5
+# alpha = 2.0
 # alpha = 2.5
 # alpha = 3.0
 
 # vz_res = 0.5
 # vz_res = 1.0
-# vz_res = 1.5
-vz_res = 2.0
+vz_res = 1.5
+# vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
+
+# color = 'b'
+# color = 'g'
+# color = 'r'
+color = 'm'
 
 omega_RF_over_omega_cyc_0 = alpha
 v_RF = vz_res * alpha / (alpha - 1.0)
@@ -59,9 +59,9 @@ print('vz_res/v_th = ' + str(vz_res) + ', alpha = ' + str(alpha))
 print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + '{:.2f}'.format(v_RF))
 
 if ERF > 0:
-    set_names += ['ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
+    set_names += ['Rm_' + str(Rm) + '_ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
 else:
-    set_names += ['ERF_0']
+    set_names += ['Rm_' + str(Rm) + '_ERF_0']
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
@@ -86,7 +86,7 @@ for set_ind in range(len(set_names)):
     # ind_points = range(10)
     # ind_points = range(20)
     # ind_points = range(100)
-    # ind_points = range(300)
+    # ind_points = range(500)
     ind_points = range(1000)
     # ind_points = range(2000)
     # ind_points = range(100, 200)
@@ -140,8 +140,10 @@ for set_ind in range(len(set_names)):
         Bz = np.array(data_dict['Bz'][ind_point])[inds_trajectory]
 
         if ind_point == 0:
-            percent_particles_trapped = 0 * t
-            percent_particles_trapped_and_axis_bound = 0 * t
+            counter_particles_trapped = 0 * t
+            counter_particles_trapped_and_axis_bound = 0 * t
+            counter_particles_trapped_or_left = 0 * t
+            counter_particles_trapped_or_left_and_axis_bound = 0 * t
 
         # calculate if a particle is initially in right loss cone
         # LC_cutoff = field_dict['Rm'] ** (-0.5)
@@ -173,26 +175,89 @@ for set_ind in range(len(set_names)):
             # check loss cone criterion as a function of time, for varying Bz(t)
             Rm_dynamic = field_dict['B0'] * field_dict['Rm'] / Bz
             out_of_loss_cone = (v_transverse / v) ** 2 >= 1 / Rm_dynamic
+            in_loss_cone = (v_transverse / v) ** 2 < 1 / Rm_dynamic
 
-            z_cutoff = 10
+            # z_cutoff = 10
+            z_cutoff = 5.5
             z_axis_bound = z / settings['l'] <= z_cutoff
             trapped = out_of_loss_cone * z_axis_bound
 
-            percent_particles_trapped += 1.0 * out_of_loss_cone
-            percent_particles_trapped_and_axis_bound += 1.0 * out_of_loss_cone * z_axis_bound
+            is_particle_escaping_left = in_loss_cone * (v_axial < 0)
+            counter_particles_trapped += 1.0 * out_of_loss_cone
+            counter_particles_trapped_and_axis_bound += 1.0 * out_of_loss_cone * z_axis_bound
+            counter_particles_trapped_or_left += 1.0 * out_of_loss_cone + is_particle_escaping_left
+            counter_particles_trapped_or_left_and_axis_bound += 1.0 * out_of_loss_cone * z_axis_bound + is_particle_escaping_left
 
-    percent_particles_trapped /= num_particles * 1.0
-    percent_particles_trapped_and_axis_bound /= num_particles * 1.0
+            # print(ind_point)
+
+            # plot polar diagram
+            # for ind_t, color in zip([0, 10, 20], ['b', 'g', 'r']):
+            # for ind_t, color in zip([0, 100, 200], ['b', 'g', 'r']):
+            #
+            #     z_offset = 5
+            #     r = z[ind_t] / settings['l'] + z_offset
+            #     # theta = 360 / (2 * np.pi) * np.arctan(v_transverse[ind_t] / v_axial[ind_t])
+            #     # theta = np.arctan(v_transverse[ind_t] / v_axial[ind_t])
+            #     theta = np.arctan2(v_transverse[0], v_axial[0])
+            #     # theta = 2 * np.pi * np.random.rand()
+            #     if r > 0:
+            #         plt.figure(2)
+            #         plt.scatter(r * np.cos(theta), r * np.sin(theta), s=1, color=color)
+
+    percent_particles_trapped = counter_particles_trapped / len(ind_points) * 1.0
+    percent_particles_trapped_and_axis_bound = counter_particles_trapped_and_axis_bound / len(ind_points) * 1.0
+    percent_particles_trapped_or_left = counter_particles_trapped_or_left / len(ind_points) * 1.0
+    percent_particles_trapped_or_left_and_axis_bound = counter_particles_trapped_or_left_and_axis_bound / len(
+        ind_points) * 1.0
+
+    # percent_particles_trapped /= percent_particles_trapped[0]
+    # percent_particles_trapped_and_axis_bound /= percent_particles_trapped_and_axis_bound[0]
+    # percent_particles_trapped_or_left /= percent_particles_trapped_or_left[0]
+    # percent_particles_trapped_or_left_and_axis_bound /= percent_particles_trapped_or_left_and_axis_bound[0]
 
     if do_particles_plot:
-        plt.figure(77)
-        plt.plot(t / field_dict['tau_cyclotron'], percent_particles_trapped, '-b', label='out of LC')
-        plt.plot(t / field_dict['tau_cyclotron'], percent_particles_trapped_and_axis_bound, '-r',
-                 label='out of LC, and z/l<' + str(z_cutoff))
-        plt.xlabel('$t/\\tau_{cyc}$')
-        # plt.ylabel('rightLC %passed $z_{cut}/l$=' + str(z_cutoff))
+        # t_axis = t / field_dict['tau_cyclotron']
+        t_axis = t * 1e6
+        plt.figure(1)
+        # plt.plot(t_axis, percent_particles_trapped, '-b', label='out of LC')
+        # plt.plot(t_axis, percent_particles_trapped_and_axis_bound, '-r',
+        #          label='out of LC, and z/l<' + str(z_cutoff))
+        # plt.plot(t_axis, percent_going_left, '-g', label='in LC, going left')
+        # color = 'b'
+        label_RF_params = ', for $v_{z,res}/v_{th}$=' + str(vz_res) + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(
+            alpha) + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF)
+        # label = 'trapped or escaping left'
+        label = 'trapped/left' + label_RF_params
+        plt.plot(t_axis, percent_particles_trapped_or_left, '-', color=color, label=label)
+        # color = 'r'
+        # label = 'trapped or escaping left, and z/l<' + str(z_cutoff)
+        label = 'same as last, and z/l<' + str(z_cutoff)
+        plt.plot(t_axis, percent_particles_trapped_or_left_and_axis_bound, '--', color=color, label=label)
+        # plt.plot(t_axis, percent_particles_trapped, '--b', label='trapped')
+        # plt.plot(t_axis, percent_particles_trapped_and_axis_bound, '--r', label='trapped, and z/l<' + str(z_cutoff))
+        # plt.xlabel('$t/\\tau_{cyc}$')
+        plt.xlabel('$t$ [$\\mu s$]')
         plt.ylabel('%')
-        # plt.title('$z_{cut}/l$=' + str(z_cutoff))
+        # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
+        #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
+        #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
+        #           + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF))
+        plt.title('stopping metric as a function of time')
         plt.grid(True)
         plt.tight_layout()
         plt.legend()
+
+        # plt.figure(2)
+        # r0 = z[0] + z_offset
+        # plt.plot(r0 * np.cos(np.linspace(0, np.pi,100)), r0 * np.sin(np.linspace(0, np.pi,100)), '-k', linewidth=3, alpha=0.3)
+        # plt.plot(np.linspace(0, 10,100),np.linspace(0, 10,100) * (np.pi / 2) * np.arcsin(np.sqrt(1/Rm)), '-k', linewidth=3, alpha=0.3)
+        # plt.plot(np.linspace(0, -10,100),np.linspace(0, 10,100) * (np.pi / 2) * np.arcsin(np.sqrt(1/Rm)), '-k', linewidth=3, alpha=0.3)
+        # plt.xlabel('$z/l$+' + str(z_offset))
+        # plt.ylabel('$z/l$+' + str(z_offset))
+        # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
+        #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
+        #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
+        #           + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF))
+        # plt.grid(True)
+        # plt.tight_layout()
+        # plt.legend()

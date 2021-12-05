@@ -29,7 +29,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
 # main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
 # main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
-main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
+# main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
+main_folder += '/set15_T_B0_1T_l_1m_Post_intervals/'
 
 plt.close('all')
 
@@ -88,12 +89,15 @@ for v_loop in v_loop_list:
 
         # field_dict['nullify_RF_magnetic_field'] = True
 
+        field_dict['mirror_field_type'] = 'post'
+
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        # tnax_mirror_lens = 100
-        tnax_mirror_lens = 300
-        sim_cyclotron_periods = int(tnax_mirror_lens * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
+        # tmax_mirror_lengths = 100
+        tmax_mirror_lengths = 300
+        sim_cyclotron_periods = int(
+            tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         save_dir = ''

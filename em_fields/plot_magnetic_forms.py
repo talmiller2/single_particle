@@ -36,11 +36,31 @@ B_jaeger = B
 B = magnetic_field_post(x, 1, Rm, l)
 B_post = B
 
+B_s = 0.5
+sigma_s = l / 10.0
+z_mod = np.mod(z, l)
+# B_slope = B_s * z_mod / l * (1 - np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0))
+# z_mod = np.mod(z - l / 2.0, l)
+# B_slope = B_s * (z_mod - l / 2.0) / l
+# B_slope = B_s * (z_mod) / l
+# B_slope = B_s * (z_mod - l / 2.0) / l * (1 - np.exp(- (z_mod) ** 2.0 / sigma_s ** 2.0))
+B_slope = B_s * (z_mod - l / 2.0) / l * (1 - np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0)) * (
+            1 - np.exp(- (z_mod) ** 2.0 / sigma_s ** 2.0))
+
+B_logan_slope = B_logan[2] + B_slope
+B_post_slope = B_post[2] + B_slope
+
+# z /= l
+
+
 # plot axial magnetic fields
 plt.figure(1)
 plt.plot(z, B_logan[2], label='Logan et al', color='b')
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
 plt.plot(z, B_post[2], label='Post', color='r')
+plt.plot(z, B_slope, '--', label='slope', color='k')
+plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
+plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
 plt.legend()
 plt.xlabel('z [m]')
 plt.ylabel('$B_z$ [T]')
@@ -48,22 +68,22 @@ plt.grid(True)
 plt.tight_layout()
 
 # plot radial magnetic field
-plt.figure(2)
-plt.plot(z, B_logan[0], label='Logan et al', color='b')
-# plt.plot(z, B_jaeger[0], '--', label='Jaeger et al', color='g')
-plt.plot(z, B_post[0], label='Post', color='r')
-plt.legend()
-plt.xlabel('z [m]')
-plt.ylabel('$B_x$ [T]')
-plt.grid(True)
-plt.tight_layout()
+# plt.figure(2)
+# plt.plot(z, B_logan[0], label='Logan et al', color='b')
+# # plt.plot(z, B_jaeger[0], '--', label='Jaeger et al', color='g')
+# plt.plot(z, B_post[0], label='Post', color='r')
+# plt.legend()
+# plt.xlabel('z [m]')
+# plt.ylabel('$B_x$ [T]')
+# plt.grid(True)
+# plt.tight_layout()
 
-plt.figure(3)
-plt.plot(z, B_logan[1], label='Logan et al', color='b')
-# plt.plot(z, B_jaeger[1], '--', label='Jaeger et al', color='g')
-plt.plot(z, B_post[1], label='Post', color='r')
-plt.legend()
-plt.xlabel('z [m]')
-plt.ylabel('$B_y$ [T]')
-plt.grid(True)
-plt.tight_layout()
+# plt.figure(3)
+# plt.plot(z, B_logan[1], label='Logan et al', color='b')
+# # plt.plot(z, B_jaeger[1], '--', label='Jaeger et al', color='g')
+# plt.plot(z, B_post[1], label='Post', color='r')
+# plt.legend()
+# plt.xlabel('z [m]')
+# plt.ylabel('$B_y$ [T]')
+# plt.grid(True)
+# plt.tight_layout()

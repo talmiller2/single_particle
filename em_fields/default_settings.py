@@ -72,6 +72,7 @@ def define_default_field(settings, field_dict=None):
 
     # single mirror properties
     field_dict['mirror_field_type'] = 'logan'
+    # field_dict['mirror_field_type'] = 'post'
     # field_dict['mirror_field_type'] = 'const'
     if 'Rm' not in field_dict:
         field_dict['Rm'] = 2.0  # mirror ratio

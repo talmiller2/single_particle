@@ -27,8 +27,12 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
 # save_dir_main += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
 save_dir_main += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
+# save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 
 set_names = []
+
+Rm = 2
+# Rm = 4
 
 # ERF = 0
 # ERF = 1
@@ -62,6 +66,11 @@ if ERF > 0:
     set_names += ['ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
 else:
     set_names += ['ERF_0']
+# if ERF > 0:
+#     set_names += ['Rm_' + str(Rm) + '_ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
+# else:
+#     set_names += ['Rm_' + str(Rm) + '_ERF_0']
+
 
 for set_ind in range(len(set_names)):
     set_name = set_names[set_ind]
