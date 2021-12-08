@@ -32,7 +32,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # main_folder += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
-main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
+main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 
 plt.close('all')
 
@@ -42,17 +43,26 @@ plt.close('all')
 # v_loop_list = [1]
 # alpha_loop_list = [1]
 
-v_loop_list = [1.5]
-alpha_loop_list = [1.5]
+# v_loop_list = [1.5]
+# alpha_loop_list = [1.5]
 
-# v_loop_list = [0.5, 1.0, 1.5, 2.0]
-# alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
+v_loop_list = [0.5, 1.0, 1.5, 2.0]
+alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 # alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
+
+E_RF_kVm = 0
+# E_RF_kVm = 10
+# E_RF_kVm = 100
+
+if E_RF_kVm == 0:
+    # just to make a single run for zero field
+    v_loop_list = [1]
+    alpha_loop_list = [1]
 
 totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
@@ -69,21 +79,17 @@ for v_loop in v_loop_list:
         settings = {}
         settings['trajectory_save_method'] = 'intervals'
 
+        # settings['l'] = 1.0  # m (MM cell size)
+        settings['l'] = 3.0  # m (MM cell size)
+
         settings = define_default_settings(settings)
 
         field_dict = {}
 
-        # settings['l'] = 1.0  # m (MM cell size)
-        settings['l'] = 3.0  # m (MM cell size)
-
         field_dict['Rm'] = 2.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
 
-        field_dict['E_RF_kVm'] = 0  # kV/m
-        # field_dict['E_RF_kVm'] = 1  # kV/m
-        # field_dict['E_RF_kVm'] = 5  # kV/m
-        # field_dict['E_RF_kVm'] = 10  # kV/m
-        # field_dict['E_RF_kVm'] = 100  # kV/m
+        field_dict['E_RF_kVm'] = E_RF_kVm
 
         # field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
@@ -95,12 +101,13 @@ for v_loop in v_loop_list:
         # field_dict['nullify_RF_magnetic_field'] = True
 
         field_dict['mirror_field_type'] = 'post'
+        # field_dict['mirror_field_type'] = 'logan'
 
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
         # settings['num_snapshots'] = 300
-        settings['num_snapshots'] = 100
+        settings['num_snapshots'] = 200
 
         tmax_mirror_lengths = 1
         # tmax_mirror_lengths = 100
@@ -200,9 +207,9 @@ for v_loop in v_loop_list:
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 1
         # num_cpus = 2
-        num_cpus = 5
+        # num_cpus = 5
         # num_cpus = 10
-        # num_cpus = 15
+        num_cpus = 15
         # num_cpus = 30
         # num_cpus = 50
         # num_cpus = 200

@@ -20,7 +20,8 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # save_dir_main += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # save_dir_main += '/set16_T_B0_1T_l_1m_Post_intervals/'
-save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
+save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 
 set_names = []
 
@@ -36,17 +37,17 @@ ERF = 10
 
 # alpha = 0.6
 # alpha = 0.8
-# alpha = 1.0
+alpha = 1.0
 # alpha = 1.2
 # alpha = 1.5
-alpha = 2.0
+# alpha = 2.0
 # alpha = 2.5
 # alpha = 3.0
 
 # vz_res = 0.5
-# vz_res = 1.0
+vz_res = 1.0
 # vz_res = 1.5
-vz_res = 2.0
+# vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
 
@@ -97,17 +98,11 @@ for set_ind in range(len(set_names)):
     # ind_points = range(num_particles)
 
     points_counter = 0
+    points_right_counter = 0
+    points_left_counter = 0
+    points_trapped_counter = 0
 
     for ind_point in ind_points:
-        # skip = 1
-        # # skip = 2
-        # # num_snapshots = len(data_dict['t'][ind_point])
-        # t = np.array(data_dict['t'][ind_point])[0::skip]
-        # z = np.array(data_dict['z'][ind_point])[0::skip]
-        # v = np.array(data_dict['v'][ind_point])[0::skip]
-        # v_transverse = np.array(data_dict['v_transverse'][ind_point])[0::skip]
-        # v_axial = np.array(data_dict['v_axial'][ind_point])[0::skip]
-        # Bz = np.array(data_dict['Bz'][ind_point])[0::skip]
 
         inds_trajectory = range(len(data_dict['t'][ind_point]))
         # inds_trajectory = np.argsort(data_dict['t'][ind_point])
@@ -120,88 +115,89 @@ for set_ind in range(len(set_names)):
         Bz = np.array(data_dict['Bz'][ind_point])[inds_trajectory]
 
         if ind_point == 0:
-            counter_particles_trapped = 0 * t
-            counter_particles_trapped_and_axis_bound = 0 * t
-            counter_particles_trapped_or_left = 0 * t
-            counter_particles_trapped_or_left_and_axis_bound = 0 * t
+            counter_right_particles = 0 * t
+            counter_trapped_particles = 0 * t
+            counter_right_particles2 = 0 * t
+            counter_trapped_particles2 = 0 * t
 
         # calculate if a particle is initially in right loss cone
         in_loss_cone = (v_transverse[0] / v[0]) ** 2 < 1 / field_dict['Rm']
         positive_z_velocity = v_axial[0] > 0
 
+        points_counter += 1
         if in_loss_cone and positive_z_velocity:  # right loss cone
-            linestyle = '-'
-            linewidth = 1
-            # do_plot = True
-            do_plot = False
+            particle_type = 'right'
+            points_right_counter += 1
         elif in_loss_cone and not positive_z_velocity:  # left loss cone
-            # linestyle = ':'
-            linestyle = '-'
-            linewidth = 1
-            # do_plot = True
-            do_plot = False
+            particle_type = 'left'
+            points_left_counter += 1
         else:  # trapped
-            # linestyle = '--'
-            linestyle = '-'
-            linewidth = 1
-            do_plot = True
-            # do_plot = False
+            particle_type = 'trapped'
+            points_trapped_counter += 1
 
-        # plots
-        if do_plot:
-            points_counter += 1
+        # check loss cone criterion as a function of time, for varying Bz(t)
+        Rm_dynamic = field_dict['B0'] * field_dict['Rm'] / Bz
+        out_of_loss_cone = (v_transverse / v) ** 2 >= 1 / Rm_dynamic
+        in_loss_cone = (v_transverse / v) ** 2 < 1 / Rm_dynamic
+        is_particle_escaping_left = in_loss_cone * (v_axial < 0)
+        is_particle_escaping_right = in_loss_cone * (v_axial >= 0)
 
-            # check loss cone criterion as a function of time, for varying Bz(t)
-            Rm_dynamic = field_dict['B0'] * field_dict['Rm'] / Bz
-            out_of_loss_cone = (v_transverse / v) ** 2 >= 1 / Rm_dynamic
-            in_loss_cone = (v_transverse / v) ** 2 < 1 / Rm_dynamic
+        if particle_type == 'right':
 
-            # z_cutoff = 10
-            z_cutoff = 5.5
-            z_axis_bound = z / settings['l'] <= z_cutoff
-            trapped = out_of_loss_cone * z_axis_bound
+            # if is_particle_escaping_right[0] == True:
+            #     1 / 0
 
-            is_particle_escaping_left = in_loss_cone * (v_axial < 0)
-            counter_particles_trapped += 1.0 * out_of_loss_cone
-            counter_particles_trapped_and_axis_bound += 1.0 * out_of_loss_cone * z_axis_bound
-            counter_particles_trapped_or_left += 1.0 * out_of_loss_cone + is_particle_escaping_left
-            counter_particles_trapped_or_left_and_axis_bound += 1.0 * out_of_loss_cone * z_axis_bound + is_particle_escaping_left
+            counter_right_particles += out_of_loss_cone
 
-            # TODO: need to make an irreversible counter
+            ind_first_got_trapped = np.where(out_of_loss_cone)[0]
+            if len(ind_first_got_trapped) > 0:
+                inds_considered_trapped = range(ind_first_got_trapped[0], len(t))
+                counter_right_particles2[inds_considered_trapped] += 1.0
 
-    percent_particles_trapped = counter_particles_trapped / points_counter * 100.0
-    percent_particles_trapped_and_axis_bound = counter_particles_trapped_and_axis_bound / points_counter * 100.0
-    percent_particles_trapped_or_left = counter_particles_trapped_or_left / points_counter * 100.0
-    percent_particles_trapped_or_left_and_axis_bound = counter_particles_trapped_or_left_and_axis_bound \
-                                                       / points_counter * 100.0
+        elif particle_type == 'trapped':
 
-    # t_axis = t / field_dict['tau_cyclotron']
-    t_axis = t * 1e6
+            # if is_particle_escaping_right[0] == True:
+            #     1 / 0
+
+            counter_trapped_particles -= is_particle_escaping_right
+
+            ind_first_kicked_to_right = np.where(is_particle_escaping_right)[0]
+            if len(ind_first_kicked_to_right) > 0:
+                inds_considered_kicked_right = range(ind_first_kicked_to_right[0], len(t))
+                counter_trapped_particles2[inds_considered_kicked_right] -= 1.0
+
+        else:
+            pass
+
+    percent_right_particles = counter_right_particles / points_right_counter * 100.0
+    percent_trapped_particles = counter_trapped_particles / points_trapped_counter * 100.0
+    percent_right_particles2 = counter_right_particles2 / points_right_counter * 100.0
+    percent_trapped_particles2 = counter_trapped_particles2 / points_trapped_counter * 100.0
+
+    t_axis = t / field_dict['tau_cyclotron']
+    # t_axis = t * 1e6
 
     plt.figure(1)
-    # plt.plot(t_axis, percent_particles_trapped, '-b', label='out of LC')
-    # plt.plot(t_axis, percent_particles_trapped_and_axis_bound, '-r',
-    #          label='out of LC, and z/l<' + str(z_cutoff))
-    # plt.plot(t_axis, percent_going_left, '-g', label='in LC, going left')
-    # color = 'b'
+
     label_RF_params = ', for $v_{z,res}/v_{th}$=' + str(vz_res) + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(
         alpha) + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF)
-    # label = 'trapped or escaping left'
-    label = 'trapped/left' + label_RF_params
-    plt.plot(t_axis, percent_particles_trapped_or_left, '-', color=color, label=label)
+    label = 'trapped or escaping left'
+    # label = 'trapped/left' + label_RF_params
+    # plt.plot(t_axis, percent_particles_trapped_or_left, '-', color=color, label=label)
     # color = 'r'
-    # label = 'trapped or escaping left, and z/l<' + str(z_cutoff)
-    label = 'same as last, and z/l<' + str(z_cutoff)
-    plt.plot(t_axis, percent_particles_trapped_or_left_and_axis_bound, '--', color=color, label=label)
-    # plt.plot(t_axis, percent_particles_trapped, '--b', label='trapped')
-    # plt.plot(t_axis, percent_particles_trapped_and_axis_bound, '--r', label='trapped, and z/l<' + str(z_cutoff))
+    plt.plot(t_axis, percent_right_particles, '-', color='b', label='born right, checked if trapped')
+    plt.plot(t_axis, percent_right_particles2, '--', color='b',
+             label='born right, once trapped considered trapped forever')
+    plt.plot(t_axis, percent_trapped_particles, '-', color='g', label='born trapped, checked if kicked right')
+    plt.plot(t_axis, percent_trapped_particles2, '--', color='g',
+             label='born trapped, once kicked right considered right forever')
 
-    t_single_cell = settings['l'] / settings['v_th'] * 1e6
-    plt.plot([t_single_cell, t_single_cell], [0, 100], '--', color='grey', label='t_single_cell')
+    # t_single_cell = settings['l'] / settings['v_th'] * 1e6
+    # plt.plot([t_single_cell, t_single_cell], [min(percent_particles_trapped_or_left_and_axis_bound), max(percent_particles_trapped_or_left_and_axis_bound)], '--', color='grey', label='t_single_cell')
 
-    # plt.xlabel('$t/\\tau_{cyc}$')
-    plt.xlabel('$t$ [$\\mu s$]')
-    plt.ylabel('%')
+    plt.xlabel('$t/\\tau_{cyc}$')
+    # plt.xlabel('$t$ [$\\mu s$]')
+    plt.ylabel('% of population')
     # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
     #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
     #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
