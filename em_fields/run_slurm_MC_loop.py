@@ -32,8 +32,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # main_folder += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
-# main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
-main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
+main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 
 plt.close('all')
 
@@ -46,8 +46,11 @@ plt.close('all')
 # v_loop_list = [1.5]
 # alpha_loop_list = [1.5]
 
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [0.6, 1.0, 1.2, 1.5, 2.0]
+
 v_loop_list = [0.5, 1.0, 1.5, 2.0]
-alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
+alpha_loop_list = [0.6]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 # alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
@@ -55,8 +58,8 @@ alpha_loop_list = [1.0, 1.2, 1.5, 2.0]
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
 
-E_RF_kVm = 0
-# E_RF_kVm = 10
+# E_RF_kVm = 0
+E_RF_kVm = 10
 # E_RF_kVm = 100
 
 if E_RF_kVm == 0:

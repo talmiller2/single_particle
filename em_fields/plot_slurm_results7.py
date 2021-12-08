@@ -20,9 +20,9 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # save_dir_main += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # save_dir_main += '/set16_T_B0_1T_l_1m_Post_intervals/'
-# save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
-save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
-
+save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
+#
 set_names = []
 
 Rm = 2
@@ -45,8 +45,8 @@ alpha = 1.0
 # alpha = 3.0
 
 # vz_res = 0.5
-vz_res = 1.0
-# vz_res = 1.5
+# vz_res = 1.0
+vz_res = 1.5
 # vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
@@ -57,9 +57,13 @@ color = 'g'
 # color = 'm'
 
 omega_RF_over_omega_cyc_0 = alpha
-v_RF = vz_res * alpha / (alpha + 1e-3 - 1.0)
+if alpha == 1.0:
+    v_RF_label = '$\\infty$'
+else:
+    v_RF = vz_res * alpha / (alpha + 1e-3 - 1.0)
+    v_RF_label = '{:.2f}'.format(v_RF)
 print('vz_res/v_th = ' + str(vz_res) + ', alpha = ' + str(alpha))
-print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + '{:.2f}'.format(v_RF))
+print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + v_RF_label)
 
 if ERF > 0:
     set_names += ['Rm_' + str(Rm) + '_ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)]
@@ -116,9 +120,13 @@ for set_ind in range(len(set_names)):
 
         if ind_point == 0:
             counter_right_particles = 0 * t
-            counter_trapped_particles = 0 * t
             counter_right_particles2 = 0 * t
+            counter_left_particles = 0 * t
+            counter_left_particles2 = 0 * t
+            counter_trapped_particles = 0 * t
             counter_trapped_particles2 = 0 * t
+            counter_trapped_particles3 = 0 * t
+            counter_trapped_particles4 = 0 * t
 
         # calculate if a particle is initially in right loss cone
         in_loss_cone = (v_transverse[0] / v[0]) ** 2 < 1 / field_dict['Rm']
@@ -154,33 +162,51 @@ for set_ind in range(len(set_names)):
                 inds_considered_trapped = range(ind_first_got_trapped[0], len(t))
                 counter_right_particles2[inds_considered_trapped] += 1.0
 
-        elif particle_type == 'trapped':
+        elif particle_type == 'left':
+
+            counter_left_particles += out_of_loss_cone
+
+            ind_first_got_trapped = np.where(out_of_loss_cone)[0]
+            if len(ind_first_got_trapped) > 0:
+                inds_considered_trapped = range(ind_first_got_trapped[0], len(t))
+                counter_left_particles2[inds_considered_trapped] += 1.0
+
+        else:
 
             # if is_particle_escaping_right[0] == True:
             #     1 / 0
 
-            counter_trapped_particles -= is_particle_escaping_right
+            counter_trapped_particles += is_particle_escaping_right
 
             ind_first_kicked_to_right = np.where(is_particle_escaping_right)[0]
             if len(ind_first_kicked_to_right) > 0:
                 inds_considered_kicked_right = range(ind_first_kicked_to_right[0], len(t))
-                counter_trapped_particles2[inds_considered_kicked_right] -= 1.0
+                counter_trapped_particles2[inds_considered_kicked_right] += 1.0
 
-        else:
-            pass
+            counter_trapped_particles3 += is_particle_escaping_left
+
+            ind_first_kicked_to_left = np.where(is_particle_escaping_left)[0]
+            if len(ind_first_kicked_to_left) > 0:
+                inds_considered_kicked_left = range(ind_first_kicked_to_left[0], len(t))
+                counter_trapped_particles4[inds_considered_kicked_left] += 1.0
 
     percent_right_particles = counter_right_particles / points_right_counter * 100.0
-    percent_trapped_particles = counter_trapped_particles / points_trapped_counter * 100.0
     percent_right_particles2 = counter_right_particles2 / points_right_counter * 100.0
+    percent_left_particles = counter_left_particles / points_left_counter * 100.0
+    percent_left_particles2 = counter_left_particles2 / points_left_counter * 100.0
+    percent_trapped_particles = counter_trapped_particles / points_trapped_counter * 100.0
     percent_trapped_particles2 = counter_trapped_particles2 / points_trapped_counter * 100.0
+    percent_trapped_particles3 = counter_trapped_particles3 / points_trapped_counter * 100.0
+    percent_trapped_particles4 = counter_trapped_particles4 / points_trapped_counter * 100.0
 
-    t_axis = t / field_dict['tau_cyclotron']
+    # t_axis = t / field_dict['tau_cyclotron']
+    t_axis = t / (settings['l'] / settings['v_th'])
     # t_axis = t * 1e6
 
     plt.figure(1)
 
-    label_RF_params = ', for $v_{z,res}/v_{th}$=' + str(vz_res) + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(
-        alpha) + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF)
+    # label_RF_params = ', for $v_{z,res}/v_{th}$=' + str(vz_res) + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(
+    #     alpha) + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF)
     label = 'trapped or escaping left'
     # label = 'trapped/left' + label_RF_params
     # plt.plot(t_axis, percent_particles_trapped_or_left, '-', color=color, label=label)
@@ -188,36 +214,29 @@ for set_ind in range(len(set_names)):
     plt.plot(t_axis, percent_right_particles, '-', color='b', label='born right, checked if trapped')
     plt.plot(t_axis, percent_right_particles2, '--', color='b',
              label='born right, once trapped considered trapped forever')
-    plt.plot(t_axis, percent_trapped_particles, '-', color='g', label='born trapped, checked if kicked right')
-    plt.plot(t_axis, percent_trapped_particles2, '--', color='g',
+    plt.plot(t_axis, percent_trapped_particles, '-', color='r', label='born trapped, checked if kicked right')
+    plt.plot(t_axis, percent_trapped_particles2, '--', color='r',
              label='born trapped, once kicked right considered right forever')
+    plt.plot(t_axis, percent_trapped_particles3, '-', color='m', label='born trapped, checked if kicked left')
+    plt.plot(t_axis, percent_trapped_particles4, '--', color='m',
+             label='born trapped, once kicked left considered left forever')
+    plt.plot(t_axis, percent_left_particles, '-', color='g', label='born left, checked if trapped')
+    plt.plot(t_axis, percent_left_particles2, '--', color='g',
+             label='born left, once trapped considered trapped forever')
 
     # t_single_cell = settings['l'] / settings['v_th'] * 1e6
     # plt.plot([t_single_cell, t_single_cell], [min(percent_particles_trapped_or_left_and_axis_bound), max(percent_particles_trapped_or_left_and_axis_bound)], '--', color='grey', label='t_single_cell')
 
-    plt.xlabel('$t/\\tau_{cyc}$')
+    plt.xlabel('$t / (l / v_{th})$')
+    # plt.xlabel('$t/\\tau_{cyc}$')
     # plt.xlabel('$t$ [$\\mu s$]')
+
     plt.ylabel('% of population')
-    # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
-    #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
-    #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
-    #           + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF))
-    plt.title('stopping metric as a function of time')
+    plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
+              + ', $v_{z,res}/v_{th}$=' + str(vz_res)
+              + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
+              + ', $v_{RF}/v_{th}$=' + v_RF_label)
+    # plt.title('percent change of a population (right-going or trapped)')
     plt.grid(True)
     plt.tight_layout()
     plt.legend()
-
-    # plt.figure(2)
-    # r0 = z[0] + z_offset
-    # plt.plot(r0 * np.cos(np.linspace(0, np.pi,100)), r0 * np.sin(np.linspace(0, np.pi,100)), '-k', linewidth=3, alpha=0.3)
-    # plt.plot(np.linspace(0, 10,100),np.linspace(0, 10,100) * (np.pi / 2) * np.arcsin(np.sqrt(1/Rm)), '-k', linewidth=3, alpha=0.3)
-    # plt.plot(np.linspace(0, -10,100),np.linspace(0, 10,100) * (np.pi / 2) * np.arcsin(np.sqrt(1/Rm)), '-k', linewidth=3, alpha=0.3)
-    # plt.xlabel('$z/l$+' + str(z_offset))
-    # plt.ylabel('$z/l$+' + str(z_offset))
-    # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
-    #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
-    #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
-    #           + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF))
-    # plt.grid(True)
-    # plt.tight_layout()
-    # plt.legend()
