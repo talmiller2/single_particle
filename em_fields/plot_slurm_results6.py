@@ -18,7 +18,8 @@ plt.rcParams.update({'font.size': 12})
 
 save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
-save_dir_main += '/set15_T_B0_1T_l_1m_Post_intervals/'
+save_dir_main += '/set15_T_B0_1T_l_1m_Logan_intervals/'
+# save_dir_main += '/set16_T_B0_1T_l_1m_Post_intervals/'
 
 set_names = []
 
@@ -28,9 +29,9 @@ Rm = 2
 # ERF = 0
 # ERF = 1
 # ERF = 5
-ERF = 10
+# ERF = 10
 # ERF = 30
-# ERF = 100
+ERF = 100
 
 # alpha = 0.6
 # alpha = 0.8
@@ -49,9 +50,9 @@ vz_res = 1.5
 # vz_res = 3.0
 
 # color = 'b'
-# color = 'g'
+color = 'g'
 # color = 'r'
-color = 'm'
+# color = 'm'
 
 omega_RF_over_omega_cyc_0 = alpha
 v_RF = vz_res * alpha / (alpha - 1.0)

@@ -71,9 +71,10 @@ def define_default_field(settings, field_dict=None):
         field_dict = {}
 
     # single mirror properties
-    field_dict['mirror_field_type'] = 'logan'
-    # field_dict['mirror_field_type'] = 'post'
-    # field_dict['mirror_field_type'] = 'const'
+    if 'mirror_field_type' not in field_dict:
+        field_dict['mirror_field_type'] = 'logan'
+        # field_dict['mirror_field_type'] = 'post'
+        # field_dict['mirror_field_type'] = 'const'
     if 'Rm' not in field_dict:
         field_dict['Rm'] = 2.0  # mirror ratio
     field_dict['loss_cone_angle'] = np.arcsin(field_dict['Rm'] ** (-0.5)) * 360 / (2 * np.pi)

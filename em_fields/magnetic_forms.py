@@ -63,12 +63,11 @@ def magnetic_field_jaeger(x, B0, Rm, l, use_transverse_fields=True, z0=0):
     return np.array([Bx, By, Bz])
 
 
-def magnetic_field_post(x, B0, Rm, l, use_transverse_fields=True, z0=0):
+def magnetic_field_post(x, B0, Rm, l, use_transverse_fields=True, z0=0, lamda=5.5):
     """
     Magnetic field from Logan et al (1972), describing the more localized form of Post (1967)
     """
     z = x[2] - z0
-    lamda = 5.5
     Bz = B0 * (1 + (Rm - 1.0) * np.exp(- lamda * np.sin(np.pi * z / l) ** 2.0))
     dBz_dz = - lamda * 2 * np.pi / l * B0 * (Rm - 1.0) * np.cos(np.pi * z / l) \
              * np.sin(np.pi * z / l) \

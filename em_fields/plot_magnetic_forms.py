@@ -36,22 +36,17 @@ B_jaeger = B
 B = magnetic_field_post(x, 1, Rm, l)
 B_post = B
 
-B_s = 0.5
-sigma_s = l / 10.0
+B_s = 1.0
+sigma_s = l / 5.0
 z_mod = np.mod(z, l)
-# B_slope = B_s * z_mod / l * (1 - np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0))
-# z_mod = np.mod(z - l / 2.0, l)
-# B_slope = B_s * (z_mod - l / 2.0) / l
-# B_slope = B_s * (z_mod) / l
-# B_slope = B_s * (z_mod - l / 2.0) / l * (1 - np.exp(- (z_mod) ** 2.0 / sigma_s ** 2.0))
-B_slope = B_s * (z_mod - l / 2.0) / l * (1 - np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0)) * (
-            1 - np.exp(- (z_mod) ** 2.0 / sigma_s ** 2.0))
+B_slope = B_s * (z_mod - l / 2.0) / l \
+          * (1 - np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0)) \
+          * (1 - np.exp(- (z_mod) ** 2.0 / sigma_s ** 2.0))
 
 B_logan_slope = B_logan[2] + B_slope
 B_post_slope = B_post[2] + B_slope
 
-# z /= l
-
+z /= l
 
 # plot axial magnetic fields
 plt.figure(1)
@@ -62,7 +57,8 @@ plt.plot(z, B_slope, '--', label='slope', color='k')
 plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
 plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
 plt.legend()
-plt.xlabel('z [m]')
+# plt.xlabel('z [m]')
+plt.xlabel('z / l')
 plt.ylabel('$B_z$ [T]')
 plt.grid(True)
 plt.tight_layout()

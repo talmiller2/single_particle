@@ -30,7 +30,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
 # main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
 # main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
-main_folder += '/set15_T_B0_1T_l_1m_Post_intervals/'
+# main_folder += '/set15_T_B0_1T_l_1m_Logan_intervals/'
+main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
 
 plt.close('all')
 
@@ -130,8 +131,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        # total_number_of_points = 1000
-        total_number_of_points = 2000
+        total_number_of_points = 1000
+        # total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
