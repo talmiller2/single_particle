@@ -29,23 +29,23 @@ Rm = 2
 # ERF = 0
 # ERF = 1
 # ERF = 5
-# ERF = 10
+ERF = 10
 # ERF = 30
-ERF = 100
+# ERF = 100
 
 # alpha = 0.6
 # alpha = 0.8
 # alpha = 1.0
 # alpha = 1.2
-alpha = 1.5
-# alpha = 2.0
+# alpha = 1.5
+alpha = 2.0
 # alpha = 2.5
 # alpha = 3.0
 
 # vz_res = 0.5
 # vz_res = 1.0
-vz_res = 1.5
-# vz_res = 2.0
+# vz_res = 1.5
+vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
 
@@ -55,7 +55,7 @@ color = 'g'
 # color = 'm'
 
 omega_RF_over_omega_cyc_0 = alpha
-v_RF = vz_res * alpha / (alpha - 1.0)
+v_RF = vz_res * alpha / (alpha + 1e-3 - 1.0)
 print('vz_res/v_th = ' + str(vz_res) + ', alpha = ' + str(alpha))
 print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + '{:.2f}'.format(v_RF))
 
@@ -205,11 +205,11 @@ for set_ind in range(len(set_names)):
             #         plt.figure(2)
             #         plt.scatter(r * np.cos(theta), r * np.sin(theta), s=1, color=color)
 
-    percent_particles_trapped = counter_particles_trapped / len(ind_points) * 1.0
-    percent_particles_trapped_and_axis_bound = counter_particles_trapped_and_axis_bound / len(ind_points) * 1.0
-    percent_particles_trapped_or_left = counter_particles_trapped_or_left / len(ind_points) * 1.0
-    percent_particles_trapped_or_left_and_axis_bound = counter_particles_trapped_or_left_and_axis_bound / len(
-        ind_points) * 1.0
+    percent_particles_trapped = counter_particles_trapped / len(ind_points) * 100.0
+    percent_particles_trapped_and_axis_bound = counter_particles_trapped_and_axis_bound / len(ind_points) * 100.0
+    percent_particles_trapped_or_left = counter_particles_trapped_or_left / len(ind_points) * 100.0
+    percent_particles_trapped_or_left_and_axis_bound = counter_particles_trapped_or_left_and_axis_bound \
+                                                       / len(ind_points) * 100.0
 
     # percent_particles_trapped /= percent_particles_trapped[0]
     # percent_particles_trapped_and_axis_bound /= percent_particles_trapped_and_axis_bound[0]

@@ -31,7 +31,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
 # main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # main_folder += '/set15_T_B0_1T_l_1m_Logan_intervals/'
-main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
+# main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
+main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
 
 plt.close('all')
 
@@ -72,6 +73,9 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
+        # settings['l'] = 1.0  # m (MM cell size)
+        settings['l'] = 3.0  # m (MM cell size)
+
         field_dict['Rm'] = 2.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
 
@@ -95,8 +99,12 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
+        # settings['num_snapshots'] = 300
+        settings['num_snapshots'] = 100
+
+        tmax_mirror_lengths = 1
         # tmax_mirror_lengths = 100
-        tmax_mirror_lengths = 300
+        # tmax_mirror_lengths = 300
         sim_cyclotron_periods = int(
             tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
