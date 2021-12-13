@@ -20,9 +20,9 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
 # save_dir_main += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # save_dir_main += '/set16_T_B0_1T_l_1m_Post_intervals/'
-save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
-#
+save_dir_main += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1/'
+
 set_names = []
 
 Rm = 2
@@ -31,13 +31,13 @@ Rm = 2
 # ERF = 0
 # ERF = 1
 # ERF = 5
-ERF = 10
+# ERF = 10
 # ERF = 30
-# ERF = 100
+ERF = 100
 
-# alpha = 0.6
+alpha = 0.6
 # alpha = 0.8
-alpha = 1.0
+# alpha = 1.0
 # alpha = 1.2
 # alpha = 1.5
 # alpha = 2.0
@@ -45,23 +45,29 @@ alpha = 1.0
 # alpha = 3.0
 
 # vz_res = 0.5
-# vz_res = 1.0
-vz_res = 1.5
+vz_res = 1.0
+# vz_res = 1.5
 # vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
 
 # color = 'b'
-color = 'g'
+# color = 'g'
 # color = 'r'
 # color = 'm'
 
 omega_RF_over_omega_cyc_0 = alpha
-if alpha == 1.0:
-    v_RF_label = '$\\infty$'
-else:
-    v_RF = vz_res * alpha / (alpha + 1e-3 - 1.0)
-    v_RF_label = '{:.2f}'.format(v_RF)
+# if alpha == 1.0:
+#     v_RF_label = '$\\infty$'
+# else:
+#     v_RF = vz_res * alpha / (alpha - 1.0)
+#     v_RF_label = '{:.2f}'.format(v_RF)
+
+alpha_actual = alpha * (1 + np.pi / 100)
+v_RF = vz_res * alpha_actual / (alpha_actual - 1.0)
+v_RF_label = '{:.2f}'.format(v_RF)
+alpha_actual_label = '{:.2f}'.format(alpha_actual)
+
 print('vz_res/v_th = ' + str(vz_res) + ', alpha = ' + str(alpha))
 print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + v_RF_label)
 
@@ -205,6 +211,7 @@ for set_ind in range(len(set_names)):
 
     plt.figure(1)
 
+
     # label_RF_params = ', for $v_{z,res}/v_{th}$=' + str(vz_res) + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(
     #     alpha) + ', $v_{RF}/v_{th}$=' + '{:.1f}'.format(v_RF)
     label = 'trapped or escaping left'
@@ -231,12 +238,16 @@ for set_ind in range(len(set_names)):
     # plt.xlabel('$t/\\tau_{cyc}$')
     # plt.xlabel('$t$ [$\\mu s$]')
 
-    plt.ylabel('% of population')
-    plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
-              + ', $v_{z,res}/v_{th}$=' + str(vz_res)
-              + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
+    plt.ylabel('% change of population')
+    # plt.title('$E_{RF}$=' + str(ERF) + 'kV/m' + ', Rm=' + str(Rm)
+    #           + ', $v_{z,res}/v_{th}$=' + str(vz_res)
+    #           + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha)
+    #           + ', $v_{RF}/v_{th}$=' + v_RF_label)
+    plt.title('$v_{z,res}/v_{th}$=' + str(vz_res)
+              + ', $\\alpha=\\omega_{RF}/\\omega_{cyc0}=$' + str(alpha_actual_label)
               + ', $v_{RF}/v_{th}$=' + v_RF_label)
+
     # plt.title('percent change of a population (right-going or trapped)')
     plt.grid(True)
     plt.tight_layout()
-    plt.legend()
+    # plt.legend()

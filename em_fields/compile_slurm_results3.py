@@ -17,8 +17,9 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set14_T_B0_1T_Rm_2_l_1m_randphase_save_intervals/'
 # save_dir += '/set15_T_B0_1T_l_1m_Logan_intervals/'
 # save_dir += '/set16_T_B0_1T_l_1m_Post_intervals/'
-save_dir += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# save_dir += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # save_dir += '/set18_T_B0_1T_l_3m_Logan_intervals/'
+save_dir += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1/'
 
 os.chdir(save_dir)
 
