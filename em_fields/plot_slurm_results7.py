@@ -23,26 +23,28 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 # save_dir_main += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
-save_dir_main += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+# save_dir_main += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+save_dir_main += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
 
 set_names = []
 
 # Rm = 1.3
-Rm = 2
+# Rm = 2
+Rm = 3
 # Rm = 4
 
 # ERF = 0
 # ERF = 1
 # ERF = 5
-ERF = 10
+# ERF = 10
 # ERF = 30
-# ERF = 100
+ERF = 100
 
 # alpha = 0.6
 # alpha = 0.8
 # alpha = 1.0
-alpha = 1.2
-# alpha = 1.5
+# alpha = 1.2
+alpha = 1.5
 # alpha = 2.0
 # alpha = 2.5
 # alpha = 3.0
@@ -137,6 +139,11 @@ for set_ind in range(len(set_names)):
             counter_trapped_particles3 = 0 * t
             counter_trapped_particles4 = 0 * t
 
+            counter_right_trapped_first_cell = 0
+            counter_left_trapped_first_cell = 0
+            counter_trapped_escaped_right_first_cell = 0
+            counter_trapped_escaped_left_first_cell = 0
+
         # calculate if a particle is initially in right loss cone
         in_loss_cone = (v_transverse[0] / v[0]) ** 2 < 1 / field_dict['Rm']
         positive_z_velocity = v_axial[0] > 0
@@ -144,7 +151,7 @@ for set_ind in range(len(set_names)):
         loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
         initial_angle = 360 / (2 * np.pi) * np.arcsin(v_transverse[0] / v[0])
 
-        if abs(initial_angle - loss_cone_angle) < 100:
+        if abs(initial_angle - loss_cone_angle) < 1000:
             points_counter += 1
             if in_loss_cone and positive_z_velocity:  # right loss cone
                 particle_type = 'right'
@@ -165,9 +172,6 @@ for set_ind in range(len(set_names)):
 
             if particle_type == 'right':
 
-                # if is_particle_escaping_right[0] == True:
-                #     1 / 0
-
                 counter_right_particles += out_of_loss_cone
 
                 ind_first_got_trapped = np.where(out_of_loss_cone)[0]
@@ -186,9 +190,6 @@ for set_ind in range(len(set_names)):
 
             else:
 
-                # if is_particle_escaping_right[0] == True:
-                #     1 / 0
-
                 counter_trapped_particles += is_particle_escaping_right
 
                 ind_first_kicked_to_right = np.where(is_particle_escaping_right)[0]
@@ -203,10 +204,81 @@ for set_ind in range(len(set_names)):
                     inds_considered_kicked_left = range(ind_first_kicked_to_left[0], len(t))
                     counter_trapped_particles4[inds_considered_kicked_left] += 1.0
 
-    print('points_counter:' + str(points_counter))
-    print('right %: ' + str(100.0 * points_right_counter / points_counter))
-    print('left %: ' + str(100.0 * points_left_counter / points_counter))
-    print('trapped %: ' + str(100.0 * points_trapped_counter / points_counter))
+            # check if particle bounced from the first mirror
+            # z_max = 1
+            # z_min = 0
+            z_max = 1.1
+            z_min = -0.1
+            vz0 = v_axial[0]
+            inds_search = np.where(t <= 2 * settings['l'] / abs(vz0))[0]
+            if particle_type == 'right':
+                inds_escaped_cell = np.where(z[inds_search] / settings['l'] > z_max)[0]
+                if len(inds_escaped_cell) == 0:
+                    counter_right_trapped_first_cell += 1
+            if particle_type == 'left':
+                inds_escaped_cell = np.where(z[inds_search] / settings['l'] < z_min)[0]
+                if len(inds_escaped_cell) == 0:
+                    counter_left_trapped_first_cell += 1
+            # elif particle_type == 'trapped' and vz0 > 0:
+            if particle_type == 'trapped':
+                inds_escaped_cell = np.where(z[inds_search] / settings['l'] > z_max)[0]
+                if len(inds_escaped_cell) > 0:
+                    counter_trapped_escaped_right_first_cell += 1
+            # elif particle_type == 'trapped' and vz0 < 0:
+            if particle_type == 'trapped':
+                inds_escaped_cell = np.where(z[inds_search] / settings['l'] < z_min)[0]
+                if len(inds_escaped_cell) > 0:
+                    counter_trapped_escaped_left_first_cell += 1
+
+            # # check if particle bounced from the first mirror
+            # vz0 = v_axial[0]
+            # ind_cell = len(t)
+            # inds_escape_right_cell = np.where(z / settings['l'] > 1.1)[0]
+            # if len(inds_escape_right_cell) > 0:
+            #     ind_cell = inds_escape_right_cell[0]
+            # inds_escape_left_cell = np.where(z / settings['l'] < -0.1)[0]
+            # if len(inds_escape_left_cell) > 0:
+            #     ind_cell = min(ind_cell, inds_escape_left_cell[0])
+            # inds_reverse_direction = np.where(v_axial / vz0 < 0)[0]
+            # if len(inds_reverse_direction) > 0:
+            #     ind_cell = min(ind_cell, inds_reverse_direction[0])
+            # inds_search = range(ind_cell)
+            # if particle_type == 'right':
+            #     inds_escaped_cell = np.where(z[inds_search] / settings['l'] > 1)[0]
+            #     if len(inds_escaped_cell) == 0:
+            #         counter_right_trapped_first_cell += 1
+            # if particle_type == 'left':
+            #     inds_escaped_cell = np.where(z[inds_search] / settings['l'] < 0)[0]
+            #     if len(inds_escaped_cell) == 0:
+            #         counter_left_trapped_first_cell += 1
+            # # elif particle_type == 'trapped' and vz0 > 0:
+            # if particle_type == 'trapped':
+            #     inds_escaped_cell = np.where(z[inds_search] / settings['l'] > 1)[0]
+            #     if len(inds_escaped_cell) > 0:
+            #         counter_trapped_escaped_right_first_cell += 1
+            # # elif particle_type == 'trapped' and vz0 < 0:
+            # if particle_type == 'trapped':
+            #     inds_escaped_cell = np.where(z[inds_search] / settings['l'] < 0)[0]
+            #     if len(inds_escaped_cell) > 0:
+            #         counter_trapped_escaped_left_first_cell += 1
+
+    #         # plot particle trajectories in (z,v_transverse) plane
+    #         if particle_type == 'right':
+    #             plt.figure(2)
+    #             plt.plot(v_transverse / settings['v_th'], z / settings['l'], '-')
+    #
+    # # add the plot labels
+    # plt.figure(2)
+    # plt.ylabel('$z/l$')
+    # plt.xlabel('$v_{\\perp}/v_{th}$')
+    # plt.grid(True)
+    # plt.tight_layout()
+
+    print('#######')
+    print('points_counter: ' + str(points_counter))
+    print('right: ' + str(100.0 * points_right_counter / points_counter) + '%')
+    print('left: ' + str(100.0 * points_left_counter / points_counter) + '%')
+    print('trapped: ' + str(100.0 * points_trapped_counter / points_counter) + '%')
 
     # percent_right_particles = counter_right_particles / points_right_counter * 100.0
     # percent_right_particles2 = counter_right_particles2 / points_right_counter * 100.0
@@ -225,6 +297,16 @@ for set_ind in range(len(set_names)):
     percent_trapped_particles2 = counter_trapped_particles2 / points_counter * 100.0
     percent_trapped_particles3 = counter_trapped_particles3 / points_counter * 100.0
     percent_trapped_particles4 = counter_trapped_particles4 / points_counter * 100.0
+
+    print('#######')
+    print('right particles getting trapped in first cell: ' + str(
+        100.0 * counter_right_trapped_first_cell / points_counter) + '%')
+    print('left particles getting trapped in first cell: ' + str(
+        100.0 * counter_left_trapped_first_cell / points_counter) + '%')
+    print('trapped particles escape to the right in first cell: ' + str(
+        100.0 * counter_trapped_escaped_right_first_cell / points_counter) + '%')
+    print('trapped particles escape to the left in first cell: ' + str(
+        100.0 * counter_trapped_escaped_left_first_cell / points_counter) + '%')
 
     # t_axis = t / field_dict['tau_cyclotron']
     t_axis = t / (settings['l'] / settings['v_th'])

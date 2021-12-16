@@ -35,7 +35,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 # main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
-main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+# main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+main_folder += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
 
 plt.close('all')
 
@@ -86,6 +87,9 @@ for v_loop in v_loop_list:
 
         # settings['l'] = 1.0  # m (MM cell size)
         settings['l'] = 3.0  # m (MM cell size)
+
+        settings['absolute_velocity_sampling_type'] = 'const_vth'
+        settings['direction_velocity_sampling_type'] = 'deterministic'
 
         settings = define_default_settings(settings)
 
@@ -154,7 +158,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 1000
+        total_number_of_points = 400
+        # total_number_of_points = 1000
         # total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
@@ -193,6 +198,22 @@ for v_loop in v_loop_list:
             x = np.cos(phi) * np.sin(theta)
             y = np.sin(phi) * np.sin(theta)
             z = np.cos(theta)
+            rand_unit_vec = np.array([x, y, z]).T
+        elif settings['direction_velocity_sampling_type'] == 'deterministic':
+            loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
+            angles = []
+            angles += [loss_cone_angle * 1.1]
+            angles += [loss_cone_angle * 0.9]
+            angles += [180 - loss_cone_angle * 1.1]
+            angles += [180 - loss_cone_angle * 0.9]
+            x = []
+            y = []
+            z = []
+            size_subsamples = int(total_number_of_points / len(angles))
+            for i, angle in enumerate(angles):
+                x += [0 for _ in range(size_subsamples)]
+                y += [np.sin(angle / 360 * 2 * np.pi) for _ in range(size_subsamples)]
+                z += [np.cos(angle / 360 * 2 * np.pi) for _ in range(size_subsamples)]
             rand_unit_vec = np.array([x, y, z]).T
         else:
             raise ValueError('invalid direction_velocity_sampling_type :'
@@ -238,6 +259,7 @@ for v_loop in v_loop_list:
         cnt = 0
         for ind_set, points_set in enumerate(points_set_list):
             run_name = 'set_' + str(ind_set) + '_' + save_dir
+            print('###############')
             print('run_name = ' + run_name)
 
             settings['ind_set'] = ind_set
@@ -248,5 +270,5 @@ for v_loop in v_loop_list:
                       + ' --field_dict "' + str(field_dict) + '"'
             s = Slurm(run_name, slurm_kwargs=slurm_kwargs)
             s.run(command)
-            print('run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
+            print('   run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
             cnt += 1

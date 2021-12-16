@@ -20,7 +20,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # save_dir += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 # save_dir += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
-save_dir += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+# save_dir += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+save_dir += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
 
 os.chdir(save_dir)
 
@@ -37,6 +38,7 @@ for curr_dir in run_dirs:
     with open(field_dict_file, 'rb') as fid:
         field_dict = pickle.load(fid)
 
+    print('###############')
     compiled_file = curr_dir_full + '.pickle'
     if os.path.exists(compiled_file):
         print(curr_dir + ' already compiled, skipping.')
@@ -53,7 +55,7 @@ for curr_dir in run_dirs:
 
         # loop over all saved sets and combine their data
         for ind_set, set_file in enumerate(set_files):
-            print('set # ' + str(ind_set))
+            print('   set # ' + str(ind_set))
 
             if settings['set_save_format'] == 'mat':
                 # in this format all data was saved as 2d matrices
