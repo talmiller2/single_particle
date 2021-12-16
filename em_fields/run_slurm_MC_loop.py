@@ -36,12 +36,16 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 # main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
 # main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
-main_folder += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
+# main_folder += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
+main_folder += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
 
 plt.close('all')
 
 # v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
 # alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
+
+v_loop_list = np.round(np.linspace(0.5, 2, 15), 2)
+alpha_loop_list = np.round(np.linspace(0.6, 2, 15), 2)
 
 # v_loop_list = [1]
 # alpha_loop_list = [1]
@@ -49,8 +53,8 @@ plt.close('all')
 # v_loop_list = [1.5]
 # alpha_loop_list = [1.5]
 
-v_loop_list = [0.5, 1.0, 1.5, 2.0]
-alpha_loop_list = [0.6, 1.0, 1.2, 1.5, 2.0]
+# v_loop_list = [0.5, 1.0, 1.5, 2.0]
+# alpha_loop_list = [0.6, 1.0, 1.2, 1.5, 2.0]
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
 # alpha_loop_list = [0.6]
@@ -88,8 +92,8 @@ for v_loop in v_loop_list:
         # settings['l'] = 1.0  # m (MM cell size)
         settings['l'] = 3.0  # m (MM cell size)
 
-        settings['absolute_velocity_sampling_type'] = 'const_vth'
-        settings['direction_velocity_sampling_type'] = 'deterministic'
+        # settings['absolute_velocity_sampling_type'] = 'const_vth'
+        # settings['direction_velocity_sampling_type'] = 'deterministic'
 
         settings = define_default_settings(settings)
 
@@ -117,11 +121,13 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        settings['num_snapshots'] = 300
+        settings['num_snapshots'] = 30
         # settings['num_snapshots'] = 200
+        # settings['num_snapshots'] = 300
 
         # tmax_mirror_lengths = 1
-        tmax_mirror_lengths = 5
+        tmax_mirror_lengths = 3
+        # tmax_mirror_lengths = 5
         # tmax_mirror_lengths = 100
         # tmax_mirror_lengths = 300
         sim_cyclotron_periods = int(
@@ -158,8 +164,8 @@ for v_loop in v_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 400
-        # total_number_of_points = 1000
+        # total_number_of_points = 400
+        total_number_of_points = 1000
         # total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
@@ -235,10 +241,10 @@ for v_loop in v_loop_list:
 
         # divide the points to a given number of cpus (250 is max in partition core)
         # num_cpus = 1
-        # num_cpus = 2
+        num_cpus = 2
         # num_cpus = 5
         # num_cpus = 10
-        num_cpus = 15
+        # num_cpus = 15
         # num_cpus = 30
         # num_cpus = 50
         # num_cpus = 200
