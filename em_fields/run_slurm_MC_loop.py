@@ -34,7 +34,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
 # main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
-main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
+# main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
+main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
 
 plt.close('all')
 
@@ -90,8 +91,9 @@ for v_loop in v_loop_list:
 
         field_dict = {}
 
-        field_dict['Rm'] = 1.3  # mirror ratio
+        # field_dict['Rm'] = 1.3  # mirror ratio
         # field_dict['Rm'] = 2.0  # mirror ratio
+        field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
 
         field_dict['E_RF_kVm'] = E_RF_kVm
@@ -111,10 +113,11 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        # settings['num_snapshots'] = 300
-        settings['num_snapshots'] = 200
+        settings['num_snapshots'] = 300
+        # settings['num_snapshots'] = 200
 
-        tmax_mirror_lengths = 1
+        # tmax_mirror_lengths = 1
+        tmax_mirror_lengths = 5
         # tmax_mirror_lengths = 100
         # tmax_mirror_lengths = 300
         sim_cyclotron_periods = int(
