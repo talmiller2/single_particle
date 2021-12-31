@@ -37,7 +37,8 @@ main_folder = '/home/talm/code/single_particle/slurm_runs/'
 # main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
 # main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
 # main_folder += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
-main_folder += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
+# main_folder += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
+main_folder += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
 
 plt.close('all')
 
@@ -101,8 +102,9 @@ for v_loop in v_loop_list:
 
         # field_dict['Rm'] = 1.3  # mirror ratio
         # field_dict['Rm'] = 2.0  # mirror ratio
-        field_dict['Rm'] = 3.0  # mirror ratio
+        # field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
+        field_dict['Rm'] = 6.0  # mirror ratio
 
         field_dict['E_RF_kVm'] = E_RF_kVm
 
@@ -121,7 +123,8 @@ for v_loop in v_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        settings['num_snapshots'] = 30
+        # settings['num_snapshots'] = 30
+        settings['num_snapshots'] = 50
         # settings['num_snapshots'] = 200
         # settings['num_snapshots'] = 300
 
@@ -165,8 +168,8 @@ for v_loop in v_loop_list:
         # total_number_of_points = 1
         # total_number_of_points = 40
         # total_number_of_points = 400
-        total_number_of_points = 1000
-        # total_number_of_points = 2000
+        # total_number_of_points = 1000
+        total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -240,8 +243,8 @@ for v_loop in v_loop_list:
         savemat(points_dict_file, points_dict)
 
         # divide the points to a given number of cpus (250 is max in partition core)
-        # num_cpus = 1
-        num_cpus = 2
+        num_cpus = 1
+        # num_cpus = 2
         # num_cpus = 5
         # num_cpus = 10
         # num_cpus = 15

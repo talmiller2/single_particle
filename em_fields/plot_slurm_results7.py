@@ -23,15 +23,17 @@ save_dir_main = '/Users/talmiller/Downloads/single_particle/'
 # save_dir_main += '/set17_T_B0_1T_l_3m_Post_intervals/'
 # save_dir_main += '/set18_T_B0_1T_l_3m_Logan_intervals/'
 # save_dir_main += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
-save_dir_main += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+# save_dir_main += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
 # save_dir_main += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
+save_dir_main += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
 
 set_names = []
 
-plot_z_v = True
-# plot_z_v = False
+# plot_z_v = True
+plot_z_v = False
 
-plot_loss_cone_metric = False
+# plot_loss_cone_metric = False
+plot_loss_cone_metric = True
 
 # Rm = 1.3
 # Rm = 2
@@ -41,25 +43,27 @@ Rm = 3
 # ERF = 0
 # ERF = 1
 # ERF = 5
-ERF = 10
+# ERF = 10
 # ERF = 30
-# ERF = 100
+ERF = 100
 
-# alpha = 0.6
+alpha = 0.6
 # alpha = 0.8
 # alpha = 1.0
 # alpha = 1.2
-alpha = 1.5
+# alpha = 1.5
 # alpha = 2.0
 # alpha = 2.5
 # alpha = 3.0
 
 # vz_res = 0.5
-vz_res = 1.0
+# vz_res = 1.0
 # vz_res = 1.5
 # vz_res = 2.0
 # vz_res = 2.5
 # vz_res = 3.0
+# vz_res = 0.93
+vz_res = 1.04
 
 # color = 'b'
 # color = 'g'
