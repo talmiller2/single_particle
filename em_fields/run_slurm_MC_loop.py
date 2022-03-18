@@ -123,24 +123,24 @@ for lambda_loop in lambda_RF_loop_list:
             tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
-        save_dir += '/'  # just to be safe
-        # save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
-        # save_dir += '_B0_' + str(field_dict['B0'])
-        # save_dir += '_T_' + str(settings['T_keV'])
-        # save_dir += 'Rm_' + str(int(field_dict['Rm']))
+        save_dir2 = ''
+        # save_dir2 += 'tmax_' + str(settings['sim_cyclotron_periods'])
+        # save_dir2 += '_B0_' + str(field_dict['B0'])
+        # save_dir2 += '_T_' + str(settings['T_keV'])
+        # save_dir2 += 'Rm_' + str(int(field_dict['Rm']))
         if use_RF is False:
-            save_dir += 'without_RF'
+            save_dir2 += 'without_RF'
         else:
             if RF_type == 'electric_transverse':
-                save_dir += 'ERF_' + str(field_dict['E_RF_kVm'])
+                save_dir2 += 'ERF_' + str(field_dict['E_RF_kVm'])
             elif RF_type == 'magnetic_transverse':
-                save_dir += 'BRF_' + str(field_dict['B_RF'])
-            save_dir += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
-            save_dir += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
+                save_dir2 += 'BRF_' + str(field_dict['B_RF'])
+            save_dir2 += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
+            save_dir2 += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
 
-        print('save_dir: ' + str(save_dir))
+        print('save_dir: ' + str(save_dir2))
 
-        settings['save_dir'] = save_dir
+        settings['save_dir'] = save_dir + '/' + save_dir2
         os.makedirs(settings['save_dir'], exist_ok=True)
         os.chdir(settings['save_dir'])
 
