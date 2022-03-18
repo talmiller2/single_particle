@@ -121,8 +121,7 @@ def define_default_field(settings, field_dict=None):
         # k_RF += [omega_RF[-1] / v_RF[-1]]
         k_RF += [2 * np.pi / lambda_RF]
         # pull the different RF waves out of sync
-        phase_RF += [np.pi * cnt ** (np.e - 1) / len(field_dict['alpha_detune_list'])
-                     + field_dict['phase_RF_addition']]
+        phase_RF += [np.pi * cnt ** (np.e - 1) / len(omega_RF) + field_dict['phase_RF_addition']]
         cnt += 1
 
     field_dict['c'] = settings['c']
