@@ -19,71 +19,55 @@ slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
 
-main_folder = '/home/talm/code/single_particle/slurm_runs/'
-# main_folder += '/set5/'
-# main_folder += '/set6/'
-# main_folder += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
-# main_folder += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
-# main_folder += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
-# main_folder += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
-# main_folder += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
-# main_folder += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
-# main_folder += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
-# main_folder += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
-# main_folder += '/set15_T_B0_1T_l_1m_Logan_intervals/'
-# main_folder += '/set16_T_B0_1T_l_1m_Post_intervals/'
-# main_folder += '/set17_T_B0_1T_l_3m_Post_intervals/'
-# main_folder += '/set18_T_B0_1T_l_3m_Logan_intervals/'
-# main_folder += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
-# main_folder += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
-# main_folder += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
-# main_folder += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
-main_folder += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
+save_dir = '/home/talm/code/single_particle/slurm_runs/'
+# save_dir += '/set5/'
+# save_dir += '/set6/'
+# save_dir += '/set7_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir += '/set8_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir += '/set9_T_10keV_B0_1T_Rm_2_l_1_phase_pi/'
+# save_dir += '/set10_T_10keV_B0_1T_Rm_2_l_1m/'
+# save_dir += '/set11_T_B0_1T_Rm_2_l_1m_randphase/'
+# save_dir += '/set12_T_B0_1T_Rm_4_l_1m_randphase/'
+# save_dir += '/set13_T_B0_1T_Rm_2_l_1m_randphase/'
+# save_dir += '/set14_T_B0_1T_l_1m_randphase_save_intervals/'
+# save_dir += '/set15_T_B0_1T_l_1m_Logan_intervals/'
+# save_dir += '/set16_T_B0_1T_l_1m_Post_intervals/'
+# save_dir += '/set17_T_B0_1T_l_3m_Post_intervals/'
+# save_dir += '/set18_T_B0_1T_l_3m_Logan_intervals/'
+# save_dir += '/set19_T_B0_1T_l_3m_Post_intervals_Rm_1.3/'
+# save_dir += '/set20_B0_1T_l_3m_Post_intervals_Rm_3/'
+# save_dir += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
+# save_dir += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
+# save_dir += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
+save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
 
 plt.close('all')
 
-# v_loop_list = np.round(np.linspace(0.9, 2.5, 10), 2)
-# alpha_loop_list = np.round(np.linspace(0.5, 2, 10), 2)
+alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2)
+lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
 
-v_loop_list = np.round(np.linspace(0.5, 2, 15), 2)
-alpha_loop_list = np.round(np.linspace(0.6, 2, 15), 2)
+RF_type = 'electric_transverse'
+# E_RF_kVm = 1 # kV/m
+E_RF_kVm = 10  # kV/m
 
-# v_loop_list = [1]
-# alpha_loop_list = [1]
+# RF_type = 'magnetic_transverse'
+B_RF = 0.05  # T
 
-# v_loop_list = [1.5]
-# alpha_loop_list = [1.5]
-
-# v_loop_list = [0.5, 1.0, 1.5, 2.0]
-# alpha_loop_list = [0.6, 1.0, 1.2, 1.5, 2.0]
-
-# v_loop_list = [0.5, 1.0, 1.5, 2.0]
-# alpha_loop_list = [0.6]
-
-# v_loop_list = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-# alpha_loop_list = [0.6, 0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0]
-
-# v_loop_list = [0.5, 1.0, 1.5, 2.0]
-# alpha_loop_list = [0.6, 1.0, 1.5, 2.0]
-
-# E_RF_kVm = 0
-E_RF_kVm = 10
-# E_RF_kVm = 100
-
-if E_RF_kVm == 0:
-    # just to make a single run for zero field
-    v_loop_list = [1]
+use_RF = True
+# use_RF = False
+if use_RF is False:
     alpha_loop_list = [1]
+    lambda_RF_loop_list = [100]
 
-totol_loop_runs = len(v_loop_list) * len(alpha_loop_list)
+totol_loop_runs = len(lambda_RF_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
 
 cnt_loop = 1
 
-for v_loop in v_loop_list:
+for lambda_loop in lambda_RF_loop_list:
     for alpha_loop in alpha_loop_list:
         print('loop run ' + str(cnt_loop) + '/' + str(totol_loop_runs)
-              + ': v=' + str(v_loop) + ', alpha=' + str(alpha_loop))
+              + ': lambda=' + str(lambda_loop) + ', alpha=' + str(alpha_loop))
         cnt_loop += 1
 
         # define settings
@@ -102,20 +86,22 @@ for v_loop in v_loop_list:
 
         # field_dict['Rm'] = 1.3  # mirror ratio
         # field_dict['Rm'] = 2.0  # mirror ratio
-        # field_dict['Rm'] = 3.0  # mirror ratio
+        field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
-        field_dict['Rm'] = 6.0  # mirror ratio
+        # field_dict['Rm'] = 6.0  # mirror ratio
 
-        field_dict['E_RF_kVm'] = E_RF_kVm
+        if RF_type == 'electric_transverse':
+            field_dict['RF_type'] = 'electric_transverse'
+            field_dict['E_RF_kVm'] = E_RF_kVm
+        elif RF_type == 'magnetic_transverse':
+            field_dict['RF_type'] = 'magnetic_transverse'
+            field_dict['B_RF'] = B_RF
 
         # field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
 
-        field_dict['v_z_factor_list'] = [v_loop]
-
-        field_dict['alpha_detune_list'] = [alpha_loop for i in range(len(field_dict['v_z_factor_list']))]
-
-        # field_dict['nullify_RF_magnetic_field'] = True
+        field_dict['lambda_RF_list'] = [lambda_loop]
+        field_dict['alpha_RF_list'] = [alpha_loop]
 
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
@@ -137,24 +123,24 @@ for v_loop in v_loop_list:
             tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
-        save_dir = ''
+        save_dir += '/'  # just to be safe
         # save_dir += 'tmax_' + str(settings['sim_cyclotron_periods'])
         # save_dir += '_B0_' + str(field_dict['B0'])
         # save_dir += '_T_' + str(settings['T_keV'])
-        save_dir += 'Rm_' + str(int(field_dict['Rm']))
-        if field_dict['E_RF_kVm'] > 0:
-            save_dir += '_ERF_' + str(field_dict['E_RF_kVm'])
-            save_dir += '_alpha_' + '_'.join([str(alpha_detune) for alpha_detune in field_dict['alpha_detune_list']])
-            save_dir += '_vz_' + '_'.join([str(v_z_factor) for v_z_factor in field_dict['v_z_factor_list']])
+        # save_dir += 'Rm_' + str(int(field_dict['Rm']))
+        if use_RF is False:
+            save_dir += 'without_RF'
         else:
-            save_dir += '_ERF_0'
-
-        if field_dict['nullify_RF_magnetic_field']:
-            save_dir += '_zeroBRF'
+            if RF_type == 'electric_transverse':
+                save_dir += 'ERF_' + str(field_dict['E_RF_kVm'])
+            elif RF_type == 'magnetic_transverse':
+                save_dir += 'BRF_' + str(field_dict['B_RF'])
+            save_dir += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
+            save_dir += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
 
         print('save_dir: ' + str(save_dir))
 
-        settings['save_dir'] = main_folder + '/' + save_dir
+        settings['save_dir'] = save_dir
         os.makedirs(settings['save_dir'], exist_ok=True)
         os.chdir(settings['save_dir'])
 

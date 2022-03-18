@@ -7,8 +7,8 @@ def get_radius(x):
 
 def get_transverse_magnetic_fields(x, dBz_dz):
     """
-    Based on Maxwell equation div(B)=0
-    https://www.tcd.ie/Physics/people/Peter.Gallagher/lectures/PlasmaPhysics/Lecture5_single_particle.pdf
+    Based on Maxwell equation div(B)=0, paraxial approximation
+    See 2008 - Fisch et al - Simulation of alpha-channeling in mirror machines (https://doi.org/10.1063/1.2903900)
     """
     Bx = -0.5 * x[0] * dBz_dz
     By = -0.5 * x[1] * dBz_dz

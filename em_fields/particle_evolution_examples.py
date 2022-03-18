@@ -15,10 +15,10 @@ plot3d_exists = False
 
 # example_system = 'helix'
 # example_system = 'helix_with_RF'
-example_system = '2d_static'
+# example_system = '2d_static'
 # example_system = 'tokamak_banana'
 # example_system = 'tokamak_transit'
-# example_system = 'magnetic_mirror'
+example_system = 'magnetic_mirror'
 
 if example_system is 'helix':
     # helix movement in constant magnetic field
@@ -84,7 +84,6 @@ if example_system is 'helix_with_RF':
     # c = 10
 
     k = omega / c
-
 
     # k = - omega / c
     # k = 0
@@ -254,7 +253,7 @@ if plot3d_exists is True:
 else:
     fig = plt.figure(6)
     ax = Axes3D(fig)
-ax.plot(x, y, z, label=example_system, linewidth=linewidth)
+ax.plot(x, y, z, label=example_system, linewidth=linewidth, alpha=1)
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')

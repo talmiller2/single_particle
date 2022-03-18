@@ -35,15 +35,17 @@ set_names = []
 # Rm = 2
 Rm = 3
 # Rm = 4
+# Rm = 6
 
 # ERF = 0
 # ERF = 1
+# ERF = 2
 # ERF = 5
-ERF = 10
+# ERF = 10
 # ERF = 20
 # ERF = 25
 # ERF = 30
-# ERF = 50
+ERF = 50
 # ERF = 100
 
 # v_loop_list = [0.5, 1.0, 1.5, 2.0]
@@ -61,6 +63,7 @@ right_trapped_first_cell = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_l
 left_trapped_first_cell = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 trapped_escaped_right_first_cell = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 trapped_escaped_left_first_cell = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
+lambda_RF_over_l = np.nan * np.zeros([len(v_loop_list), len(alpha_loop_list)])
 
 for ind_v, vz_res in enumerate(v_loop_list):
     for ind_alpha, alpha in enumerate(alpha_loop_list):
@@ -78,6 +81,7 @@ for ind_v, vz_res in enumerate(v_loop_list):
             omega_RF_over_omega_cyc_0 = alpha
             print('omega_RF/omega_cyc0 = ' + '{:.2f}'.format(omega_RF_over_omega_cyc_0) + ', v_RF/v_th = ' + v_RF_label)
 
+
             if ERF > 0:
                 set_name = 'Rm_' + str(int(Rm)) + '_ERF_' + str(ERF) + '_alpha_' + str(alpha) + '_vz_' + str(vz_res)
             else:
@@ -92,11 +96,19 @@ for ind_v, vz_res in enumerate(v_loop_list):
             settings = data_dict['settings']
             field_dict = data_dict['field_dict']
 
+            # RF wavelength
+            vzres = field_dict['v_z_factor_list'][0] * settings['v_th']
+            lambda_RF = 2 * np.pi / field_dict['omega_cyclotron'] * vzres / (alpha_actual - 1)
+            RF_wave_direction = np.sign(lambda_RF)
+            # print('lambda_RF / l = ' + '{:.2f}'.format(abs(lambda_RF / settings['l'])) + ' (direction ' + str(RF_wave_direction) + ')')
+            lambda_RF_over_l[ind_v, ind_alpha] = lambda_RF / settings['l']
+
             # draw trajectories for several particles
             num_particles = len(data_dict['z'])
             ind_points = range(1000)
 
             points_counter = 0
+            points_trapped_counter = 0
             counter_right_trapped_first_cell = 0
             counter_left_trapped_first_cell = 0
             counter_trapped_escaped_right_first_cell = 0
@@ -128,6 +140,7 @@ for ind_v, vz_res in enumerate(v_loop_list):
                         particle_type = 'left'
                     elif not in_loss_cone:  # trapped
                         particle_type = 'trapped'
+                        points_trapped_counter += 1
 
                     # check loss cone criterion as a function of time, for varying Bz(t)
                     Rm_dynamic = field_dict['B0'] * field_dict['Rm'] / Bz
@@ -178,6 +191,10 @@ for ind_v, vz_res in enumerate(v_loop_list):
                 ind_v, ind_alpha] = 100.0 * counter_trapped_escaped_right_first_cell / points_counter
             trapped_escaped_left_first_cell[
                 ind_v, ind_alpha] = 100.0 * counter_trapped_escaped_left_first_cell / points_counter
+
+            # print('points_counter = ' + str(points_counter))
+            # print('points_trapped_counter = ' + str(points_trapped_counter))
+            # print('trapped_percent = ' + str(100.0 * points_trapped_counter / points_counter))
 
         except:
             print('FAILED.')
@@ -255,4 +272,13 @@ sns.heatmap(rls.T, xticklabels=x_array, yticklabels=y_array, vmax=vmax)
 plt.xlabel(x_label)
 plt.ylabel('$\\alpha$')
 plt.title('right / left selectivity')
+plt.tight_layout(pad=0.5)
+
+plt.figure(11)
+sns.heatmap(lambda_RF_over_l.T, xticklabels=x_array, yticklabels=y_array)
+# sns.heatmap(lambda_RF_over_l.T, xticklabels=x_array, yticklabels=y_array, vmin=0)
+# sns.heatmap(lambda_RF_over_l.T, xticklabels=x_array, yticklabels=y_array, vmax=0)
+plt.xlabel(x_label)
+plt.ylabel('$\\alpha$')
+plt.title('$\\lambda_{RF}/l$')
 plt.tight_layout(pad=0.5)
