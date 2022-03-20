@@ -146,7 +146,7 @@ for lambda_loop in lambda_RF_loop_list:
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             save_dir_curr = 'const_vth_' + save_dir_curr
         if settings['r_0'] > 0:
-            save_dir_curr = 'r0_' + str(settings['r_0']) + '_'
+            save_dir_curr = 'r0_' + str(settings['r_0']) + '_' + save_dir_curr
 
         print('save_dir: ' + str(save_dir_curr))
 
