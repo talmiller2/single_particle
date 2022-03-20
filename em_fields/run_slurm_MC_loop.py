@@ -83,6 +83,8 @@ for lambda_loop in lambda_RF_loop_list:
 
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
+        settings['r_0'] = 3.0
+
         settings = define_default_settings(settings)
 
         field_dict = {}
@@ -143,6 +145,8 @@ for lambda_loop in lambda_RF_loop_list:
             save_dir_curr += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             save_dir_curr = 'const_vth_' + save_dir_curr
+        if settings['r_0'] > 0:
+            save_dir_curr = 'r0_' + str(settings['r_0']) + '_'
 
         print('save_dir: ' + str(save_dir_curr))
 
