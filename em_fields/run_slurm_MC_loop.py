@@ -48,7 +48,8 @@ lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
-E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 10  # kV/m
+E_RF_kVm = 30  # kV/m
 
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
@@ -78,6 +79,8 @@ for lambda_loop in lambda_RF_loop_list:
         settings['l'] = 3.0  # m (MM cell size)
 
         # settings['absolute_velocity_sampling_type'] = 'const_vth'
+        settings['absolute_velocity_sampling_type'] = 'maxwell'
+
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
         settings = define_default_settings(settings)
@@ -105,6 +108,7 @@ for lambda_loop in lambda_RF_loop_list:
 
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
+
 
         field_dict = define_default_field(settings, field_dict)
 
@@ -137,6 +141,8 @@ for lambda_loop in lambda_RF_loop_list:
                 save_dir_curr += 'BRF_' + str(field_dict['B_RF'])
             save_dir_curr += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
             save_dir_curr += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
+        if settings['absolute_velocity_sampling_type'] == 'const_vth':
+            save_dir_curr = 'const_vth_' + save_dir_curr
 
         print('save_dir: ' + str(save_dir_curr))
 
@@ -154,8 +160,8 @@ for lambda_loop in lambda_RF_loop_list:
         # total_number_of_points = 1
         # total_number_of_points = 40
         # total_number_of_points = 400
-        # total_number_of_points = 1000
-        total_number_of_points = 2000
+        total_number_of_points = 1000
+        # total_number_of_points = 2000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
