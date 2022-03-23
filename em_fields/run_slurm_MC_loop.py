@@ -39,17 +39,23 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
 # save_dir += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
 # save_dir += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
-save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+# save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
 
 plt.close('all')
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2)
-lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2) # set24
+# lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set25
+lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
+lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
-# E_RF_kVm = 10  # kV/m
-E_RF_kVm = 30  # kV/m
+E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 30  # kV/m
+# E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
@@ -83,7 +89,7 @@ for lambda_loop in lambda_RF_loop_list:
 
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
-        settings['r_0'] = 3.0
+        # settings['r_0'] = 3.0
 
         settings = define_default_settings(settings)
 
@@ -164,8 +170,9 @@ for lambda_loop in lambda_RF_loop_list:
         # total_number_of_points = 1
         # total_number_of_points = 40
         # total_number_of_points = 400
-        total_number_of_points = 1000
+        # total_number_of_points = 1000
         # total_number_of_points = 2000
+        total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 

@@ -264,10 +264,10 @@ plt.title('left_selectivity')
 plt.tight_layout(pad=0.5)
 
 plt.figure(10)
-# rls = right_selectivity / left_selectivity
+# right_left_selectivity_ratio = right_selectivity / left_selectivity
 rls = right_selectivity / (left_selectivity + 1e-2)
 vmax = np.nanpercentile(rls, 95)
-# vmax = np.nanmax(rls)
+# vmax = np.nanmax(right_left_selectivity_ratio)
 sns.heatmap(rls.T, xticklabels=x_array, yticklabels=y_array, vmax=vmax)
 plt.xlabel(x_label)
 plt.ylabel('$\\alpha$')

@@ -19,11 +19,14 @@ plt.rcParams.update({'font.size': 10})
 # plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
-save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+# save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
-E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 30  # kV/m
+E_RF_kVm = 100  # kV/m
 
 RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
@@ -31,8 +34,18 @@ B_RF = 0.05  # T
 use_RF = True
 # use_RF = False
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2)
-lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
+absolute_velocity_sampling_type = 'maxwell'
+# absolute_velocity_sampling_type = 'const_vth'
+r_0 = 0
+# r_0 = 1.0
+# r_0 = 3.0
+
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2) # set24
+# lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set25
+lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
+lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
 
 cnt_RF_params = 0
 totol_loop_runs = len(lambda_RF_loop_list) * len(alpha_loop_list)
@@ -61,6 +74,10 @@ for ind_lambda, lambda_RF in enumerate(lambda_RF_loop_list):
                     set_name += 'BRF_' + str(B_RF)
                 set_name += '_alpha_' + str(alpha_RF)
                 set_name += '_lambda_' + str(lambda_RF)
+            if absolute_velocity_sampling_type == 'const_vth':
+                set_name = 'const_vth_' + set_name
+            if r_0 > 0:
+                set_name = 'r0_' + str(r_0) + '_' + set_name
 
             save_dir_curr = save_dir + set_name
 
@@ -168,26 +185,52 @@ for ind_lambda, lambda_RF in enumerate(lambda_RF_loop_list):
         except:
             print('FAILED set_name: ' + str(set_name))
 
-# right_selectivity = right_trapped_first_cell / (trapped_escaped_right_first_cell + 1e-2)
-# left_selectivity = left_trapped_first_cell / (trapped_escaped_left_first_cell + 1e-2)
-right_selectivity = right_trapped_first_cell / (trapped_escaped_right_first_cell + 0)
-left_selectivity = left_trapped_first_cell / (trapped_escaped_left_first_cell + 0)
+right_selectivity = right_trapped_first_cell / (trapped_escaped_right_first_cell + 1e-2)
+left_selectivity = left_trapped_first_cell / (trapped_escaped_left_first_cell + 1e-2)
+# right_selectivity = right_trapped_first_cell / (trapped_escaped_right_first_cell + 0)
+# left_selectivity = left_trapped_first_cell / (trapped_escaped_left_first_cell + 0)
 
 # 2d plots
 
-x_array = lambda_RF_loop_list
-x_label = '$\\lambda$ [m]'
+# x_array = lambda_RF_loop_list
+# x_label = '$\\lambda$ [m]'
+x_array = lambda_RF_loop_list - np.sign(lambda_RF_loop_list)
+x_label = '$\\lambda - sign(\\lambda)$ [m]'
+
 y_array = alpha_loop_list
 
-# vmax_right = np.nanpercentile(right_selectivity, 95)
-# vmax_left = np.nanpercentile(left_selectivity, 95)
+limits_type = 'min-max'
+
+
+# limits_type = 'percentile'
+
+def get_vmin_vmax(y, limits_type, vmin_bound=None, vmax_bound=None):
+    if limits_type == 'min-max':
+        vmin = np.nanmin(y)
+        vmax = np.nanmax(y)
+    elif limits_type == 'percentile':
+        vmin = np.nanpercentile(y, 5)
+        vmax = np.nanpercentile(y, 95)
+    else:
+        raise ValueError('invalid option for limits_type.')
+
+    if vmin_bound is not None:
+        if vmin < vmin_bound:
+            vmin = vmin_bound
+    if vmax_bound is not None:
+        if vmax > vmax_bound:
+            vmax = vmax_bound
+
+    return vmin, vmax
+
 
 # plt.figure(1)
 # plt.figure(1, figsize=(15, 8))
 plt.figure(1, figsize=(15, 7))
 # plt.subplot(2, 3, 1)
 plt.subplot(3, 3, 1)
-sns.heatmap(right_trapped_first_cell.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(right_trapped_first_cell, limits_type)
+sns.heatmap(right_trapped_first_cell.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 # plt.title('right_trapped_first_cell %')
@@ -198,7 +241,8 @@ print('max right_trapped_first_cell = ' + str(np.nanmax(right_trapped_first_cell
 # plt.figure(2)
 # plt.subplot(2, 3, 2)
 plt.subplot(3, 3, 2)
-sns.heatmap(trapped_escaped_right_first_cell.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(trapped_escaped_right_first_cell, limits_type)
+sns.heatmap(trapped_escaped_right_first_cell.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 # plt.title('trapped_escaped_right_first_cell %')
@@ -209,7 +253,8 @@ print('max trapped_escaped_right_first_cell = ' + str(np.nanmax(trapped_escaped_
 # plt.figure(3)
 # plt.subplot(2, 3, 3)
 plt.subplot(3, 3, 3)
-sns.heatmap(right_selectivity.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(right_selectivity, limits_type, vmax_bound=20)
+sns.heatmap(right_selectivity.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 plt.title('right-selectivity ratio')
@@ -218,7 +263,8 @@ print('max right_selectivity = ' + str(np.nanmax(right_selectivity)))
 
 # plt.subplot(2, 3, 4)
 plt.subplot(3, 3, 4)
-sns.heatmap(left_trapped_first_cell.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(left_trapped_first_cell, limits_type)
+sns.heatmap(left_trapped_first_cell.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 # plt.title('left_trapped_first_cell %')
@@ -229,7 +275,8 @@ print('max left_trapped_first_cell = ' + str(np.nanmax(left_trapped_first_cell))
 # plt.figure(2)
 # plt.subplot(2, 3, 5)
 plt.subplot(3, 3, 5)
-sns.heatmap(trapped_escaped_left_first_cell.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(trapped_escaped_left_first_cell, limits_type)
+sns.heatmap(trapped_escaped_left_first_cell.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 # plt.title('trapped_escaped_left_first_cell %')
@@ -239,25 +286,27 @@ print('max trapped_escaped_left_first_cell = ' + str(np.nanmax(trapped_escaped_l
 
 # plt.subplot(2, 3, 6)
 plt.subplot(3, 3, 6)
-sns.heatmap(left_selectivity.T, xticklabels=x_array, yticklabels=y_array)
+vmin, vmax = get_vmin_vmax(left_selectivity, limits_type, vmax_bound=20)
+sns.heatmap(left_selectivity.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
 plt.title('left-selectivity ratio')
 # plt.tight_layout()
 print('max left_selectivity = ' + str(np.nanmax(left_selectivity)))
 
-plt.tight_layout(pad=0.5)
+# plt.tight_layout(pad=0.5)
 
 # plt.figure(10)
 plt.subplot(3, 3, 8)
-rls = right_selectivity / left_selectivity
-# rls = right_selectivity / (left_selectivity + 1e-2)
-# vmax = np.nanpercentile(rls, 95)
-vmax = np.nanmax(rls)
-sns.heatmap(rls.T, xticklabels=x_array, yticklabels=y_array, vmax=vmax)
+# right_left_selectivity_ratio = right_selectivity / left_selectivity
+right_left_selectivity_ratio = right_selectivity / (left_selectivity + 1e-2)
+vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=10)
+# vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=3)
+sns.heatmap(right_left_selectivity_ratio.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
+# sns.heatmap(right_left_selectivity_ratio.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax, annot=True, fmt=".2f")
 plt.xlabel(x_label)
 plt.ylabel('$\\alpha$')
 # plt.title('right / left selectivity')
 plt.title('right-selectivity / left-selectivity')
 plt.tight_layout(pad=0.5)
-print('max rls = ' + str(np.nanmax(rls)))
+print('max right_left_selectivity_ratio = ' + str(np.nanmax(right_left_selectivity_ratio)))
