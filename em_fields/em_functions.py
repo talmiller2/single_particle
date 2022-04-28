@@ -36,7 +36,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     if stop_criterion == 'time':
         num_steps = t_max / dt
     # TODO: stop with B field criterion
-    elif stop_criterion == 'min_B_mirror':
+    elif stop_criterion == 'first_cell_center_crossing':
         num_steps = 1e15  # picking an "infinite" number
     t = t_0
 
