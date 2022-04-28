@@ -157,7 +157,7 @@ for beta_loop in beta_loop_list:
             elif RF_type == 'magnetic_transverse':
                 run_name += 'BRF_' + str(field_dict['B_RF'])
             run_name += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
-            run_name += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
+            run_name += '_beta_' + '_'.join([str(b) for b in field_dict['beta_RF_list']])
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             run_name = 'const_vth_' + run_name
         if settings['r_0'] > 0:
