@@ -120,32 +120,40 @@ for ind_point in settings['points_set']:
     print('after run: inds_samples = ' + str(inds_samples))
 
     # sample the trajectory
+    curr_data_dict = {}
+    for key in sample_keys:
+        curr_data_dict[key] = []
+
     for i in inds_samples:
         # time
-        set_data_dict['t'] += [hist['t'][i]]
+        curr_data_dict['t'] += [hist['t'][i]]
 
         # axial position
         z = hist['x'][i, 2]
-        set_data_dict['z'] += [z]
+        curr_data_dict['z'] += [z]
 
         # velocity (total)
         v_abs = np.linalg.norm(hist['v'][i])
-        set_data_dict['v'] += [v_abs]
+        curr_data_dict['v'] += [v_abs]
 
         # velocity (transverse)
         v_transverse_abs = np.linalg.norm(hist['v'][i, 0:2])
-        set_data_dict['v_transverse'] += [v_transverse_abs]
+        curr_data_dict['v_transverse'] += [v_transverse_abs]
 
         # velocity (axial)
         v_axial = hist['v'][i, 2]
-        set_data_dict['v_axial'] += [v_axial]
+        curr_data_dict['v_axial'] += [v_axial]
 
         # magnetic field (axial)
         Bz = hist['B'][i, 2]
-        set_data_dict['Bz'] += [Bz]
+        curr_data_dict['Bz'] += [Bz]
 
     # TODO: tesing the new algo
-    print('after run: set_data_dict = ' + str(set_data_dict))
+    print('after run: curr_data_dict = ' + str(curr_data_dict))
+
+    # combine this point run to larger data dict
+    for key in sample_keys:
+        set_data_dict[key] += [curr_data_dict[key]]
 
     # if settings['stop_criterion'] == 'first_cell_center_crossing':
     #
