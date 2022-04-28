@@ -78,6 +78,13 @@ if use_RF is False:
 totol_loop_runs = len(beta_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
 
+# divide the points to a given number of cpus (250 is max in partition core)
+num_cpus = 1
+# num_cpus = 10
+# num_cpus = 50
+# num_cpus = 200
+
+
 cnt_loop = 1
 
 for beta_loop in beta_loop_list:
@@ -164,12 +171,14 @@ for beta_loop in beta_loop_list:
         print('run_name: ' + str(run_name))
         settings['run_name'] = run_name
 
-        # settings['save_dir'] = save_dir + '/' + run_name
-        settings['save_dir'] = save_dir
+        if num_cpus == 1:
+            settings['save_dir'] = save_dir
+        else:
+            settings['save_dir'] = save_dir + '/' + run_name
 
         # total_number_of_points = 1
-        total_number_of_points = 40
-        # total_number_of_points = 400
+        # total_number_of_points = 40
+        total_number_of_points = 400
         # total_number_of_points = 1000
         # total_number_of_points = 2000
         # total_number_of_points = 5000
@@ -254,16 +263,6 @@ for beta_loop in beta_loop_list:
                 pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
             points_dict_file = settings['save_dir'] + '/points_dict.mat'
             savemat(points_dict_file, points_dict)
-
-        # divide the points to a given number of cpus (250 is max in partition core)
-        num_cpus = 1
-        # num_cpus = 2
-        # num_cpus = 5
-        # num_cpus = 10
-        # num_cpus = 15
-        # num_cpus = 30
-        # num_cpus = 50
-        # num_cpus = 200
 
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)

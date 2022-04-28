@@ -2,11 +2,9 @@
 
 import argparse
 import ast
-import copy
 import pickle
 
 import numpy as np
-from scipy.interpolate import interp1d
 from scipy.io import savemat, loadmat
 from scipy.signal import argrelextrema
 
@@ -71,7 +69,8 @@ for ind_point in settings['points_set']:
 
     # save snapshots of key simulation metrics
     if settings['stop_criterion'] == 'first_cell_center_crossing':
-        inds_samples = [0, len(hist['t']) - 2, len(hist['t']) - 1]  # extract the first and last states of the evolution
+        # inds_samples = [0, len(hist['t']) - 2, len(hist['t']) - 1]  # extract the first and 2 last states of the evolution for interpolation later # TODO: testing
+        inds_samples = [0, len(hist['t']) - 1]  # extract the first and last states of the evolution
         pass
 
     elif settings['trajectory_save_method'] == 'intervals':
@@ -148,32 +147,34 @@ for ind_point in settings['points_set']:
     # TODO: tesing the new algo
     print('after run: set_data_dict = ' + str(set_data_dict))
 
-    if settings['stop_criterion'] == 'first_cell_center_crossing':
+    # if settings['stop_criterion'] == 'first_cell_center_crossing':
+    #
+    #     # z_array = set_data_dict['z']
+    #     # z_interp_list = np.array([z_array[0], (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']])
+    #     # set_data_dict_tmp = {}
+    #     # for key in set_data_dict.keys():
+    #     #     interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
+    #     #     set_data_dict_tmp[key] = interp_fun(z_interp_list)
+    #     # set_data_dict = copy.deepcopy(set_data_dict_tmp)
+    #
+    #     z_array = set_data_dict['z']
+    #     set_data_dict_tmp = {}
+    #     for key in set_data_dict.keys():
+    #         # save the t=0 state
+    #         set_data_dict_tmp[key] = [set_data_dict[key][0]]
+    #
+    #         # save the center of cell state (at the relevant z of the simulation end) using interpolation from the last
+    #         # two states of the simulation
+    #         z_center_cell = (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']
+    #         interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
+    #         set_data_dict_tmp[key] += [float(interp_fun(z_center_cell))]
+    #     set_data_dict = copy.deepcopy(set_data_dict_tmp)
 
-        # z_array = set_data_dict['z']
-        # z_interp_list = np.array([z_array[0], (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']])
-        # set_data_dict_tmp = {}
-        # for key in set_data_dict.keys():
-        #     interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
-        #     set_data_dict_tmp[key] = interp_fun(z_interp_list)
-        # set_data_dict = copy.deepcopy(set_data_dict_tmp)
-
-        z_array = set_data_dict['z']
-        set_data_dict_tmp = {}
-        for key in set_data_dict.keys():
-            # save the t=0 state
-            set_data_dict_tmp[key] = [set_data_dict[key][0]]
-
-            # save the center of cell state (at the relevant z of the simulation end) using interpolation from the last
-            # two states of the simulation
-            z_center_cell = (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']
-            interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
-            set_data_dict_tmp[key] += [float(interp_fun(z_center_cell))]
-        set_data_dict = copy.deepcopy(set_data_dict_tmp)
+    # TODO: commented all the above, becuase not using interpolation anymore
 
     # TODO: tesing the new algo
     # print('after interp: z_interp_list = ' + str(z_interp_list))
-    print('after interp: set_data_dict_tmp = ' + str(set_data_dict_tmp))
+    # print('after interp: set_data_dict_tmp = ' + str(set_data_dict_tmp))
 
 if settings['set_save_format'] == 'mat':
     savemat(compiled_set_file_name + '.mat', set_data_dict)
