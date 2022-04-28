@@ -24,7 +24,9 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set21_B0_1T_l_3m_Post_intervals_Rm_3_different_phases/'
 # save_dir += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
 # save_dir += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
-save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+# save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
+# save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
+save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing_50cpus/'
 
 os.chdir(save_dir)
 
@@ -53,8 +55,9 @@ for curr_dir in run_dirs:
         set_files = [curr_dir + '/set_' + str(ind_set) for ind_set in range(num_set_files)]
 
         # define the dict where all data will be compiled
-        points_dict_file = curr_dir_full + '/points_dict.mat'
-        data_dict = loadmat(points_dict_file)
+        # points_dict_file = curr_dir_full + '/points_dict.mat'
+        # data_dict = loadmat(points_dict_file)
+        data_dict = {}
 
         # loop over all saved sets and combine their data
         for ind_set, set_file in enumerate(set_files):

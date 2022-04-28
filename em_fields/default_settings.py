@@ -45,9 +45,13 @@ def define_default_settings(settings=None):
     if 'time_step_tau_cyclotron_divisions' not in settings:
         settings['time_step_tau_cyclotron_divisions'] = 20.0
     if 'trajectory_save_method' not in settings:
-        # settings['trajectory_save_method'] = 'intervals'
-        # settings['trajectory_save_method'] = 'min_B'
-        settings['trajectory_save_method'] = 'min_B_mirror_const_vz_sign'
+        settings['trajectory_save_method'] = 'intervals'
+        # settings['trajectory_save_method'] = 'min_Bz'
+        # settings['trajectory_save_method'] = 'min_Bz_mirror_const_vz_sign'
+    if 'stop_criterion' not in settings:
+        # settings['stop_criterion'] = 'steps'
+        # settings['stop_criterion'] = 'time'
+        settings['stop_criterion'] = 'first_cell_center_crossing'
     if 'num_snapshots' not in settings:
         settings['num_snapshots'] = 300
     if 'set_save_format' not in settings:
@@ -104,22 +108,18 @@ def define_default_field(settings, field_dict=None):
 
     if 'alpha_RF_list' not in field_dict:
         field_dict['alpha_RF_list'] = [1.0]
-    if 'lambda_RF_list' not in field_dict:
-        field_dict['lambda_RF_list'] = [1.0]  # [m]
+    if 'beta_RF_list' not in field_dict:
+        field_dict['beta_RF_list'] = [0]
     if 'phase_RF_addition' not in field_dict:
         field_dict['phase_RF_addition'] = 0
 
     omega_RF = []
-    # v_RF = []
     k_RF = []
     phase_RF = []
     cnt = 1
-    for alpha_RF, lambda_RF in zip(field_dict['alpha_RF_list'], field_dict['lambda_RF_list']):
-        # alpha_detune *= (1 + np.pi / 100)  # make any detuning parameter irrational to avoid higher order resonances
+    for alpha_RF, beta_RF in zip(field_dict['alpha_RF_list'], field_dict['beta_RF_list']):
         omega_RF += [alpha_RF * field_dict['omega_cyclotron']]
-        # v_RF += [alpha_detune / (alpha_detune - 1) * settings['v_th'] * v_z_factor]
-        # k_RF += [omega_RF[-1] / v_RF[-1]]
-        k_RF += [2 * np.pi / lambda_RF]
+        k_RF += [beta_RF * 2 * np.pi / field_dict['l']]
         # pull the different RF waves out of sync
         phase_RF += [np.pi * cnt ** (np.e - 1) / len(omega_RF) + field_dict['phase_RF_addition']]
         cnt += 1

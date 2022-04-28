@@ -96,12 +96,12 @@ for set_ind in range(len(set_names)):
     # ind_points = range(20)
     # ind_points = range(100)
     # ind_points = range(300)
-    ind_points = range(1000)
+    # ind_points = range(1000)
     # ind_points = range(2000)
     # ind_points = range(100, 200)
     # ind_points = range(20, 30)
     # ind_points = range(30, 40)
-    # ind_points = range(num_particles)
+    ind_points = range(num_particles)
 
     # do_particles_plot = False
     do_particles_plot = True
@@ -415,7 +415,7 @@ for set_ind in range(len(set_names)):
         # plt.plot(-vz_res + 0 * v_arr, v_arr, '--k', linewidth=3)
         # plt.plot(-v_arr, np.sqrt((v_arr ** 2.0 - vz_res ** 2.0) / (field_dict['Rm'] ** 2.0 - 1.0)), '--k', linewidth=3)
         # plt.scatter(vz_valid, vt_valid, color='m', s=2)
-        plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='grey', alpha=0.3)
+        # plt.fill_between(vz_arr, vt_min_array, vt_max_array, color='grey', alpha=0.3)
         # plt.plot(vz_res + 0 * vt_arr, vt_arr, linestyle='--', color='m', linewidth=3, alpha=0.3)
         plt.grid(True)
         plt.xlabel('$v_{\\parallel}/v_{th}$')

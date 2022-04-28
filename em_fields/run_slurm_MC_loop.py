@@ -40,16 +40,25 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set22_B0_1T_l_3m_Post_intervals_Rm_3/'
 # save_dir += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
 # save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
-save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
+# save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
+save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing_50cpus/'
 
 plt.close('all')
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 15), 2) # set24
 # lambda_RF_loop_list = np.round(np.linspace(-20, 20, 10), 0)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set25
-lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
-lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set25
+# lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
+# lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 5), 2)  # set26
+beta_loop_list = np.round(np.linspace(0, 1, 5), 2)
+
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27??
+# beta_loop_list = np.round(np.linspace(0, 1, 21), 2)
+
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -66,20 +75,20 @@ if use_RF is False:
     alpha_loop_list = [1]
     lambda_RF_loop_list = [100]
 
-totol_loop_runs = len(lambda_RF_loop_list) * len(alpha_loop_list)
+totol_loop_runs = len(beta_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))
 
 cnt_loop = 1
 
-for lambda_loop in lambda_RF_loop_list:
+for beta_loop in beta_loop_list:
     for alpha_loop in alpha_loop_list:
         print('loop run ' + str(cnt_loop) + '/' + str(totol_loop_runs)
-              + ': lambda=' + str(lambda_loop) + ', alpha=' + str(alpha_loop))
-        cnt_loop += 1
+              + ': alpha=' + str(alpha_loop) + ', beta=' + str(beta_loop))
 
         # define settings
         settings = {}
-        settings['trajectory_save_method'] = 'intervals'
+        # settings['trajectory_save_method'] = 'intervals'
+        settings['stop_criterion'] = 'first_cell_center_crossing'
 
         # settings['l'] = 1.0  # m (MM cell size)
         settings['l'] = 3.0  # m (MM cell size)
@@ -111,8 +120,8 @@ for lambda_loop in lambda_RF_loop_list:
         # field_dict['phase_RF_addition'] = 0
         # field_dict['phase_RF_addition'] = np.pi
 
-        field_dict['lambda_RF_list'] = [lambda_loop]
         field_dict['alpha_RF_list'] = [alpha_loop]
+        field_dict['beta_RF_list'] = [beta_loop]
 
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
@@ -135,44 +144,33 @@ for lambda_loop in lambda_RF_loop_list:
             tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
-        save_dir_curr = ''
-        # save_dir_curr += 'tmax_' + str(settings['sim_cyclotron_periods'])
-        # save_dir_curr += '_B0_' + str(field_dict['B0'])
-        # save_dir_curr += '_T_' + str(settings['T_keV'])
-        # save_dir_curr += 'Rm_' + str(int(field_dict['Rm']))
+        run_name = ''
+        # run_name += 'tmax_' + str(settings['sim_cyclotron_periods'])
+        # run_name += '_B0_' + str(field_dict['B0'])
+        # run_name += '_T_' + str(settings['T_keV'])
+        # run_name += 'Rm_' + str(int(field_dict['Rm']))
         if use_RF is False:
-            save_dir_curr += 'without_RF'
+            run_name += 'without_RF'
         else:
             if RF_type == 'electric_transverse':
-                save_dir_curr += 'ERF_' + str(field_dict['E_RF_kVm'])
+                run_name += 'ERF_' + str(field_dict['E_RF_kVm'])
             elif RF_type == 'magnetic_transverse':
-                save_dir_curr += 'BRF_' + str(field_dict['B_RF'])
-            save_dir_curr += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
-            save_dir_curr += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
+                run_name += 'BRF_' + str(field_dict['B_RF'])
+            run_name += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
+            run_name += '_lambda_' + '_'.join([str(l) for l in field_dict['lambda_RF_list']])
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
-            save_dir_curr = 'const_vth_' + save_dir_curr
+            run_name = 'const_vth_' + run_name
         if settings['r_0'] > 0:
-            save_dir_curr = 'r0_' + str(settings['r_0']) + '_' + save_dir_curr
-
-        print('save_dir: ' + str(save_dir_curr))
-
-        settings['save_dir'] = save_dir + '/' + save_dir_curr
-        os.makedirs(settings['save_dir'], exist_ok=True)
-        os.chdir(settings['save_dir'])
-
-        settings_file = settings['save_dir'] + '/settings.pickle'
-        with open(settings_file, 'wb') as handle:
-            pickle.dump(settings, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        field_dict_file = settings['save_dir'] + '/field_dict.pickle'
-        with open(field_dict_file, 'wb') as handle:
-            pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            run_name = 'r0_' + str(settings['r_0']) + '_' + run_name
+        print('run_name: ' + str(run_name))
+        settings['run_name'] = run_name
 
         # total_number_of_points = 1
-        # total_number_of_points = 40
+        total_number_of_points = 40
         # total_number_of_points = 400
         # total_number_of_points = 1000
         # total_number_of_points = 2000
-        total_number_of_points = 5000
+        # total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
@@ -241,9 +239,21 @@ for lambda_loop in lambda_RF_loop_list:
         if settings['apply_random_RF_phase']:
             points_dict['phase_RF'] = 2 * np.pi * np.random.rand(total_number_of_points)
 
-        # create and save the points file to be run later
-        points_dict_file = settings['save_dir'] + '/points_dict.mat'
-        savemat(points_dict_file, points_dict)
+        # save the run settings
+        if cnt_loop == 1:
+            # settings['save_dir'] = save_dir + '/' + run_name
+            settings['save_dir'] = save_dir
+            os.makedirs(settings['save_dir'], exist_ok=True)
+            os.chdir(settings['save_dir'])
+
+            settings_file = settings['save_dir'] + '/settings.pickle'
+            with open(settings_file, 'wb') as handle:
+                pickle.dump(settings, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            field_dict_file = settings['save_dir'] + '/field_dict.pickle'
+            with open(field_dict_file, 'wb') as handle:
+                pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            points_dict_file = settings['save_dir'] + '/points_dict.mat'
+            savemat(points_dict_file, points_dict)
 
         # divide the points to a given number of cpus (250 is max in partition core)
         num_cpus = 1
@@ -254,9 +264,9 @@ for lambda_loop in lambda_RF_loop_list:
         # num_cpus = 30
         # num_cpus = 50
         # num_cpus = 200
+
         num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
         num_extra_points = np.mod(total_number_of_points, num_cpus)
-
         points_set_list = []
         index_first = 0
         num_sets = num_cpus if num_points_per_cpu > 0 else num_extra_points
@@ -270,17 +280,25 @@ for lambda_loop in lambda_RF_loop_list:
         # run the slave_fenchel scripts on multiple cpus
         cnt = 0
         for ind_set, points_set in enumerate(points_set_list):
-            run_name = 'set_' + str(ind_set) + '_' + save_dir_curr
-            print('###############')
-            print('run_name = ' + run_name)
-
             settings['ind_set'] = ind_set
             settings['points_set'] = points_set
+
+            print('###############')
+            if num_cpus == 1:
+                slurm_run_name = run_name
+                settings['ind_set'] = None  # TODO ?
+            elif num_cpus > 1:
+                slurm_run_name = 'set_' + str(ind_set) + '_' + run_name
+            print('run_name = ' + run_name)
 
             command = evolution_slave_fenchel_script \
                       + ' --settings "' + str(settings) + '"' \
                       + ' --field_dict "' + str(field_dict) + '"'
-            s = Slurm(run_name, slurm_kwargs=slurm_kwargs)
+            s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
             s.run(command)
-            print('   run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
+
+            if num_cpus > 1:
+                print('   run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
             cnt += 1
+
+        cnt_loop += 1

@@ -35,6 +35,9 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     """
     if stop_criterion == 'time':
         num_steps = t_max / dt
+    # TODO: stop with B field criterion
+    elif stop_criterion == 'min_B_mirror':
+        num_steps = 1e15  # picking an "infinite" number
     t = t_0
 
     if field_dict is None:
@@ -60,6 +63,15 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
         if return_fields is True:
             hist['E'] += [E_function(x_new, t, **field_dict)]
             hist['B'] += [B_function(x_new, t, **field_dict)]
+
+        if stop_criterion == 'first_cell_center_crossing':
+            z_curr = hist['x'][-1][2]
+            z_last = hist['x'][-2][2]
+            # check that during the time step the particle did not cross a cell
+            if abs(np.mod(z_last / field_dict['l'], 1) - np.mod(z_curr / field_dict['l'], 1)) < 0.1:
+                # check that during the time step the particle crossed the center of a cell
+                if np.mod(z_last / field_dict['l'] - 0.5, 1) * np.mod(z_curr / field_dict['l'] - 0.5, 1) < 0:
+                    break
 
     for key in hist:
         hist[key] = np.array(hist[key])

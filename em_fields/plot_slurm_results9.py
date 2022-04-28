@@ -15,6 +15,8 @@ import seaborn as sns
 
 # plt.rcParams.update({'font.size': 12})
 plt.rcParams.update({'font.size': 10})
+# plt.rcParams["figure.facecolor"] = 'white'
+plt.rcParams["axes.facecolor"] = 'green'
 
 # plt.close('all')
 
@@ -28,7 +30,7 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 30  # kV/m
 E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
 
 use_RF = True
@@ -49,6 +51,8 @@ lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
 
 cnt_RF_params = 0
 totol_loop_runs = len(lambda_RF_loop_list) * len(alpha_loop_list)
+
+failed_runs = []
 
 right_trapped_first_cell = np.nan * np.zeros([len(lambda_RF_loop_list), len(alpha_loop_list)])
 left_trapped_first_cell = np.nan * np.zeros([len(lambda_RF_loop_list), len(alpha_loop_list)])
@@ -78,6 +82,8 @@ for ind_lambda, lambda_RF in enumerate(lambda_RF_loop_list):
                 set_name = 'const_vth_' + set_name
             if r_0 > 0:
                 set_name = 'r0_' + str(r_0) + '_' + set_name
+
+            # set_name = 'ERF_100_alpha_1.1_lambda_-3.0' # testing
 
             save_dir_curr = save_dir + set_name
 
@@ -184,6 +190,7 @@ for ind_lambda, lambda_RF in enumerate(lambda_RF_loop_list):
 
         except:
             print('FAILED set_name: ' + str(set_name))
+            failed_runs += [set_name]
 
 right_selectivity = right_trapped_first_cell / (trapped_escaped_right_first_cell + 1e-2)
 left_selectivity = left_trapped_first_cell / (trapped_escaped_left_first_cell + 1e-2)
@@ -200,7 +207,6 @@ x_label = '$\\lambda - sign(\\lambda)$ [m]'
 y_array = alpha_loop_list
 
 limits_type = 'min-max'
-
 
 # limits_type = 'percentile'
 
@@ -253,7 +259,8 @@ print('max trapped_escaped_right_first_cell = ' + str(np.nanmax(trapped_escaped_
 # plt.figure(3)
 # plt.subplot(2, 3, 3)
 plt.subplot(3, 3, 3)
-vmin, vmax = get_vmin_vmax(right_selectivity, limits_type, vmax_bound=20)
+# vmin, vmax = get_vmin_vmax(right_selectivity, limits_type, vmax_bound=20)
+vmin, vmax = get_vmin_vmax(right_selectivity, limits_type, vmax_bound=None)
 sns.heatmap(right_selectivity.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
@@ -286,7 +293,8 @@ print('max trapped_escaped_left_first_cell = ' + str(np.nanmax(trapped_escaped_l
 
 # plt.subplot(2, 3, 6)
 plt.subplot(3, 3, 6)
-vmin, vmax = get_vmin_vmax(left_selectivity, limits_type, vmax_bound=20)
+# vmin, vmax = get_vmin_vmax(left_selectivity, limits_type, vmax_bound=20)
+vmin, vmax = get_vmin_vmax(left_selectivity, limits_type, vmax_bound=None)
 sns.heatmap(left_selectivity.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # plt.xlabel(x_label)
 # plt.ylabel('$\\alpha$')
@@ -300,8 +308,8 @@ print('max left_selectivity = ' + str(np.nanmax(left_selectivity)))
 plt.subplot(3, 3, 8)
 # right_left_selectivity_ratio = right_selectivity / left_selectivity
 right_left_selectivity_ratio = right_selectivity / (left_selectivity + 1e-2)
-vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=10)
-# vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=3)
+vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=None)
+# vmin, vmax = get_vmin_vmax(right_left_selectivity_ratio, limits_type, vmax_bound=20)
 sns.heatmap(right_left_selectivity_ratio.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax)
 # sns.heatmap(right_left_selectivity_ratio.T, xticklabels=x_array, yticklabels=y_array, vmin=vmin, vmax=vmax, annot=True, fmt=".2f")
 plt.xlabel(x_label)
