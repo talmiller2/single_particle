@@ -168,7 +168,7 @@ for ind_point in settings['points_set']:
             # two states of the simulation
             z_center_cell = (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']
             interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
-            set_data_dict_tmp[key] += [interp_fun(z_center_cell)]
+            set_data_dict_tmp[key] += [float(interp_fun(z_center_cell))]
         set_data_dict = copy.deepcopy(set_data_dict_tmp)
 
     # TODO: tesing the new algo
