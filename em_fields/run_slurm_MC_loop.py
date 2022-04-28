@@ -53,12 +53,8 @@ plt.close('all')
 # lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
 # lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 5), 2)  # set26
-beta_loop_list = np.round(np.linspace(0, 1, 5), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27??
-# beta_loop_list = np.round(np.linspace(0, 1, 21), 2)
-
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
+beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -69,9 +65,10 @@ E_RF_kVm = 10  # kV/m
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 if use_RF is False:
+    E_RF_kVm = 0
     alpha_loop_list = [1]
     beta_loop_list = [0]
 
@@ -83,7 +80,6 @@ num_cpus = 1
 # num_cpus = 10
 # num_cpus = 50
 # num_cpus = 200
-
 
 cnt_loop = 1
 
@@ -178,8 +174,8 @@ for beta_loop in beta_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        total_number_of_points = 400
-        # total_number_of_points = 1000
+        # total_number_of_points = 400
+        total_number_of_points = 1000
         # total_number_of_points = 2000
         # total_number_of_points = 5000
         # total_number_of_points = 10000

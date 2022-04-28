@@ -25,10 +25,6 @@ settings = ast.literal_eval(args.settings)
 print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
 
-# TODO: remove later
-# field_dict_no_B_RF = copy.deepcopy(field_dict)
-# field_dict_no_B_RF['nullify_RF_magnetic_field'] = True
-
 # load data for runs
 runs_dict_file = settings['save_dir'] + '/points_dict.mat'
 runs_dict = loadmat(runs_dict_file)
@@ -69,7 +65,6 @@ for ind_point in settings['points_set']:
 
     # save snapshots of key simulation metrics
     if settings['stop_criterion'] == 'first_cell_center_crossing':
-        # inds_samples = [0, len(hist['t']) - 2, len(hist['t']) - 1]  # extract the first and 2 last states of the evolution for interpolation later # TODO: testing
         inds_samples = [0, len(hist['t']) - 1]  # extract the first and last states of the evolution
         pass
 
@@ -85,7 +80,6 @@ for ind_point in settings['points_set']:
         # pick the indices where the magnetic field crosses the minimum
         B_mirror = []
         for x_curr, t_curr in zip(hist['x'], hist['t']):
-            # B_mirror += [B_RF_function(x_curr, t_curr, **field_dict_no_B_RF)] # TODO: remove later
             B_mirror += [get_mirror_magnetic_field(x_curr, field_dict['B0'], field_dict['Rm'], field_dict['l'],
                                                    mirror_field_type=field_dict['mirror_field_type'])]
         Bz_mirror = np.array(B_mirror)[:, 2]
@@ -116,9 +110,6 @@ for ind_point in settings['points_set']:
     else:
         raise ValueError('invalid option for trajectory_save_method: ' + str(settings['trajectory_save_method']))
 
-    # TODO: tesing the new algo
-    print('after run: inds_samples = ' + str(inds_samples))
-
     # sample the trajectory
     curr_data_dict = {}
     for key in sample_keys:
@@ -148,41 +139,9 @@ for ind_point in settings['points_set']:
         Bz = hist['B'][i, 2]
         curr_data_dict['Bz'] += [Bz]
 
-    # TODO: tesing the new algo
-    print('after run: curr_data_dict = ' + str(curr_data_dict))
-
     # combine this point run to larger data dict
     for key in sample_keys:
         set_data_dict[key] += [curr_data_dict[key]]
-
-    # if settings['stop_criterion'] == 'first_cell_center_crossing':
-    #
-    #     # z_array = set_data_dict['z']
-    #     # z_interp_list = np.array([z_array[0], (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']])
-    #     # set_data_dict_tmp = {}
-    #     # for key in set_data_dict.keys():
-    #     #     interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
-    #     #     set_data_dict_tmp[key] = interp_fun(z_interp_list)
-    #     # set_data_dict = copy.deepcopy(set_data_dict_tmp)
-    #
-    #     z_array = set_data_dict['z']
-    #     set_data_dict_tmp = {}
-    #     for key in set_data_dict.keys():
-    #         # save the t=0 state
-    #         set_data_dict_tmp[key] = [set_data_dict[key][0]]
-    #
-    #         # save the center of cell state (at the relevant z of the simulation end) using interpolation from the last
-    #         # two states of the simulation
-    #         z_center_cell = (0.5 + np.floor(z_array[-1] / field_dict['l'])) * field_dict['l']
-    #         interp_fun = interp1d(set_data_dict['z'], set_data_dict[key])
-    #         set_data_dict_tmp[key] += [float(interp_fun(z_center_cell))]
-    #     set_data_dict = copy.deepcopy(set_data_dict_tmp)
-
-    # TODO: commented all the above, becuase not using interpolation anymore
-
-    # TODO: tesing the new algo
-    # print('after interp: z_interp_list = ' + str(z_interp_list))
-    # print('after interp: set_data_dict_tmp = ' + str(set_data_dict_tmp))
 
 if settings['set_save_format'] == 'mat':
     savemat(compiled_set_file_name + '.mat', set_data_dict)
