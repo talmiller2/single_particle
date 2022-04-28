@@ -72,7 +72,9 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
             if abs(np.mod(z_last / field_dict['l'], 1) - np.mod(z_curr / field_dict['l'], 1)) < 0.1:
                 # check that during the time step the particle crossed the center of a cell
                 if abs(np.mod(z_last / field_dict['l'] - 0.5, 1) - np.mod(z_curr / field_dict['l'] - 0.5, 1)) > 0.5:
-                    break
+                    # but not directly in center of cell to avoid counting t=0
+                    if np.mod(z_last / field_dict['l'] - 0.5, 1) != 0:
+                        break
 
     for key in hist:
         hist[key] = np.array(hist[key])
