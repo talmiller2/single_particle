@@ -69,11 +69,11 @@ E_RF_kVm = 10  # kV/m
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     alpha_loop_list = [1]
-    lambda_RF_loop_list = [100]
+    beta_loop_list = [0]
 
 totol_loop_runs = len(beta_loop_list) * len(alpha_loop_list)
 print('totol_loop_runs = ' + str(totol_loop_runs))

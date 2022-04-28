@@ -36,7 +36,8 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     if stop_criterion == 'time':
         num_steps = t_max / dt
     elif stop_criterion == 'first_cell_center_crossing':
-        num_steps = int(1e15)  # picking an "infinite" number
+        # num_steps = int(1e15)  # picking an "infinite" number
+        num_steps = int(1e4)  # TODO: testing
     t = t_0
 
     if field_dict is None:
@@ -66,6 +67,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
         if stop_criterion == 'first_cell_center_crossing':
             z_curr = hist['x'][-1][2]
             z_last = hist['x'][-2][2]
+            print('t=' + str(hist['t'][-1]) + ', z_curr=' + str(z_curr) + ', z_last=' + str(z_last))  # TODO: testing
             # check that during the time step the particle did not cross a cell
             if abs(np.mod(z_last / field_dict['l'], 1) - np.mod(z_curr / field_dict['l'], 1)) < 0.1:
                 # check that during the time step the particle crossed the center of a cell
