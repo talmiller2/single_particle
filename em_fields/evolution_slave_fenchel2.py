@@ -71,7 +71,7 @@ for ind_point in settings['points_set']:
 
     # save snapshots of key simulation metrics
     if settings['stop_criterion'] == 'first_cell_center_crossing':
-        inds_samples = [0, len(hist['t']) - 1, len(hist['t'])]  # extract the first and last states of the evolution
+        inds_samples = [0, len(hist['t']) - 2, len(hist['t']) - 1]  # extract the first and last states of the evolution
         pass
 
     elif settings['trajectory_save_method'] == 'intervals':

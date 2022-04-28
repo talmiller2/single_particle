@@ -126,7 +126,6 @@ for beta_loop in beta_loop_list:
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
 
-
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
@@ -164,6 +163,9 @@ for beta_loop in beta_loop_list:
             run_name = 'r0_' + str(settings['r_0']) + '_' + run_name
         print('run_name: ' + str(run_name))
         settings['run_name'] = run_name
+
+        # settings['save_dir'] = save_dir + '/' + run_name
+        settings['save_dir'] = save_dir
 
         # total_number_of_points = 1
         total_number_of_points = 40
@@ -241,8 +243,6 @@ for beta_loop in beta_loop_list:
 
         # save the run settings
         if cnt_loop == 1:
-            # settings['save_dir'] = save_dir + '/' + run_name
-            settings['save_dir'] = save_dir
             os.makedirs(settings['save_dir'], exist_ok=True)
             os.chdir(settings['save_dir'])
 
