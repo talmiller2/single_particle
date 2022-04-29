@@ -41,8 +41,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set23_B0_1T_l_3m_Post_intervals_Rm_6/'
 # save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
 # save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
-save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-# save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing_50cpus/'
+# save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 
 plt.close('all')
 
@@ -53,8 +53,11 @@ plt.close('all')
 # lambda_RF_loop_list = np.round(np.linspace(-6, 6, 10), 0)
 # lambda_RF_loop_list += np.sign(lambda_RF_loop_list)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
-beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
+# beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
+beta_loop_list = np.round(np.linspace(-1, 1, 11), 21)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m

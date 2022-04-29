@@ -23,7 +23,6 @@ plt.rcParams["axes.facecolor"] = 'green'
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set24_B0_1T_l_3m_Post_Rm_3/'
 # save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
-save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
