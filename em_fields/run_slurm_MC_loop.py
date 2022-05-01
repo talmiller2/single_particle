@@ -57,19 +57,21 @@ plt.close('all')
 # beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
 
 alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
-beta_loop_list = np.round(np.linspace(-1, 1, 11), 21)
+beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 30  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
+# B_RF = 0.1  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
