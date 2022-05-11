@@ -22,7 +22,8 @@ plt.close('all')
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -50,8 +51,11 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
 # beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
-beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
+# beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29
+beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
 #     for ind_alpha, alpha_RF in enumerate(alpha_loop_list):
@@ -70,10 +74,11 @@ beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 # beta = beta_loop_list[ind_beta]
 #
 # alpha = 0.8
+# alpha = 0.85
 # alpha = 0.9
 # alpha = 0.92
-alpha = 0.94
-# alpha = 0.95
+# alpha = 0.94
+alpha = 0.95
 # alpha = 0.97
 # alpha = 0.98
 # alpha = 0.99
@@ -93,10 +98,13 @@ alpha = 0.94
 # beta = -0.7
 # beta = -1.0
 # beta = -2.0
-# beta = -3.0
+beta = -3.0
 # beta = -3.75
 # beta = -4.5
-beta = -5.0
+# beta = -5.0
+# beta = -8.0
+# beta = -9.0
+# beta = -10.0
 # beta = 0.5
 # beta = 1.0
 
@@ -193,7 +201,8 @@ def plot_dist(y, ax, ylabel):
     """
 
     if 'z' in ylabel:
-        label = 'right-LC=' + str(100.0 * len(np.where(y >= 1.0)[0]) / len(y)) + '%'
+        label = 'right-LC=' + str(100.0 * len(np.where(y > 1)[0]) / len(y)) + '%'
+        label += ', left-LC=' + str(100.0 * len(np.where(y < 0)[0]) / len(y)) + '%'
     elif '\\Delta ( v_{\\perp} / v )' in ylabel:
         ### define selectivity
         # np.percentile(y[inds_right_LC], 50)

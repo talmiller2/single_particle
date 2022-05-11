@@ -24,7 +24,8 @@ plt.close('all')
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -41,7 +42,7 @@ E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
@@ -60,11 +61,15 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
 # beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
-alpha_loop_list = alpha_loop_list[10::]
-beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
+# alpha_loop_list = alpha_loop_list[10::]
+# beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 
-vz_over_vth_list = [0.5, 1.0, 1.5]
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29
+beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
+
+# vz_over_vth_list = [0.5, 1.0, 1.5]
+vz_over_vth_list = [0.5, 0.75, 1.0, 1.25, 1.5]
 alpha_const_omega_cyc0_right_list = []
 alpha_const_omega_cyc0_left_list = []
 for vz_over_vth in vz_over_vth_list:
@@ -200,15 +205,15 @@ annot_fontsize = 8
 ax = axs[0, 0]
 # plt.figure(1)
 # plt.subplot(fignum=1)
-# log_delta_v =np.log(delta_v)
-vmin = 0
-# vmin = np.min(log_delta_v)
-vmax = np.max(delta_v)
-# vmax = np.max(log_delta_v)
+log_delta_v = np.log(delta_v)
+# vmin = 0
+vmin = np.min(log_delta_v)
+# vmax = np.nanmax(delta_v)
+vmax = np.max(log_delta_v)
 # vmax = 0.1
 # vmax = 0.05
 # vmax = 5
-sns.heatmap(delta_v.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+sns.heatmap(log_delta_v.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
             # annot=True,
             # annot_kws={"fontsize": annot_fontsize},
@@ -233,9 +238,11 @@ ax = axs[0, 1]
 vmin = 0
 # vmax = np.max(selectivity)
 # vmax = 3
-vmax = 5
+# vmax = 5
 # vmax = 10
+vmax = 30
 # vmax = 15
+selectivity = abs(selectivity)
 sns.heatmap(selectivity.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
             annot=True,

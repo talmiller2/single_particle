@@ -295,16 +295,21 @@ for beta_loop in beta_loop_list:
             print('###############')
             if num_cpus == 1:
                 slurm_run_name = run_name
-                settings['ind_set'] = None  # TODO ?
+                settings['ind_set'] = None
             elif num_cpus > 1:
                 slurm_run_name = 'set_' + str(ind_set) + '_' + run_name
             print('run_name = ' + run_name)
 
-            command = evolution_slave_fenchel_script \
-                      + ' --settings "' + str(settings) + '"' \
-                      + ' --field_dict "' + str(field_dict) + '"'
-            s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
-            s.run(command)
+            # checking if the save file already exists
+            save_file = settings['save_dir'] + '/' + run_name + '.pickle'
+            if num_cpus == 1 and os.path.exists(save_file):
+                print('already exists, not running.')
+            else:
+                command = evolution_slave_fenchel_script \
+                          + ' --settings "' + str(settings) + '"' \
+                          + ' --field_dict "' + str(field_dict) + '"'
+                s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
+                s.run(command)
 
             if num_cpus > 1:
                 print('   run set # ' + str(cnt) + ' / ' + str(num_sets - 1))
