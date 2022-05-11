@@ -43,7 +43,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set25_B0_1T_l_3m_Post_Rm_3/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 
 plt.close('all')
 
@@ -60,13 +61,16 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
 # beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
-beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
+# beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29
+beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 30  # kV/m
+# E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
@@ -103,8 +107,8 @@ for beta_loop in beta_loop_list:
         settings['stop_criterion'] = 'first_cell_center_crossing'
 
         # settings['l'] = 1.0  # m (MM cell size)
-        # settings['l'] = 3.0  # m (MM cell size)
-        settings['l'] = 10.0  # m (MM cell size)
+        settings['l'] = 3.0  # m (MM cell size)
+        # settings['l'] = 10.0  # m (MM cell size)
 
         # settings['absolute_velocity_sampling_type'] = 'const_vth'
         settings['absolute_velocity_sampling_type'] = 'maxwell'
@@ -118,8 +122,8 @@ for beta_loop in beta_loop_list:
         field_dict = {}
 
         # field_dict['Rm'] = 1.3  # mirror ratio
-        # field_dict['Rm'] = 2.0  # mirror ratio
-        field_dict['Rm'] = 3.0  # mirror ratio
+        field_dict['Rm'] = 2.0  # mirror ratio
+        # field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
         # field_dict['Rm'] = 6.0  # mirror ratio
 

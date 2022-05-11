@@ -21,13 +21,14 @@ plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 30  # kV/m
-E_RF_kVm = 50  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
@@ -46,23 +47,33 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
 # beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
-beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
+# beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
+beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
 #     for ind_alpha, alpha_RF in enumerate(alpha_loop_list):
 # ind_alpha = 0
+# ind_alpha = 1
+# ind_alpha = 2
 # ind_alpha = 4
 # ind_alpha = 5
 # ind_alpha = 7
+# ind_beta = 1
+# ind_beta = 2
 # ind_beta = 5
 # ind_beta = 4
 # ind_beta = 3
 # alpha = alpha_loop_list[ind_alpha]
 # beta = beta_loop_list[ind_beta]
-# alpha = 1.05
+#
+# alpha = 0.8
 # alpha = 0.9
-alpha = 0.95
+# alpha = 0.92
+alpha = 0.94
+# alpha = 0.95
 # alpha = 0.97
 # alpha = 0.98
 # alpha = 0.99
@@ -72,6 +83,7 @@ alpha = 0.95
 # alpha = 1.04
 # alpha = 1.05
 # alpha = 1.1
+
 # beta = 0.0
 # beta = -0.1
 # beta = -0.2
@@ -79,7 +91,12 @@ alpha = 0.95
 # beta = -0.4
 # beta = -0.5
 # beta = -0.7
-beta = -1.0
+# beta = -1.0
+# beta = -2.0
+# beta = -3.0
+# beta = -3.75
+# beta = -4.5
+beta = -5.0
 # beta = 0.5
 # beta = 1.0
 
@@ -132,7 +149,16 @@ vz = data_dict['v_axial'][:, 1]
 vz0 = data_dict['v_axial'][:, 0]
 # theta0 = 360 / (2 * np.pi) * np.arcsin(vt0 / v0) * np.sign(vz0)
 theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
+
 theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
+
+inds_right_LC = np.where(theta0 <= theta_LC)[0]
+inds_left_LC = np.where(theta0 >= 180 - theta_LC)[0]
+print('len inds_right_LC=' + str(len(inds_right_LC)) + ', inds_left_LC=' + str(len(inds_left_LC)))
+inds_right_half_LC = np.where(theta0 <= theta_LC / 2.0)[0]
+inds_left_half_LC = np.where(theta0 >= 180 - theta_LC / 2.0)[0]
+print('len inds_right_half_LC=' + str(len(inds_right_half_LC)) + ', inds_left_half_LC=' + str(len(inds_left_half_LC)))
+
 # theta_bins = np.linspace(-90, 90, 31)
 # theta_bins = np.linspace(-90, 90, 31) + 180 / 30.0
 # theta_bin_width = theta_bins[1] - theta_bins[0]
@@ -144,11 +170,12 @@ theta_bin_width = 5
 # theta_bins = np.append(-np.flip(theta_bins), theta_bins)
 theta_bins = np.arange(theta_bin_width / 2.0, 180, theta_bin_width)
 
-# normalize_by_tfin = True
-normalize_by_tfin = False
+normalize_by_tfin = True
+# normalize_by_tfin = False
 
 # fig, (axs) = plt.subplots(2, 2, figsize=(10,6))
-fig, (axs) = plt.subplots(3, 2, figsize=(10, 9))
+# fig, (axs) = plt.subplots(3, 2, figsize=(10, 9))
+fig, (axs) = plt.subplots(3, 2, figsize=(12, 7))
 ax = axs[0, 0]
 # plt.figure(1)
 ax.scatter(vz0 / settings['v_th'], vt0 / settings['v_th'], label='ini', alpha=0.5, color='b')
@@ -161,6 +188,29 @@ ax.grid(True)
 
 
 def plot_dist(y, ax, ylabel):
+    """
+    Plot a subplot with the distribution of final state metric relative to initial angle
+    """
+
+    if 'z' in ylabel:
+        label = 'right-LC=' + str(100.0 * len(np.where(y >= 1.0)[0]) / len(y)) + '%'
+    elif '\\Delta ( v_{\\perp} / v )' in ylabel:
+        ### define selectivity
+        # np.percentile(y[inds_right_LC], 50)
+        # np.percentile(y[inds_left_LC], 50)
+        right_mean = np.mean(y[inds_right_LC])
+        left_mean = np.mean(y[inds_left_LC])
+        # np.percentile(y[inds_right_half_LC], 50)
+        # np.percentile(y[inds_left_half_LC], 50)
+        # selectivity = np.percentile(y[inds_right_LC], 50) / np.percentile(y[inds_left_LC], 50)
+        selectivity = np.mean(y[inds_right_LC]) / np.mean(y[inds_left_LC])
+        label = 'selectivity=' + '{:.2f}'.format(selectivity)
+    elif '\\Delta v / v_{th}' in ylabel:
+        all_mean = np.mean(y)
+        label = 'mean =' + '{:.2f}'.format(all_mean)
+    else:
+        label = None
+
     # plt.figure(fig_num)
     # ax = plt.gca()
     # df = pd.DataFrame({
@@ -172,40 +222,48 @@ def plot_dist(y, ax, ylabel):
     # # df['Ystd'] = df.groupby('Xbins').Y.transform('std')
     # df.plot(kind='scatter', x='X', y='Ymean', color='k', label='pandas grouping', ax=ax)
 
-    y_binned = 0 * theta_bins
-    y_binned_std = 0 * theta_bins
-    y_binned_upper = 0 * theta_bins
-    y_binned_lower = 0 * theta_bins
-    for i, theta_bin in enumerate(theta_bins):
-        # print(i, theta_bin)
-        inds = np.where(np.abs(theta0 - theta_bin) < theta_bin_width / 2.0)
-        y_curr_bin_array = y[inds]
-        # y_binned[i] = np.mean(y_curr_bin_array)
-        y_binned[i] = np.percentile(y_curr_bin_array, 50)
-        y_binned_std[i] = np.std(y_curr_bin_array)
-        # prctile = 5
-        prctile = 10
-        # prctile = 33
-        y_binned_upper[i] = np.percentile(y_curr_bin_array, 100 - prctile)
-        y_binned_lower[i] = np.percentile(y_curr_bin_array, prctile)
-    # plt.errorbar(theta_bins, y_binned, yerr=y_binned_std, label='manual binning', color='g')
-    # plt.fill_between(theta_bins, y_binned + y_binned_std, y_binned - y_binned_std, color='b', alpha=0.5)
+    # y_binned = 0 * theta_bins
+    # y_binned_std = 0 * theta_bins
+    # y_binned_upper = 0 * theta_bins
+    # y_binned_lower = 0 * theta_bins
+    # for i, theta_bin in enumerate(theta_bins):
+    #     # print(i, theta_bin)
+    #     inds = np.where(np.abs(theta0 - theta_bin) < theta_bin_width / 2.0)
+    #     y_curr_bin_array = y[inds]
+    #     # y_binned[i] = np.mean(y_curr_bin_array)
+    #     y_binned[i] = np.percentile(y_curr_bin_array, 50)
+    #     y_binned_std[i] = np.std(y_curr_bin_array)
+    #     # prctile = 5
+    #     prctile = 10
+    #     # prctile = 33
+    #     y_binned_upper[i] = np.percentile(y_curr_bin_array, 100 - prctile)
+    #     y_binned_lower[i] = np.percentile(y_curr_bin_array, prctile)
+    # # plt.errorbar(theta_bins, y_binned, yerr=y_binned_std, label='manual binning', color='g')
+    # # plt.fill_between(theta_bins, y_binned + y_binned_std, y_binned - y_binned_std, color='b', alpha=0.5)
     # ax.fill_between(theta_bins, y_binned_upper, y_binned_lower, color='b', alpha=0.5)
-    # ax.plot(theta_bins, y_binned, label='manual binning', color='b')
-
-    ax.scatter(theta0, y, color='b', alpha=0.5)
-    #
+    # ax.plot(theta_bins, y_binned, color='b', label=label)
     # # ymin = np.min(y_binned - y_binned_std)
     # # ymax = np.max(y_binned + y_binned_std)
-    ymin = np.min(y_binned_lower)
-    ymax = np.max(y_binned_upper)
+    # ymin = np.min(y_binned_lower)
+    # ymax = np.max(y_binned_upper)
+
+    ax.scatter(theta0, y, color='b', alpha=0.5, label=label)
+    ymin = np.min(y)
+    ymax = np.max(y)
+
     ax.vlines(theta_LC, ymin, ymax, color='k', linestyle='--')
     ax.vlines(180 - theta_LC, ymin, ymax, color='k', linestyle='--')
     # ax.vlines(-theta_LC, ymin, ymax, color='k', linestyle='--')
+    if '\\Delta ( v_{\\perp} / v )' in ylabel:
+        ax.hlines(right_mean, 0, theta_LC, color='r', linestyle='-', linewidth=3)
+        ax.hlines(left_mean, 180 - theta_LC, 180, color='r', linestyle='-', linewidth=3)
+    elif '\\Delta v / v_{th}' in ylabel:
+        ax.hlines(all_mean, 0, 180, color='r', linestyle='-', linewidth=3)
     ax.set_xlabel('$\\theta$ [deg]')
     ax.set_ylabel(ylabel)
     # ax.set_title(title)
-    # ax.legend()
+    if label is not None:
+        ax.legend()
     ax.grid(True)
 
     # y_binned_stats = scipy.stats.binned_statistic(theta0, y, statistic='mean', bins=theta_bins)
@@ -240,9 +298,11 @@ ax = axs[1, 1]
 plot_dist(y, ax, ylabel=ylabel)
 
 ax = axs[2, 0]
-plot_dist(z / settings['l'], ax, ylabel='$z_{fin}/l$')
+y = z / settings['l']
+plot_dist(y, ax, ylabel='$z_{fin}/l$')
 
 ax = axs[2, 1]
-plot_dist(dt / (settings['l'] / settings['v_th']), ax, ylabel='$t_{fin} v_{th} / l$')
+y = dt / (settings['l'] / settings['v_th'])
+plot_dist(y, ax, ylabel='$t_{fin} v_{th} / l$')
 
 plt.tight_layout()
