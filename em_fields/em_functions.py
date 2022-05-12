@@ -29,7 +29,8 @@ def get_plasma_frequency(ne, qe, me, eps0):
 
 
 def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dict=None, t_0=0, q=1.0, m=1.0,
-                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=True):
+                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=True,
+                                 number_of_cell_center_crosses=None):
     """
     Advance a charged particle in time under the influence of E,B fields.
     """
@@ -37,6 +38,10 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
         num_steps = t_max / dt
     elif stop_criterion == 'first_cell_center_crossing':
         num_steps = int(1e15)  # picking an "infinite" number
+    elif stop_criterion == 'several_cell_center_crossing':
+        num_steps = int(1e15)  # picking an "infinite" number
+        cnt_cell_center_crosses = 1
+        inds_cell_center_crossing = [0]
     t = t_0
 
     if field_dict is None:
@@ -63,7 +68,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
             hist['E'] += [E_function(x_new, t, **field_dict)]
             hist['B'] += [B_function(x_new, t, **field_dict)]
 
-        if stop_criterion == 'first_cell_center_crossing':
+        if stop_criterion in ['first_cell_center_crossing', 'several_cell_center_crossing']:
             z_curr = hist['x'][-1][2]
             z_last = hist['x'][-2][2]
 
@@ -71,11 +76,20 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
                 # check that during the time step the particle crossed the center of a cell
                 if abs(np.mod(z_last / field_dict['l'] - 0.5, 1) - np.mod(z_curr / field_dict['l'] - 0.5, 1)) > 0.5:
                     # avoid getting it straight in the beginning of the simulation
-                    if ind_step >= 10:
-                        break
+                    if ind_step >= 5:
+                        if stop_criterion == 'first_cell_center_crossing':
+                            break
+                        elif stop_criterion == 'several_cell_center_crossing':
+                            inds_cell_center_crossing += [ind_step + 1]
+                            cnt_cell_center_crosses += 1
+                            if cnt_cell_crosses == number_of_cell_center_crosses:
+                                break
 
     for key in hist:
         hist[key] = np.array(hist[key])
+    if stop_criterion == 'several_cell_center_crossing':
+        hist['inds_cell_center_crossing'] = inds_cell_center_crossing
+
     return hist
 
 

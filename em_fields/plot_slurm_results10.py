@@ -27,8 +27,8 @@ save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
-# E_RF_kVm = 10  # kV/m
-E_RF_kVm = 25  # kV/m
+E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
@@ -54,7 +54,7 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
 # beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
 beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
@@ -75,10 +75,11 @@ beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 #
 # alpha = 0.8
 # alpha = 0.85
+alpha = 0.86
 # alpha = 0.9
 # alpha = 0.92
 # alpha = 0.94
-alpha = 0.95
+# alpha = 0.95
 # alpha = 0.97
 # alpha = 0.98
 # alpha = 0.99
@@ -98,10 +99,11 @@ alpha = 0.95
 # beta = -0.7
 # beta = -1.0
 # beta = -2.0
-beta = -3.0
+# beta = -3.0
 # beta = -3.75
 # beta = -4.5
 # beta = -5.0
+beta = -7.5
 # beta = -8.0
 # beta = -9.0
 # beta = -10.0
@@ -157,15 +159,20 @@ vz = data_dict['v_axial'][:, 1]
 vz0 = data_dict['v_axial'][:, 0]
 # theta0 = 360 / (2 * np.pi) * np.arcsin(vt0 / v0) * np.sign(vz0)
 theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
+theta_fin = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
 
 theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
 
 inds_right_LC = np.where(theta0 <= theta_LC)[0]
 inds_left_LC = np.where(theta0 >= 180 - theta_LC)[0]
-print('len inds_right_LC=' + str(len(inds_right_LC)) + ', inds_left_LC=' + str(len(inds_left_LC)))
-inds_right_half_LC = np.where(theta0 <= theta_LC / 2.0)[0]
-inds_left_half_LC = np.where(theta0 >= 180 - theta_LC / 2.0)[0]
-print('len inds_right_half_LC=' + str(len(inds_right_half_LC)) + ', inds_left_half_LC=' + str(len(inds_left_half_LC)))
+# print('len inds_right_LC=' + str(len(inds_right_LC)) + ', inds_left_LC=' + str(len(inds_left_LC)))
+# inds_right_half_LC = np.where(theta0 <= theta_LC / 2.0)[0]
+# inds_left_half_LC = np.where(theta0 >= 180 - theta_LC / 2.0)[0]
+# print('len inds_right_half_LC=' + str(len(inds_right_half_LC)) + ', inds_left_half_LC=' + str(len(inds_left_half_LC)))
+inds_right_trapped = [i for i, t in enumerate(theta0) if t > theta_LC and t < 90]
+inds_left_trapped = [i for i, t in enumerate(theta0) if t > 90 and t < 180 - theta_LC]
+inds_right = [i for i, t in enumerate(theta0) if t < 90]
+inds_left = [i for i, t in enumerate(theta0) if t > 90 and t < 180]
 
 # theta_bins = np.linspace(-90, 90, 31)
 # theta_bins = np.linspace(-90, 90, 31) + 180 / 30.0
@@ -205,15 +212,21 @@ def plot_dist(y, ax, ylabel):
         label += ', left-LC=' + str(100.0 * len(np.where(y < 0)[0]) / len(y)) + '%'
     elif '\\Delta ( v_{\\perp} / v )' in ylabel:
         ### define selectivity
-        # np.percentile(y[inds_right_LC], 50)
-        # np.percentile(y[inds_left_LC], 50)
-        right_mean = np.mean(y[inds_right_LC])
-        left_mean = np.mean(y[inds_left_LC])
-        # np.percentile(y[inds_right_half_LC], 50)
-        # np.percentile(y[inds_left_half_LC], 50)
-        # selectivity = np.percentile(y[inds_right_LC], 50) / np.percentile(y[inds_left_LC], 50)
-        selectivity = np.mean(y[inds_right_LC]) / np.mean(y[inds_left_LC])
-        label = 'selectivity=' + '{:.2f}'.format(selectivity)
+        right_LC_mean = np.mean(y[inds_right_LC])
+        left_LC_mean = np.mean(y[inds_left_LC])
+        right_trapped_mean = np.mean(y[inds_right_trapped])
+        left_trapped_mean = np.mean(y[inds_left_trapped])
+        right_mean = np.mean(y[inds_right])
+        left_mean = np.mean(y[inds_left])
+        selectivity_LC = right_LC_mean / left_LC_mean
+        label = 'selectivity_LC=' + '{:.2f}'.format(selectivity_LC)
+        selectivity_Rwt = right_LC_mean * len(inds_right_LC) / (right_trapped_mean * len(inds_right_trapped))
+        selectivity_Lwt = left_LC_mean * len(inds_left_LC) / (left_trapped_mean * len(inds_left_trapped))
+        label += ', Rwt=' + '{:.2f}'.format(selectivity_Rwt)
+        label += ', Lwt=' + '{:.2f}'.format(selectivity_Lwt)
+        selectivity_RL = right_mean / left_mean
+        label += ', RL=' + '{:.2f}'.format(selectivity_RL)
+
     elif '\\Delta v / v_{th}' in ylabel:
         all_mean = np.mean(y)
         label = 'mean =' + '{:.2f}'.format(all_mean)
@@ -264,8 +277,10 @@ def plot_dist(y, ax, ylabel):
     ax.vlines(180 - theta_LC, ymin, ymax, color='k', linestyle='--')
     # ax.vlines(-theta_LC, ymin, ymax, color='k', linestyle='--')
     if '\\Delta ( v_{\\perp} / v )' in ylabel:
-        ax.hlines(right_mean, 0, theta_LC, color='r', linestyle='-', linewidth=3)
-        ax.hlines(left_mean, 180 - theta_LC, 180, color='r', linestyle='-', linewidth=3)
+        ax.hlines(right_LC_mean, 0, theta_LC, color='r', linestyle='-', linewidth=3)
+        ax.hlines(left_LC_mean, 180 - theta_LC, 180, color='r', linestyle='-', linewidth=3)
+        ax.hlines(right_trapped_mean, theta_LC, 90, color='m', linestyle='-', linewidth=3)
+        ax.hlines(left_trapped_mean, 90, 180 - theta_LC, color='m', linestyle='-', linewidth=3)
     elif '\\Delta v / v_{th}' in ylabel:
         ax.hlines(all_mean, 0, 180, color='r', linestyle='-', linewidth=3)
     ax.set_xlabel('$\\theta$ [deg]')
@@ -290,13 +305,34 @@ if normalize_by_tfin is True:
 ax = axs[0, 1]
 plot_dist(y, ax, ylabel=ylabel)
 
-y = (vt - vt0) / settings['v_th']
-ylabel = '$\\Delta v_{\\perp} / v_{th}$'
-if normalize_by_tfin is True:
-    y /= dt / (settings['l'] / settings['v_th'])
-    ylabel = '$\\Delta v_{\\perp} / v_{th} / (t_{fin} v_{th} / l)$'
+# y = (vt - vt0) / settings['v_th']
+# ylabel = '$\\Delta v_{\\perp} / v_{th}$'
+# if normalize_by_tfin is True:
+#     y /= dt / (settings['l'] / settings['v_th'])
+#     ylabel = '$\\Delta v_{\\perp} / v_{th} / (t_{fin} v_{th} / l)$'
+# ax = axs[1, 0]
+# plot_dist(y, ax, ylabel=ylabel)
+
+
+y = theta_fin
+ylabel = '$\\theta_{fin}$ [deg]'
+# if normalize_by_tfin is True:
+#     y /= dt / (settings['l'] / settings['v_th'])
+#     ylabel = '$\\theta_{fin} / (t_{fin} v_{th} / l)$'
 ax = axs[1, 0]
 plot_dist(y, ax, ylabel=ylabel)
+# if normalize_by_tfin is False:
+ax.hlines(theta_LC, 0, 180, color='k', linestyle='--')
+ax.hlines(180 - theta_LC, 0, 180, color='k', linestyle='--')
+
+# y = theta_fin - theta0
+# ylabel = '$\\theta_{fin} - \\theta_0$'
+# if normalize_by_tfin is True:
+#     y /= dt / (settings['l'] / settings['v_th'])
+#     ylabel = '($\\theta_{fin} - \\theta_0)/ (t_{fin} v_{th} / l)$'
+# ax = axs[1, 0]
+# plot_dist(y, ax, ylabel=ylabel)
+
 
 y = (vt / v - vt0 / v0)
 ylabel = '$\\Delta ( v_{\\perp} / v )$'
@@ -305,6 +341,7 @@ if normalize_by_tfin is True:
     ylabel = '$\\Delta ( v_{\\perp} / v ) / (t_{fin} v_{th} / l)$'
 ax = axs[1, 1]
 plot_dist(y, ax, ylabel=ylabel)
+
 
 ax = axs[2, 0]
 y = z / settings['l']

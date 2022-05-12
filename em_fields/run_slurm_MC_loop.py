@@ -44,7 +44,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
+# save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
+save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 
 plt.close('all')
 
@@ -64,7 +65,7 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
 # beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
 beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 RF_type = 'electric_transverse'
@@ -104,7 +105,9 @@ for beta_loop in beta_loop_list:
         # define settings
         settings = {}
         # settings['trajectory_save_method'] = 'intervals'
-        settings['stop_criterion'] = 'first_cell_center_crossing'
+        # settings['stop_criterion'] = 'first_cell_center_crossing'
+        settings['stop_criterion'] = 'several_cell_center_crossing'
+        settings['number_of_cell_center_crosses'] = 3
 
         # settings['l'] = 1.0  # m (MM cell size)
         settings['l'] = 3.0  # m (MM cell size)
@@ -122,8 +125,8 @@ for beta_loop in beta_loop_list:
         field_dict = {}
 
         # field_dict['Rm'] = 1.3  # mirror ratio
-        field_dict['Rm'] = 2.0  # mirror ratio
-        # field_dict['Rm'] = 3.0  # mirror ratio
+        # field_dict['Rm'] = 2.0  # mirror ratio
+        field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
         # field_dict['Rm'] = 6.0  # mirror ratio
 
@@ -189,8 +192,8 @@ for beta_loop in beta_loop_list:
         # total_number_of_points = 1
         # total_number_of_points = 40
         # total_number_of_points = 400
-        total_number_of_points = 1000
-        # total_number_of_points = 2000
+        # total_number_of_points = 1000
+        total_number_of_points = 2000
         # total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
