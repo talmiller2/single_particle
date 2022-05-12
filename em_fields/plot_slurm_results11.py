@@ -25,7 +25,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
+# save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
+save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -38,8 +39,8 @@ with open(field_dict_file, 'rb') as fid:
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
-E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 25  # kV/m
+E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'

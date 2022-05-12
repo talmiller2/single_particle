@@ -70,8 +70,8 @@ beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
-E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 10  # kV/m
+E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
@@ -79,8 +79,8 @@ E_RF_kVm = 10  # kV/m
 B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
@@ -192,8 +192,8 @@ for beta_loop in beta_loop_list:
         # total_number_of_points = 1
         # total_number_of_points = 40
         # total_number_of_points = 400
-        # total_number_of_points = 1000
-        total_number_of_points = 2000
+        total_number_of_points = 1000
+        # total_number_of_points = 2000
         # total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000

@@ -40,7 +40,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
         num_steps = int(1e15)  # picking an "infinite" number
     elif stop_criterion == 'several_cell_center_crossing':
         num_steps = int(1e15)  # picking an "infinite" number
-        cnt_cell_center_crosses = 1
+        cnt_cell_center_crosses = 0
         inds_cell_center_crossing = [0]
     t = t_0
 
