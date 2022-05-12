@@ -82,7 +82,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
                         elif stop_criterion == 'several_cell_center_crossing':
                             inds_cell_center_crossing += [ind_step + 1]
                             cnt_cell_center_crosses += 1
-                            if cnt_cell_crosses == number_of_cell_center_crosses:
+                            if cnt_cell_center_crosses == number_of_cell_center_crosses:
                                 break
 
     for key in hist:
