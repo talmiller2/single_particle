@@ -45,7 +45,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
-save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+# save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
+save_dir += '/set31_B0_1T_l_3m_Logan_Rm_3_cell_center_crossing/'
 
 plt.close('all')
 
@@ -65,7 +66,7 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
 # beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30, set31
 beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
 RF_type = 'electric_transverse'
@@ -79,8 +80,8 @@ E_RF_kVm = 25  # kV/m
 B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
@@ -143,8 +144,8 @@ for beta_loop in beta_loop_list:
         field_dict['alpha_RF_list'] = [alpha_loop]
         field_dict['beta_RF_list'] = [beta_loop]
 
-        field_dict['mirror_field_type'] = 'post'
-        # field_dict['mirror_field_type'] = 'logan'
+        # field_dict['mirror_field_type'] = 'post'
+        field_dict['mirror_field_type'] = 'logan'
 
         field_dict = define_default_field(settings, field_dict)
 

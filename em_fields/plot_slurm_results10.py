@@ -26,8 +26,8 @@ def plot_dist(y, ax, ylabel, color='b'):
     """
 
     if 'z' in ylabel:
-        label = 'right-LC=' + '{:.2f}'.format(100.0 * len(np.where(y > 1)[0]) / len(y)) + '%'
-        label += ', left-LC=' + '{:.2f}'.format(100.0 * len(np.where(y < 0)[0]) / len(y)) + '%'
+        label = '%(z/l>1)=' + '{:.2f}'.format(100.0 * len(np.where(y > 1)[0]) / len(y))
+        label += ', %(z/l<0)=' + '{:.2f}'.format(100.0 * len(np.where(y < 0)[0]) / len(y))
     elif '\\Delta ( v_{\\perp} / v )' in ylabel:
         ### define selectivity
         right_LC_mean = np.mean(y[inds_right_LC])
@@ -37,17 +37,19 @@ def plot_dist(y, ax, ylabel, color='b'):
         right_mean = np.mean(y[inds_right])
         left_mean = np.mean(y[inds_left])
         selectivity_LC = right_LC_mean / left_LC_mean
-        label = 'selectivity_LC=' + '{:.2f}'.format(selectivity_LC)
+        label = 'selectivity metrics: '
+        label += 'RL(LC)=' + '{:.2f}'.format(selectivity_LC)
+        selectivity_RL = right_mean / left_mean
+        label += ', RL(tot)=' + '{:.2f}'.format(selectivity_RL)
         selectivity_Rwt = right_LC_mean * len(inds_right_LC) / (right_trapped_mean * len(inds_right_trapped))
         selectivity_Lwt = left_LC_mean * len(inds_left_LC) / (left_trapped_mean * len(inds_left_trapped))
         label += ', Rwt=' + '{:.2f}'.format(selectivity_Rwt)
         label += ', Lwt=' + '{:.2f}'.format(selectivity_Lwt)
-        selectivity_RL = right_mean / left_mean
-        label += ', RL=' + '{:.2f}'.format(selectivity_RL)
+
 
     elif '\\Delta v / v_{th}' in ylabel:
         all_mean = np.mean(y)
-        label = 'mean =' + '{:.2f}'.format(all_mean)
+        label = 'mean=' + '{:.2f}'.format(all_mean)
     else:
         label = None
 
@@ -87,7 +89,7 @@ def plot_dist(y, ax, ylabel, color='b'):
     # ymin = np.min(y_binned_lower)
     # ymax = np.max(y_binned_upper)
 
-    ax.scatter(theta0, y, color=color, alpha=0.2, label=label)
+    ax.scatter(theta0, y, color=color, alpha=0.1, label=label)
     # ax.scatter(theta_ini, y, color=color, alpha=0.5, label=label)
 
     ymin = np.min(y)
@@ -97,13 +99,14 @@ def plot_dist(y, ax, ylabel, color='b'):
     ax.vlines(180 - theta_LC, ymin, ymax, color='k', linestyle='--')
     # ax.vlines(-theta_LC, ymin, ymax, color='k', linestyle='--')
     if '\\Delta ( v_{\\perp} / v )' in ylabel:
-        ax.hlines(right_LC_mean, 0, theta_LC, color=color, linestyle='-', linewidth=3)
-        ax.hlines(left_LC_mean, 180 - theta_LC, 180, color=color, linestyle='-', linewidth=3)
-        ax.hlines(right_trapped_mean, theta_LC, 90, color=color, linestyle='-', linewidth=3)
-        ax.hlines(left_trapped_mean, 90, 180 - theta_LC, color=color, linestyle='-', linewidth=3)
+        ax.hlines(right_LC_mean, 0, theta_LC, color=color, linestyle='-', linewidth=2)
+        ax.hlines(left_LC_mean, 180 - theta_LC, 180, color=color, linestyle='-', linewidth=2)
+        ax.hlines(right_trapped_mean, theta_LC, 90, color='k', linestyle='-', linewidth=1)
+        ax.hlines(left_trapped_mean, 90, 180 - theta_LC, color='k', linestyle='-', linewidth=1)
     elif '\\Delta v / v_{th}' in ylabel:
-        ax.hlines(all_mean, 0, 180, color=color, linestyle='-', linewidth=3)
-    ax.set_xlabel('$\\theta$ [deg]')
+        ax.hlines(all_mean, 0, 180, color=color, linestyle='-', linewidth=2)
+    # ax.set_xlabel('$\\theta$ [deg]')
+    ax.set_xlabel('$\\theta_0$ [deg]')
     ax.set_ylabel(ylabel)
     # ax.set_title(title)
     if label is not None:
@@ -129,8 +132,8 @@ save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
@@ -175,9 +178,10 @@ beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 # beta = beta_loop_list[ind_beta]
 #
 # alpha = 0.8
+alpha = 0.82
 # alpha = 0.85
 # alpha = 0.86
-alpha = 0.9
+# alpha = 0.9
 # alpha = 0.92
 # alpha = 0.94
 # alpha = 0.95
@@ -200,6 +204,7 @@ alpha = 0.9
 # beta = -0.7
 # beta = -1.0
 # beta = -2.0
+# beta = -2.5
 # beta = -3.0
 # beta = -3.75
 # beta = -4.5
@@ -250,37 +255,46 @@ with open(field_dict_file, 'rb') as fid:
 for key in data_dict.keys():
     data_dict[key] = np.array(data_dict[key])
 
-# normalize_by_tfin = True
-normalize_by_tfin = False
+normalize_by_tfin = True
+# normalize_by_tfin = False
 
 # fig, (axs) = plt.subplots(2, 2, figsize=(10,6))
 # fig, (axs) = plt.subplots(3, 2, figsize=(10, 9))
-fig, (axs) = plt.subplots(3, 2, figsize=(12, 7))
+# fig, (axs) = plt.subplots(3, 2, figsize=(12, 7))
+fig, (axs) = plt.subplots(3, 1, figsize=(16, 9))
 
 # number_of_cell_center_crosses = 1
-number_of_cell_center_crosses = 2
+# number_of_cell_center_crosses = 2
+number_of_cell_center_crosses = 3
 
 # colors = cm.rainbow(np.linspace(0, 1, number_of_cell_center_crosses))
-colors = ['b', 'g', 'r']
+# colors = ['b', 'g', 'r']
+colors = ['r', 'g', 'b']
 
 for ind_cross in range(number_of_cell_center_crosses):
     inds_particles = range(data_dict['t'].shape[0])
     # inds_particles = [0, 1, 2]
     # inds_particles = range(1001)
-    dt = data_dict['t'][inds_particles, ind_cross + 1] - data_dict['t'][inds_particles, ind_cross]
+    if ind_cross == 0:
+        t_ini = data_dict['t'][inds_particles, 0]
+        v0 = data_dict['v'][inds_particles, ind_cross]
+        vz0 = data_dict['v_axial'][inds_particles, ind_cross]
+        vt0 = data_dict['v_transverse'][inds_particles, ind_cross]
+        theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
+
+    # dt = data_dict['t'][inds_particles, ind_cross + 1] - data_dict['t'][inds_particles, ind_cross]
+    dt = data_dict['t'][inds_particles, ind_cross + 1] - t_ini
     z = data_dict['z'][inds_particles, ind_cross + 1]
     v = data_dict['v'][inds_particles, ind_cross + 1]
-    v0 = data_dict['v'][inds_particles, ind_cross]
     vt = data_dict['v_transverse'][inds_particles, ind_cross + 1]
-    vt0 = data_dict['v_transverse'][inds_particles, ind_cross]
     vz = data_dict['v_axial'][inds_particles, ind_cross + 1]
-    vz0 = data_dict['v_axial'][inds_particles, ind_cross]
-    # theta0 = 360 / (2 * np.pi) * np.arcsin(vt0 / v0) * np.sign(vz0)
-    theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
     theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
+
     theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
+
     if ind_cross == 0:
         theta_ini = theta0
+
         inds_right_LC = np.where(theta0 <= theta_LC)[0]
         inds_left_LC = np.where(theta0 >= 180 - theta_LC)[0]
         # print('len inds_right_LC=' + str(len(inds_right_LC)) + ', inds_left_LC=' + str(len(inds_left_LC)))
@@ -303,25 +317,28 @@ for ind_cross in range(number_of_cell_center_crosses):
     # theta_bins = np.append(-np.flip(theta_bins), theta_bins)
     theta_bins = np.arange(theta_bin_width / 2.0, 180, theta_bin_width)
 
-    ax = axs[0, 0]
-    if ind_cross == 0:
-        ax.scatter(vz0 / settings['v_th'], vt0 / settings['v_th'], label=str(ind_cross), alpha=0.3, color='k')
-
     color = colors[ind_cross]
-    ax.scatter(vz / settings['v_th'], vt / settings['v_th'], label=str(ind_cross + 1), alpha=0.3, color=color)
-    ax.set_xlabel('$v_z / v_{th}$')
-    ax.set_ylabel('$v_{\\perp} / v_{th}$')
-    ax.set_title(title)
-    ax.legend()
-    ax.grid(True)
+
+    # ax = axs[0, 0]
+    # if ind_cross == 0:
+    #     ax.scatter(vz0 / settings['v_th'], vt0 / settings['v_th'], label=str(ind_cross), alpha=0.3, color='k')
+    # ax.scatter(vz / settings['v_th'], vt / settings['v_th'], label=str(ind_cross + 1), alpha=0.3, color=color)
+    # ax.set_xlabel('$v_z / v_{th}$')
+    # ax.set_ylabel('$v_{\\perp} / v_{th}$')
+    # ax.set_title(title)
+    # ax.legend()
+    # ax.grid(True)
 
     y = (v - v0) / settings['v_th']
     ylabel = '$\\Delta v / v_{th} $'
     if normalize_by_tfin is True:
         y /= dt / (settings['l'] / settings['v_th'])
         ylabel = '$\\Delta v / v_{th}  / ( \\Delta t v_{th} / l)$'
-    ax = axs[0, 1]
+    # ax = axs[0, 1]
+    ax = axs[0]
     plot_dist(y, ax, ylabel=ylabel, color=color)
+    ax.set_ylim(-0.2, 0.2)
+    ax.set_title(title)
 
     # y = (vt - vt0) / settings['v_th']
     # ylabel = '$\\Delta v_{\\perp} / v_{th}$'
@@ -331,31 +348,35 @@ for ind_cross in range(number_of_cell_center_crosses):
     # ax = axs[1, 0]
     # plot_dist(y, ax, ylabel=ylabel)
 
-    y = theta
-    ylabel = '$\\theta$ [deg]'
-    # if normalize_by_tfin is True:
-    #     y /= dt / (settings['l'] / settings['v_th'])
-    #     ylabel = '$\\theta_{fin} / (\\Delta t v_{th} / l)$'
-    ax = axs[1, 0]
-    plot_dist(y, ax, ylabel=ylabel, color=color)
-    # if normalize_by_tfin is False:
-    ax.hlines(theta_LC, 0, 180, color='k', linestyle='--')
-    ax.hlines(180 - theta_LC, 0, 180, color='k', linestyle='--')
+    # y = theta
+    # ylabel = '$\\theta$ [deg]'
+    # # if normalize_by_tfin is True:
+    # #     y /= dt / (settings['l'] / settings['v_th'])
+    # #     ylabel = '$\\theta_{fin} / (\\Delta t v_{th} / l)$'
+    # ax = axs[1, 0]
+    # plot_dist(y, ax, ylabel=ylabel, color=color)
+    # # if normalize_by_tfin is False:
+    # ax.hlines(theta_LC, 0, 180, color='k', linestyle='--')
+    # ax.hlines(180 - theta_LC, 0, 180, color='k', linestyle='--')
 
     y = (vt / v - vt0 / v0)
     ylabel = '$\\Delta ( v_{\\perp} / v )$'
     if normalize_by_tfin is True:
         y /= dt / (settings['l'] / settings['v_th'])
         ylabel = '$\\Delta ( v_{\\perp} / v ) / (\\Delta t v_{th} / l)$'
-    ax = axs[1, 1]
+    # ax = axs[1, 1]
+    ax = axs[1]
     plot_dist(y, ax, ylabel=ylabel, color=color)
+    ax.set_ylim(-0.2, 0.2)
 
-    ax = axs[2, 0]
+    # ax = axs[2, 0]
+    ax = axs[2]
     y = z / settings['l']
     plot_dist(y, ax, ylabel='$z_{fin}/l$', color=color)
 
-    ax = axs[2, 1]
-    y = dt / (settings['l'] / settings['v_th'])
-    plot_dist(y, ax, ylabel='$\\Delta t v_{th} / l$', color=color)
+    # ax = axs[2, 1]
+    # y = dt / (settings['l'] / settings['v_th'])
+    # plot_dist(y, ax, ylabel='$\\Delta t v_{th} / l$', color=color)
 
-plt.tight_layout()
+fig.set_tight_layout(0.5)
+# plt.tight_layout()

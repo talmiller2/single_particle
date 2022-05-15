@@ -80,12 +80,13 @@ for vz_over_vth in vz_over_vth_list:
                                          * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']]
 
 delta_v = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-selectivity_LC = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+selectivity_RL_LC = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+selectivity_RL_trapped = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+selectivity_RL_tot = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 # right_LC_trapping_metric = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 # left_LC_trapping_metric = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 selectivity_Rwt = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 selectivity_Lwt = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-selectivity_RL = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 
 
 def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, ax=None, color='b', linewidth=2):
@@ -139,13 +140,15 @@ for ind_beta, beta in enumerate(beta_loop_list):
         for key in data_dict.keys():
             data_dict[key] = np.array(data_dict[key])
 
-        dt = data_dict['t'][:, 1] - data_dict['t'][:, 0]
-        z = data_dict['z'][:, 1]
-        v = data_dict['v'][:, 1]
+        ind_fin = 1
+        # ind_fin = 2
+        dt = data_dict['t'][:, ind_fin] - data_dict['t'][:, 0]
+        z = data_dict['z'][:, ind_fin]
+        v = data_dict['v'][:, ind_fin]
         v0 = data_dict['v'][:, 0]
-        vt = data_dict['v_transverse'][:, 1]
+        vt = data_dict['v_transverse'][:, ind_fin]
         vt0 = data_dict['v_transverse'][:, 0]
-        vz = data_dict['v_axial'][:, 1]
+        vz = data_dict['v_axial'][:, ind_fin]
         vz0 = data_dict['v_axial'][:, 0]
         # theta0 = 360 / (2 * np.pi) * np.arcsin(vt0 / v0) * np.sign(vz0)
         theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
@@ -178,7 +181,7 @@ for ind_beta, beta in enumerate(beta_loop_list):
         ylabel_delta_v = '$\\Delta v / v_{th} $'
         if normalize_by_tfin is True:
             y /= dt / (settings['l'] / settings['v_th'])
-            ylabel_delta_v = '$\\Delta v / v_{th}  / (t_{fin} v_{th} / l)$'
+            ylabel_delta_v = '$\\Delta v / v_{th}  / ( \\Delta t v_{th} / l)$'
         # ylabel_delta_v = 'median of ' + ylabel_delta_v
         # delta_v[ind_beta, ind_alpha] = np.percentile(y, 50)
         ylabel_delta_v = 'mean of ' + ylabel_delta_v
@@ -188,11 +191,12 @@ for ind_beta, beta in enumerate(beta_loop_list):
         ylabel_selectivity_trapping_metric = '$\\Delta ( v_{\\perp} / v )$'
         if normalize_by_tfin is True:
             y /= dt / (settings['l'] / settings['v_th'])
-            ylabel_selectivity_trapping_metric = '$\\Delta ( v_{\\perp} / v ) / (t_{fin} v_{th} / l)$'
-        ylabel_selectivity_LC = 'mean rightLC / leftLC of ' + ylabel_selectivity_trapping_metric
+            ylabel_selectivity_trapping_metric = '$\\Delta ( v_{\\perp} / v ) / (\\Delta t v_{th} / l)$'
+        ylabel_selectivity_RL_LC = 'mean rightLC / leftLC of ' + ylabel_selectivity_trapping_metric
+        ylabel_selectivity_RL_trapped = 'mean right-trapped / left-trapped of ' + ylabel_selectivity_trapping_metric
+        ylabel_selectivity_RL_tot = 'mean right / left of ' + ylabel_selectivity_trapping_metric
         ylabel_selectivity_Rwt = 'weighted mean rightLC / right-trapped of ' + ylabel_selectivity_trapping_metric
         ylabel_selectivity_Lwt = 'weighted mean leftLC / left-trapped of ' + ylabel_selectivity_trapping_metric
-        ylabel_selectivity_RL = 'mean right / left of ' + ylabel_selectivity_trapping_metric
 
         right_LC_mean = np.mean(y[inds_right_LC])
         left_LC_mean = np.mean(y[inds_left_LC])
@@ -200,38 +204,40 @@ for ind_beta, beta in enumerate(beta_loop_list):
         left_trapped_mean = np.mean(y[inds_left_trapped])
         right_mean = np.mean(y[inds_right])
         left_mean = np.mean(y[inds_left])
-        selectivity_LC[ind_beta, ind_alpha] = right_LC_mean / left_LC_mean
-        selectivity_Rwt[ind_beta, ind_alpha] = right_LC_mean * len(inds_right_LC) / (
-                    right_trapped_mean * len(inds_right_trapped))
-        selectivity_Lwt[ind_beta, ind_alpha] = left_LC_mean * len(inds_left_LC) / (
-                    left_trapped_mean * len(inds_left_trapped))
-        selectivity_RL[ind_beta, ind_alpha] = right_mean / left_mean
+        selectivity_RL_LC[ind_beta, ind_alpha] = right_LC_mean / left_LC_mean
+        selectivity_RL_trapped[ind_beta, ind_alpha] = right_trapped_mean / left_trapped_mean
+        selectivity_RL_tot[ind_beta, ind_alpha] = right_mean / left_mean
+        selectivity_Rwt[ind_beta, ind_alpha] = right_LC_mean * len(inds_right_LC) \
+                                               / (right_trapped_mean * len(inds_right_trapped))
+        selectivity_Lwt[ind_beta, ind_alpha] = left_LC_mean * len(inds_left_LC) \
+                                               / (left_trapped_mean * len(inds_left_trapped))
 
         # except:
         #     print('failed on ' + set_name)
 
 ### PLOTS
 
+# annot = False
+annot = True
+
 # fig, (axs) = plt.subplots(2, 2, figsize=(16, 10))
 # fig, (axs) = plt.subplots(2, 3, figsize=(12, 8))
-fig, (axs) = plt.subplots(2, 3, figsize=(16, 9))
-annot_fontsize = 8
+fig, (axs) = plt.subplots(2, 3, figsize=(18, 9))
+annot_fontsize = 6
+annot_fmt = '.1f'
 
 ax = axs[0, 0]
 # plt.figure(1)
 # plt.subplot(fignum=1)
-log_delta_v = np.log(delta_v)
-# vmin = 0
-vmin = np.min(log_delta_v)
-# vmax = np.nanmax(delta_v)
-vmax = np.max(log_delta_v)
-# vmax = 0.1
-# vmax = 0.05
-# vmax = 5
-sns.heatmap(log_delta_v.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+# log_delta_v = np.log(delta_v)
+# y = log_delta_v
+y = delta_v
+vmin = np.min(y)
+vmax = np.max(y)
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
-            # annot=True,
-            # annot_kws={"fontsize": annot_fontsize},
+            # annot=annot,
+            # annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
             ax=ax,
             )
 ax.axes.invert_yaxis()
@@ -242,8 +248,8 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
                          linewidth=2)
 ax.set_xlabel('$\\beta$')
 ax.set_ylabel('$\\alpha$')
-# ax.set_title(ylabel_delta_v)
-ax.set_title('log of ' + ylabel_delta_v)
+ax.set_title(ylabel_delta_v)
+# ax.set_title('log of ' + ylabel_delta_v)
 # plt.tight_layout(pad=0.5)
 
 
@@ -251,16 +257,11 @@ ax.set_title('log of ' + ylabel_delta_v)
 ax = axs[0, 1]
 # fig, ax = plt.subplots(figsize=(8, 8))
 vmin = 0
-# vmax = np.max(selectivity_LC)
-# vmax = 3
-# vmax = 5
-# vmax = 10
 vmax = 30
-# vmax = 15
-sns.heatmap(selectivity_LC.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+sns.heatmap(selectivity_RL_LC.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
-            # annot=True,
-            annot_kws={"fontsize": annot_fontsize},
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
             ax=ax,
             )
 ax.axes.invert_yaxis()
@@ -271,61 +272,16 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
                          linewidth=2)
 ax.set_xlabel('$\\beta$')
 ax.set_ylabel('$\\alpha$')
-ax.set_title(ylabel_selectivity_LC)
-
-#
-# # plt.figure(3)
-# ax = axs[1, 0]
-# vmin = 0
-# # vmax = np.max(right_LC_trapping_metric)
-# # vmax = 5
-# vmax = 0.5
-# # vmax = 1
-# sns.heatmap(right_LC_trapping_metric.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-#             vmin=vmin, vmax=vmax,
-#             # annot=True,
-#             # annot_kws={"fontsize": annot_fontsize},
-#             ax=ax,
-#             )
-# ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
-#                          linewidth=2)
-# ax.set_xlabel('$\\beta$')
-# ax.set_ylabel('$\\alpha$')
-# ax.set_title(ylabel_right_LC_trapping_metric)
-# # plt.tight_layout(pad=0.5)
-
-
-# # plt.figure(4)
-# ax = axs[1, 1]
-# vmin = 0
-# # vmax = np.max(left_LC_trapping_metric)
-# # vmax = 5
-# vmax = 0.5
-# # vmax = 1
-# sns.heatmap(left_LC_trapping_metric.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-#             vmin=vmin, vmax=vmax,
-#             # annot=True,
-#             # annot_kws={"fontsize": annot_fontsize},
-#             ax=ax,
-#             )
-# ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-#                          linewidth=2)
-# ax.set_xlabel('$\\beta$')
-# ax.set_ylabel('$\\alpha$')
-# ax.set_title(ylabel_left_LC_trapping_metric)
+ax.set_title(ylabel_selectivity_RL_LC)
 
 
 ax = axs[1, 0]
 vmin = 0
-vmax = 30
+vmax = 10
 sns.heatmap(selectivity_Rwt.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
-            # annot=True,
-            annot_kws={"fontsize": annot_fontsize},
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
             ax=ax,
             )
 ax.axes.invert_yaxis()
@@ -339,12 +295,13 @@ ax.set_ylabel('$\\alpha$')
 ax.set_title(ylabel_selectivity_Rwt)
 
 ax = axs[1, 1]
+# vmin = -1
 vmin = 0
-vmax = 30
+vmax = 1
 sns.heatmap(selectivity_Lwt.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
-            # annot=True,
-            annot_kws={"fontsize": annot_fontsize},
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
             ax=ax,
             )
 ax.axes.invert_yaxis()
@@ -359,11 +316,11 @@ ax.set_title(ylabel_selectivity_Lwt)
 
 ax = axs[0, 2]
 vmin = 0
-vmax = 30
-sns.heatmap(selectivity_RL.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+vmax = 10
+sns.heatmap(selectivity_RL_tot.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
-            # annot=True,
-            annot_kws={"fontsize": annot_fontsize},
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
             ax=ax,
             )
 ax.axes.invert_yaxis()
@@ -374,7 +331,26 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
                          linewidth=2)
 ax.set_xlabel('$\\beta$')
 ax.set_ylabel('$\\alpha$')
-ax.set_title(ylabel_selectivity_RL)
+ax.set_title(ylabel_selectivity_RL_tot)
+
+ax = axs[1, 2]
+vmin = 0
+vmax = 2
+sns.heatmap(selectivity_RL_trapped.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            )
+ax.axes.invert_yaxis()
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
+                         linewidth=2)
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+                         linewidth=2)
+ax.set_xlabel('$\\beta$')
+ax.set_ylabel('$\\alpha$')
+ax.set_title(ylabel_selectivity_RL_trapped)
 
 fig.set_tight_layout(0.5)
 # plt.tight_layout(pad=0.5)
