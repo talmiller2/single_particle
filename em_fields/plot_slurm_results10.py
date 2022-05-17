@@ -89,7 +89,7 @@ def plot_dist(y, ax, ylabel, color='b'):
     # ymin = np.min(y_binned_lower)
     # ymax = np.max(y_binned_upper)
 
-    ax.scatter(theta0, y, color=color, alpha=0.1, label=label)
+    ax.scatter(theta0, y, color=color, alpha=0.3, label=label)
     # ax.scatter(theta_ini, y, color=color, alpha=0.5, label=label)
 
     ymin = np.min(y)
