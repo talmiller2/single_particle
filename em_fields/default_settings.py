@@ -49,12 +49,12 @@ def define_default_settings(settings=None):
         # settings['trajectory_save_method'] = 'min_Bz'
         # settings['trajectory_save_method'] = 'min_Bz_mirror_const_vz_sign'
     if 'stop_criterion' not in settings:
-        # settings['stop_criterion'] = 'steps'
+        settings['stop_criterion'] = 'steps'
         # settings['stop_criterion'] = 'time'
-        settings['stop_criterion'] = 'first_cell_center_crossing'
+        # settings['stop_criterion'] = 'first_cell_center_crossing'
         # settings['stop_criterion'] = 'several_cell_center_crossing'
-    if 'number_of_cell_center_crosses' not in settings:
-        settings['number_of_cell_center_crosses'] = 1
+    if 'number_of_time_intervals' not in settings:
+        settings['number_of_time_intervals'] = 1
     if 'num_snapshots' not in settings:
         settings['num_snapshots'] = 300
     if 'set_save_format' not in settings:

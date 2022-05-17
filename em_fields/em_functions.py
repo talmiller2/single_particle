@@ -34,7 +34,10 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     """
     Advance a charged particle in time under the influence of E,B fields.
     """
-    if stop_criterion == 'time':
+    if stop_criterion == 'steps':
+        # num_steps is given as input in this case
+        pass
+    elif stop_criterion == 'time':
         num_steps = t_max / dt
     elif stop_criterion == 'first_cell_center_crossing':
         num_steps = int(1e15)  # picking an "infinite" number

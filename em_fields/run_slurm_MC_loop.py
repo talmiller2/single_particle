@@ -108,10 +108,12 @@ for beta_loop in beta_loop_list:
 
         # define settings
         settings = {}
+
         settings['trajectory_save_method'] = 'intervals'
+        settings['stop_criterion'] = 'steps'
         # settings['stop_criterion'] = 'first_cell_center_crossing'
         # settings['stop_criterion'] = 'several_cell_center_crossing'
-        # settings['number_of_cell_center_crosses'] = 3
+        # settings['number_of_time_intervals'] = 3
 
         # settings['l'] = 1.0  # m (MM cell size)
         settings['l'] = 3.0  # m (MM cell size)

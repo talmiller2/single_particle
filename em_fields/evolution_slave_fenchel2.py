@@ -62,19 +62,19 @@ for ind_point in settings['points_set']:
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         num_steps=num_steps, q=settings['q'], m=settings['mi'],
                                         field_dict=field_dict, stop_criterion=settings['stop_criterion'],
-                                        number_of_cell_center_crosses=settings['number_of_cell_center_crosses'])
+                                        number_of_cell_center_crosses=settings['number_of_time_intervals'])
 
     # save snapshots of key simulation metrics
-    if settings['stop_criterion'] == 'first_cell_center_crossing':
+    if settings['trajectory_save_method'] == 'intervals':
+        inds_samples = range(0, num_steps + 1, int(1.0 * num_steps / settings['num_snapshots']))
+
+    elif settings['stop_criterion'] == 'first_cell_center_crossing':
         # extract the first and last states of the evolution
         inds_samples = [0, len(hist['t']) - 1]
 
     elif settings['stop_criterion'] == 'several_cell_center_crossing':
         # extract several cell center crossings
         inds_samples = hist['inds_cell_center_crossing']
-
-    elif settings['trajectory_save_method'] == 'intervals':
-        inds_samples = range(0, num_steps, int(num_steps / settings['num_snapshots']))
 
     elif settings['trajectory_save_method'] == 'min_Bz':
         Bz = hist['B'][:, 2]
