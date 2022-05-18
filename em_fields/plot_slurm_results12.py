@@ -5,83 +5,20 @@ import warnings
 warnings.filterwarnings("error")
 
 import numpy as np
+import copy
 
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # plt.rcParams.update({'font.size': 12})
 plt.rcParams.update({'font.size': 10})
-
-
 # plt.rcParams["figure.facecolor"] = 'white'
 # plt.rcParams["axes.facecolor"] = 'green'
 
-
-def plot_dist(y, ax, ylabel, color='b'):
-    """
-    Plot a subplot with the distribution of final state metric relative to initial angle
-    """
-
-    if 'z' in ylabel:
-        label = '%(z/l>1)=' + '{:.2f}'.format(100.0 * len(np.where(y > 1)[0]) / len(y))
-        label += ', %(z/l<0)=' + '{:.2f}'.format(100.0 * len(np.where(y < 0)[0]) / len(y))
-    elif '\\Delta ( v_{\\perp} / v )' in ylabel:
-        ### define selectivity
-        right_LC_mean = np.mean(y[inds_right_LC])
-        left_LC_mean = np.mean(y[inds_left_LC])
-        right_trapped_mean = np.mean(y[inds_right_trapped])
-        left_trapped_mean = np.mean(y[inds_left_trapped])
-        right_mean = np.mean(y[inds_right])
-        left_mean = np.mean(y[inds_left])
-        selectivity_LC = right_LC_mean / left_LC_mean
-        label = 'selectivity metrics: '
-        label += 'RL(LC)=' + '{:.2f}'.format(selectivity_LC)
-        selectivity_RL = right_mean / left_mean
-        label += ', RL(tot)=' + '{:.2f}'.format(selectivity_RL)
-        selectivity_Rwt = right_LC_mean * len(inds_right_LC) / (right_trapped_mean * len(inds_right_trapped))
-        selectivity_Lwt = left_LC_mean * len(inds_left_LC) / (left_trapped_mean * len(inds_left_trapped))
-        label += ', Rwt=' + '{:.2f}'.format(selectivity_Rwt)
-        label += ', Lwt=' + '{:.2f}'.format(selectivity_Lwt)
-
-
-    elif '\\Delta v / v_{th}' in ylabel:
-        all_mean = np.mean(y)
-        label = 'mean=' + '{:.2f}'.format(all_mean)
-    else:
-        label = None
-
-    ax.scatter(theta0, y, color=color, alpha=0.3, label=label)
-    # ax.scatter(theta_ini, y, color=color, alpha=0.5, label=label)
-
-    ymin = np.min(y)
-    ymax = np.max(y)
-
-    ax.vlines(theta_LC, ymin, ymax, color='k', linestyle='--')
-    ax.vlines(180 - theta_LC, ymin, ymax, color='k', linestyle='--')
-    # ax.vlines(-theta_LC, ymin, ymax, color='k', linestyle='--')
-    if '\\Delta ( v_{\\perp} / v )' in ylabel:
-        ax.hlines(right_LC_mean, 0, theta_LC, color=color, linestyle='-', linewidth=2)
-        ax.hlines(left_LC_mean, 180 - theta_LC, 180, color=color, linestyle='-', linewidth=2)
-        ax.hlines(right_trapped_mean, theta_LC, 90, color='k', linestyle='-', linewidth=1)
-        ax.hlines(left_trapped_mean, 90, 180 - theta_LC, color='k', linestyle='-', linewidth=1)
-    elif '\\Delta v / v_{th}' in ylabel:
-        ax.hlines(all_mean, 0, 180, color=color, linestyle='-', linewidth=2)
-    # ax.set_xlabel('$\\theta$ [deg]')
-    ax.set_xlabel('$\\theta_0$ [deg]')
-    ax.set_ylabel(ylabel)
-    # ax.set_title(title)
-    if label is not None:
-        ax.legend()
-    ax.grid(True)
-
-    # y_binned_stats = scipy.stats.binned_statistic(theta0, y, statistic='mean', bins=theta_bins)
-    # y_std_binned_stats = scipy.stats.binned_statistic(theta0, y, statistic='std', bins=theta_bins)
-    # plt.errorbar(theta_bins, y_binned_stats, yerr=y_std_binned_stats, label='stats', color='r')
-
-    return
 
 
 plt.close('all')
@@ -101,13 +38,13 @@ E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
-# use_RF = True
-use_RF = False
-
+use_RF = True
+# use_RF = False
+#
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 r_0 = 0
@@ -146,12 +83,12 @@ beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 # beta = beta_loop_list[ind_beta]
 #
 # alpha = 0.8
-alpha = 0.82
+# alpha = 0.82
 # alpha = 0.85
 # alpha = 0.86
 # alpha = 0.9
 # alpha = 0.92
-# alpha = 0.94
+alpha = 0.94
 # alpha = 0.95
 # alpha = 0.97
 # alpha = 0.98
@@ -176,9 +113,9 @@ alpha = 0.82
 # beta = -3.0
 # beta = -3.75
 # beta = -4.5
-# beta = -5.0
+beta = -5.0
 # beta = -7.5
-beta = -8.0
+# beta = -8.0
 # beta = -9.0
 # beta = -10.0
 # beta = 0.5
@@ -223,130 +160,167 @@ with open(field_dict_file, 'rb') as fid:
 for key in data_dict.keys():
     data_dict[key] = np.array(data_dict[key])
 
-normalize_by_tfin = True
-# normalize_by_tfin = False
+# normalize_by_tfin = True
+normalize_by_tfin = False
 
 # fig, (axs) = plt.subplots(2, 2, figsize=(10,6))
 # fig, (axs) = plt.subplots(3, 2, figsize=(10, 9))
 # fig, (axs) = plt.subplots(3, 2, figsize=(12, 7))
-fig, (axs) = plt.subplots(3, 1, figsize=(16, 9))
+# fig, (axs) = plt.subplots(3, 1, figsize=(16, 9))
+fig1, ax1 = plt.subplots(1, 1)
 
-number_of_time_intervals = 3
-# number_of_time_intervals = data_dict['t'].shape[1]
+# divide the phase space by the angle
+# TODO: later make a better division where the LC doesnt cross in the middle of each bin, by definition
 
-# TODO: split the populatin into several pieces to calculate how the number in each bin changes with time
+# N_theta = 3
+# N_theta = 6
+N_theta = 9
+dtheta = 180.0 / N_theta
+theta_bins_max_list = np.linspace(dtheta, 180.0, N_theta)
+theta_bins_min_list = np.linspace(0, 180.0 - dtheta, N_theta)
+# fig, axs = plt.subplots(2, 3, figsize=(16, 9))
+fig, axs = plt.subplots(3, 3, figsize=(13, 7))
+# fig, axs = plt.subplots(2, 3, figsize=(13, 7))
+# fig, axs = plt.subplots(1, 3, figsize=(13, 7))
 
 
-# colors = cm.rainbow(np.linspace(0, 1, number_of_time_intervals))
+# number_of_time_intervals = 3
+number_of_time_intervals = data_dict['t'].shape[1]
+
+# densities_dict = {}
+# for i in range(N_theta):
+#     densities_dict[i] = []
+
+particles_counter_mat_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
+
+from matplotlib import cm
+
+colors = cm.rainbow(np.linspace(0, 1, number_of_time_intervals))
 # colors = ['b', 'g', 'r']
-colors = ['r', 'g', 'b']
+# colors = ['r', 'g', 'b']
 
 for ind_t in range(number_of_time_intervals):
+    # for ind_t in [0, 10]:
+    # for ind_t in [0, 1]:
+    #     print(ind_t)
+
     inds_particles = range(data_dict['t'].shape[0])
     # inds_particles = [0, 1, 2]
     # inds_particles = range(1001)
 
-    t_ini = data_dict['t'][inds_particles, 0]
-    v0 = data_dict['v'][inds_particles, ind_t]
-    vz0 = data_dict['v_axial'][inds_particles, ind_t]
-    vt0 = data_dict['v_transverse'][inds_particles, ind_t]
-    theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
-
-    # dt = data_dict['t'][inds_particles, ind_t + 1] - data_dict['t'][inds_particles, ind_t]
-    dt = data_dict['t'][inds_particles, ind_t + 1] - t_ini
-    z = data_dict['z'][inds_particles, ind_t + 1]
-    v = data_dict['v'][inds_particles, ind_t + 1]
-    vt = data_dict['v_transverse'][inds_particles, ind_t + 1]
-    vz = data_dict['v_axial'][inds_particles, ind_t + 1]
+    v = data_dict['v'][inds_particles, ind_t]
+    v0 = data_dict['v'][inds_particles, 0]
+    vt = data_dict['v_transverse'][inds_particles, ind_t]
+    vt0 = data_dict['v_transverse'][inds_particles, 0]
+    vz = data_dict['v_axial'][inds_particles, ind_t]
+    vz0 = data_dict['v_axial'][inds_particles, 0]
     theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
-
     theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
+    Bz = data_dict['Bz'][inds_particles, ind_t]
+    Bz0 = data_dict['Bz'][inds_particles, 0]
+    vt_adjusted = vt * np.sqrt(Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
 
-    theta_ini = theta0
+    # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt0 ** 2.0 * (Bz / Bz0 - 1))
+    # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz))
+    # theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
 
-    inds_right_LC = np.where(theta0 <= theta_LC)[0]
-    inds_left_LC = np.where(theta0 >= 180 - theta_LC)[0]
-    # print('len inds_right_LC=' + str(len(inds_right_LC)) + ', inds_left_LC=' + str(len(inds_left_LC)))
-    # inds_right_half_LC = np.where(theta0 <= theta_LC / 2.0)[0]
-    # inds_left_half_LC = np.where(theta0 >= 180 - theta_LC / 2.0)[0]
-    # print('len inds_right_half_LC=' + str(len(inds_right_half_LC)) + ', inds_left_half_LC=' + str(len(inds_left_half_LC)))
-    inds_right_trapped = [i for i, t in enumerate(theta0) if t > theta_LC and t < 90]
-    inds_left_trapped = [i for i, t in enumerate(theta0) if t > 90 and t < 180 - theta_LC]
-    inds_right = [i for i, t in enumerate(theta0) if t < 90]
-    inds_left = [i for i, t in enumerate(theta0) if t > 90 and t < 180]
+    det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
+    inds_positive = np.where(det > 0)[0]
+    vz_adjusted = np.zeros(len(inds_particles))
+    vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
+    # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive])
 
-    # theta_bins = np.linspace(-90, 90, 31)
-    # theta_bins = np.linspace(-90, 90, 31) + 180 / 30.0
-    # theta_bin_width = theta_bins[1] - theta_bins[0]
-    # theta_bin_width = 3
-    # theta_bin_width = 5
-    theta_bin_width = 10
-    # theta_bins = np.arange(-90, 90, theta_bin_width)
-    # theta_bins = np.delete(theta_bins, np.where(theta_bins == 0))
-    # theta_bins = np.arange(theta_bin_width / 2.0, 90, theta_bin_width)
-    # theta_bins = np.append(-np.flip(theta_bins), theta_bins)
-    theta_bins = np.arange(theta_bin_width / 2.0, 180, theta_bin_width)
+    theta_adjusted = 90.0 * np.ones(len(inds_particles))
+    theta_adjusted[inds_positive] = np.mod(
+        360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
+
+    # v_adjusted = np.sqrt(vt_adjusted ** 2.0 + vz_adjusted ** 2.0)
+
+    # print('mean of vt_adjusted / vt0 = ' + str(np.mean(vt_adjusted) / np.mean(vt0)))
+    # print('mean of vz_adjusted / vz0 = ' + str(np.mean(vz_adjusted) / np.mean(vz0)))
+    # print('mean of v / vadj = ' + str(np.mean(v_adjusted) / np.mean(v)))
+    # print('mean of v / v0 = ' + str(np.mean(v) / np.mean(v0)))
+
+    # print('mean of vt_adjusted / vt0 = ' + str(np.mean(vt_adjusted / vt0)))
+    # print('mean of vz_adjusted / vz0 = ' + str(np.mean(vz_adjusted / vz0)))
+    # print('mean of v / vadj = ' + str(np.mean(v_adjusted / v)))
+    # print('mean of v / v0 = ' + str(np.mean(v / v0)))
 
     color = colors[ind_t]
+    # label = str(ind_t)
+    label = '$t \\cdot v_{th} / l$=' + '{:.1f}'.format(data_dict['t'][0, ind_t] / (settings['l'] / settings['v_th']))
+    ax1.scatter(vz_adjusted / settings['v_th'], vt_adjusted / settings['v_th'], color=color, alpha=0.2, label=label)
+    if ind_t == 0:
+        # plot the diagonal LC lines
+        vz_axis = np.array([0, 2 * settings['v_th']])
+        vt_axis = vz_axis * np.sqrt(1 / (field_dict['Rm'] - 1))
+        ax1.plot(vz_axis / settings['v_th'], vt_axis / settings['v_th'], color='k', linestyle='--')
+        ax1.plot(-vz_axis / settings['v_th'], vt_axis / settings['v_th'], color='k', linestyle='--')
+    ax1.set_xlabel('$v_z / v_{th}$')
+    ax1.set_ylabel('$v_{\\perp} / v_{th}$')
+    ax1.legend()
+    ax1.grid(True)
 
-    # ax = axs[0, 0]
-    # if ind_t == 0:
-    #     ax.scatter(vz0 / settings['v_th'], vt0 / settings['v_th'], label=str(ind_t), alpha=0.3, color='k')
-    # ax.scatter(vz / settings['v_th'], vt / settings['v_th'], label=str(ind_t + 1), alpha=0.3, color=color)
-    # ax.set_xlabel('$v_z / v_{th}$')
-    # ax.set_ylabel('$v_{\\perp} / v_{th}$')
-    # ax.set_title(title)
-    # ax.legend()
-    # ax.grid(True)
+    # track where each particle originated
+    if ind_t == 0:
+        inds_bins_ini = []
+        for ind_p in inds_particles:
+            theta_curr = theta_adjusted[ind_p]
+            ind_bin = [k for k, (t1, t2) in enumerate(zip(theta_bins_min_list, theta_bins_max_list))
+                       if theta_curr > t1 and theta_curr <= t2][0]
+            inds_bins_ini += [ind_bin]
 
-    y = (v - v0) / settings['v_th']
-    ylabel = '$\\Delta v / v_{th} $'
-    if normalize_by_tfin is True:
-        y /= dt / (settings['l'] / settings['v_th'])
-        ylabel = '$\\Delta v / v_{th}  / ( \\Delta t v_{th} / l)$'
-    # ax = axs[0, 1]
-    ax = axs[0]
-    plot_dist(y, ax, ylabel=ylabel, color=color)
-    ax.set_ylim(-0.2, 0.2)
-    ax.set_title(title)
+    # track where each particle travelled in time t
+    particles_counter_mat = np.zeros([N_theta, N_theta])
+    for ind_p in inds_particles:
+        theta_curr = theta_adjusted[ind_p]
+        ind_bin_fin = [k for k, (t1, t2) in enumerate(zip(theta_bins_min_list, theta_bins_max_list))
+                       if theta_curr > t1 and theta_curr <= t2][0]
+        ind_bin_ini = inds_bins_ini[ind_p]
+        particles_counter_mat[ind_bin_ini, ind_bin_fin] += 1
 
-    # y = (vt - vt0) / settings['v_th']
-    # ylabel = '$\\Delta v_{\\perp} / v_{th}$'
-    # if normalize_by_tfin is True:
-    #     y /= dt / (settings['l'] / settings['v_th'])
-    #     ylabel = '$\\Delta v_{\\perp} / v_{th} / (\\Delta t v_{th} / l)$'
-    # ax = axs[1, 0]
-    # plot_dist(y, ax, ylabel=ylabel)
+    if ind_t == 0:
+        N0 = copy.deepcopy(np.diag(particles_counter_mat))
+        # print(N0)
 
-    # y = theta
-    # ylabel = '$\\theta$ [deg]'
-    # # if normalize_by_tfin is True:
-    # #     y /= dt / (settings['l'] / settings['v_th'])
-    # #     ylabel = '$\\theta_{fin} / (\\Delta t v_{th} / l)$'
-    # ax = axs[1, 0]
-    # plot_dist(y, ax, ylabel=ylabel, color=color)
-    # # if normalize_by_tfin is False:
-    # ax.hlines(theta_LC, 0, 180, color='k', linestyle='--')
-    # ax.hlines(180 - theta_LC, 0, 180, color='k', linestyle='--')
+    # divide all densities by the parent initial density
+    for i in range(N_theta):
+        particles_counter_mat[i, :] /= (1.0 * N0[i])
 
-    y = (vt / v - vt0 / v0)
-    ylabel = '$\\Delta ( v_{\\perp} / v )$'
-    if normalize_by_tfin is True:
-        y /= dt / (settings['l'] / settings['v_th'])
-        ylabel = '$\\Delta ( v_{\\perp} / v ) / (\\Delta t v_{th} / l)$'
-    # ax = axs[1, 1]
-    ax = axs[1]
-    plot_dist(y, ax, ylabel=ylabel, color=color)
-    ax.set_ylim(-0.2, 0.2)
+    # print(particles_counter_mat)
 
-    # ax = axs[2, 0]
-    ax = axs[2]
-    y = z / settings['l']
-    plot_dist(y, ax, ylabel='$z_{fin}/l$', color=color)
+    particles_counter_mat_3d[:, :, ind_t] = particles_counter_mat
 
-    # ax = axs[2, 1]
-    # y = dt / (settings['l'] / settings['v_th'])
-    # plot_dist(y, ax, ylabel='$\\Delta t v_{th} / l$', color=color)
+    # for i in range(N_theta):
+    #     densities_dict[i] += [len(inds_theta_bins[i])]
 
+t_array = data_dict['t'][0]
+t_array /= settings['l'] / settings['v_th']
+
+# for i in range(N_theta):
+#     densities_dict[i] = np.array(densities_dict[i])
+#     densities_dict[i] = densities_dict[i] / (1.0 * densities_dict[i][0])
+
+
+colors = cm.rainbow(np.linspace(0, 1, N_theta))
+for i, ax in enumerate(axs.ravel()):
+    for j in range(N_theta):
+        ax.plot(t_array, particles_counter_mat_3d[i, j, :], color=colors[j])
+    ax.set_title('bin #' + str(i + 1))
+    # ax.set_xlabel('$t * v_{th} / l$')
 fig.set_tight_layout(0.5)
-# plt.tight_layout()
+
+## plot a heat map of all the rates
+ind_t = 1
+rates_mat = (particles_counter_mat_3d[:, :, ind_t] - particles_counter_mat_3d[:, :, 0]) / t_array[ind_t]
+rates_mat = abs(rates_mat)
+fig3, ax3 = plt.subplots(figsize=(7, 6))
+sns.heatmap(rates_mat.T,
+            # xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+            # vmin=vmin, vmax=vmax,
+            # annot=annot,
+            # annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax3,
+            )
+ax.set_xlabel('bin ini')
+ax.set_ylabel('bin fin')
