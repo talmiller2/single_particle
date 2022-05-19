@@ -75,16 +75,17 @@ beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
+# B_RF = 0.02  # T
 B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
@@ -162,7 +163,8 @@ for beta_loop in beta_loop_list:
         # settings['num_snapshots'] = 200
         # settings['num_snapshots'] = 300
 
-        tmax_mirror_lengths = 0.4
+        tmax_mirror_lengths = 0.2
+        # tmax_mirror_lengths = 0.4
         # tmax_mirror_lengths = 1
         # tmax_mirror_lengths = 3
         # tmax_mirror_lengths = 5
@@ -203,8 +205,8 @@ for beta_loop in beta_loop_list:
         # total_number_of_points = 400
         # total_number_of_points = 1000
         # total_number_of_points = 2000
-        total_number_of_points = 3000
-        # total_number_of_points = 5000
+        # total_number_of_points = 3000
+        total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
