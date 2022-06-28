@@ -40,8 +40,8 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
-# E_RF_kVm = 100  # kV/m
+# E_RF_kVm = 50  # kV/m
+E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
 B_RF = 0.05  # T
@@ -221,8 +221,8 @@ for ind_beta, beta in enumerate(beta_loop_list):
 annot = True
 
 # fig, (axs) = plt.subplots(2, 2, figsize=(16, 10))
-# fig, (axs) = plt.subplots(2, 3, figsize=(12, 8))
-fig, (axs) = plt.subplots(2, 3, figsize=(18, 9))
+fig, (axs) = plt.subplots(2, 3, figsize=(12, 8))
+# fig, (axs) = plt.subplots(2, 3, figsize=(18, 9))
 annot_fontsize = 6
 annot_fmt = '.1f'
 

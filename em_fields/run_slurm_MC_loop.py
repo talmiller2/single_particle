@@ -46,7 +46,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
+save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 
 plt.close('all')
 
@@ -80,8 +81,9 @@ E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
+B_RF = 0.01  # T
 # B_RF = 0.02  # T
-B_RF = 0.05  # T
+# B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 # use_RF = True
@@ -116,8 +118,8 @@ for beta_loop in beta_loop_list:
         # settings['stop_criterion'] = 'several_cell_center_crossing'
         # settings['number_of_time_intervals'] = 3
 
-        # settings['l'] = 1.0  # m (MM cell size)
-        settings['l'] = 3.0  # m (MM cell size)
+        settings['l'] = 1.0  # m (MM cell size)
+        # settings['l'] = 3.0  # m (MM cell size)
         # settings['l'] = 10.0  # m (MM cell size)
 
         # settings['absolute_velocity_sampling_type'] = 'const_vth'
@@ -157,15 +159,15 @@ for beta_loop in beta_loop_list:
 
         # simulation duration
         # settings['num_snapshots'] = 10
-        settings['num_snapshots'] = 20
-        # settings['num_snapshots'] = 30
+        # settings['num_snapshots'] = 20
+        settings['num_snapshots'] = 30
         # settings['num_snapshots'] = 50
         # settings['num_snapshots'] = 200
         # settings['num_snapshots'] = 300
 
-        tmax_mirror_lengths = 0.2
+        # tmax_mirror_lengths = 0.2
         # tmax_mirror_lengths = 0.4
-        # tmax_mirror_lengths = 1
+        tmax_mirror_lengths = 1
         # tmax_mirror_lengths = 3
         # tmax_mirror_lengths = 5
         # tmax_mirror_lengths = 100
