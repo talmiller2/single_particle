@@ -49,6 +49,7 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 
 plt.close('all')
 
@@ -71,8 +72,11 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, 30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -128,6 +132,7 @@ for beta_loop in beta_loop_list:
 
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
+        settings['r_0'] = 1.0
         # settings['r_0'] = 1.5
 
         settings = define_default_settings(settings)
@@ -194,9 +199,9 @@ for beta_loop in beta_loop_list:
             run_name += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
             run_name += '_beta_' + '_'.join([str(b) for b in field_dict['beta_RF_list']])
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
-            run_name += '_const_vth_' + run_name
+            run_name += '_const_vth'
         if settings['r_0'] > 0:
-            run_name += '_r0_' + str(settings['r_0']) + '_' + run_name
+            run_name += '_r0_' + str(settings['r_0'])
         if field_dict['anticlockwise'] == -1:
             run_name += '_antiresonant'
         print('run_name: ' + str(run_name))

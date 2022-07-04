@@ -30,7 +30,9 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
-save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -39,9 +41,11 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 50  # kV/m
 E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
+# B_RF = 0.01  # T
 # B_RF = 0.02  # T
-B_RF = 0.05  # T
+B_RF = 0.04  # T
+# B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
 use_RF = True
@@ -50,7 +54,7 @@ use_RF = True
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 r_0 = 0
-# r_0 = 1.0
+# r_0 = 1.5
 # r_0 = 3.0
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
@@ -84,15 +88,15 @@ beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 # alpha = alpha_loop_list[ind_alpha]
 # beta = beta_loop_list[ind_beta]
 #
-# alpha = 0.8
+alpha = 0.8
 # alpha = 0.82
 # alpha = 0.85
-alpha = 0.86
+# alpha = 0.86
 # alpha = 0.9
 # alpha = 0.92
 # alpha = 0.94
 # alpha = 0.95
-# alpha = 0.97
+# alpha = 0.96
 # alpha = 0.98
 # alpha = 0.99
 # alpha = 1.0
@@ -112,7 +116,7 @@ alpha = 0.86
 # beta = -1.0
 # beta = -2.0
 # beta = -2.5
-beta = -3.0
+# beta = -3.0
 # beta = -3.75
 # beta = -4.0
 # beta = -4.5
@@ -121,7 +125,7 @@ beta = -3.0
 # beta = -7.5
 # beta = -8.0
 # beta = -9.0
-# beta = -10.0
+beta = -10.0
 
 
 if use_RF is False:
@@ -145,7 +149,8 @@ else:
 if absolute_velocity_sampling_type == 'const_vth':
     set_name = 'const_vth_' + set_name
 if r_0 > 0:
-    set_name = 'r0_' + str(r_0) + '_' + set_name
+    set_name += '_r0_' + str(r_0) + '_' + set_name
+# set_name += '_antiresonant'
 
 save_dir_curr = save_dir + set_name
 
@@ -545,18 +550,23 @@ if do_fit:
                 #         )
 
                 ## calculate the saturation value to estimate the rate
-                inds_t_saturation = range(7, 21)
+                # inds_t_saturation = range(7, 21)
                 # inds_t_saturation = range(2, 3)
+                inds_t_saturation = range(15, 31)
+                # inds_t_saturation = range(len(t_array))
                 saturation_value = np.mean(particles_counter_mat2_3d[i, j, inds_t_saturation])
                 # the rate is the saturation value divided by the single cell pass time (1 in these units)
                 saturation_rate = saturation_value / 1.0
 
                 nu_mat[i, j] = saturation_rate
                 label = 'fit $\\nu=$' + '{:.2f}'.format(nu_mat[i, j]) + '$\\cdot l/v_{th}$'
-                ax.plot(t_array, saturation_rate + 0 * t_array, color=color, linewidth=2, linestyle='--',
-                        label=label,
-                        )
-
+                # ax.plot(t_array, saturation_rate + 0 * t_array, color=color, linewidth=2, linestyle='--',
+                #         label=label,
+                #         )
+                ax.hlines(saturation_rate, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]], color=color,
+                          linewidth=2, linestyle='--',
+                          label=label,
+                          )
                 ax.set_ylim([0, 1])
                 ax.legend()
 
