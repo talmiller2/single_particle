@@ -30,7 +30,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
+save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -47,7 +48,7 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 50  # kV/m
 E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -76,8 +77,11 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31
-beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
 # vz_over_vth_list = [0.5, 1.0, 1.5]
 vz_over_vth_list = [0.5, 0.75, 1.0, 1.25, 1.5]
@@ -123,7 +127,8 @@ for ind_beta, beta in enumerate(beta_loop_list):
             if absolute_velocity_sampling_type == 'const_vth':
                 set_name = 'const_vth_' + set_name
             if r_0 > 0:
-                set_name = 'r0_' + str(r_0) + '_' + set_name
+                set_name += '_r0_' + str(r_0)
+            # set_name += '_antiresonant'
             print(set_name)
 
             save_dir_curr = save_dir + set_name

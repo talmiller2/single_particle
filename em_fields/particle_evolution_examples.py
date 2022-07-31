@@ -20,7 +20,7 @@ plot3d_exists = False
 # example_system = 'tokamak_transit'
 example_system = 'magnetic_mirror'
 
-if example_system is 'helix':
+if example_system == 'helix':
     # helix movement in constant magnetic field
     # x_0 = np.array([0, 0, 0])
     x_0 = np.array([1, 0, 0])
@@ -31,7 +31,7 @@ if example_system is 'helix':
     E_function = lambda x, t: 0
     B_function = lambda x, t: np.array([0, 0, 1])
 
-if example_system is 'helix_with_RF':
+if example_system == 'helix_with_RF':
     # helix movement in constant magnetic field
     # x_0 = np.array([0, 0, 0])
     x_0 = np.array([1, 0, 0])
@@ -106,7 +106,7 @@ if example_system is 'helix_with_RF':
                                     0])
         return B_axial + B_RF
 
-elif example_system is '2d_static':
+elif example_system == '2d_static':
     # paper example 1: "2D dynamics in a static electromagnetic field"
     x_0 = np.array([0, -1, 0])
     v_0 = np.array([0.1, 0.01, 0])
