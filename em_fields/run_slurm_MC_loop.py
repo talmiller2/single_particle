@@ -48,8 +48,9 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
+save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 
 plt.close('all')
 
@@ -72,23 +73,29 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, 30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
 # beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
+beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
+
 RF_type = 'electric_transverse'
-# E_RF_kVm = 1 # kV/m
+E_RF_kVm = 1  # kV/m
+# E_RF_kVm = 5 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
-E_RF_kVm = 100  # kV/m
+# E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
+B_RF = 0.001  # T
+# B_RF = 0.005  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
-B_RF = 0.04  # T
+# B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 # use_RF = True
@@ -123,8 +130,8 @@ for beta_loop in beta_loop_list:
         # settings['stop_criterion'] = 'several_cell_center_crossing'
         # settings['number_of_time_intervals'] = 3
 
-        # settings['l'] = 1.0  # m (MM cell size)
-        settings['l'] = 3.0  # m (MM cell size)
+        settings['l'] = 1.0  # m (MM cell size)
+        # settings['l'] = 3.0  # m (MM cell size)
         # settings['l'] = 10.0  # m (MM cell size)
 
         # settings['absolute_velocity_sampling_type'] = 'const_vth'
@@ -132,17 +139,22 @@ for beta_loop in beta_loop_list:
 
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
-        settings['r_0'] = 1.0
+        settings['r_0'] = 0
+        # settings['r_0'] = 1.0
         # settings['r_0'] = 1.5
 
         settings = define_default_settings(settings)
 
         field_dict = {}
 
+        field_dict['B0'] = 0.1  # Tesla (1000 Gauss)
+        # field_dict['B0'] = 1.0  # Tesla
+
         # field_dict['Rm'] = 1.3  # mirror ratio
         # field_dict['Rm'] = 2.0  # mirror ratio
-        field_dict['Rm'] = 3.0  # mirror ratio
+        # field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
+        field_dict['Rm'] = 5.0  # mirror ratio
         # field_dict['Rm'] = 6.0  # mirror ratio
 
         if RF_type == 'electric_transverse':
@@ -161,7 +173,7 @@ for beta_loop in beta_loop_list:
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
 
-        field_dict['anticlockwise'] = -1  # testing anti-resonant direction
+        # field_dict['anticlockwise'] = -1  # testing anti-resonant direction
 
         field_dict = define_default_field(settings, field_dict)
 
@@ -217,8 +229,8 @@ for beta_loop in beta_loop_list:
         # total_number_of_points = 400
         # total_number_of_points = 1000
         # total_number_of_points = 2000
-        # total_number_of_points = 3000
-        total_number_of_points = 5000
+        total_number_of_points = 3000
+        # total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000
 
