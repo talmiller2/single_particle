@@ -42,7 +42,7 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 50  # kV/m
 E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -73,8 +73,8 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
 # beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
 #     for ind_alpha, alpha_RF in enumerate(alpha_loop_list):
@@ -92,11 +92,11 @@ beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 # alpha = alpha_loop_list[ind_alpha]
 # beta = beta_loop_list[ind_beta]
 #
-# alpha = 0.8
+alpha = 0.8
 # alpha = 0.82
 # alpha = 0.85
 # alpha = 0.86
-alpha = 0.9
+# alpha = 0.9
 # alpha = 0.92
 # alpha = 0.94
 # alpha = 0.95
@@ -124,12 +124,12 @@ alpha = 0.9
 # beta = -3.75
 # beta = -4.0
 # beta = -4.5
-beta = -5.0
+# beta = -5.0
 # beta = -6.0
 # beta = -7.5
 # beta = -8.0
 # beta = -9.0
-# beta = -10.0
+beta = -10.0
 # beta = 1.0
 
 

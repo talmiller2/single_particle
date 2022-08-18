@@ -72,11 +72,11 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, 30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
