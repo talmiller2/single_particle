@@ -16,25 +16,33 @@ plt.rcParams.update({'axes.labelpad': 15})
 # plot3d_exists = False
 # plot3d_exists = True
 
-# for ind_sim in range(1):
-for ind_sim in range(2):
+for ind_sim in range(1):
+    # for ind_sim in range(2):
 
     settings = {}
     settings['trajectory_save_method'] = 'intervals'
     settings['num_snapshots'] = 300
-    # settings['l'] = 1.0  # m (MM cell size)
-    settings['l'] = 3.0  # m (MM cell size)
+    settings['l'] = 1.0  # m (MM cell size)
+    # settings['l'] = 3.0  # m (MM cell size)
+    # settings['T_keV'] = 10.0
+    settings['T_keV'] = 30.0 / 1e3
     settings = define_default_settings(settings)
 
     field_dict = {}
     # field_dict['mirror_field_type'] = 'logan'
     field_dict['mirror_field_type'] = 'post'
-    field_dict['Rm'] = 3.0  # mirror ratio
+
+    field_dict['B0'] = 0.1  # Tesla (1000 Gauss)
+    # field_dict['B0'] = 1.0  # Tesla
+
+    # field_dict['Rm'] = 3.0  # mirror ratio
+    field_dict['Rm'] = 5.0  # mirror ratio
+
     field_dict['RF_type'] = 'electric_transverse'
-    # field_dict['E_RF_kVm'] = 0
+    field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1
     # field_dict['E_RF_kVm'] = 10
-    field_dict['E_RF_kVm'] = 20
+    # field_dict['E_RF_kVm'] = 20
     # field_dict['E_RF_kVm'] = 100
     # field_dict['RF_type'] = 'magnetic_transverse'
     # field_dict['B_RF'] = 0
@@ -56,6 +64,7 @@ for ind_sim in range(2):
     # field_dict['alpha_RF_list'] = [0.6]
 
     # field_dict['anticlockwise'] = -1
+
     field_dict = define_default_field(settings, field_dict)
 
     loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
@@ -71,6 +80,7 @@ for ind_sim in range(2):
 
     v_perp = np.sqrt(v_0[0] ** 2 + v_0[1] ** 2)
     cyclotron_radius = v_perp / field_dict['omega_cyclotron']
+    print('cyclotron_radius', cyclotron_radius, 'm')
 
     if ind_sim == 0:
         # x_0 = np.array([0, 0, settings['l'] / 2.0])
@@ -87,7 +97,12 @@ for ind_sim in range(2):
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # sim_cyclotron_periods = 50
     # sim_cyclotron_periods = 70
-    sim_cyclotron_periods = 100
+    # sim_cyclotron_periods = 100
+    tmax_mirror_lengths = 1
+    sim_cyclotron_periods = int(
+        tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
+    settings['sim_cyclotron_periods'] = sim_cyclotron_periods
+
     t_max = sim_cyclotron_periods * field_dict['tau_cyclotron']
     num_steps = int(t_max / dt)
 

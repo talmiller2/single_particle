@@ -143,6 +143,10 @@ for beta_loop in beta_loop_list:
         # settings['r_0'] = 1.0
         # settings['r_0'] = 1.5
 
+        # settings['T_keV'] = 10.0
+        settings['T_keV'] = 30.0 / 1e3
+        # settings['T_keV'] = 60.0 / 1e3
+
         settings = define_default_settings(settings)
 
         field_dict = {}
@@ -155,7 +159,7 @@ for beta_loop in beta_loop_list:
         # field_dict['Rm'] = 3.0  # mirror ratio
         # field_dict['Rm'] = 4.0  # mirror ratio
         field_dict['Rm'] = 5.0  # mirror ratio
-        # field_dict['Rm'] = 6.0  # mirror ratio
+        # field_dict['Rm'] = 10.0  # mirror ratio
 
         if RF_type == 'electric_transverse':
             field_dict['RF_type'] = 'electric_transverse'
