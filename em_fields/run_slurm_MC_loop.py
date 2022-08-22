@@ -83,7 +83,9 @@ alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
 beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
 
 RF_type = 'electric_transverse'
-E_RF_kVm = 1  # kV/m
+E_RF_kVm = 0.1  # kV/m
+# E_RF_kVm = 0.5  # kV/m
+# E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 5 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m

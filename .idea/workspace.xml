@@ -23,9 +23,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add set35">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="forgot to update T to lower value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12_B.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_B.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +77,7 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.particle_evolution_examples_mirror">
+  <component name="RunManager" selected="Python.plot_slurm_results12_B">
     <configuration name="particle_evolution_examples_const_Bz" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -205,9 +205,6 @@
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -255,11 +252,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.particle_evolution_examples_mirror" />
-        <item itemvalue="Python.particle_evolution_examples_mirror" />
-        <item itemvalue="Python.particle_evolution_examples_mirror" />
-        <item itemvalue="Python.particle_evolution_examples_mirror" />
-        <item itemvalue="Python.particle_evolution_examples_mirror" />
+        <item itemvalue="Python.plot_slurm_results12_B" />
+        <item itemvalue="Python.plot_slurm_results12_B" />
+        <item itemvalue="Python.plot_slurm_results12_B" />
+        <item itemvalue="Python.plot_slurm_results12_B" />
+        <item itemvalue="Python.plot_slurm_results12_B" />
       </list>
     </recent_temporary>
   </component>
@@ -274,13 +271,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586773491039</updated>
-    </task>
-    <task id="LOCAL-00115" summary="bugfix: did not actually change mirror_field_type">
-      <created>1638944415296</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1638944415296</updated>
     </task>
     <task id="LOCAL-00116" summary="set up a run within a single cell only">
       <created>1638952465394</created>
@@ -618,7 +608,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660822147548</updated>
     </task>
-    <option name="localTasksCounter" value="164" />
+    <task id="LOCAL-00164" summary="forgot to update T to lower value">
+      <created>1661087137409</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1661087137414</updated>
+    </task>
+    <option name="localTasksCounter" value="165" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -634,7 +631,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add run with Rm=3 but for longer time to catch the reversal" />
     <MESSAGE value="add runs where only RF phase changes for several specific initial velocities" />
     <MESSAGE value="set up matrix run to show selectivity matrix more clearly" />
     <MESSAGE value="set up new set with Rm=6" />
@@ -659,15 +655,12 @@
     <MESSAGE value="added particle_evolution_examples_const_Bz" />
     <MESSAGE value="added the script 12_B to count the populations evolution with a different but equivalent loss cone condition" />
     <MESSAGE value="add set35" />
-    <option name="LAST_COMMIT_MESSAGE" value="add set35" />
+    <MESSAGE value="forgot to update T to lower value" />
+    <option name="LAST_COMMIT_MESSAGE" value="forgot to update T to lower value" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="133" y="148" width="1654" height="735" key="DiffContextDialog" timestamp="1652359807629">
-      <screen x="0" y="25" width="1920" height="980" />
-    </state>
-    <state x="133" y="148" width="1654" height="735" key="DiffContextDialog/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1652359807629" />
     <state width="1899" height="324" key="GridCell.Tab.0.bottom" timestamp="1653735849671">
       <screen x="0" y="25" width="1920" height="980" />
     </state>
@@ -704,11 +697,11 @@
       <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="399" y="131" key="RollbackChangesDialog/0.25.1440.800@0.25.1440.800" timestamp="1660822122286" />
-    <state x="420" y="210" key="Vcs.Push.Dialog.v2" timestamp="1660822154340">
+    <state x="420" y="210" key="Vcs.Push.Dialog.v2" timestamp="1661087140230">
       <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1656405363630" />
-    <state x="420" y="210" key="Vcs.Push.Dialog.v2/0.25.1440.800@0.25.1440.800" timestamp="1660822154340" />
+    <state x="420" y="210" key="Vcs.Push.Dialog.v2/0.25.1440.800@0.25.1440.800" timestamp="1661087140230" />
     <state x="657" y="270" width="602" height="490" key="find.popup" timestamp="1659384864209">
       <screen x="0" y="25" width="1920" height="980" />
     </state>

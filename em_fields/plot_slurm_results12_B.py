@@ -32,19 +32,23 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
-save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
+save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 
 RF_type = 'electric_transverse'
-# E_RF_kVm = 1 # kV/m
+E_RF_kVm = 1  # kV/m
+# E_RF_kVm = 5 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
-E_RF_kVm = 100  # kV/m
+# E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
+B_RF = 0.001  # T
+# B_RF = 0.005  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
-B_RF = 0.04  # T
+# B_RF = 0.04  # T
 # B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
@@ -72,8 +76,11 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
 # beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
+beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
 #     for ind_alpha, alpha_RF in enumerate(alpha_loop_list):
@@ -95,21 +102,21 @@ beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 # alpha = 0.82
 # alpha = 0.85
 # alpha = 0.86
-alpha = 0.9
+# alpha = 0.9
 # alpha = 0.92
 # alpha = 0.94
 # alpha = 0.95
 # alpha = 0.96
 # alpha = 0.98
 # alpha = 0.99
-# alpha = 1.0
+alpha = 1.0
 # alpha = 1.01
 # alpha = 1.02
 # alpha = 1.04
 # alpha = 1.05
 # alpha = 1.1
 
-# beta = 0.0
+beta = 0.0
 # beta = -0.1
 # beta = -0.2
 # beta = -0.3
@@ -123,7 +130,7 @@ alpha = 0.9
 # beta = -3.75
 # beta = -4.0
 # beta = -4.5
-beta = -5.0
+# beta = -5.0
 # beta = -6.0
 # beta = -7.5
 # beta = -8.0
