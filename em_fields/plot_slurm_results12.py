@@ -31,16 +31,16 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
-# save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
+save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 50  # kV/m
-E_RF_kVm = 100  # kV/m
+E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
@@ -92,9 +92,9 @@ r_0 = 0
 # alpha = alpha_loop_list[ind_alpha]
 # beta = beta_loop_list[ind_beta]
 #
-alpha = 0.8
-# alpha = 0.82
-# alpha = 0.85
+# alpha = 0.8
+alpha = 0.82
+# alpha = 0.855
 # alpha = 0.86
 # alpha = 0.9
 # alpha = 0.92
@@ -127,11 +127,10 @@ alpha = 0.8
 # beta = -5.0
 # beta = -6.0
 # beta = -7.5
-# beta = -8.0
+beta = -8.0
 # beta = -9.0
-beta = -10.0
+# beta = -10.0
 # beta = 1.0
-
 
 if use_RF is False:
     title = 'without RF'
@@ -564,7 +563,7 @@ if do_fit:
                 saturation_rate = saturation_value / 1.0
 
                 nu_mat[i, j] = saturation_rate
-                label = 'fit $\\nu=$' + '{:.2f}'.format(nu_mat[i, j]) + '$\\cdot l/v_{th}$'
+                label = 'fit $\\nu=$' + '{:.3f}'.format(nu_mat[i, j]) + '$\\cdot l/v_{th}$'
                 # ax.plot(t_array, saturation_rate + 0 * t_array, color=color, linewidth=2, linestyle='--',
                 #         label=label,
                 #         )

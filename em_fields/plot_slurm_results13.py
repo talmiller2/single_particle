@@ -14,9 +14,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import copy
 
-# plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
-plt.rcParams.update({'font.size': 8})
+# plt.rcParams.update({'font.size': 8})
 # plt.rcParams["figure.facecolor"] = 'white'
 # plt.rcParams["axes.facecolor"] = 'green'
 
@@ -29,9 +29,10 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
-# save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
-save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
+# save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -42,13 +43,15 @@ with open(field_dict_file, 'rb') as fid:
     field_dict = pickle.load(fid)
 
 RF_type = 'electric_transverse'
+# E_RF_kVm = 0.1 # kV/m
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 50  # kV/m
-E_RF_kVm = 100  # kV/m
+E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 100  # kV/m
 
 RF_type = 'magnetic_transverse'
+# B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -77,14 +80,18 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
+# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
+# beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
 
 # vz_over_vth_list = [0.5, 1.0, 1.5]
-vz_over_vth_list = [0.5, 0.75, 1.0, 1.25, 1.5]
+# vz_over_vth_list = [0.5, 0.75, 1.0, 1.25, 1.5]
+vz_over_vth_list = [0.5]
 alpha_const_omega_cyc0_right_list = []
 alpha_const_omega_cyc0_left_list = []
 for vz_over_vth in vz_over_vth_list:
@@ -104,15 +111,16 @@ for num_t_points in num_t_points_list:
     selectivity[num_t_points] = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 
 
-def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, ax=None, color='b', linewidth=2):
+def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, ax=None, color='b', linewidth=2, linestyle='-'):
     x_heatmap_normed = 0.5 + np.array(range(len(x_heatmap)))
     y_line_normed = (y_line - y_heatmap[0]) / (y_heatmap[-1] - y_heatmap[0]) * len(y_heatmap) - 0.5
-    sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, ax=ax)
+    sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, linestyle=linestyle, ax=ax)
     return
 
 
 for ind_beta, beta in enumerate(beta_loop_list):
     for ind_alpha, alpha in enumerate(alpha_loop_list):
+        # print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
         try:
             set_name = ''
             if use_RF is False:
@@ -297,22 +305,106 @@ for ind_beta, beta in enumerate(beta_loop_list):
 
 ### PLOTS
 
-# annot = False
-annot = True
+# # annot = False
+# annot = True
+#
+# # fig, axs = plt.subplots(2, 2, figsize=(16, 8))
+# # fig, axs = plt.subplots(1, 1, figsize=(8, 8))
+# fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+# annot_fontsize = 8
+# annot_fmt = '.2f'
+#
+# # for ind_ax, ax in enumerate(axs.ravel()):
+# ind_ax = 0
+# ax = axs
+#
+# num_t_points = num_t_points_list[ind_ax]
+#
+# ax = axs[0]
+# y = selectivity[num_t_points]
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+#             vmin=vmin, vmax=vmax,
+#             annot=annot,
+#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+#             ax=ax,
+#             )
+# ax.axes.invert_yaxis()
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
+#                          linewidth=2)
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+#                          linewidth=2)
+# ax.set_xlabel('$\\beta$')
+# ax.set_ylabel('$\\alpha$')
+# # ax.set_title('selectivity based on fit to ' + str(num_t_points) + ' points')
+#
+# # ax.set_title('log of ' + ylabel_delta_v)
+#
+# if use_RF is False:
+#     title = 'without RF'
+# elif RF_type == 'electric_transverse':
+#     title = '$E_{RF}$=' + str(E_RF_kVm) + 'kV/m'
+# elif RF_type == 'magnetic_transverse':
+#     title = '$B_{RF}$=' + str(B_RF) + 'T'
+# # print(title)
+# title += ', selectivity using the saturation value method'
+# ax.set_title(title, fontsize=12)
+#
+# ax = axs[1]
+# y = rate_R[num_t_points]
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+#             vmin=vmin, vmax=vmax,
+#             annot=annot,
+#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+#             ax=ax,
+#             )
+# ax.axes.invert_yaxis()
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
+#                          linewidth=2)
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+#                          linewidth=2)
+# ax.set_xlabel('$\\beta$')
+# ax.set_ylabel('$\\alpha$')
+# ax.set_title('$\\nu_R$', fontsize=12)
+#
+# ax = axs[2]
+# y = rate_L[num_t_points]
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+#             vmin=vmin, vmax=vmax,
+#             annot=annot,
+#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+#             ax=ax,
+#             )
+# ax.axes.invert_yaxis()
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
+#                          linewidth=2)
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+#                          linewidth=2)
+# ax.set_xlabel('$\\beta$')
+# ax.set_ylabel('$\\alpha$')
+# ax.set_xlabel('$\\beta$')
+# ax.set_ylabel('$\\alpha$')
+# ax.set_title('$\\nu_L$', fontsize=12)
+#
+# fig.set_tight_layout(0.5)
 
-# fig, axs = plt.subplots(2, 2, figsize=(16, 8))
-# fig, axs = plt.subplots(1, 1, figsize=(8, 8))
-fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+### PLOTS 2
+
+annot = False
 annot_fontsize = 8
 annot_fmt = '.2f'
 
-# for ind_ax, ax in enumerate(axs.ravel()):
-ind_ax = 0
-ax = axs
+num_t_points = num_t_points_list[0]
 
-num_t_points = num_t_points_list[ind_ax]
-
-ax = axs[0]
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = selectivity[num_t_points]
 vmin = np.nanmin(y)
 vmax = np.nanmax(y)
@@ -323,28 +415,26 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             ax=ax,
             )
 ax.axes.invert_yaxis()
-for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
-                         linewidth=2)
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-                         linewidth=2)
-ax.set_xlabel('$\\beta$')
-ax.set_ylabel('$\\alpha$')
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='g',
+#                          linewidth=3, linestyle='--')
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='g',
+#                          linewidth=3)
+# ax.set_xlabel('$\\beta$')
+# ax.set_ylabel('$\\alpha$')
 # ax.set_title('selectivity based on fit to ' + str(num_t_points) + ' points')
-
 # ax.set_title('log of ' + ylabel_delta_v)
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel('$f_{\\omega}$')
+ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$')
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+text = '(c)'
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+         horizontalalignment='right', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
 
-if use_RF is False:
-    title = 'without RF'
-elif RF_type == 'electric_transverse':
-    title = '$E_{RF}$=' + str(E_RF_kVm) + 'kV/m'
-elif RF_type == 'magnetic_transverse':
-    title = '$B_{RF}$=' + str(B_RF) + 'T'
-# print(title)
-title += ', selectivity using the saturation value method'
-ax.set_title(title, fontsize=12)
-
-ax = axs[1]
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = rate_R[num_t_points]
 vmin = np.nanmin(y)
 vmax = np.nanmax(y)
@@ -356,15 +446,21 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             )
 ax.axes.invert_yaxis()
 for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
-                         linewidth=2)
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-                         linewidth=2)
-ax.set_xlabel('$\\beta$')
-ax.set_ylabel('$\\alpha$')
-ax.set_title('$\\nu_R$', fontsize=12)
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='g',
+                         linewidth=2, linestyle='--')
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+#                          linewidth=2)
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel('$f_{\\omega}$')
+ax.set_title('$\\bar{N}_{rc}$')
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+text = '(a)'
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+         horizontalalignment='right', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
 
-ax = axs[2]
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = rate_L[num_t_points]
 vmin = np.nanmin(y)
 vmax = np.nanmax(y)
@@ -375,13 +471,32 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             ax=ax,
             )
 ax.axes.invert_yaxis()
-for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
-                         linewidth=2)
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-                         linewidth=2)
-ax.set_xlabel('$\\beta$')
-ax.set_ylabel('$\\alpha$')
-ax.set_title('$\\nu_L$', fontsize=12)
-
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
+#                          linewidth=2)
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
+#                          linewidth=2)
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel('$f_{\\omega}$')
+ax.set_title('$\\bar{N}_{lc}$')
 fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+text = '(b)'
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+         horizontalalignment='right', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+
+## save plots to file
+save_dir = '../../../Papers/texts/paper2022/pics/'
+
+# file_name = 'selectivity_heatmap_RF_parameters'
+# beingsaved = plt.figure(1)
+# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+#
+# file_name = 'Nrc_heatmap_RF_parameters'
+# beingsaved = plt.figure(2)
+# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+#
+# file_name = 'Nlc_heatmap_RF_parameters'
+# beingsaved = plt.figure(3)
+# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
