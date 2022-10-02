@@ -23,11 +23,14 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="more runs">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="new set36 runs for the paper">
+      <change afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_capacity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_phase_space_dynamics.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12_B.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_B.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,28 +82,7 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot_slurm_results13">
-    <configuration name="particle_evolution_examples_const_Bz" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/particle_evolution_examples_const_Bz.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.plot_slurm_results12_capacity">
     <configuration name="plot_magnetic_field_loop_cartesian" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -135,6 +117,24 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields\plot_magnetic_field_loop_cylindrical.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_magnetic_forms" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -182,7 +182,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results12_B" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results12_capacity" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -191,7 +191,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results12_B.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results12_capacity.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -200,7 +200,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results13" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results13_heatmaps" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -209,7 +209,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -218,19 +218,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="slurm_functions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results14_phase_space_dynamics" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/slurm_functions.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results14_phase_space_dynamics.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -243,19 +240,19 @@
       <item itemvalue="Python.plot_magnetic_field_loop_cartesian" />
       <item itemvalue="Python.plot_magnetic_field_loop_cylindrical" />
       <item itemvalue="Python.plot_periodic_square" />
-      <item itemvalue="Python.particle_evolution_examples_const_Bz" />
-      <item itemvalue="Python.slurm_functions" />
-      <item itemvalue="Python.plot_slurm_results12_B" />
-      <item itemvalue="Python.plot_slurm_results13" />
       <item itemvalue="Python.plot_slurm_results12" />
+      <item itemvalue="Python.plot_magnetic_forms" />
+      <item itemvalue="Python.plot_slurm_results13_heatmaps" />
+      <item itemvalue="Python.plot_slurm_results14_phase_space_dynamics" />
+      <item itemvalue="Python.plot_slurm_results12_capacity" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.plot_slurm_results13" />
-        <item itemvalue="Python.plot_slurm_results13" />
-        <item itemvalue="Python.plot_slurm_results13" />
-        <item itemvalue="Python.plot_slurm_results13" />
-        <item itemvalue="Python.plot_slurm_results13" />
+        <item itemvalue="Python.plot_slurm_results12_capacity" />
+        <item itemvalue="Python.plot_slurm_results14_phase_space_dynamics" />
+        <item itemvalue="Python.plot_slurm_results14_phase_space_dynamics" />
+        <item itemvalue="Python.plot_slurm_results14_phase_space_dynamics" />
+        <item itemvalue="Python.plot_slurm_results14_phase_space_dynamics" />
       </list>
     </recent_temporary>
   </component>
@@ -270,13 +267,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586773491039</updated>
-    </task>
-    <task id="LOCAL-00117" summary="bug: by accident we did not initiate the particle in the center of the cell">
-      <created>1638968649363</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1638968649363</updated>
     </task>
     <task id="LOCAL-00118" summary="added another alpha=0.6 runs">
       <created>1638973690070</created>
@@ -614,7 +604,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661148278853</updated>
     </task>
-    <option name="localTasksCounter" value="166" />
+    <task id="LOCAL-00166" summary="new set36 runs for the paper">
+      <created>1663825481626</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1663825481626</updated>
+    </task>
+    <option name="localTasksCounter" value="167" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -630,7 +627,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="set up matrix run to show selectivity matrix more clearly" />
     <MESSAGE value="set up new set with Rm=6" />
     <MESSAGE value="changed the RF input to alpha and wavelength, and not vzres. &#10;added new slurm runs with new method" />
     <MESSAGE value="new runs" />
@@ -655,7 +651,8 @@
     <MESSAGE value="add set35" />
     <MESSAGE value="forgot to update T to lower value" />
     <MESSAGE value="more runs" />
-    <option name="LAST_COMMIT_MESSAGE" value="more runs" />
+    <MESSAGE value="new set36 runs for the paper" />
+    <option name="LAST_COMMIT_MESSAGE" value="new set36 runs for the paper" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -696,11 +693,15 @@
       <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="399" y="131" key="RollbackChangesDialog/0.25.1440.800@0.25.1440.800" timestamp="1660822122286" />
-    <state x="560" y="251" key="Vcs.Push.Dialog.v2" timestamp="1661148281975">
-      <screen x="0" y="25" width="1920" height="980" />
+    <state x="229" y="61" key="SettingsEditor" timestamp="1663829829633">
+      <screen x="0" y="25" width="1440" height="800" />
+    </state>
+    <state x="229" y="61" key="SettingsEditor/0.25.1440.800@0.25.1440.800" timestamp="1663829829633" />
+    <state x="420" y="210" key="Vcs.Push.Dialog.v2" timestamp="1663825483547">
+      <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1661148281975" />
-    <state x="420" y="210" key="Vcs.Push.Dialog.v2/0.25.1440.800@0.25.1440.800" timestamp="1661087140230" />
+    <state x="420" y="210" key="Vcs.Push.Dialog.v2/0.25.1440.800@0.25.1440.800" timestamp="1663825483547" />
     <state x="657" y="270" width="602" height="490" key="find.popup" timestamp="1659384864209">
       <screen x="0" y="25" width="1920" height="980" />
     </state>

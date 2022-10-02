@@ -21,11 +21,16 @@ def define_default_settings(settings=None):
     # plasma parameters
     if 'gas_name' not in settings:
         settings['gas_name'] = 'hydrogen'
+    if 'gas_name_for_cyc' not in settings:
+        settings['gas_name_for_cyc'] = 'gas_name_for_cyc'
     if 'ionization_level' not in settings:
         settings['ionization_level'] = 1.0
     settings['me'], settings['mp'], settings['mi'], settings['A_atomic_weight'], settings['Z_ion'] \
         = define_plasma_parameters(gas_name=settings['gas_name'], ionization_level=settings['ionization_level'])
     settings['q'] = settings['Z_ion'] * settings['e']  # Coulomb
+    _, _, settings['mi_for_cyc'], _, settings['Z_ion_for_cyc'] \
+        = define_plasma_parameters(gas_name=settings['gas_name_for_cyc'], ionization_level=settings['ionization_level'])
+    settings['q_for_cyc'] = settings['Z_ion_for_cyc'] * settings['e']  # Coulomb
 
     # system parameters
     if 'T_keV' not in settings:
@@ -88,7 +93,8 @@ def define_default_field(settings, field_dict=None):
     if 'B0' not in field_dict:
         # field_dict['B0'] = 0.1  # Tesla
         field_dict['B0'] = 1.0  # Tesla
-    field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
+    field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q_for_cyc'], field_dict['B0'],
+                                                                    settings['mi_for_cyc'])
     field_dict['tau_cyclotron'] = 2 * np.pi / field_dict['omega_cyclotron']
     field_dict['l'] = settings['l']
     field_dict['z_0'] = settings['z_0']

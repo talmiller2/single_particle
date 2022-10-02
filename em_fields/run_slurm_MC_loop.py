@@ -51,7 +51,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
-save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 
 plt.close('all')
 
@@ -83,8 +84,11 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
 # beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
-beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
+# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
+beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 0.1  # kV/m
@@ -152,6 +156,10 @@ for beta_loop in beta_loop_list:
         settings['T_keV'] = 10.0
         # settings['T_keV'] = 30.0 / 1e3
         # settings['T_keV'] = 60.0 / 1e3
+
+        settings['gas_name'] = 'deuterium'
+        # settings['gas_name'] = 'tritium'
+        settings['gas_name_for_cyc'] = 'DT_mix'
 
         settings = define_default_settings(settings)
 
@@ -226,6 +234,9 @@ for beta_loop in beta_loop_list:
             run_name += '_r0_' + str(settings['r_0'])
         if field_dict['anticlockwise'] == -1:
             run_name += '_antiresonant'
+        if settings['gas_name'] != 'hydrogen':
+            run_name += '_' + settings['gas_name']
+
         print('run_name: ' + str(run_name))
         settings['run_name'] = run_name
 
@@ -238,8 +249,8 @@ for beta_loop in beta_loop_list:
         # total_number_of_points = 40
         # total_number_of_points = 400
         # total_number_of_points = 1000
-        # total_number_of_points = 2000
-        total_number_of_points = 3000
+        total_number_of_points = 2000
+        # total_number_of_points = 3000
         # total_number_of_points = 5000
         # total_number_of_points = 10000
         # total_number_of_points = 20000

@@ -50,13 +50,14 @@ z /= l
 
 # plot axial magnetic fields
 plt.figure(1)
-plt.plot(z, B_logan[2], label='Logan et al', color='b')
+# plt.plot(z, B_logan[2], label='Logan et al', color='b')
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
-plt.plot(z, B_post[2], label='Post', color='r')
-plt.plot(z, B_slope, '--', label='slope', color='k')
-plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
-plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
-plt.legend()
+# plt.plot(z, B_post[2], label='Post', color='r')
+plt.plot(z, B_post[2], label='Post', color='b')
+# plt.plot(z, B_slope, '--', label='slope', color='k')
+# plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
+# plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
+# plt.legend()
 # plt.xlabel('z [m]')
 plt.xlabel('z / l')
 plt.ylabel('$B_z$ [T]')
@@ -83,3 +84,11 @@ plt.tight_layout()
 # plt.ylabel('$B_y$ [T]')
 # plt.grid(True)
 # plt.tight_layout()
+
+## save plots to file
+# save_dir = '../../../Papers/texts/paper2022/pics/'
+#
+# file_name = 'axial_magnetic_field_post_form'
+# beingsaved = plt.figure(1)
+# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+# #

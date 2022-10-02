@@ -13,6 +13,7 @@ evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 import matplotlib.pyplot as plt
 import seaborn as sns
 import copy
+import pandas as pd
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
@@ -29,10 +30,11 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set29_B0_1T_l_3m_Post_Rm_2_first_cell_center_crossing/'
 # save_dir += '/set30_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set31_B0_1T_l_3m_Post_Rm_3_intervals/'
-save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
+save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -80,8 +82,8 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
 # beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
+# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
 # beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
@@ -89,9 +91,16 @@ beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
 # alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
 # beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
 
+alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
+beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+
+# alpha_loop_list = np.array([1.14, 1.16, 1.2])
+# beta_loop_list = np.array([4.5, 5])
+
 # vz_over_vth_list = [0.5, 1.0, 1.5]
 # vz_over_vth_list = [0.5, 0.75, 1.0, 1.25, 1.5]
-vz_over_vth_list = [0.5]
+# vz_over_vth_list = [0.5]
+vz_over_vth_list = [0.6]
 alpha_const_omega_cyc0_right_list = []
 alpha_const_omega_cyc0_left_list = []
 for vz_over_vth in vz_over_vth_list:
@@ -111,15 +120,24 @@ for num_t_points in num_t_points_list:
     selectivity[num_t_points] = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 
 
-def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, ax=None, color='b', linewidth=2, linestyle='-'):
+def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, color='w'):
     x_heatmap_normed = 0.5 + np.array(range(len(x_heatmap)))
     y_line_normed = (y_line - y_heatmap[0]) / (y_heatmap[-1] - y_heatmap[0]) * len(y_heatmap) - 0.5
-    sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, linestyle=linestyle, ax=ax)
+    # sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, ax=ax)
+    # ax_line = sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, ax=ax)
+    data = pd.DataFrame({'x': x_heatmap_normed, 'y': y_line_normed})
+    # data = pd.DataFrame({'x': x_heatmap_normed, 'y': y_line_normed, 'style': ['--' for _ in range(len(y_line_normed))]})
+    # ax_line = sns.lineplot(data=data, x='x', y='y', ax=ax)
+    # ax_line.lines[0].set_linestyle(linestyle)
+
+    sns.lineplot(data=data, x='x', y='y', style=True, dashes=[(2, 2)], color=color, linewidth=3, )
+
     return
 
 
 for ind_beta, beta in enumerate(beta_loop_list):
     for ind_alpha, alpha in enumerate(alpha_loop_list):
+
         # print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
         try:
             set_name = ''
@@ -260,30 +278,6 @@ for ind_beta, beta in enumerate(beta_loop_list):
                 nu_rise_list = []
                 inds_t_array = np.array(range(num_t_points))
 
-                # # for i, ax in enumerate(axs.ravel()):
-                # for i in range(N_theta):
-                #     # fit to exponential decay
-                #     def exp_decay(t, nu):
-                #         return np.exp(-nu * t)
-                #     p0 = (1.0)
-                #     params, cv = scipy.optimize.curve_fit(exp_decay, t_array[inds_t_array],
-                #                                           particles_counter_mat2_3d[i, i, inds_t_array], p0)
-                #     nu = params[0]
-                #     nu_decay_list += [nu]
-                #
-                # # fit the exponential saturation
-                # for i, j in [[0, 1], [N_theta-1, N_theta-2]]:
-                #     def exp_saturation(t, nu):
-                #         return nu / nu_decay_list[i] * (1.0 - np.exp(-nu_decay_list[i] * t))
-                #     p0 = (0.01)
-                #     params, cv = scipy.optimize.curve_fit(exp_saturation, t_array[inds_t_array],
-                #                                           particles_counter_mat2_3d[i, j, inds_t_array], p0)
-                #     nu = params[0]
-                #     if i == 0 and j == 1:
-                #         nu_rise_list += [nu]
-                #     elif i == N_theta - 1 and j == N_theta - 2:
-                #         nu_rise_list += [nu]
-
                 # calc the saturattion value
                 for i, j in [[0, 1], [N_theta - 1, N_theta - 2]]:
                     # inds_t_saturation = range(7, 21)
@@ -415,15 +409,6 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             ax=ax,
             )
 ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='g',
-#                          linewidth=3, linestyle='--')
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='g',
-#                          linewidth=3)
-# ax.set_xlabel('$\\beta$')
-# ax.set_ylabel('$\\alpha$')
-# ax.set_title('selectivity based on fit to ' + str(num_t_points) + ' points')
-# ax.set_title('log of ' + ylabel_delta_v)
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel('$f_{\\omega}$')
 ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$')
@@ -433,6 +418,7 @@ text = '(c)'
 plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
+
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = rate_R[num_t_points]
@@ -446,10 +432,7 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             )
 ax.axes.invert_yaxis()
 for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='g',
-                         linewidth=2, linestyle='--')
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-#                          linewidth=2)
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel('$f_{\\omega}$')
 ax.set_title('$\\bar{N}_{rc}$')
@@ -459,6 +442,7 @@ text = '(a)'
 plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = rate_L[num_t_points]
@@ -471,11 +455,8 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             ax=ax,
             )
 ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], ax=ax, color='b',
-#                          linewidth=2)
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], ax=ax, color='b',
-#                          linewidth=2)
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel('$f_{\\omega}$')
 ax.set_title('$\\bar{N}_{lc}$')
@@ -485,18 +466,22 @@ text = '(b)'
 plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
 
 ## save plots to file
 save_dir = '../../../Papers/texts/paper2022/pics/'
 
-# file_name = 'selectivity_heatmap_RF_parameters'
+# file_prefix = 'ERF_50kVm_'
+file_prefix = 'BRF_0.04T_'
+
+# file_name = file_prefix + 'selectivity_heatmap_RF_parameters'
 # beingsaved = plt.figure(1)
 # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
 #
-# file_name = 'Nrc_heatmap_RF_parameters'
+# file_name = file_prefix + 'Nrc_heatmap_RF_parameters'
 # beingsaved = plt.figure(2)
 # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
 #
-# file_name = 'Nlc_heatmap_RF_parameters'
+# file_name = file_prefix + 'Nlc_heatmap_RF_parameters'
 # beingsaved = plt.figure(3)
 # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
