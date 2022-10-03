@@ -38,6 +38,7 @@ def define_default_settings(settings=None):
         settings['T_keV'] = 10.0
     settings['T_eV'] = settings['T_keV'] * 1e3
     settings['v_th'] = get_thermal_velocity(settings['T_eV'], settings['mi'], settings['kB_eV'])
+    settings['v_th_for_cyc'] = get_thermal_velocity(settings['T_eV'], settings['mi_for_cyc'], settings['kB_eV'])
     if 'l' not in settings:
         settings['l'] = 1.0  # m (MM cell size)
         # settings['l'] = 10.0  # m (MM cell size)

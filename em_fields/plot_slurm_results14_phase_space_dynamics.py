@@ -33,7 +33,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
-save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -75,6 +76,16 @@ r_0 = 0
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
 # beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
+
+
+# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
+# beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
+
+# alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
+# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
+beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 # alpha = 0.8
 # alpha = 0.82
@@ -120,9 +131,9 @@ r_0 = 0
 
 
 # # set A
-# alpha = 1.0
-# beta = 0.0
-# set_num = 'a'
+alpha = 1.0
+beta = 0.0
+set_num = 'a'
 
 # # set B
 # alpha = 0.9
@@ -135,9 +146,9 @@ r_0 = 0
 # set_num = 'c'
 
 # # set D
-alpha = 1.2
-beta = 1.0
-set_num = 'd'
+# alpha = 1.2
+# beta = 1.0
+# set_num = 'd'
 
 if use_RF is False:
     title = 'without RF'
@@ -162,6 +173,8 @@ if absolute_velocity_sampling_type == 'const_vth':
 if r_0 > 0:
     set_name += '_r0_' + str(r_0) + '_' + set_name
 # set_name += '_antiresonant'
+# set_name += '_deuterium'
+set_name += '_tritium'
 
 save_dir_curr = save_dir + set_name
 

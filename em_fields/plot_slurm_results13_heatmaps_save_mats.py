@@ -11,9 +11,8 @@ from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 import copy
-import pandas as pd
+from scipy.io import savemat
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
@@ -98,6 +97,10 @@ r_0 = 0
 alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
 beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
+# gas_name = 'deuterium'
+gas_name = 'DT_mix'
+# gas_name = 'tritium'
+
 # alpha_loop_list = np.array([1.14, 1.16, 1.2])
 # beta_loop_list = np.array([4.5, 5])
 
@@ -121,22 +124,6 @@ rate_R = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 rate_L = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 selectivity = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 
-
-def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, color='w'):
-    x_heatmap_normed = 0.5 + np.array(range(len(x_heatmap)))
-    y_line_normed = (y_line - y_heatmap[0]) / (y_heatmap[-1] - y_heatmap[0]) * len(y_heatmap) - 0.5
-    # sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, ax=ax)
-    # ax_line = sns.lineplot(x=x_heatmap_normed, y=y_line_normed, color=color, linewidth=linewidth, ax=ax)
-    data = pd.DataFrame({'x': x_heatmap_normed, 'y': y_line_normed})
-    # data = pd.DataFrame({'x': x_heatmap_normed, 'y': y_line_normed, 'style': ['--' for _ in range(len(y_line_normed))]})
-    # ax_line = sns.lineplot(data=data, x='x', y='y', ax=ax)
-    # ax_line.lines[0].set_linestyle(linestyle)
-
-    sns.lineplot(data=data, x='x', y='y', style=True, dashes=[(2, 2)], color=color, linewidth=3, )
-
-    return
-
-
 for ind_beta, beta in enumerate(beta_loop_list):
     for ind_alpha, alpha in enumerate(alpha_loop_list):
         ind_file += 1
@@ -158,9 +145,8 @@ for ind_beta, beta in enumerate(beta_loop_list):
             if r_0 > 0:
                 set_name += '_r0_' + str(r_0)
             # set_name += '_antiresonant'
-            # set_name += '_DT_mix'
-            set_name += '_deuterium'
-            # set_name += '_tritium'
+            if gas_name != 'hydrogen':
+                set_name += '_' + gas_name
 
             # print(set_name)
             print('#' + str(ind_file) + '/' + str(num_files) + ': ' + set_name)
@@ -268,7 +254,6 @@ for ind_beta, beta in enumerate(beta_loop_list):
             t_array = data_dict['t'][0]
             t_array /= settings['l'] / settings['v_th']
 
-            nu_decay_list = []
             nu_rise_list = []
 
             # calc the saturattion value
@@ -284,101 +269,28 @@ for ind_beta, beta in enumerate(beta_loop_list):
                 elif i == N_theta - 1 and j == N_theta - 2:
                     nu_rise_list += [nu]
 
-                rate_R[ind_beta, ind_alpha] = nu_rise_list[0]
-                rate_L[ind_beta, ind_alpha] = nu_rise_list[1]
-                selectivity[ind_beta, ind_alpha] = nu_rise_list[0] / nu_rise_list[1]
+            rate_R[ind_beta, ind_alpha] = nu_rise_list[0]
+            rate_L[ind_beta, ind_alpha] = nu_rise_list[1]
+            selectivity[ind_beta, ind_alpha] = nu_rise_list[0] / nu_rise_list[1]
         except:
             print('*** FAILED ***')
 
-### PLOTS
+## save compiled data to file
 
-annot = False
-annot_fontsize = 8
-annot_fmt = '.2f'
+set_name = 'compiled_'
+if RF_type == 'electric_transverse':
+    set_name += 'ERF_' + str(E_RF_kVm)
+elif RF_type == 'magnetic_transverse':
+    set_name += 'BRF_' + str(B_RF)
+if gas_name != 'hydrogen':
+    set_name += '_' + gas_name
+save_file = save_dir + '/' + set_name + '.mat'
 
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = selectivity
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel('$f_{\\omega}$')
-ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$')
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(c)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-         horizontalalignment='right', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
+mat_dict = {}
+mat_dict['alpha_loop_list'] = alpha_loop_list
+mat_dict['beta_loop_list'] = beta_loop_list
+mat_dict['rate_R'] = rate_R
+mat_dict['rate_L'] = rate_L
+mat_dict['selectivity'] = selectivity
 
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = rate_R
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel('$f_{\\omega}$')
-ax.set_title('$\\bar{N}_{rc}$')
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(a)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-         horizontalalignment='right', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-ax.legend().set_visible(False)
-
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = rate_L
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-for i in range(len(alpha_const_omega_cyc0_right_list)):
-    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel('$f_{\\omega}$')
-ax.set_title('$\\bar{N}_{lc}$')
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(b)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-         horizontalalignment='right', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-ax.legend().set_visible(False)
-
-## save plots to file
-save_dir = '../../../Papers/texts/paper2022/pics/'
-
-# file_prefix = 'ERF_50kVm_'
-file_prefix = 'BRF_0.04T_'
-
-# file_name = file_prefix + 'selectivity_heatmap_RF_parameters'
-# beingsaved = plt.figure(1)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-#
-# file_name = file_prefix + 'Nrc_heatmap_RF_parameters'
-# beingsaved = plt.figure(2)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-#
-# file_name = file_prefix + 'Nlc_heatmap_RF_parameters'
-# beingsaved = plt.figure(3)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+savemat(save_file, mat_dict)

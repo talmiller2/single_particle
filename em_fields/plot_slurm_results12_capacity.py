@@ -31,7 +31,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set32_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
-save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -197,6 +198,8 @@ if absolute_velocity_sampling_type == 'const_vth':
 if r_0 > 0:
     set_name += '_r0_' + str(r_0) + '_' + set_name
 # set_name += '_antiresonant'
+set_name += '_deuterium'
+# set_name += '_tritium'
 
 save_dir_curr = save_dir + set_name
 
@@ -314,7 +317,7 @@ for ind_t in range(number_of_time_intervals):
 particles_counter_mat2_for_fit_3d = copy.deepcopy(particles_counter_mat2_3d)
 
 t_array = data_dict['t'][0]
-t_array /= settings['l'] / settings['v_th']
+# t_array /= settings['l'] / settings['v_th']
 
 colors = cm.rainbow(np.linspace(0, 1, N_theta))
 nu_decay_list = []
@@ -326,7 +329,8 @@ do_fit = True
 inds_t_array = range(len(t_array))
 fig, ax = plt.subplots(1, 1,
                        # figsize=(7, 7),
-                       num=1)
+                       # num=1,
+                       )
 fig.suptitle(title)
 
 ## calculate the saturation value to estimate the rate
