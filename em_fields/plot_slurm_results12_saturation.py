@@ -32,7 +32,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set33_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -75,8 +76,13 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
 # beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
 
+# alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
+# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
+# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
+# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
 # for ind_beta, beta_RF in enumerate(beta_loop_list):
@@ -171,8 +177,10 @@ beta = 1.5
 # alpha = 0.8
 # beta = -3.5
 
-alpha = 1.2
-beta = 1.0
+# alpha = 0.82
+# beta = -5.0
+alpha = 1.21
+beta = 2.0
 set_num = 'd'
 
 if use_RF is False:
@@ -198,8 +206,9 @@ if absolute_velocity_sampling_type == 'const_vth':
 if r_0 > 0:
     set_name += '_r0_' + str(r_0) + '_' + set_name
 # set_name += '_antiresonant'
-set_name += '_deuterium'
-# set_name += '_tritium'
+# set_name += '_deuterium'
+# set_name += '_DT_mix'
+set_name += '_tritium'
 
 save_dir_curr = save_dir + set_name
 
@@ -318,6 +327,7 @@ particles_counter_mat2_for_fit_3d = copy.deepcopy(particles_counter_mat2_3d)
 
 t_array = data_dict['t'][0]
 # t_array /= settings['l'] / settings['v_th']
+t_array /= settings['l'] / settings['v_th_for_cyc']
 
 colors = cm.rainbow(np.linspace(0, 1, N_theta))
 nu_decay_list = []
@@ -377,6 +387,7 @@ ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_satura
 # ax.plot(t_array, particles_counter_mat2_3d[1, 2, :], color='orange', linestyle='-', label='$\\bar{N}_{cl}$')
 
 ax.set_xlabel('$t \\cdot v_{th} / l$')
+# ax.set_xlabel('$t / (l / \\cdot v_{th}(m=2.5)) $')
 ax.set_ylim([0, 0.8])
 ax.legend()
 ax.grid(True)

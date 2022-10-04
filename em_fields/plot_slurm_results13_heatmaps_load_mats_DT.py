@@ -35,7 +35,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -137,8 +138,10 @@ annot_fmt = '.2f'
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = selectivity_1
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+vmin = 0
+vmax = 8
 sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
             annot=annot,
@@ -158,8 +161,10 @@ plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'b
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = selectivity_2
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+vmin = 0
+vmax = 8
 sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             vmin=vmin, vmax=vmax,
             annot=annot,
@@ -177,51 +182,51 @@ plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'b
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
 
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = np.minimum(selectivity_1, selectivity_2)
-vmin = np.nanmin(y)
-vmax = np.nanmax(y)
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel('$f_{\\omega}$')
-ax.set_title('$min(s_D,s_T)$')
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(c)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-         horizontalalignment='right', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = 100 * (1 - (selectivity_1 - selectivity_2) / (0.5 * (selectivity_1 + selectiv1ity_1)))
-y = 1 - abs((selectivity_1 - selectivity_2) / (0.5 * (selectivity_1 + selectivity_1)))
-# y = abs((selectivity_1 - selectivity_2))
-# vmin = 0
-# vmax = 1
-vmin = 0.7
-vmax = 1.3
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel('$f_{\\omega}$')
-ax.set_title('$1 - |s_D-s_T|/0.5(s_D+s_T)$')
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(d)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-         horizontalalignment='right', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
+# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+# y = np.minimum(selectivity_1, selectivity_2)
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+#             vmin=vmin, vmax=vmax,
+#             annot=annot,
+#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+#             ax=ax,
+#             )
+# ax.axes.invert_yaxis()
+# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+# ax.set_ylabel('$f_{\\omega}$')
+# ax.set_title('$min(s_D,s_T)$')
+# fig.set_tight_layout(0.5)
+# plt.yticks(rotation=0)
+# text = '(c)'
+# plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+#          horizontalalignment='right', verticalalignment='top', color='w',
+#          transform=fig.axes[0].transAxes)
+#
+# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+# # y = 100 * (1 - (selectivity_1 - selectivity_2) / (0.5 * (selectivity_1 + selectiv1ity_1)))
+# y = 1 - abs((selectivity_1 - selectivity_2) / (0.5 * (selectivity_1 + selectivity_1)))
+# # y = abs((selectivity_1 - selectivity_2))
+# # vmin = 0
+# # vmax = 1
+# vmin = 0.7
+# vmax = 1.3
+# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
+#             vmin=vmin, vmax=vmax,
+#             annot=annot,
+#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+#             ax=ax,
+#             )
+# ax.axes.invert_yaxis()
+# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+# ax.set_ylabel('$f_{\\omega}$')
+# ax.set_title('$1 - |s_D-s_T|/0.5(s_D+s_T)$')
+# fig.set_tight_layout(0.5)
+# plt.yticks(rotation=0)
+# text = '(d)'
+# plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+#          horizontalalignment='right', verticalalignment='top', color='w',
+#          transform=fig.axes[0].transAxes)
 
 ## save plots to file
 save_dir = '../../../Papers/texts/paper2022/pics/'

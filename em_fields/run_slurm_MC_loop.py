@@ -53,7 +53,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -88,11 +89,11 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
-# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39
+beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
-beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
+# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 0.1  # kV/m
@@ -218,8 +219,8 @@ for beta_loop in beta_loop_list:
         # tmax_mirror_lengths = 300
         # sim_cyclotron_periods = int(
         #     tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
-        sim_cyclotron_periods = int(
-            tmax_mirror_lengths * settings['l'] / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
+        sim_cyclotron_periods = tmax_mirror_lengths * settings['l'] / settings['v_th_for_cyc'] / field_dict[
+            'tau_cyclotron']
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         run_name = ''

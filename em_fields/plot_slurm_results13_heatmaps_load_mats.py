@@ -35,7 +35,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -63,8 +64,11 @@ B_RF = 0.04  # T
 
 
 # gas_name = 'deuterium'
+# m_curr = 2
 gas_name = 'DT_mix'
+m_curr = 2.5
 # gas_name = 'tritium'
+# m_curr = 3
 
 set_name = 'compiled_'
 if RF_type == 'electric_transverse':
@@ -84,12 +88,9 @@ selectivity = mat_dict['selectivity']
 
 alpha_const_omega_cyc0_right_list = []
 alpha_const_omega_cyc0_left_list = []
-vz_over_vth = 0.6
+vz_over_vth = 0.8
 # offset = 1.0
 # slope = 2 * np.pi / settings['l'] * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
-# m_curr = 2
-m_curr = 2.5
-# m_curr = 3
 offset = 2.5 / m_curr
 slope = 2 * np.pi * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
 alpha_const_omega_cyc0_right_list += [offset + slope * beta_loop_list]
@@ -128,6 +129,8 @@ sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=alpha_loop_list,
             ax=ax,
             )
 ax.axes.invert_yaxis()
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel('$f_{\\omega}$')
 ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$')

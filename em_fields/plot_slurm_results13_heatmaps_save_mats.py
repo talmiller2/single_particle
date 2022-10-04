@@ -34,7 +34,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+# save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
+save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -94,8 +95,11 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
-beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
+# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
+beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
 # gas_name = 'deuterium'
 gas_name = 'DT_mix'
