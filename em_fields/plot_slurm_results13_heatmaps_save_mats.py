@@ -35,7 +35,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set35_B0_0.1T_l_1m_Post_Rm_5_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -95,15 +96,15 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37
-# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39
+beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
-beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
+# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
 # gas_name = 'deuterium'
-gas_name = 'DT_mix'
-# gas_name = 'tritium'
+# gas_name = 'DT_mix'
+gas_name = 'tritium'
 
 # alpha_loop_list = np.array([1.14, 1.16, 1.2])
 # beta_loop_list = np.array([4.5, 5])
@@ -111,21 +112,10 @@ gas_name = 'DT_mix'
 num_files = len(alpha_loop_list) * len(beta_loop_list)
 ind_file = 0
 
-alpha_const_omega_cyc0_right_list = []
-alpha_const_omega_cyc0_left_list = []
-vz_over_vth = 0.6
-# offset = 1.0
-# slope = 2 * np.pi / settings['l'] * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
-m_curr = 2
-# m_curr = 2.5
-# m_curr = 3
-offset = 2.5 / m_curr
-slope = 2 * np.pi * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
-alpha_const_omega_cyc0_right_list += [offset + slope * beta_loop_list]
-alpha_const_omega_cyc0_left_list += [offset - slope * beta_loop_list]
-
-rate_R = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-rate_L = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+N_rc = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+N_lc = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+N_cr = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+N_cl = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 selectivity = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
 
 for ind_beta, beta in enumerate(beta_loop_list):
@@ -259,7 +249,6 @@ for ind_beta, beta in enumerate(beta_loop_list):
             t_array /= settings['l'] / settings['v_th']
 
             nu_rise_list = []
-
             # calc the saturattion value
             for i, j in [[0, 1], [N_theta - 1, N_theta - 2]]:
                 # inds_t_saturation = range(7, 21)
@@ -273,9 +262,11 @@ for ind_beta, beta in enumerate(beta_loop_list):
                 elif i == N_theta - 1 and j == N_theta - 2:
                     nu_rise_list += [nu]
 
-            rate_R[ind_beta, ind_alpha] = nu_rise_list[0]
-            rate_L[ind_beta, ind_alpha] = nu_rise_list[1]
-            selectivity[ind_beta, ind_alpha] = nu_rise_list[0] / nu_rise_list[1]
+            N_rc[ind_beta, ind_alpha] = np.mean(particles_counter_mat2_3d[0, 1, inds_t_saturation])
+            N_lc[ind_beta, ind_alpha] = np.mean(particles_counter_mat2_3d[2, 1, inds_t_saturation])
+            N_cr[ind_beta, ind_alpha] = np.mean(particles_counter_mat2_3d[1, 0, inds_t_saturation])
+            N_cl[ind_beta, ind_alpha] = np.mean(particles_counter_mat2_3d[1, 2, inds_t_saturation])
+            selectivity[ind_beta, ind_alpha] = N_rc[ind_beta, ind_alpha] / N_lc[ind_beta, ind_alpha]
         except:
             print('*** FAILED ***')
 
@@ -293,8 +284,10 @@ save_file = save_dir + '/' + set_name + '.mat'
 mat_dict = {}
 mat_dict['alpha_loop_list'] = alpha_loop_list
 mat_dict['beta_loop_list'] = beta_loop_list
-mat_dict['rate_R'] = rate_R
-mat_dict['rate_L'] = rate_L
+mat_dict['N_rc'] = N_rc
+mat_dict['N_lc'] = N_lc
+mat_dict['N_cr'] = N_cr
+mat_dict['N_cl'] = N_cl
 mat_dict['selectivity'] = selectivity
 
 savemat(save_file, mat_dict)

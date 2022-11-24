@@ -49,8 +49,8 @@ B_post_slope = B_post[2] + B_slope
 z /= l
 
 # plot axial magnetic fields
-plt.figure(1)
-# plt.plot(z, B_logan[2], label='Logan et al', color='b')
+plt.figure(1, figsize=(8, 4))
+plt.plot(z, B_logan[2], label='Logan', color='r')
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
 # plt.plot(z, B_post[2], label='Post', color='r')
 plt.plot(z, B_post[2], label='Post', color='b')
@@ -59,12 +59,13 @@ plt.plot(z, B_post[2], label='Post', color='b')
 # plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
 # plt.legend()
 # plt.xlabel('z [m]')
-plt.xlabel('z / l')
+plt.xlabel('$z / l$')
 plt.ylabel('$B_z$ [T]')
 plt.grid(True)
 plt.tight_layout()
+# plt.layout_engine()
 
-# plot radial magnetic field
+# # plot radial magnetic field
 # plt.figure(2)
 # plt.plot(z, B_logan[0], label='Logan et al', color='b')
 # # plt.plot(z, B_jaeger[0], '--', label='Jaeger et al', color='g')
@@ -91,4 +92,3 @@ plt.tight_layout()
 # file_name = 'axial_magnetic_field_post_form'
 # beingsaved = plt.figure(1)
 # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-# #

@@ -313,7 +313,7 @@ ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$')
 fig.set_tight_layout(0.5)
 plt.yticks(rotation=0)
 text = '(c)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
 
@@ -336,7 +336,7 @@ ax.set_title('$\\bar{N}_{rc}$')
 fig.set_tight_layout(0.5)
 plt.yticks(rotation=0)
 text = '(a)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
 ax.legend().set_visible(False)
@@ -360,7 +360,7 @@ ax.set_title('$\\bar{N}_{lc}$')
 fig.set_tight_layout(0.5)
 plt.yticks(rotation=0)
 text = '(b)'
-plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
 ax.legend().set_visible(False)

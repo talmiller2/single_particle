@@ -54,7 +54,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -89,7 +90,7 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
 beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
@@ -194,8 +195,8 @@ for beta_loop in beta_loop_list:
         field_dict['alpha_RF_list'] = [alpha_loop]
         field_dict['beta_RF_list'] = [beta_loop]
 
-        field_dict['mirror_field_type'] = 'post'
-        # field_dict['mirror_field_type'] = 'logan'
+        # field_dict['mirror_field_type'] = 'post'
+        field_dict['mirror_field_type'] = 'logan'
 
         # field_dict['anticlockwise'] = -1  # testing anti-resonant direction
 
