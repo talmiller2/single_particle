@@ -220,8 +220,7 @@ for set_ind in range(len(set_names)):
             # plt.plot(t / field_dict['tau_cyclotron'], v_transverse / settings['v_th'], label=ind_point, linestyle=linestyle,
             #          linewidth=linewidth, marker='o', markersize=2,)
             # check if the was ever a crossing of the LC for this particle
-            v_perp_minus_LC = (v_transverse - abs(v_axial) * np.sqrt(1 / (field_dict['Rm'] - 1.0))) / settings[
-                'v_th']
+            v_perp_minus_LC = (v_transverse - abs(v_axial) * np.sqrt(1 / (field_dict['Rm'] - 1.0))) / settings['v_th']
             crossing_happend = np.sum(v_perp_minus_LC > 0) > 0 and np.sum(v_perp_minus_LC < 0)
             # if crossing_happend and positive_z_velocity:
             # if positive_z_velocity:
