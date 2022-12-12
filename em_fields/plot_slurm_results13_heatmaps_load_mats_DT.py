@@ -1,18 +1,21 @@
 import pickle
 
-import warnings
-
-warnings.filterwarnings("error")
-
 import numpy as np
 
 from em_fields.slurm_functions import get_script_evolution_slave_fenchel
+
+# warnings.filterwarnings("error")
 
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+
+from warnings import filterwarnings
+
+filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool` is a deprecated alias')
+filterwarnings(action='ignore', category=DeprecationWarning, message='`np.int` is a deprecated alias')
 from scipy.io import loadmat
 
 from em_fields.default_settings import define_plasma_parameters
@@ -24,7 +27,7 @@ plt.rcParams.update({'font.size': 12})
 # plt.rcParams["figure.facecolor"] = 'white'
 # plt.rcParams["axes.facecolor"] = 'green'
 
-plt.close('all')
+# plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -41,6 +44,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 
 select_alpha_list = []
 select_beta_list = []
@@ -50,42 +54,41 @@ select_alpha_list += [1.4]
 select_beta_list += [3.0]
 set_name_list += ['1']
 
-# select_alpha_list += [1.3]
-# select_beta_list += [0.0]
-# set_name_list += ['2']
+select_alpha_list += [1.3]
+select_beta_list += [0.0]
+set_name_list += ['2']
 
 select_alpha_list += [1.0]
 select_beta_list += [-3.0]
-# set_name_list += ['3']
-set_name_list += ['2']
+set_name_list += ['3']
+# set_name_list += ['2'] # new numbering
 
-# select_alpha_list += [0.6]
-# select_beta_list += [-2.0]
-# set_name_list += ['4']
-
-####
+select_alpha_list += [0.6]
+select_beta_list += [-2.0]
+set_name_list += ['4']
 
 select_alpha_list += [0.7]
 select_beta_list += [-3.0]
-# set_name_list += ['5']
-set_name_list += ['3']
+set_name_list += ['5']
+# set_name_list += ['3'] # new numbering
 
-# select_alpha_list += [0.6]
-# select_beta_list += [-4.0]
-# set_name_list += ['6']
-#
-# select_alpha_list += [0.55]
-# select_beta_list += [-3.0]
-# set_name_list += ['7']
+select_alpha_list += [0.6]
+select_beta_list += [-4.0]
+set_name_list += ['6']
 
-# select_alpha_list += [0.5]
-# select_beta_list += [-4.0]
-# set_name_list += ['8']
-#
+select_alpha_list += [0.55]
+select_beta_list += [-3.0]
+set_name_list += ['7']
+
+select_alpha_list += [0.5]
+select_beta_list += [-4.0]
+set_name_list += ['8']
+
 select_alpha_list += [0.55]
 select_beta_list += [-7.0]
-# set_name_list += ['9']
-set_name_list += ['4']
+set_name_list += ['9']
+# set_name_list += ['4'] # new numbering
+
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -103,7 +106,7 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
@@ -228,29 +231,40 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
     ind_beta = np.where(beta_loop_list >= beta)[0][0]
 
     # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
-    # print('set', set_name, 'omega/omega0=',  '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=', beta)
+    print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
+          beta)
     # print('  D:  N_rc=',  '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]))
     # print('  T:  N_rc=',  '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]))
+    print('D:')
+    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
+    print('T:')
+    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
 
-    print(set_name, '(D) & ',
-          '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
-          str(beta), ' & ',
-          '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
-          '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
-    print(set_name, '(T) & & &',
-          '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
-          '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
-          '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
-    print('\\hline')
+    # print(set_name, '(D) & ',
+    #       '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
+    #       str(beta), ' & ',
+    #       '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
+    # print(set_name, '(T) & & &',
+    #       '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
+    # print('\\hline')
 
 
 def plot_resonance_lines():
@@ -287,103 +301,110 @@ def plot_interest_points(ax):
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
-###############
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = N_rc_1
-y = selectivity_1
-# vmin = np.nanmin(y)
-# vmax = np.nanmax(y)
-vmin = 0
-# vmax = 3
-# vmax = 8
-vmax = 10
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-plot_resonance_lines()
-plot_interest_points(ax)
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel(ylabel)
-# ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (D)', fontsize=20)
-ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (D)', fontsize=20)
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(a)'
-plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-         horizontalalignment='left', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-ax.legend().set_visible(False)
+do_plots = False
+# do_plots = True
 
-###############
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = selectivity_2
-# y = N_rc_2
-# vmin = np.nanmin(y)
-# vmax = np.nanmax(y)
-vmin = 0
-# vmax = 3
-# vmax = 8
-vmax = 10
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-plot_resonance_lines()
-plot_interest_points(ax)
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel(ylabel)
-# ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (T)', fontsize=20)
-ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (T)', fontsize=20)
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(b)'
-plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-         horizontalalignment='left', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-ax.legend().set_visible(False)
+if do_plots == True:
+    ###############
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    # y = N_rc_1
+    y = selectivity_1
+    # vmin = np.nanmin(y)
+    # vmax = np.nanmax(y)
+    vmin = 0
+    # vmax = 3
+    # vmax = 8
+    vmax = 10
+    sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+                vmin=vmin, vmax=vmax,
+                annot=annot,
+                annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+                ax=ax,
+                )
+    ax.axes.invert_yaxis()
+    plot_resonance_lines()
+    plot_interest_points(ax)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+    ax.set_ylabel(ylabel)
+    # ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (D)', fontsize=20)
+    ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (D)', fontsize=20)
+    # fig.set_tight_layout(0.5)
+    fig.set_layout_engine(layout='tight')
+    plt.yticks(rotation=0)
+    text = '(a)'
+    plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+             horizontalalignment='left', verticalalignment='top', color='w',
+             transform=fig.axes[0].transAxes)
+    ax.legend().set_visible(False)
 
-############### DIFFERENCE PLOT ###########
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-y = np.abs((selectivity_2 - selectivity_1) / (selectivity_2 + selectivity_1))
-vmin = 0
-vmax = 0.5
-sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            )
-ax.axes.invert_yaxis()
-plot_resonance_lines()
-plot_interest_points(ax)
-ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-ax.set_ylabel(ylabel)
-ax.set_title('difference', fontsize=20)
-fig.set_tight_layout(0.5)
-plt.yticks(rotation=0)
-text = '(b)'
-plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-         horizontalalignment='left', verticalalignment='top', color='w',
-         transform=fig.axes[0].transAxes)
-ax.legend().set_visible(False)
+    ###############
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    y = selectivity_2
+    # y = N_rc_2
+    # vmin = np.nanmin(y)
+    # vmax = np.nanmax(y)
+    vmin = 0
+    # vmax = 3
+    # vmax = 8
+    vmax = 10
+    sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+                vmin=vmin, vmax=vmax,
+                annot=annot,
+                annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+                ax=ax,
+                )
+    ax.axes.invert_yaxis()
+    plot_resonance_lines()
+    plot_interest_points(ax)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+    ax.set_ylabel(ylabel)
+    # ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (T)', fontsize=20)
+    ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (T)', fontsize=20)
+    # fig.set_tight_layout(0.5)
+    fig.set_layout_engine(layout='tight')
+    plt.yticks(rotation=0)
+    text = '(b)'
+    plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+             horizontalalignment='left', verticalalignment='top', color='w',
+             transform=fig.axes[0].transAxes)
+    ax.legend().set_visible(False)
 
-## save plots to file
-save_dir = '../../../Papers/texts/paper2022/pics/'
+    ############### DIFFERENCE PLOT ###########
+    # fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    # y = np.abs((selectivity_2 - selectivity_1) / (selectivity_2 + selectivity_1))
+    # vmin = 0
+    # vmax = 0.5
+    # sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+    #             vmin=vmin, vmax=vmax,
+    #             annot=annot,
+    #             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+    #             ax=ax,
+    #             )
+    # ax.axes.invert_yaxis()
+    # plot_resonance_lines()
+    # plot_interest_points(ax)
+    # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+    # ax.set_ylabel(ylabel)
+    # ax.set_title('difference', fontsize=20)
+    # fig.set_tight_layout(0.5)
+    # plt.yticks(rotation=0)
+    # text = '(b)'
+    # plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+    #          horizontalalignment='left', verticalalignment='top', color='w',
+    #          transform=fig.axes[0].transAxes)
+    # ax.legend().set_visible(False)
 
-# file_prefix = 'ERF_50kVm_'
-# file_prefix = 'BRF_0.04T_'
+    ## save plots to file
+    save_dir = '../../../Papers/texts/paper2022/pics/'
 
-# file_name = 's_heatmap_D'
-# beingsaved = plt.figure(1)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-#
-# file_name = 's_heatmap_T'
-# beingsaved = plt.figure(2)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+    # file_name = 's_heatmap_D'
+    # if RF_type == 'magnetic_transverse':
+    #     file_name = 'BRF_' + file_name
+    # beingsaved = plt.figure(1)
+    # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+    #
+    # file_name = 's_heatmap_T'
+    # if RF_type == 'magnetic_transverse':
+    #     file_name = 'BRF_' + file_name
+    # beingsaved = plt.figure(2)
+    # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')

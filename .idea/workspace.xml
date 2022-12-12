@@ -24,16 +24,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T">
+      <change afterPath="$PROJECT_DIR$/em_fields/plot_color_bar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_phase_space_dynamics.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results5.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results5_v_space.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,12 +64,16 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/em_fields" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myUseExistingConsole" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
+      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/em_fields" />
       <recent name="$PROJECT_DIR$/loop_fields" />
@@ -79,12 +81,26 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
-      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.plot_magnetic_forms">
+  <component name="RunManager" selected="Python.plot_color_bar">
+    <configuration name="plot_color_bar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_color_bar.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="plot_magnetic_field_loop_cartesian" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -131,9 +147,6 @@
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -169,7 +182,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results13_heatmaps_load_mats_DT" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results12_saturation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -181,7 +194,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_slurm_results13_heatmaps_load_mats" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -211,65 +245,23 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results5_v_space" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results5_v_space.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test_yfin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/test_yfin.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.plot_magnetic_field_loop_cartesian" />
       <item itemvalue="Python.plot_magnetic_field_loop_cylindrical" />
       <item itemvalue="Python.plot_periodic_square" />
-      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
       <item itemvalue="Python.plot_slurm_results14_v_space" />
-      <item itemvalue="Python.plot_slurm_results5_v_space" />
-      <item itemvalue="Python.test_yfin" />
+      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats" />
+      <item itemvalue="Python.plot_slurm_results12_saturation" />
+      <item itemvalue="Python.plot_color_bar" />
       <item itemvalue="Python.plot_magnetic_forms" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.plot_magnetic_forms" />
-        <item itemvalue="Python.plot_magnetic_forms" />
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
+        <item itemvalue="Python.plot_color_bar" />
+        <item itemvalue="Python.plot_color_bar" />
+        <item itemvalue="Python.plot_color_bar" />
+        <item itemvalue="Python.plot_color_bar" />
+        <item itemvalue="Python.plot_color_bar" />
       </list>
     </recent_temporary>
   </component>
@@ -284,20 +276,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586773491039</updated>
-    </task>
-    <task id="LOCAL-00121" summary="add runs where only RF phase changes for several specific initial velocities">
-      <created>1639656020669</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1639656020669</updated>
-    </task>
-    <task id="LOCAL-00122" summary="set up matrix run to show selectivity matrix more clearly">
-      <created>1639667180287</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1639667180287</updated>
     </task>
     <task id="LOCAL-00123" summary="set up matrix run to show selectivity matrix more clearly">
       <created>1639667244523</created>
@@ -628,7 +606,21 @@
       <option name="project" value="LOCAL" />
       <updated>1664882636879</updated>
     </task>
-    <option name="localTasksCounter" value="170" />
+    <task id="LOCAL-00170" summary="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T">
+      <created>1669322558466</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1669322558466</updated>
+    </task>
+    <task id="LOCAL-00171" summary="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T">
+      <created>1669322726371</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1669322726371</updated>
+    </task>
+    <option name="localTasksCounter" value="172" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -674,6 +666,10 @@
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="705" y="409" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog" timestamp="1670340936217">
+      <screen x="0" y="25" width="1920" height="980" />
+    </state>
+    <state x="705" y="409" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1670340936217" />
     <state width="1419" height="252" key="GridCell.Tab.0.bottom" timestamp="1664918434396">
       <screen x="0" y="25" width="1440" height="800" />
     </state>
@@ -710,23 +706,24 @@
       <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="399" y="131" key="RollbackChangesDialog/0.25.1440.800@0.25.1440.800" timestamp="1660822122286" />
-    <state x="229" y="61" key="SettingsEditor" timestamp="1663829829633">
-      <screen x="0" y="25" width="1440" height="800" />
+    <state x="305" y="69" key="SettingsEditor" timestamp="1669616103167">
+      <screen x="0" y="25" width="1920" height="980" />
     </state>
+    <state x="305" y="69" key="SettingsEditor/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1669616103167" />
     <state x="229" y="61" key="SettingsEditor/0.25.1440.800@0.25.1440.800" timestamp="1663829829633" />
-    <state x="420" y="210" key="Vcs.Push.Dialog.v2" timestamp="1664882639300">
-      <screen x="0" y="25" width="1440" height="800" />
+    <state x="560" y="251" key="Vcs.Push.Dialog.v2" timestamp="1669323747008">
+      <screen x="0" y="25" width="1920" height="980" />
     </state>
-    <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1664714490111" />
+    <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1669323747008" />
     <state x="420" y="210" key="Vcs.Push.Dialog.v2/0.25.1440.800@0.25.1440.800" timestamp="1664882639300" />
     <state x="521" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1664824972722">
       <screen x="0" y="25" width="1440" height="800" />
     </state>
     <state x="521" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.25.1440.800@0.25.1440.800" timestamp="1664824972722" />
-    <state x="657" y="270" width="756" height="672" key="find.popup" timestamp="1668767428759">
+    <state x="657" y="270" width="756" height="672" key="find.popup" timestamp="1670328908635">
       <screen x="0" y="25" width="1920" height="980" />
     </state>
-    <state x="657" y="270" width="756" height="672" key="find.popup/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1668767428759" />
+    <state x="657" y="270" width="756" height="672" key="find.popup/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1670328908635" />
     <state x="493" y="225" width="567" height="548" key="find.popup/0.25.1440.800@0.25.1440.800" timestamp="1665940674180" />
     <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1667561140589">
       <screen x="0" y="25" width="1920" height="980" />

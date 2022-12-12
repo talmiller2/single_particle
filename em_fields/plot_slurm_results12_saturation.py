@@ -59,7 +59,7 @@ B_RF = 0.04  # T
 gas_name_list = []
 gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -156,10 +156,9 @@ select_beta_list += [-7.0]
 set_name_list += ['4']
 
 # ind_set = 0
-# ind_set = 1
+ind_set = 1
 # ind_set = 2
-ind_set = 3
-# ind_set = 4
+# ind_set = 3
 
 alpha = select_alpha_list[ind_set]
 beta = select_beta_list[ind_set]
@@ -373,8 +372,8 @@ for gas_name in gas_name_list:
 
     # ax.set_xlabel('$t \\cdot v_{th} / l$')
     # ax.set_xlabel('$t \\cdot v_{th,T} / l$')
-    ax.set_xlabel('$t / \\tau_{th}$',
-                  fontsize=20)
+    # ax.set_xlabel('$t / \\tau_{th}$',
+    #               fontsize=20)
     # ax.set_ylim([0, 0.9])
     ax.set_ylim([0, 1.0])
     ax.set_xlim([0, 1.75])
@@ -395,10 +394,14 @@ for gas_name in gas_name_list:
     plt.text(0.99, 0.98, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
              horizontalalignment='right', verticalalignment='top', color='k',
              transform=fig.axes[0].transAxes)
-    fig.set_tight_layout({'pad': 0.5, 'rect': (0, 0, 1, 0.95)})
+    # fig.set_tight_layout({'pad': 0.5, 'rect': (0, 0, 1, 0.95)})
+    fig.set_layout_engine(layout='tight')
 
     ## save plots to file
-    save_fig_dir = '../../../Papers/texts/paper2022/pics/'
-    file_name = 'saturation_set_' + gas_name_shorthand + '_' + RF_set_name
-    beingsaved = plt.gcf()
-    beingsaved.savefig(save_fig_dir + file_name + '.eps', format='eps')
+    # save_fig_dir = '../../../Papers/texts/paper2022/pics/'
+    # file_name = 'saturation_set_' + gas_name_shorthand + '_' + RF_set_name
+    # if RF_type == 'magnetic_transverse':
+    #     file_name = 'BRF_' + file_name
+    # # file_name += '_mod'
+    # beingsaved = plt.gcf()
+    # beingsaved.savefig(save_fig_dir + file_name + '.eps', format='eps')

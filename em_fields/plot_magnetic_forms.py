@@ -50,13 +50,25 @@ z /= l
 
 # plot axial magnetic fields
 plt.figure(1, figsize=(8, 4))
-plt.plot(z, B_logan[2], label='Logan', color='r')
+# plt.plot(z, B_logan[2], label='Logan', color='r')
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
 # plt.plot(z, B_post[2], label='Post', color='r')
 plt.plot(z, B_post[2], label='Post', color='b')
 # plt.plot(z, B_slope, '--', label='slope', color='k')
 # plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
 # plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
+
+### plot shallow regions of magnetic field near the center
+# z_bounds_list = [[-1, 0], [0, 1]]
+# for z_bounds in z_bounds_list:
+#     B_array = B_post[2]
+#     B_max_reversal = 1.25
+#     inds = [i for i, Bi in enumerate(B_array) if Bi <= B_max_reversal and z[i] >= z_bounds[0] and z[i] <= z_bounds[1]]
+#     z_array = z[inds]
+#     B_lower_bound = B_array[inds]
+#     B_upper_bound = B_max_reversal + B_lower_bound * 0
+#     plt.fill_between(z_array, B_lower_bound, B_upper_bound, color='b', alpha=0.3)
+
 # plt.legend()
 # plt.xlabel('z [m]')
 plt.xlabel('$z / l$')
@@ -88,7 +100,7 @@ plt.tight_layout()
 
 ## save plots to file
 # save_dir = '../../../Papers/texts/paper2022/pics/'
-#
 # file_name = 'axial_magnetic_field_post_form'
 # beingsaved = plt.figure(1)
 # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+# # beingsaved.savefig(save_dir + file_name + '.jpeg', format='jpeg', dpi=300)

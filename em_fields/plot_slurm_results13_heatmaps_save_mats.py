@@ -12,6 +12,10 @@ evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
 import copy
+
+from warnings import filterwarnings
+
+filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool` is a deprecated alias')
 from scipy.io import savemat
 
 plt.rcParams.update({'font.size': 12})
@@ -37,6 +41,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -54,7 +59,7 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
@@ -96,15 +101,15 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
 beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-# gas_name = 'deuterium'
+gas_name = 'deuterium'
 # gas_name = 'DT_mix'
-gas_name = 'tritium'
+# gas_name = 'tritium'
 
 # alpha_loop_list = np.array([1.14, 1.16, 1.2])
 # beta_loop_list = np.array([4.5, 5])
