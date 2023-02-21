@@ -40,8 +40,9 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
+save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -55,11 +56,11 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 0.1 # kV/m
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
