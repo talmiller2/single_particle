@@ -11,20 +11,21 @@ plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
-# plt.close('all')
-# plot3d_exists = False
+plt.close('all')
+plot3d_exists = False
 # plot3d_exists = True
 
-# for ind_sim in range(1):
-# for ind_sim in range(2):
-# for ind_sim in range(3):
-# for ind_sim in range(5):
-# for ind_sim in range(10):
-for ind_sim in range(20):
+for ind_sim in range(1):
+    # for ind_sim in range(2):
+    # for ind_sim in range(3):
+    # for ind_sim in range(5):
+    # for ind_sim in range(10):
+    # for ind_sim in range(20):
 
     settings = {}
     settings['trajectory_save_method'] = 'intervals'
     settings['num_snapshots'] = 121
+    # settings['num_snapshots'] = 10000
 
     settings = define_default_settings(settings)
 
@@ -32,7 +33,7 @@ for ind_sim in range(20):
     field_dict['mirror_field_type'] = 'const'
     # field_dict['mirror_field_type'] = 'logan'
 
-    field_dict['RF_type'] = 'electric_transverse'
+    # field_dict['RF_type'] = 'electric_transverse'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1
     field_dict['E_RF_kVm'] = 10
@@ -43,32 +44,59 @@ for ind_sim in range(20):
     # field_dict['B_RF'] = 0.01
     # field_dict['B_RF'] = 0.03
     field_dict['B_RF'] = 0.04
+    # field_dict['B_RF'] = 0.06
     # field_dict['B_RF'] = 0.05
+    # field_dict['B_RF'] = 0.2
+    # field_dict['B_RF'] = 0.5
+    # field_dict['B_RF'] = 0.02
     # field_dict['B_RF'] = 0.1
     # field_dict['alpha_RF_list'] = [1.0]
     # field_dict['alpha_RF_list'] = [1.1]
+    # field_dict['alpha_RF_list'] = [1.5]
     # field_dict['alpha_RF_list'] = [0.9]
     # field_dict['alpha_RF_list'] = [0.8]
+    # field_dict['alpha_RF_list'] = [0.5]
+    # field_dict['alpha_RF_list'] = [0.88]
     # field_dict['alpha_RF_list'] = [0.92]
+    # field_dict['alpha_RF_list'] = [0.94]
     # field_dict['alpha_RF_list'] = [0.95]
+    # field_dict['alpha_RF_list'] = [0.96]
+    # field_dict['alpha_RF_list'] = [0.98]
     # field_dict['alpha_RF_list'] = [0.99]
+    field_dict['alpha_RF_list'] = [0.995]
+    # field_dict['alpha_RF_list'] = [0.999]
     # field_dict['alpha_RF_list'] = [1.01]
-    field_dict['alpha_RF_list'] = [1.02]
+    # field_dict['alpha_RF_list'] = [1.02]
+    # field_dict['alpha_RF_list'] = [1.04]
+    # field_dict['alpha_RF_list'] = [1.05]
+    # field_dict['alpha_RF_list'] = [1.1]
     # field_dict['alpha_RF_list'] = [0.6]
     field_dict['beta_RF_list'] = [0]
     # field_dict['beta_RF_list'] = [-1.0]
+    # field_dict['beta_RF_list'] = [-10.0]
     # field_dict['beta_RF_list'] = [-2.0]
     # field_dict['beta_RF_list'] = [1.0]
     # field_dict['beta_RF_list'] = [(field_dict['alpha_RF_list'][0] - 1) * 95043192 / (2 * np.pi * 982336)]
 
     # field_dict['anticlockwise'] = -1
+
+    # field_dict['phase_RF_addition'] = 0
+    # field_dict['phase_RF_addition'] = np.pi / 3
+    field_dict['phase_RF_addition'] = 2 * np.pi * np.random.randn()
+
+    field_dict['use_RF_correction'] = False
+
     field_dict = define_default_field(settings, field_dict)
 
     loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
     if ind_sim == 0:
-        angle = 0.99 * loss_cone_angle
-    # elif ind_sim == 1:
-    #     # angle = 1.01 * loss_cone_angle
+        # angle = 0.99 * loss_cone_angle
+        # angle = 0.5 * loss_cone_angle
+        # angle = 0.2 * loss_cone_angle
+        angle = 1.0
+        # angle = 1.5 * loss_cone_angle
+        # elif ind_sim == 1:
+        #     # angle = 1.01 * loss_cone_angle
     else:
         field_dict['phase_RF_addition'] = 2 * np.pi * np.random.rand(ind_sim)[0]
         field_dict = define_default_field(settings, field_dict)
@@ -104,13 +132,19 @@ for ind_sim in range(20):
     #     v_0[1] *= -1
     #     v_0[2] *= -1
 
+    # settings['time_step_tau_cyclotron_divisions'] = 20
+    settings['time_step_tau_cyclotron_divisions'] = 100
+    # settings['time_step_tau_cyclotron_divisions'] = 300
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # sim_cyclotron_periods = 5
+    # sim_cyclotron_periods = 10
     # sim_cyclotron_periods = 20
+    # sim_cyclotron_periods = 30
     # sim_cyclotron_periods = 50
     # sim_cyclotron_periods = 70
-    sim_cyclotron_periods = 100
+    # sim_cyclotron_periods = 100
     # sim_cyclotron_periods = 200
+    sim_cyclotron_periods = 500
     t_max = sim_cyclotron_periods * field_dict['tau_cyclotron']
     num_steps = int(t_max / dt)
 
@@ -143,6 +177,8 @@ for ind_sim in range(20):
         label = '$E_{RF}$=' + str(field_dict['E_RF_kVm']) + 'kV/m'
     else:
         label = '$B_{RF}$=' + str(field_dict['B_RF']) + 'T'
+    # label += ', $\\alpha=$' + str(field_dict['alpha_RF_list'][0])
+    label += ', $\\omega_{RF} / \\omega_{cyc}=$' + str(field_dict['alpha_RF_list'][0])
 
     linewidth = 2
 
@@ -164,24 +200,72 @@ for ind_sim in range(20):
     plt.title(label)
     plt.grid(True)
     plt.tight_layout()
-    #
+
+    ### analytic model
+    tr = t * field_dict['tau_cyclotron']
+    omega_cyc = settings['e'] * field_dict['B0'] / settings['mi']
+    omega_B = settings['e'] * field_dict['B_RF'] / settings['mi']
+    # A = omega_B * vz[0] / (4 * omega_cyc + 2 * omega_B)
+    # A *= 10
+    # A = 0.466
+    # A = 0.5
+    A = 0.5 * vz[0]
+    # A = v_norm[0] - vy[0]
+    vx_model = -vy[0] * np.sin(omega_cyc * tr) \
+               - A * np.sin((omega_cyc + omega_B) * tr) \
+               + A * np.sin((omega_cyc - omega_B) * tr)
+    vy_model = vy[0] * np.cos(omega_cyc * tr) \
+               + A * np.cos((omega_cyc + omega_B) * tr) \
+               - A * np.cos((omega_cyc - omega_B) * tr)
+    vz_model = vz[0] * np.cos(omega_B * tr)
+
     plt.figure(4)
     # plt.subplot(1,2,2)
-    # plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
-    # plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
+    plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
+    plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
     # plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
+    plt.plot(t, vz, label='$v_z$ ($\\bar{v}_z/v_{z,0}=$' + '{:.3f}'.format(np.mean(vz) / vz[0]) + ')',
+             linewidth=linewidth, color='r')
+    # plt.plot(t, vx_model, label='$v_x$ model', linewidth=linewidth, color='b', linestyle='--')
+    # plt.plot(t, vy_model, label='$v_y$ model', linewidth=linewidth, color='g', linestyle='--')
+    # plt.plot(t, vz_model, label='$v_z$ model', linewidth=linewidth, color='r', linestyle='--')
     # plt.plot(t, vz, label='$v_z$', linewidth=linewidth)
-    plt.plot(t, vz, label=label2, linewidth=linewidth)
+    # plt.plot(t, vz, label=label2, linewidth=linewidth)
     # plt.plot(t, v_norm, label='$v_{norm}$', linewidth=linewidth, color='k')
-    # plt.legend()
+    plt.legend()
     # plt.xlabel('t')
     plt.xlabel('t/$\\tau_{cyc}$')
     # plt.ylabel('v')
-    # plt.ylabel('v/$v_{th}$')
-    plt.ylabel('$v_z/v_{th}$')
+    plt.ylabel('v/$v_{th}$')
+    # plt.ylabel('$v_z/v_{th}$')
     plt.title(label)
     plt.grid(True)
     plt.tight_layout()
+
+    ### Plot fourier transform
+    plt.figure(5)
+    inds_t = range(len(t))
+    # inds_t = range(int(0 * len(t)), int(0.5 * len(t)))
+    # inds_t = range(int(0 * len(t)), int(0.2 * len(t)))
+    tf = t[inds_t]
+    freq = [100.0 * i / len(tf) for i in list(range(len(tf)))]
+    # plt.plot(freq, abs(np.fft.fft(vx[inds_t])), label='$v_x$', linewidth=linewidth, color='b')
+    plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g')
+    plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r')
+    # inds_t = range(int(0.5 * len(t)), int(1.0 * len(t)))
+    # # inds_t = range(int(0.2 * len(t)), int(0.4 * len(t)))
+    # tf = t[inds_t]
+    # freq = [100.0 * i / len(tf) for i in list(range(len(tf)))]
+    # # plt.plot(freq, abs(np.fft.fft(vx[inds_t])), label='$v_x$', linewidth=linewidth, color='b')
+    # plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g', linestyle='--')
+    # plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r', linestyle='--')
+    plt.legend()
+    plt.xlabel('$\\omega/\\omega_{cyc}$')
+    plt.xlim([0, 1.5])
+    plt.title('Fourier transforms: ' + label)
+    plt.grid(True)
+    plt.tight_layout()
+
     #
     # plt.figure(2)
     # plt.plot(x, y, linewidth=linewidth)
@@ -215,13 +299,13 @@ for ind_sim in range(20):
     # plt.grid(True)
     # plt.tight_layout()
 
-    plt.figure(8)
-    plt.plot(vz, vt, linewidth=linewidth)
-    plt.legend()
-    plt.xlabel('$v_z$')
-    plt.ylabel('$v_t$')
-    plt.grid(True)
-    plt.tight_layout()
+    # plt.figure(8)
+    # plt.plot(vz, vt, linewidth=linewidth)
+    # plt.legend()
+    # plt.xlabel('$v_z$')
+    # plt.ylabel('$v_t$')
+    # plt.grid(True)
+    # plt.tight_layout()
 
     # if 'fig' in locals():
     #     plt.figure(6)

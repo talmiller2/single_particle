@@ -55,7 +55,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
+# save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
+save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 
 plt.close('all')
 
@@ -102,8 +103,8 @@ RF_type = 'electric_transverse'
 # E_RF_kVm = 1  # kV/m
 # E_RF_kVm = 5 # kV/m
 # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 # RF_type = 'magnetic_transverse'
@@ -195,8 +196,8 @@ for beta_loop in beta_loop_list:
         field_dict['alpha_RF_list'] = [alpha_loop]
         field_dict['beta_RF_list'] = [beta_loop]
 
-        # field_dict['mirror_field_type'] = 'post'
-        field_dict['mirror_field_type'] = 'logan'
+        field_dict['mirror_field_type'] = 'post'
+        # field_dict['mirror_field_type'] = 'logan'
 
         # field_dict['anticlockwise'] = -1  # testing anti-resonant direction
 

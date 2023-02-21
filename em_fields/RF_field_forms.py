@@ -23,7 +23,7 @@ def E_RF_function(x_vec, t, **field_dict):
             E_RF_vector += E_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
                                             np.cos(k * (z - z_0) - omega * t + phase_RF),
                                             0])
-    elif field_dict['RF_type'] == 'magnetic_transverse':
+    elif field_dict['RF_type'] == 'magnetic_transverse' and field_dict['use_RF_correction'] == True:
         B_RF = field_dict['B_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
             Ez = - x * np.sin(k * (z - z_0) - omega * t + phase_RF) \
@@ -31,8 +31,6 @@ def E_RF_function(x_vec, t, **field_dict):
             dEdz = - x * k * np.cos(k * (z - z_0) - omega * t + phase_RF) \
                    + y * k * anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF)
             E_RF_vector += B_RF * omega / c ** 2 * np.array([-x / 2 * dEdz, -y / 2 * dEdz, Ez])
-    else:
-        raise ValueError('RF_type = ' + str(field_dict['RF_type']) + ' is invalid.')
 
     return E_RF_vector
 
@@ -56,7 +54,7 @@ def B_RF_function(x_vec, t, **field_dict):
     c = field_dict['c']
 
     B_RF_vector = 0
-    if field_dict['RF_type'] == 'electric_transverse':
+    if field_dict['RF_type'] == 'electric_transverse' and field_dict['use_RF_correction'] == True:
         E_RF = field_dict['E_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
             Bz = - x * np.sin(k * (z - z_0) - omega * t + phase_RF) \
@@ -70,7 +68,5 @@ def B_RF_function(x_vec, t, **field_dict):
             B_RF_vector += B_RF * np.array([anticlockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
                                             np.cos(k * (z - z_0) - omega * t + phase_RF),
                                             0])
-    else:
-        raise ValueError('RF_type = ' + str(field_dict['RF_type']) + ' is invalid.')
 
     return B_mirror + B_RF_vector

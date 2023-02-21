@@ -54,41 +54,40 @@ select_alpha_list += [1.4]
 select_beta_list += [3.0]
 set_name_list += ['1']
 
-select_alpha_list += [1.3]
-select_beta_list += [0.0]
-set_name_list += ['2']
+# select_alpha_list += [1.3]
+# select_beta_list += [0.0]
+# set_name_list += ['2']
 
 select_alpha_list += [1.0]
 select_beta_list += [-3.0]
-set_name_list += ['3']
-# set_name_list += ['2'] # new numbering
+# set_name_list += ['3']
+set_name_list += ['2']  # new numbering
 
-select_alpha_list += [0.6]
-select_beta_list += [-2.0]
-set_name_list += ['4']
+# select_alpha_list += [0.6]
+# select_beta_list += [-2.0]
+# set_name_list += ['4']
 
 select_alpha_list += [0.7]
 select_beta_list += [-3.0]
-set_name_list += ['5']
-# set_name_list += ['3'] # new numbering
+# set_name_list += ['5']
+set_name_list += ['3']  # new numbering
 
-select_alpha_list += [0.6]
-select_beta_list += [-4.0]
-set_name_list += ['6']
+# select_alpha_list += [0.6]
+# select_beta_list += [-4.0]
+# set_name_list += ['6']
 
-select_alpha_list += [0.55]
-select_beta_list += [-3.0]
-set_name_list += ['7']
+# select_alpha_list += [0.55]
+# select_beta_list += [-3.0]
+# set_name_list += ['7']
 
-select_alpha_list += [0.5]
-select_beta_list += [-4.0]
-set_name_list += ['8']
+# select_alpha_list += [0.5]
+# select_beta_list += [-4.0]
+# set_name_list += ['8']
 
 select_alpha_list += [0.55]
 select_beta_list += [-7.0]
-set_name_list += ['9']
-# set_name_list += ['4'] # new numbering
-
+# set_name_list += ['9']
+set_name_list += ['4']  # new numbering
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -106,7 +105,7 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
@@ -222,6 +221,11 @@ ylabel = '$f_{\\omega}$'
 _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
 q = Z_ion * settings['e']  # Coulomb
 omega0 = get_cyclotron_angular_frequency(q, field_dict['B0'], mi)
+
+_, _, mi, _, Z_ion = define_plasma_parameters(gas_name='deuterium')
+q = Z_ion * settings['e']  # Coulomb
+omega0_D = get_cyclotron_angular_frequency(q, field_dict['B0'], mi)
+
 omega = alpha_loop_list * field_dict['omega_cyclotron']
 yticklabels = ['{:.2f}'.format(w) for w in omega / omega0]
 ylabel = '$\\omega / \\omega_{0,T}$'
@@ -231,40 +235,41 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
     ind_beta = np.where(beta_loop_list >= beta)[0][0]
 
     # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
-    print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
-          beta)
+    # print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
+    #       beta)
     # print('  D:  N_rc=',  '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]))
     # print('  T:  N_rc=',  '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]))
-    print('D:')
-    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
-    print('T:')
-    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
-    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
+    # print('D:')
+    # print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
+    # print('T:')
+    # print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
 
-    # print(set_name, '(D) & ',
-    #       '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
-    #       str(beta), ' & ',
-    #       '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
-    # print(set_name, '(T) & & &',
-    #       '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
-    # print('\\hline')
+    print(set_name, '(D) & ',
+          '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0_D), ' & ',
+          '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
+          str(beta), ' & ',
+          '{:.2f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
+          '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
+    print(set_name, '(T) & & & &',
+          '{:.2f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
+          '{:.2f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
+          '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
+    print('\\hline')
 
 
 def plot_resonance_lines():

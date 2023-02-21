@@ -22,7 +22,7 @@ def define_default_settings(settings=None):
     if 'gas_name' not in settings:
         settings['gas_name'] = 'hydrogen'
     if 'gas_name_for_cyc' not in settings:
-        settings['gas_name_for_cyc'] = 'gas_name_for_cyc'
+        settings['gas_name_for_cyc'] = 'hydrogen'
     if 'ionization_level' not in settings:
         settings['ionization_level'] = 1.0
     settings['me'], settings['mp'], settings['mi'], settings['A_atomic_weight'], settings['Z_ion'] \
@@ -109,6 +109,8 @@ def define_default_field(settings, field_dict=None):
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m
     if 'B_RF' not in field_dict:
         field_dict['B_RF'] = 1e-3  # the SI units is T
+    if 'use_RF_correction' not in field_dict:
+        field_dict['use_RF_correction'] = True
 
     if 'anticlockwise' not in field_dict:
         if field_dict['B0'] == 0:  # pick a default
