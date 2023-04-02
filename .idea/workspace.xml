@@ -23,8 +23,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add set41 to plot_slurm_results13_heatmaps_save_mats">
+      <change afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_magnetic_forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,10 +68,6 @@
     <option name="myUseExistingConsole" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
-      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/em_fields" />
       <recent name="$PROJECT_DIR$/loop_fields" />
@@ -75,36 +75,26 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/em_fields" />
+      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\em_fields" />
+      <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.plot_magnetic_forms">
-    <configuration name="particle_evolution_examples_const_Bz" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.plot_slurm_results13_heatmaps_load_mats">
+    <configuration name="plot_doppler_schematic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/particle_evolution_examples_const_Bz.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="plot_color_bar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_color_bar.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_doppler_schematic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -159,6 +149,9 @@
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -194,7 +187,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results12_saturation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results13_heatmaps_load_mats" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -206,7 +217,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -215,16 +226,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results13_heatmaps_load_mats_DT" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results13_heatmaps_save_mats" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -237,19 +251,19 @@
       <item itemvalue="Python.plot_magnetic_field_loop_cartesian" />
       <item itemvalue="Python.plot_magnetic_field_loop_cylindrical" />
       <item itemvalue="Python.plot_periodic_square" />
-      <item itemvalue="Python.plot_slurm_results12_saturation" />
-      <item itemvalue="Python.plot_color_bar" />
+      <item itemvalue="Python.plot_doppler_schematic" />
       <item itemvalue="Python.plot_magnetic_forms" />
-      <item itemvalue="Python.particle_evolution_examples_const_Bz" />
-      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
+      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats" />
+      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty" />
+      <item itemvalue="Python.plot_slurm_results13_heatmaps_save_mats" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats" />
+        <item itemvalue="Python.plot_doppler_schematic" />
         <item itemvalue="Python.plot_magnetic_forms" />
-        <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
-        <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
-        <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
-        <item itemvalue="Python.particle_evolution_examples_const_Bz" />
+        <item itemvalue="Python.plot_magnetic_forms" />
+        <item itemvalue="Python.plot_magnetic_forms" />
       </list>
     </recent_temporary>
   </component>
@@ -264,13 +278,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586773491039</updated>
-    </task>
-    <task id="LOCAL-00125" summary="changed the RF input to alpha and wavelength, and not vzres. &#10;added new slurm runs with new method">
-      <created>1647595381326</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1647595381327</updated>
     </task>
     <task id="LOCAL-00126" summary="bugfix">
       <created>1647595562826</created>
@@ -608,7 +615,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677016286204</updated>
     </task>
-    <option name="localTasksCounter" value="174" />
+    <task id="LOCAL-00174" summary="add set41 to plot_slurm_results13_heatmaps_save_mats">
+      <created>1677018097639</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1677018097639</updated>
+    </task>
+    <option name="localTasksCounter" value="175" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -624,7 +638,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bugfix in set27" />
     <MESSAGE value="add new set28" />
     <MESSAGE value="add new set29" />
     <MESSAGE value="dont run existing runs" />
@@ -649,7 +662,8 @@
     <MESSAGE value="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T" />
     <MESSAGE value="add plot_color_bar" />
     <MESSAGE value="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25" />
-    <option name="LAST_COMMIT_MESSAGE" value="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25" />
+    <MESSAGE value="add set41 to plot_slurm_results13_heatmaps_save_mats" />
+    <option name="LAST_COMMIT_MESSAGE" value="add set41 to plot_slurm_results13_heatmaps_save_mats" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -662,10 +676,10 @@
       <screen x="0" y="25" width="1920" height="980" />
     </state>
     <state x="305" y="69" key="SettingsEditor/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1669616103167" />
-    <state x="560" y="251" key="Vcs.Push.Dialog.v2" timestamp="1677016350466">
+    <state x="560" y="251" key="Vcs.Push.Dialog.v2" timestamp="1677018185878">
       <screen x="0" y="25" width="1920" height="980" />
     </state>
-    <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1677016350466" />
+    <state x="560" y="251" key="Vcs.Push.Dialog.v2/-1440.121.1440.875/0.25.1920.980@0.25.1920.980" timestamp="1677018185878" />
     <state x="657" y="270" width="756" height="672" key="find.popup" timestamp="1670328908635">
       <screen x="0" y="25" width="1920" height="980" />
     </state>

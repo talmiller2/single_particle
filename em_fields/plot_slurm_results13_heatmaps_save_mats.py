@@ -108,9 +108,9 @@ beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-gas_name = 'deuterium'
+# gas_name = 'deuterium'
 # gas_name = 'DT_mix'
-# gas_name = 'tritium'
+gas_name = 'tritium'
 
 # alpha_loop_list = np.array([1.14, 1.16, 1.2])
 # beta_loop_list = np.array([4.5, 5])

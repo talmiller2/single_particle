@@ -15,8 +15,8 @@ plt.close('all')
 
 l = 1
 # l = 5
-# z = np.linspace(0, l, 1000)
-z = np.linspace(-l, l, 1000)
+z = np.linspace(0, l, 1000)
+# z = np.linspace(-l, l, 1000)
 # z = np.linspace(-2*l, 2*l, 1000)
 
 # mirror ratio

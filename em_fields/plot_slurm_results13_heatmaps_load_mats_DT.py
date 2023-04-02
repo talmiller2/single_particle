@@ -45,6 +45,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
+# save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 
 select_alpha_list = []
 select_beta_list = []
@@ -306,8 +307,8 @@ def plot_interest_points(ax):
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
-do_plots = False
-# do_plots = True
+# do_plots = False
+do_plots = True
 
 if do_plots == True:
     ###############
@@ -319,9 +320,11 @@ if do_plots == True:
     vmin = 0
     # vmax = 3
     # vmax = 8
-    vmax = 10
+    # vmax = 10
+    vmax = 14
     sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-                vmin=vmin, vmax=vmax,
+                vmin=vmin,
+                # vmax=vmax,
                 annot=annot,
                 annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
                 ax=ax,
@@ -351,9 +354,11 @@ if do_plots == True:
     vmin = 0
     # vmax = 3
     # vmax = 8
-    vmax = 10
+    # vmax = 10
+    vmax = 14
     sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-                vmin=vmin, vmax=vmax,
+                vmin=vmin,
+                # vmax=vmax,
                 annot=annot,
                 annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
                 ax=ax,
