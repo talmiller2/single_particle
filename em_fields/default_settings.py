@@ -101,6 +101,11 @@ def define_default_field(settings, field_dict=None):
     field_dict['z_0'] = settings['z_0']
 
     # RF properties
+    if 'clockwise' not in field_dict:
+        if field_dict['B0'] == 0:  # pick a default
+            field_dict['clockwise'] = 1
+        else:
+            field_dict['clockwise'] = np.sign(field_dict['B0'])
     if 'RF_type' not in field_dict:
         # field_dict['RF_type'] = 'magnetic_transverse'
         field_dict['RF_type'] = 'electric_transverse'
@@ -109,14 +114,10 @@ def define_default_field(settings, field_dict=None):
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m
     if 'B_RF' not in field_dict:
         field_dict['B_RF'] = 1e-3  # the SI units is T
-    if 'use_RF_correction' not in field_dict:
-        field_dict['use_RF_correction'] = True
-
-    if 'anticlockwise' not in field_dict:
-        if field_dict['B0'] == 0:  # pick a default
-            field_dict['anticlockwise'] = 1
-        else:
-            field_dict['anticlockwise'] = np.sign(field_dict['B0'])
+    if 'with_RF_xy_corrections' not in field_dict:
+        field_dict['with_RF_xy_corrections'] = True
+    if 'induced_fields_factor' not in field_dict:
+        field_dict['induced_fields_factor'] = 1.0
 
     if 'alpha_RF_list' not in field_dict:
         field_dict['alpha_RF_list'] = [1.0]

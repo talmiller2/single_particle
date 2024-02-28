@@ -13,6 +13,7 @@ from em_fields.em_functions import get_thermal_velocity, get_cyclotron_angular_f
 evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
@@ -56,9 +57,9 @@ B_RF = 0.04  # T
 
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -145,9 +146,9 @@ set_name_list += ['4']
 # for ind_set in range(4):
 for ind_set in [0]:
     # ind_set = 0
-    ind_set = 1
+    # ind_set = 1
     # ind_set = 2
-    # ind_set = 3
+    ind_set = 3
 
     alpha = select_alpha_list[ind_set]
     beta = select_beta_list[ind_set]
@@ -189,6 +190,8 @@ for ind_set in [0]:
         settings_file = save_dir + 'settings.pickle'
         with open(settings_file, 'rb') as fid:
             settings = pickle.load(fid)
+        # print('curr gas_name=', settings['gas_name'], ' v_th=', settings['v_th'])
+
         field_dict_file = save_dir + 'field_dict.pickle'
         with open(field_dict_file, 'rb') as fid:
             field_dict = pickle.load(fid)
@@ -206,71 +209,6 @@ for ind_set in [0]:
 
         # number_of_time_intervals = 3
         number_of_time_intervals = data_dict['t'].shape[1]
-
-        from matplotlib import cm
-
-        # colors = cm.rainbow(np.linspace(0, 1, number_of_time_intervals))
-        # # colors = ['b', 'g', 'r']
-        # # colors = ['r', 'g', 'b']
-        #
-        # for ind_t in range(number_of_time_intervals):
-        #     # for ind_t in [0, 10]:
-        #     # for ind_t in [0, 1]:
-        #     # for ind_t in [0, 10, 20]:
-        #     #     print(ind_t)
-        #
-        #     # inds_particles = range(data_dict['t'].shape[0])
-        #     # inds_particles = [0, 1, 2]
-        #     # inds_particles = range(1001)
-        #     inds_particles = range(100)
-        #
-        #     if ind_t == 0:
-        #         print('num particles = ' + str(len(inds_particles)))
-        #
-        #     v = data_dict['v'][inds_particles, ind_t]
-        #     v0 = data_dict['v'][inds_particles, 0]
-        #     vt = data_dict['v_transverse'][inds_particles, ind_t]
-        #     vt0 = data_dict['v_transverse'][inds_particles, 0]
-        #     vz = data_dict['v_axial'][inds_particles, ind_t]
-        #     vz0 = data_dict['v_axial'][inds_particles, 0]
-        #     theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
-        #     Bz = data_dict['Bz'][inds_particles, ind_t]
-        #     Bz0 = data_dict['Bz'][inds_particles, 0]
-        #     vt_adjusted = vt * np.sqrt(Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
-        #
-        #     # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt0 ** 2.0 * (Bz / Bz0 - 1))
-        #     # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz))
-        #     # theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
-        #
-        #     det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
-        #     inds_positive = np.where(det > 0)[0]
-        #     vz_adjusted = np.zeros(len(inds_particles))
-        #     vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
-        #     # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive])
-        #
-        #     theta_adjusted = 90.0 * np.ones(len(inds_particles))
-        #     theta_adjusted[inds_positive] = np.mod(
-        #         360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
-        #
-        #     color = colors[ind_t]
-        #
-        #     if ind_t == 0:
-        #         fig1, ax1 = plt.subplots(1, 1, figsize=(7, 7), num=1)
-        #     if np.mod(ind_t, 5) == 1:
-        #         label = str(ind_t)
-        #         label = '$t \\cdot v_{th} / l$=' + '{:.2f}'.format(
-        #             data_dict['t'][0, ind_t] / (settings['l'] / settings['v_th']))
-        #         ax1.scatter(vz_adjusted / settings['v_th'], vt_adjusted / settings['v_th'], color=color, alpha=0.2, label=label)
-        #         if ind_t == 0:
-        #             # plot the diagonal LC lines
-        #             vz_axis = np.array([0, 2 * settings['v_th']])
-        #             vt_axis = vz_axis * np.sqrt(1 / (field_dict['Rm'] - 1))
-        #             ax1.plot(vz_axis / settings['v_th'], vt_axis / settings['v_th'], color='k', linestyle='--')
-        #             ax1.plot(-vz_axis / settings['v_th'], vt_axis / settings['v_th'], color='k', linestyle='--')
-        # ax1.set_xlabel('$v_z / v_{th}$')
-        # ax1.set_ylabel('$v_{\\perp} / v_{th}$')
-        # ax1.legend()
-        # ax1.grid(True)
 
         # fig2, ax2 = plt.subplots(1, 1, figsize=(7, 7), num=2)
         fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6))
@@ -486,12 +424,59 @@ for ind_set in [0]:
         # ax2.legend()
         ax2.grid(True)
 
-        ## save plots to file
-        save_fig_dir = '../../../Papers/texts/paper2022/pics/'
-        file_name = 'v_space_set_' + gas_name_shorthand + '_' + RF_set_name
-        if RF_type == 'magnetic_transverse':
-            file_name = 'BRF_' + file_name
-        # file_name += '_mod'
-        beingsaved = plt.gcf()
-        # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-        beingsaved.savefig(save_fig_dir + file_name + '.jpeg', format='jpeg', dpi=300)
+        # ## save plots to file
+        # save_fig_dir = '../../../Papers/texts/paper2022/pics/'
+        # file_name = 'v_space_set_' + gas_name_shorthand + '_' + RF_set_name
+        # if RF_type == 'magnetic_transverse':
+        #     file_name = 'BRF_' + file_name
+        # # file_name += '_mod'
+        # beingsaved = plt.gcf()
+        # # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+        # beingsaved.savefig(save_fig_dir + file_name + '.jpeg', format='jpeg', dpi=300)
+
+### TODO: calculate the average vz in the loss cone
+_, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+v_th = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
+print('v_th =', v_th)
+
+# v0 = np.sqrt(v_0[:, 0] ** 2 + v_0[:, 1] ** 2 + v_0[:, 2] ** 2)
+# vt0 = np.sqrt(v_0[:, 0] ** 2 + v_0[:, 1] ** 2)
+# vz0 = v_0[:, 2]
+
+v0 = data_dict['v'][:, 0]
+vt0 = data_dict['v_transverse'][:, 0]
+vz0 = data_dict['v_axial'][:, 0]
+
+inds_right_loss_cone = [i for i in range(len(v0))
+                        if vz0[i] > 0 and vt0[i] < vz0[i] * np.sqrt(1 / (field_dict['Rm'] - 1))]
+print(np.mean(vz0[inds_right_loss_cone]) / v_th)
+
+inds_left_loss_cone = [i for i in range(len(v0))
+                       if vz0[i] < 0 and vt0[i] < abs(vz0[i]) * np.sqrt(1 / (field_dict['Rm'] - 1))]
+print(np.mean(vz0[inds_left_loss_cone]) / v_th)
+
+# according to https://en.wikipedia.org/wiki/Maxwell%E2%80%93Boltzmann_distribution#Typical_speeds
+# the integral of v*f(v) is:
+v_MB_mean = 2 / np.sqrt(np.pi) * v_th
+v_z_LC_average_theoretic = v_MB_mean / (2 * field_dict['Rm'] * (1 - np.sqrt(1 - 1 / field_dict['Rm'])))
+print(v_z_LC_average_theoretic / v_th)
+
+# # TODO: testing sphere randomization velocity
+# # total_number_of_points = int(1e6)
+# total_number_of_points = int(3e3)
+# rand_unit_vec = np.random.randn(total_number_of_points, 3)
+# for i in range(total_number_of_points):
+#     rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
+# Rm = 3.0
+# v0 = np.sqrt(rand_unit_vec[:, 0] ** 2 + rand_unit_vec[:, 1] ** 2 + rand_unit_vec[:, 2] ** 2)
+# vt0 = np.sqrt(rand_unit_vec[:, 0] ** 2 + rand_unit_vec[:, 1] ** 2)
+# vz0 = rand_unit_vec[:, 2]
+# inds_cut_off = [i for i in range(len(v0))
+#                         if vz0[i] > 0 and vt0[i] < vz0[i] * np.sqrt(1 / (Rm - 1))]
+# vz0_unit_mean = np.mean(vz0[inds_cut_off])
+# print('vz0_unit_mean = ', vz0_unit_mean)
+# v_th = 1
+# v_mean = 2 / np.sqrt(np.pi) * v_th
+# print('v_mean = ', v_mean)
+# vz_mean = v_mean * vz0_unit_mean
+# print('vz_mean = ', vz_mean)

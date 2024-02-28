@@ -1,20 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
 from em_fields.default_settings import define_default_settings, define_default_field
 from em_fields.em_functions import evolve_particle_in_em_fields
 
-# from mpl_toolkits.mplot3d import Axes3D
-
+Axes3D = Axes3D  # pycharm auto import
 
 plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
-# plt.close('all')
-# plot3d_exists = False
-# plot3d_exists = True
+plt.close('all')
+
+plot_magnetic_field_lines = False
 
 for ind_sim in range(1):
     # for ind_sim in range(2):
@@ -99,6 +99,7 @@ for ind_sim in range(1):
     # sim_cyclotron_periods = 70
     # sim_cyclotron_periods = 100
     tmax_mirror_lengths = 1
+    # tmax_mirror_lengths = 0.1
     sim_cyclotron_periods = int(
         tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -183,12 +184,17 @@ for ind_sim in range(1):
     # plt.grid(True)
     # plt.tight_layout()
 
-    if 'fig' in locals():
-        plt.figure(6)
-    else:
-        fig = plt.figure(6)
-        # ax = Axes3D(fig)
-    ax = fig.gca(projection='3d')
+    # if 'fig' in locals():
+    #     plt.figure(6)
+    # else:
+    #     fig = plt.figure(6)
+    #     ax = Axes3D(fig)
+    # ax = fig.gca(projection='3d')
+
+    fig = plt.figure(6)
+    # ax = fig.gca(projection='3d')
+    ax = fig.add_subplot(1, 1, 1, projection='3d')
+
     ax.axes.xaxis.labelpad = 5
     ax.axes.yaxis.labelpad = 5
     ax.axes.zaxis.labelpad = 5
@@ -199,34 +205,35 @@ for ind_sim in range(1):
         ax.plot(x[i:i + 2], y[i:i + 2], z[i:i + 2], color=plt.cm.jet(int(255 * i / len(x))))
     # ax.plot(x, y, z, label=label, linewidth=linewidth, alpha=1)
 
-    if ind_sim == 0:
-        ## plot mirror magnetic field lines
-        field_dict['E_RF_kVm'] = 0
-        field_dict = define_default_field(settings, field_dict)
-        xy_angles = np.linspace(0, 2 * np.pi, 50)
-        xy_angles = xy_angles[0:-1]
-        for xy_angle in xy_angles:
-            r_ini = 2
-            # z_ini = settings['l'] / 2.0
-            z_ini = -settings['l'] / 3.0
-            x_ini = [-r_ini * cyclotron_radius * np.cos(xy_angle),
-                     r_ini * cyclotron_radius * np.sin(xy_angle),
-                     z_ini]
-            x_array = [x_ini]
-            dstep = 0.5 * cyclotron_radius
-            # num_field_line_steps = 600
-            num_field_line_steps = 1200
-            field_dict['B_RF'] = 0  # to plot only the mirror field lines
-            for j in range(num_field_line_steps):
-                x_curr = x_array[-1]
-                B_curr = B_RF_function(x_curr, 0, **field_dict)
-                direction = B_curr / np.linalg.norm(B_curr)
-                x_array += [x_curr + direction * dstep]
-            x_array = np.array(x_array)
-            x_field_line = x_array[:, 0] / cyclotron_radius
-            y_field_line = x_array[:, 1] / cyclotron_radius
-            z_field_line = x_array[:, 2] / settings['l']
-            ax.plot(x_field_line, y_field_line, z_field_line, color='k', linewidth=2, alpha=0.3)
+    if plot_magnetic_field_lines:
+        if ind_sim == 0:
+            ## plot mirror magnetic field lines
+            field_dict['E_RF_kVm'] = 0
+            field_dict = define_default_field(settings, field_dict)
+            xy_angles = np.linspace(0, 2 * np.pi, 50)
+            xy_angles = xy_angles[0:-1]
+            for xy_angle in xy_angles:
+                r_ini = 2
+                # z_ini = settings['l'] / 2.0
+                z_ini = -settings['l'] / 3.0
+                x_ini = [-r_ini * cyclotron_radius * np.cos(xy_angle),
+                         r_ini * cyclotron_radius * np.sin(xy_angle),
+                         z_ini]
+                x_array = [x_ini]
+                dstep = 0.5 * cyclotron_radius
+                # num_field_line_steps = 600
+                num_field_line_steps = 1200
+                field_dict['B_RF'] = 0  # to plot only the mirror field lines
+                for j in range(num_field_line_steps):
+                    x_curr = x_array[-1]
+                    B_curr = B_RF_function(x_curr, 0, **field_dict)
+                    direction = B_curr / np.linalg.norm(B_curr)
+                    x_array += [x_curr + direction * dstep]
+                x_array = np.array(x_array)
+                x_field_line = x_array[:, 0] / cyclotron_radius
+                y_field_line = x_array[:, 1] / cyclotron_radius
+                z_field_line = x_array[:, 2] / settings['l']
+                ax.plot(x_field_line, y_field_line, z_field_line, color='k', linewidth=2, alpha=0.3)
 
     # ax.set_xlabel('x')
     # ax.set_ylabel('y')

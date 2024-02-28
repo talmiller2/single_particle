@@ -235,42 +235,44 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
     ind_alpha = np.where(alpha_loop_list >= alpha)[0][0]
     ind_beta = np.where(beta_loop_list >= beta)[0][0]
 
+    ## Print for python mm_rate_eqs
     # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
-    # print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
-    #       beta)
+    print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
+          beta)
     # print('  D:  N_rc=',  '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]))
     # print('  T:  N_rc=',  '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]), ' N_lc=',  '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]),
     #       'N_cr=',  '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]), 'N_cl=',  '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]),
     #       's=',  '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]))
-    # print('D:')
-    # print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
-    # print('T:')
-    # print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
-    # print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
+    print('D:')
+    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
+    print('T:')
+    print('RF_capacity_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
+    print('RF_capacity_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
 
-    print(set_name, '(D) & ',
-          '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0_D), ' & ',
-          '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
-          str(beta), ' & ',
-          '{:.2f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
-          '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
-    print(set_name, '(T) & & & &',
-          '{:.2f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
-          '{:.2f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
-          '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
-    print('\\hline')
+    # ## Print for latex
+    # print(set_name, '(D) & ',
+    #       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0_D), ' & ',
+    #       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
+    #       str(beta), ' & ',
+    #       '{:.2f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
+    #       '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
+    # print(set_name, '(T) & & & &',
+    #       '{:.2f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.2f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
+    #       '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
+    # print('\\hline')
 
 
 def plot_resonance_lines():
@@ -307,6 +309,22 @@ def plot_interest_points(ax):
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
+# lower resolution for xticks and yticks
+xticklabels_str = []
+yticklabels_str = []
+for i in range(len(beta_loop_list)):
+    if np.mod(i, 2) == 0:
+        xticklabels_str += [str(int(beta_loop_list[i]))]
+        yticklabels_str += [str(yticklabels[i])]
+    else:
+        xticklabels_str += ['']
+        yticklabels_str += ['']
+# beta_loop_list = beta_loop_list
+# yticklabels = yticklabels
+
+axes_label_size = 14
+
+
 # do_plots = False
 do_plots = True
 
@@ -320,9 +338,9 @@ if do_plots == True:
     vmin = 0
     # vmax = 3
     # vmax = 8
-    # vmax = 10
-    vmax = 14
-    sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+    vmax = 10
+    # vmax = 14
+    sns.heatmap(y.T, xticklabels=xticklabels_str, yticklabels=yticklabels_str,
                 vmin=vmin,
                 # vmax=vmax,
                 annot=annot,
@@ -332,8 +350,8 @@ if do_plots == True:
     ax.axes.invert_yaxis()
     plot_resonance_lines()
     plot_interest_points(ax)
-    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-    ax.set_ylabel(ylabel)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+    ax.set_ylabel(ylabel, fontsize=axes_label_size)
     # ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (D)', fontsize=20)
     ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (D)', fontsize=20)
     # fig.set_tight_layout(0.5)
@@ -354,9 +372,9 @@ if do_plots == True:
     vmin = 0
     # vmax = 3
     # vmax = 8
-    # vmax = 10
-    vmax = 14
-    sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+    vmax = 10
+    # vmax = 14
+    sns.heatmap(y.T, xticklabels=xticklabels_str, yticklabels=yticklabels_str,
                 vmin=vmin,
                 # vmax=vmax,
                 annot=annot,
@@ -366,8 +384,8 @@ if do_plots == True:
     ax.axes.invert_yaxis()
     plot_resonance_lines()
     plot_interest_points(ax)
-    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-    ax.set_ylabel(ylabel)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+    ax.set_ylabel(ylabel, fontsize=axes_label_size)
     # ax.set_title('$s = \\bar{N}_{rc} / \\bar{N}_{lc}$ (T)', fontsize=20)
     ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$ (T)', fontsize=20)
     # fig.set_tight_layout(0.5)

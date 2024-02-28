@@ -11,7 +11,7 @@ plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
-plt.close('all')
+# plt.close('all')
 plot3d_exists = False
 # plot3d_exists = True
 
@@ -24,7 +24,8 @@ for ind_sim in range(1):
 
     settings = {}
     settings['trajectory_save_method'] = 'intervals'
-    settings['num_snapshots'] = 121
+    settings['num_snapshots'] = 10
+    # settings['num_snapshots'] = 121
     # settings['num_snapshots'] = 10000
 
     settings = define_default_settings(settings)
@@ -33,12 +34,14 @@ for ind_sim in range(1):
     field_dict['mirror_field_type'] = 'const'
     # field_dict['mirror_field_type'] = 'logan'
 
-    # field_dict['RF_type'] = 'electric_transverse'
+    field_dict['RF_type'] = 'electric_transverse'
+    # field_dict['RF_type'] = 'electric_transverse_v2'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1
-    field_dict['E_RF_kVm'] = 10
-    # field_dict['E_RF_kVm'] = 20
-    field_dict['RF_type'] = 'magnetic_transverse'
+    # field_dict['E_RF_kVm'] = 10
+    field_dict['E_RF_kVm'] = 20
+    # field_dict['E_RF_kVm'] = 100
+    # field_dict['RF_type'] = 'magnetic_transverse'
     # field_dict['B_RF'] = 0
     # field_dict['B_RF'] = 0.001
     # field_dict['B_RF'] = 0.01
@@ -63,8 +66,9 @@ for ind_sim in range(1):
     # field_dict['alpha_RF_list'] = [0.96]
     # field_dict['alpha_RF_list'] = [0.98]
     # field_dict['alpha_RF_list'] = [0.99]
-    field_dict['alpha_RF_list'] = [0.995]
+    # field_dict['alpha_RF_list'] = [0.995]
     # field_dict['alpha_RF_list'] = [0.999]
+    field_dict['alpha_RF_list'] = [1.0]
     # field_dict['alpha_RF_list'] = [1.01]
     # field_dict['alpha_RF_list'] = [1.02]
     # field_dict['alpha_RF_list'] = [1.04]
@@ -80,11 +84,17 @@ for ind_sim in range(1):
 
     # field_dict['anticlockwise'] = -1
 
-    # field_dict['phase_RF_addition'] = 0
+    field_dict['phase_RF_addition'] = 0
     # field_dict['phase_RF_addition'] = np.pi / 3
-    field_dict['phase_RF_addition'] = 2 * np.pi * np.random.randn()
+    # field_dict['phase_RF_addition'] = 2 * np.pi * np.random.randn()
 
     field_dict['use_RF_correction'] = False
+
+    field_dict['omega_half_sign'] = 'wrong'  # how I implemented before
+    # field_dict['B0'] = -1.0  # Tesla
+    # field_dict['anticlockwise'] = -1
+
+    # field_dict['omega_half_sign'] = 'correct'
 
     field_dict = define_default_field(settings, field_dict)
 
@@ -93,7 +103,8 @@ for ind_sim in range(1):
         # angle = 0.99 * loss_cone_angle
         # angle = 0.5 * loss_cone_angle
         # angle = 0.2 * loss_cone_angle
-        angle = 1.0
+        # angle = 1.0
+        angle = 90
         # angle = 1.5 * loss_cone_angle
         # elif ind_sim == 1:
         #     # angle = 1.01 * loss_cone_angle
@@ -103,8 +114,8 @@ for ind_sim in range(1):
         print('phase_RF_addition = ' + str(field_dict['phase_RF_addition']))
         # angle = 90 * np.random.rand()
         # print('angle = ' + str(angle))
-    unit_vec = np.random.randn(3)
-    unit_vec /= np.linalg.norm(unit_vec)
+    # unit_vec = np.random.randn(3)
+    # unit_vec /= np.linalg.norm(unit_vec)
 
     # sampling velocity from Maxwell-Boltzmann
     scale = np.sqrt(settings['kB_eV'] * settings['T_eV'] / settings['mi'])
@@ -112,6 +123,8 @@ for ind_sim in range(1):
 
     x = 0
     y = np.sin(angle / 360 * 2 * np.pi)
+    # x = np.sin(angle / 360 * 2 * np.pi)
+    # y = 0
     z = np.cos(angle / 360 * 2 * np.pi)
     unit_vec = np.array([x, y, z]).T
     v_0 = settings['v_th'] * unit_vec
@@ -132,19 +145,20 @@ for ind_sim in range(1):
     #     v_0[1] *= -1
     #     v_0[2] *= -1
 
+    # settings['time_step_tau_cyclotron_divisions'] = 10
     # settings['time_step_tau_cyclotron_divisions'] = 20
     settings['time_step_tau_cyclotron_divisions'] = 100
     # settings['time_step_tau_cyclotron_divisions'] = 300
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # sim_cyclotron_periods = 5
-    # sim_cyclotron_periods = 10
+    sim_cyclotron_periods = 10
     # sim_cyclotron_periods = 20
     # sim_cyclotron_periods = 30
     # sim_cyclotron_periods = 50
     # sim_cyclotron_periods = 70
     # sim_cyclotron_periods = 100
     # sim_cyclotron_periods = 200
-    sim_cyclotron_periods = 500
+    # sim_cyclotron_periods = 500
     t_max = sim_cyclotron_periods * field_dict['tau_cyclotron']
     num_steps = int(t_max / dt)
 
@@ -221,11 +235,13 @@ for ind_sim in range(1):
 
     plt.figure(4)
     # plt.subplot(1,2,2)
-    plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
-    plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
-    # plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r')
-    plt.plot(t, vz, label='$v_z$ ($\\bar{v}_z/v_{z,0}=$' + '{:.3f}'.format(np.mean(vz) / vz[0]) + ')',
-             linewidth=linewidth, color='r')
+    linestyle = '-'
+    # linestyle = '--'
+    plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b', linestyle=linestyle)
+    plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g', linestyle=linestyle)
+    plt.plot(t, vz, label='$v_z$', linewidth=linewidth, color='r', linestyle=linestyle)
+    # plt.plot(t, vz, label='$v_z$ ($\\bar{v}_z/v_{z,0}=$' + '{:.3f}'.format(np.mean(vz) / vz[0]) + ')',
+    #          linewidth=linewidth, color='r')
     # plt.plot(t, vx_model, label='$v_x$ model', linewidth=linewidth, color='b', linestyle='--')
     # plt.plot(t, vy_model, label='$v_y$ model', linewidth=linewidth, color='g', linestyle='--')
     # plt.plot(t, vz_model, label='$v_z$ model', linewidth=linewidth, color='r', linestyle='--')
@@ -242,29 +258,29 @@ for ind_sim in range(1):
     plt.grid(True)
     plt.tight_layout()
 
-    ### Plot fourier transform
-    plt.figure(5)
-    inds_t = range(len(t))
-    # inds_t = range(int(0 * len(t)), int(0.5 * len(t)))
-    # inds_t = range(int(0 * len(t)), int(0.2 * len(t)))
-    tf = t[inds_t]
-    freq = [100.0 * i / len(tf) for i in list(range(len(tf)))]
-    # plt.plot(freq, abs(np.fft.fft(vx[inds_t])), label='$v_x$', linewidth=linewidth, color='b')
-    plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g')
-    plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r')
-    # inds_t = range(int(0.5 * len(t)), int(1.0 * len(t)))
-    # # inds_t = range(int(0.2 * len(t)), int(0.4 * len(t)))
+    # ### Plot fourier transform
+    # plt.figure(5)
+    # inds_t = range(len(t))
+    # # inds_t = range(int(0 * len(t)), int(0.5 * len(t)))
+    # # inds_t = range(int(0 * len(t)), int(0.2 * len(t)))
     # tf = t[inds_t]
     # freq = [100.0 * i / len(tf) for i in list(range(len(tf)))]
     # # plt.plot(freq, abs(np.fft.fft(vx[inds_t])), label='$v_x$', linewidth=linewidth, color='b')
-    # plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g', linestyle='--')
-    # plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r', linestyle='--')
-    plt.legend()
-    plt.xlabel('$\\omega/\\omega_{cyc}$')
-    plt.xlim([0, 1.5])
-    plt.title('Fourier transforms: ' + label)
-    plt.grid(True)
-    plt.tight_layout()
+    # plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g')
+    # plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r')
+    # # inds_t = range(int(0.5 * len(t)), int(1.0 * len(t)))
+    # # # inds_t = range(int(0.2 * len(t)), int(0.4 * len(t)))
+    # # tf = t[inds_t]
+    # # freq = [100.0 * i / len(tf) for i in list(range(len(tf)))]
+    # # # plt.plot(freq, abs(np.fft.fft(vx[inds_t])), label='$v_x$', linewidth=linewidth, color='b')
+    # # plt.plot(freq, abs(np.fft.fft(vy[inds_t])), label='$v_y$', linewidth=linewidth, color='g', linestyle='--')
+    # # plt.plot(freq, abs(np.fft.fft(vz[inds_t])), label='$v_z$', linewidth=linewidth, color='r', linestyle='--')
+    # plt.legend()
+    # plt.xlabel('$\\omega/\\omega_{cyc}$')
+    # plt.xlim([0, 1.5])
+    # plt.title('Fourier transforms: ' + label)
+    # plt.grid(True)
+    # plt.tight_layout()
 
     #
     # plt.figure(2)
