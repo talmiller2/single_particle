@@ -3,10 +3,10 @@ import numpy as np
 
 from em_fields.magnetic_forms import magnetic_field_logan, magnetic_field_post
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
-plt.rcParams.update({'lines.linewidth': 3})
+plt.rcParams.update({'lines.linewidth': 2})
 plt.rcParams.update({'lines.linestyle': '-'})
 # plt.rcParams.update({'lines.linestyle': '--'})
 # plt.rcParams.update({'lines.linestyle': ':'})
@@ -15,9 +15,9 @@ plt.close('all')
 
 # l = 1
 l = 5
-# z = np.linspace(0, l, 1000)
+z = np.linspace(0, l, 1000)
 # z = np.linspace(-l, l, 1000)
-z = np.linspace(l / 2, l, 1000)
+# z = np.linspace(l / 2, l, 1000)
 # z = np.linspace(-2*l, 2*l, 1000)
 
 # mirror ratio

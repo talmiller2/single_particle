@@ -25,17 +25,13 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/RF_field_forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/RF_field_forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/em_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/em_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_const_Bz.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_const_Bz.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_RF_chirp.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_RF_chirp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +69,7 @@
     "Python.particle_evolution_examples.executor": "Run",
     "Python.particle_evolution_examples_const_Bz.executor": "Run",
     "Python.particle_evolution_examples_mirror.executor": "Run",
-    "Python.plot_RF_chirp.executor": "Debug",
+    "Python.plot_RF_chirp.executor": "Run",
     "Python.plot_slurm_results13_heatmaps_load_mats_DT.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true"
   }
@@ -101,7 +97,7 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.particle_evolution_examples_mirror">
+  <component name="RunManager" selected="Python.plot_RF_chirp">
     <configuration name="particle_evolution_examples" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
@@ -164,9 +160,6 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -278,11 +271,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plot_RF_chirp" />
         <item itemvalue="Python.particle_evolution_examples_mirror" />
         <item itemvalue="Python.particle_evolution_examples_const_Bz" />
         <item itemvalue="Python.particle_evolution_examples" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
-        <item itemvalue="Python.plot_RF_chirp" />
       </list>
     </recent_temporary>
   </component>
@@ -648,7 +641,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -675,7 +668,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add new set29" />
     <MESSAGE value="dont run existing runs" />
     <MESSAGE value="added stop_criterion = several_cell_center_crossing" />
     <MESSAGE value="add runs with logan field" />
@@ -700,7 +692,8 @@
     <MESSAGE value="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25" />
     <MESSAGE value="add set41 to plot_slurm_results13_heatmaps_save_mats" />
     <MESSAGE value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
-    <option name="LAST_COMMIT_MESSAGE" value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
+    <MESSAGE value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
+    <option name="LAST_COMMIT_MESSAGE" value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

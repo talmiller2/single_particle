@@ -56,7 +56,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
-save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
+# save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
+save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -91,23 +92,26 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
-beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
+# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-RF_type = 'electric_transverse'
-# E_RF_kVm = 0.1  # kV/m
-# E_RF_kVm = 0.5  # kV/m
-# E_RF_kVm = 1  # kV/m
-# E_RF_kVm = 5 # kV/m
-# E_RF_kVm = 10  # kV/m
-E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 50  # kV/m
-# E_RF_kVm = 100  # kV/m
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 7), 2)  # set42
+beta_loop_list = np.round(np.linspace(-10, 10, 7), 2)
 
-# RF_type = 'magnetic_transverse'
+# RF_type = 'electric_transverse'
+# # E_RF_kVm = 0.1  # kV/m
+# # E_RF_kVm = 0.5  # kV/m
+# # E_RF_kVm = 1  # kV/m
+# # E_RF_kVm = 5 # kV/m
+# # E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 25  # kV/m
+# # E_RF_kVm = 50  # kV/m
+# # E_RF_kVm = 100  # kV/m
+
+RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.005  # T
 # B_RF = 0.01  # T
@@ -159,6 +163,8 @@ for beta_loop in beta_loop_list:
         settings['r_0'] = 0
         # settings['r_0'] = 1.0
         # settings['r_0'] = 1.5
+        # settings['r_0'] = settings['l'] / 4
+        # settings['r_0'] = settings['l'] / 2
 
         settings['T_keV'] = 10.0
         # settings['T_keV'] = 30.0 / 1e3
@@ -199,7 +205,12 @@ for beta_loop in beta_loop_list:
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
 
-        # field_dict['anticlockwise'] = -1  # testing anti-resonant direction
+        field_dict['induced_fields_factor'] = 1.0
+        # field_dict['induced_fields_factor'] = 0.5
+        # field_dict['induced_fields_factor'] = 0
+
+        field_dict['with_RF_xy_corrections'] = True
+        # field_dict['with_RF_xy_corrections'] = False
 
         field_dict = define_default_field(settings, field_dict)
 
@@ -243,8 +254,11 @@ for beta_loop in beta_loop_list:
             run_name += '_const_vth'
         if settings['r_0'] > 0:
             run_name += '_r0_' + str(settings['r_0'])
-        if field_dict['anticlockwise'] == -1:
-            run_name += '_antiresonant'
+
+        run_name += '_iff' + str(settings['induced_fields_factor'])
+        if field_dict['with_RF_xy_corrections'] == False:
+            run_name += '_woxyRFcor'
+
         if settings['gas_name'] != 'hydrogen':
             run_name += '_' + settings['gas_name']
 

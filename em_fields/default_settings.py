@@ -107,8 +107,8 @@ def define_default_field(settings, field_dict=None):
         else:
             field_dict['clockwise'] = np.sign(field_dict['B0'])
     if 'RF_type' not in field_dict:
-        # field_dict['RF_type'] = 'magnetic_transverse'
         field_dict['RF_type'] = 'electric_transverse'
+        # field_dict['RF_type'] = 'magnetic_transverse'
     if 'E_RF_kVm' not in field_dict:
         field_dict['E_RF_kVm'] = 0  # kV/m
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m

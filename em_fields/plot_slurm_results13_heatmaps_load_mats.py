@@ -1,19 +1,12 @@
 import pickle
 
-import numpy as np
-
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
-
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
-
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
 import pandas as pd
-
-from warnings import filterwarnings
-
-filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool` is a deprecated alias')
-filterwarnings(action='ignore', category=DeprecationWarning, message='`np.int` is a deprecated alias')
+import seaborn as sns
+# from warnings import filterwarnings
+# filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool` is a deprecated alias')
+# filterwarnings(action='ignore', category=DeprecationWarning, message='`np.int` is a deprecated alias')
 from scipy.io import loadmat
 
 from em_fields.default_settings import define_plasma_parameters
