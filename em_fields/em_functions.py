@@ -119,6 +119,9 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
         mat_after_expm = expm(mat_before_expm)
     except:
         print('expm failed.')
+        print('field_dict=', field_dict)
+        print('x_0, v_0, t, dt=', x_0, v_0, t, dt)
+        print('x_half, t_half=', x_half, t_half)
         print('B_half=', B_half)
         print('B_norm=', B_norm)
         print('b_half_tensor=', b_half_tensor)
