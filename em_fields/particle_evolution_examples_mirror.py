@@ -41,7 +41,8 @@ if plot_magnetic_field_lines:
     xy_angles = xy_angles[0:-1]
     for xy_angle in xy_angles:
         # r_ini = 2
-        r_ini = 20
+        r_ini = 4
+        # r_ini = 20
         z_ini = settings['l'] * 0.25
         z_fin = settings['l'] * 1.5
         x_ini = [-r_ini * cyclotron_radius * np.cos(xy_angle),
@@ -67,8 +68,10 @@ if plot_magnetic_field_lines:
     z_axis_line = np.array([z_ini, z_fin])
     ax.plot(0 * z_axis_line, 0 * z_axis_line, z_axis_line, color='k', linewidth=3, alpha=0.8)
 
-# for ind_sim in range(1):
-for ind_sim in range(2):
+inds_sim = range(1)
+# inds_sim = range(2)
+# inds_sim = range(3)
+for ind_sim in inds_sim:
 
     settings = {}
     settings['trajectory_save_method'] = 'intervals'
@@ -77,6 +80,8 @@ for ind_sim in range(2):
     # settings['l'] = 3.0  # m (MM cell size)
     settings['T_keV'] = 10.0
     # settings['T_keV'] = 30.0 / 1e3
+    settings['gas_name'] = 'deuterium'  # TODO: testing exploding case
+    settings['time_step_tau_cyclotron_divisions'] = 100  # TODO: testing exploding case
     settings = define_default_settings(settings)
 
     field_dict = {}
@@ -88,7 +93,7 @@ for ind_sim in range(2):
     field_dict['Rm'] = 3.0  # mirror ratio
     # field_dict['Rm'] = 5.0  # mirror ratio
 
-    field_dict['RF_type'] = 'electric_transverse'
+    # field_dict['RF_type'] = 'electric_transverse'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1e-3
     # field_dict['E_RF_kVm'] = 0.1
@@ -96,7 +101,7 @@ for ind_sim in range(2):
     field_dict['E_RF_kVm'] = 10
     # field_dict['E_RF_kVm'] = 20
     # field_dict['E_RF_kVm'] = 100
-    # field_dict['RF_type'] = 'magnetic_transverse'
+    field_dict['RF_type'] = 'magnetic_transverse'
     # field_dict['B_RF'] = 0
     # field_dict['B_RF'] = 0.001
     # field_dict['B_RF'] = 0.01
@@ -104,23 +109,26 @@ for ind_sim in range(2):
     field_dict['B_RF'] = 0.04
     # field_dict['B_RF'] = 0.05
     # field_dict['B_RF'] = 0.1
-    # field_dict['lambda_RF_list'] = [1.0] # [m]
-    # field_dict['lambda_RF_list'] = [-0.8] # [m]
-    # field_dict['lambda_RF_list'] = [2.0] # [m]
-    # field_dict['lambda_RF_list'] = [0.5] # [m]
-    field_dict['lambda_RF_list'] = [10.0]  # [m]
     # field_dict['lambda_RF_list'] = [100.0] # [m]
-    field_dict['alpha_RF_list'] = [1.0]
+    # field_dict['alpha_RF_list'] = [1.0]
     # field_dict['alpha_RF_list'] = [1.1]
     # field_dict['alpha_RF_list'] = [0.9]
     # field_dict['alpha_RF_list'] = [0.6]
+    field_dict['alpha_RF_list'] = [1.5]  # TODO: testing exploding case
+
+    # field_dict['beta_RF_list'] = [0]
+    field_dict['beta_RF_list'] = [6.67]  # TODO: testing exploding case
 
     field_dict['induced_fields_factor'] = 1.0  # default
+    # field_dict['induced_fields_factor'] = 0.5
     # field_dict['induced_fields_factor'] = 0.1
     # field_dict['induced_fields_factor'] = 0
 
     field_dict['with_RF_xy_corrections'] = True  # default
     # field_dict['with_RF_xy_corrections'] = False
+
+    # field_dict['phase_RF_addition'] = 0
+    field_dict['phase_RF_addition'] = 3.6999631682413687  # TODO: testing exploding case
 
     field_dict = define_default_field(settings, field_dict)
 
@@ -131,7 +139,7 @@ for ind_sim in range(2):
     #     angle = 1.01 * loss_cone_angle
     if ind_sim == 0:
         angle = 0.8 * loss_cone_angle
-    elif ind_sim == 1:
+    else:
         angle = 1.2 * loss_cone_angle
     x = 0
     y = np.sin(angle / 360 * 2 * np.pi)
@@ -146,6 +154,10 @@ for ind_sim in range(2):
     elif ind_sim == 1:
         x_0 = np.array([-r_ini * cyclotron_radius, 0, settings['l'] / 2.0])
         v_0[1] *= -1
+    elif ind_sim == 2:
+        # testing exploding fields case
+        x_0 = np.array([0., 0., 0.5])
+        v_0 = np.array([1270241.4443987, 1084444.96273159, 155314.40349702])
 
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # sim_cyclotron_periods = 50
@@ -255,6 +267,8 @@ for ind_sim in range(2):
 
     # ax.set_xlim([-3, 3])
     # ax.set_ylim([-3, 3])
+    ax.set_xlim([-2 * r_ini, 2 * r_ini])
+    ax.set_ylim([-2 * r_ini, 2 * r_ini])
     # ax.set_zlim([0.5, 1.5])
     # ax.set_zlim([-0.5, 1.5])
     ax.set_zlim([z_ini, z_fin])

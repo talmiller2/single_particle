@@ -176,6 +176,8 @@ for beta_loop in beta_loop_list:
         # settings['gas_name'] = 'tritium'
         settings['gas_name_for_cyc'] = 'DT_mix'
 
+        settings['time_step_tau_cyclotron_divisions'] = 100  # TODO: testing exploding case
+
         settings = define_default_settings(settings)
 
         field_dict = {}
@@ -233,8 +235,8 @@ for beta_loop in beta_loop_list:
         # tmax_mirror_lengths = 300
         # sim_cyclotron_periods = int(
         #     tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
-        sim_cyclotron_periods = tmax_mirror_lengths * settings['l'] / settings['v_th_for_cyc'] / field_dict[
-            'tau_cyclotron']
+        sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
+                                 / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
 
         run_name = ''
