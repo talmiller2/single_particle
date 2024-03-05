@@ -25,12 +25,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="-run set42">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_RF_chirp.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_RF_chirp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -641,7 +637,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="177" />
+    <option name="localTasksCounter" value="178" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -668,7 +664,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="dont run existing runs" />
     <MESSAGE value="added stop_criterion = several_cell_center_crossing" />
     <MESSAGE value="add runs with logan field" />
     <MESSAGE value="switching back to making an intervals calc" />
@@ -693,7 +688,8 @@
     <MESSAGE value="add set41 to plot_slurm_results13_heatmaps_save_mats" />
     <MESSAGE value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
     <MESSAGE value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
-    <option name="LAST_COMMIT_MESSAGE" value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
+    <MESSAGE value="-run set42" />
+    <option name="LAST_COMMIT_MESSAGE" value="-run set42" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

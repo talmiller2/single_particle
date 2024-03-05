@@ -255,7 +255,7 @@ for beta_loop in beta_loop_list:
         if settings['r_0'] > 0:
             run_name += '_r0_' + str(settings['r_0'])
 
-        run_name += '_iff' + str(settings['induced_fields_factor'])
+        run_name += '_iff' + str(field_dict['induced_fields_factor'])
         if field_dict['with_RF_xy_corrections'] == False:
             run_name += '_woxyRFcor'
 
