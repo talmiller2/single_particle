@@ -15,9 +15,10 @@ from em_fields.default_settings import define_default_settings, define_default_f
 import numpy as np
 from scipy.io import savemat
 
-slurm_kwargs = {'partition': 'core'}  # default
+# slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
+slurm_kwargs = {'partition': 'testSocket'}
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'

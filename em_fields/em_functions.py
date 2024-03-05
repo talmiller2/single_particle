@@ -112,7 +112,14 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     b_z = B_half[2] / B_norm
     b_half_tensor = np.array([[0, -b_z, b_y], [b_z, 0, -b_x], [-b_y, b_x, 0]])
     omega_half = - q * B_norm / m
-    v_plus = np.dot(expm(dt * omega_half * b_half_tensor), v_minus)
+    # v_plus = np.dot(expm(dt * omega_half * b_half_tensor), v_minus)
+    # TODO: debugging expm
+    mat_before_expm = dt * omega_half * b_half_tensor
+    try:
+        mat_after_expm = expm(mat_before_expm)
+    except:
+        print('mat_before_expm=', mat_before_expm)
+    v_plus = np.dot(mat_after_expm, v_minus)
     v_new = v_plus + dt * q / m / 2.0 * E_half
     x_new = x_half + dt / 2.0 * v_new
     return x_new, v_new
