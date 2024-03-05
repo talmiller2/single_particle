@@ -118,6 +118,10 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     try:
         mat_after_expm = expm(mat_before_expm)
     except:
+        print('expm failed.')
+        print('B_half=', B_half)
+        print('B_norm=', B_norm)
+        print('b_half_tensor=', b_half_tensor)
         print('mat_before_expm=', mat_before_expm)
     v_plus = np.dot(mat_after_expm, v_minus)
     v_new = v_plus + dt * q / m / 2.0 * E_half
