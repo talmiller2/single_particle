@@ -37,8 +37,10 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     if stop_criterion == 'steps':
         # num_steps is given as input in this case
         pass
-    elif stop_criterion == 'time':
+    elif stop_criterion == 't_max':
         num_steps = t_max / dt
+    elif stop_criterion == 't_max_adaptive_dt':
+        num_steps = int(1e15)  # picking an "infinite" number
     elif stop_criterion == 'first_cell_center_crossing':
         num_steps = int(1e15)  # picking an "infinite" number
     elif stop_criterion == 'several_cell_center_crossing':
@@ -55,16 +57,24 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     hist['x'] = [x_0]
     hist['v'] = [v_0]
     hist['t'] = [t_0]
+    hist['dt'] = [dt]
     if return_fields is True:
         hist['E'] = [E_function(x_0, t_0, **field_dict)]
         hist['B'] = [B_function(x_0, t_0, **field_dict)]
 
     for ind_step in range(num_steps):
+        if stop_criterion == 't_max_adaptive_dt':
+            B_norm_prev = np.linalg.norm(B_function(hist['x'][-1], t, **field_dict))
+            dt_curr = dt * field_dict['B0'] / B_norm_prev
+        else:
+            dt_curr = dt
+        hist['dt'] += [dt_curr]
+
         x_new, v_new = particle_integration_step(hist['x'][-1], hist['v'][-1], hist['t'][-1],
-                                                 dt, E_function, B_function, q=q, m=m, field_dict=field_dict)
+                                                 dt_curr, E_function, B_function, q=q, m=m, field_dict=field_dict)
         hist['x'] += [x_new]
         hist['v'] += [v_new]
-        t += dt
+        t += dt_curr
         hist['t'] += [t]
 
         if return_fields is True:
@@ -87,6 +97,10 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
                             cnt_cell_center_crosses += 1
                             if cnt_cell_center_crosses == number_of_cell_center_crosses:
                                 break
+
+        elif stop_criterion in ['t_max', 't_max_adaptive_dt']:
+            if t >= t_max:
+                break
 
     for key in hist:
         hist[key] = np.array(hist[key])
@@ -118,8 +132,7 @@ def particle_integration_step(x_0, v_0, t, dt, E_function, B_function, q=1.0, m=
     try:
         mat_after_expm = expm(mat_before_expm)
     except:
-        print('expm failed.')
-        print('field_dict=', field_dict)
+        print('####### expm failed. current state:')
         print('x_0, v_0, t, dt=', x_0, v_0, t, dt)
         print('x_half, t_half=', x_half, t_half)
         print('B_half=', B_half)

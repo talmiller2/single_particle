@@ -68,9 +68,10 @@ if plot_magnetic_field_lines:
     z_axis_line = np.array([z_ini, z_fin])
     ax.plot(0 * z_axis_line, 0 * z_axis_line, z_axis_line, color='k', linewidth=3, alpha=0.8)
 
-inds_sim = range(1)
-# inds_sim = range(2)
-# inds_sim = range(3)
+inds_sim = []
+# inds_sim += [0]
+# inds_sim += [1]
+inds_sim += [2]
 for ind_sim in inds_sim:
 
     settings = {}
@@ -81,7 +82,8 @@ for ind_sim in inds_sim:
     settings['T_keV'] = 10.0
     # settings['T_keV'] = 30.0 / 1e3
     settings['gas_name'] = 'deuterium'  # TODO: testing exploding case
-    settings['time_step_tau_cyclotron_divisions'] = 100  # TODO: testing exploding case
+    settings['time_step_tau_cyclotron_divisions'] = 20  # TODO: testing exploding case
+    settings['stop_criterion'] = 't_max_adaptive_dt'
     settings = define_default_settings(settings)
 
     field_dict = {}
@@ -93,7 +95,7 @@ for ind_sim in inds_sim:
     field_dict['Rm'] = 3.0  # mirror ratio
     # field_dict['Rm'] = 5.0  # mirror ratio
 
-    # field_dict['RF_type'] = 'electric_transverse'
+    field_dict['RF_type'] = 'electric_transverse'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1e-3
     # field_dict['E_RF_kVm'] = 0.1
@@ -175,7 +177,8 @@ for ind_sim in inds_sim:
     num_steps = int(t_max / dt)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
-                                        num_steps=num_steps, q=settings['q'], m=settings['mi'], field_dict=field_dict)
+                                        stop_criterion=settings['stop_criterion'], num_steps=num_steps, t_max=t_max,
+                                        q=settings['q'], m=settings['mi'], field_dict=field_dict)
     t = hist['t']
     x = hist['x'][:, 0] / cyclotron_radius
     y = hist['x'][:, 1] / cyclotron_radius
@@ -188,24 +191,24 @@ for ind_sim in inds_sim:
     v_abs = np.sqrt(hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2 + hist['v'][:, 2] ** 2)
     energy_change = 100.0 * (v_abs - v_abs[0]) / v_abs[0]
 
-    # R = np.sqrt(x ** 2 + y ** 2)
+    R = np.sqrt(x ** 2 + y ** 2)
     # v_norm = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
 
     ### Plots
     label = '$E_{RF}$=' + str(field_dict['E_RF_kVm'])
     linewidth = 2
 
-    # plt.figure(1)
-    # # plt.subplot(1,2,1)
-    # plt.plot(t, x, label='x', linewidth=linewidth, color='b')
-    # plt.plot(t, y, label='y', linewidth=linewidth, color='g')
-    # plt.plot(t, z, label='z', linewidth=linewidth, color='r')
-    # plt.plot(t, R, label='R', linewidth=linewidth, color='k')
-    # plt.legend()
-    # plt.xlabel('t')
-    # plt.ylabel('coordinate')
-    # plt.grid(True)
-    # plt.tight_layout()
+    plt.figure(2, figsize=(14, 5))
+    plt.subplot(1, 3, 1)
+    plt.plot(t, x, label='x', linewidth=linewidth, color='b')
+    plt.plot(t, y, label='y', linewidth=linewidth, color='g')
+    plt.plot(t, z, label='z', linewidth=linewidth, color='r')
+    plt.plot(t, R, label='R', linewidth=linewidth, color='k')
+    plt.legend()
+    plt.xlabel('t')
+    plt.ylabel('coordinate')
+    plt.grid(True)
+    plt.tight_layout()
     #
     # plt.figure(4)
     # # plt.subplot(1,2,2)
@@ -250,6 +253,27 @@ for ind_sim in inds_sim:
     # plt.ylabel('E change %')
     # plt.grid(True)
     # plt.tight_layout()
+
+    # plt.figure(8)
+    plt.subplot(1, 3, 2)
+    plt.plot(t, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
+    plt.plot(t, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
+    plt.plot(t, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
+    plt.plot(t, np.linalg.norm(hist['B'], axis=1), label='$B_{norm}$', linewidth=linewidth, color='k')
+    plt.legend()
+    plt.xlabel('t')
+    plt.ylabel('B')
+    plt.grid(True)
+    plt.tight_layout()
+
+    # plt.figure(9)
+    plt.subplot(1, 3, 3)
+    plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
+    plt.legend()
+    plt.xlabel('t')
+    plt.ylabel('dt')
+    plt.grid(True)
+    plt.tight_layout()
 
     ## plot path with changing color as time evolves
     for i in range(len(x) - 1):

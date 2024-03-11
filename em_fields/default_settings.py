@@ -56,7 +56,8 @@ def define_default_settings(settings=None):
         # settings['trajectory_save_method'] = 'min_Bz_mirror_const_vz_sign'
     if 'stop_criterion' not in settings:
         settings['stop_criterion'] = 'steps'
-        # settings['stop_criterion'] = 'time'
+        # settings['stop_criterion'] = 't_max'
+        # settings['stop_criterion'] = 't_max_adaptive_dt'
         # settings['stop_criterion'] = 'first_cell_center_crossing'
         # settings['stop_criterion'] = 'several_cell_center_crossing'
     if 'number_of_time_intervals' not in settings:

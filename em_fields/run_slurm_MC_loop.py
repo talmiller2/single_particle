@@ -147,7 +147,8 @@ for beta_loop in beta_loop_list:
         settings = {}
 
         settings['trajectory_save_method'] = 'intervals'
-        settings['stop_criterion'] = 'steps'
+        # settings['stop_criterion'] = 'steps'
+        settings['stop_criterion'] = 't_max_adaptive_dt'
         # settings['stop_criterion'] = 'first_cell_center_crossing'
         # settings['stop_criterion'] = 'several_cell_center_crossing'
         # settings['number_of_time_intervals'] = 3
@@ -208,7 +209,7 @@ for beta_loop in beta_loop_list:
         field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'logan'
 
-        field_dict['induced_fields_factor'] = 1.0
+        field_dict['induced_fields_factor'] = 1
         # field_dict['induced_fields_factor'] = 0.5
         # field_dict['induced_fields_factor'] = 0
 
