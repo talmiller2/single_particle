@@ -60,8 +60,9 @@ for ind_point in settings['points_set']:
         field_dict = define_default_field(settings, field_dict=field_dict)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
-                                        num_steps=num_steps, q=settings['q'], m=settings['mi'],
+                                        q=settings['q'], m=settings['mi'],
                                         field_dict=field_dict, stop_criterion=settings['stop_criterion'],
+                                        num_steps=num_steps, t_max=t_max,
                                         number_of_cell_center_crosses=settings['number_of_time_intervals'])
 
     # save snapshots of key simulation metrics

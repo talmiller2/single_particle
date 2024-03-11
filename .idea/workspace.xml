@@ -25,13 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="debugging exploding particle trajectories">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="added stop_criterion='t_max_adaptive_dt'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/em_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/em_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel2.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -641,7 +637,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="183" />
+    <option name="localTasksCounter" value="184" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -668,7 +664,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="switching back to making an intervals calc" />
     <MESSAGE value="written plot script for new theta division analysis.&#10;added new run" />
     <MESSAGE value="upgraded the plot12 script. &#10;running again with with shorter time focus" />
     <MESSAGE value="added more runs in set32. added plot12,13 to use the saturation method selectivity" />
@@ -693,7 +688,8 @@
     <MESSAGE value="bugfix" />
     <MESSAGE value="debugging expm" />
     <MESSAGE value="debugging exploding particle trajectories" />
-    <option name="LAST_COMMIT_MESSAGE" value="debugging exploding particle trajectories" />
+    <MESSAGE value="added stop_criterion='t_max_adaptive_dt'" />
+    <option name="LAST_COMMIT_MESSAGE" value="added stop_criterion='t_max_adaptive_dt'" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
