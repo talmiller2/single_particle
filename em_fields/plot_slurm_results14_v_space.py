@@ -38,17 +38,18 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set34_B0_1T_l_3m_Post_Rm_3_intervals/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
-save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
+save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -57,9 +58,9 @@ B_RF = 0.04  # T
 
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -95,11 +96,15 @@ r_0 = 0
 # alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
-beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
+# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
+
+
+alpha_loop_list = np.round(np.linspace(0.5, 1.5, 7), 2)  # set42
+beta_loop_list = np.round(np.linspace(-10, 10, 7), 2)
 
 
 select_alpha_list = []
@@ -126,29 +131,41 @@ set_name_list = []
 # select_beta_list += [-2.0]
 # set_name_list += ['5']
 
+# ## For 2023 paper:
+#
+# select_alpha_list += [1.4]
+# select_beta_list += [3.0]
+# set_name_list += ['1']
+#
+# select_alpha_list += [1.0]
+# select_beta_list += [-3.0]
+# set_name_list += ['2']
+#
+# select_alpha_list += [0.7]
+# select_beta_list += [-3.0]
+# set_name_list += ['3']
+#
+# select_alpha_list += [0.55]
+# select_beta_list += [-7.0]
+# set_name_list += ['4']
 
-select_alpha_list += [1.4]
-select_beta_list += [3.0]
-set_name_list += ['1']
+## testing
+induced_fields_factor = 1
 
-select_alpha_list += [1.0]
-select_beta_list += [-3.0]
+# select_alpha_list += [1.0]
+# select_beta_list += [0.0]
+# set_name_list += ['1']
+
+select_alpha_list += [1.5]
+select_beta_list += [3.33]
 set_name_list += ['2']
-
-select_alpha_list += [0.7]
-select_beta_list += [-3.0]
-set_name_list += ['3']
-
-select_alpha_list += [0.55]
-select_beta_list += [-7.0]
-set_name_list += ['4']
 
 # for ind_set in range(4):
 for ind_set in [0]:
-    # ind_set = 0
+    ind_set = 0
     # ind_set = 1
     # ind_set = 2
-    ind_set = 3
+    # ind_set = 3
 
     alpha = select_alpha_list[ind_set]
     beta = select_beta_list[ind_set]
@@ -179,6 +196,7 @@ for ind_set in [0]:
         if r_0 > 0:
             set_name += '_r0_' + str(r_0) + '_' + set_name
         # set_name += '_antiresonant'
+        set_name += '_iff' + str(induced_fields_factor)
         set_name += '_' + gas_name
 
         save_dir_curr = save_dir + set_name
@@ -196,19 +214,15 @@ for ind_set in [0]:
         with open(field_dict_file, 'rb') as fid:
             field_dict = pickle.load(fid)
 
-        for key in data_dict.keys():
-            data_dict[key] = np.array(data_dict[key])
+        # for key in data_dict.keys():
+        #     data_dict[key] = np.array(data_dict[key])
 
         # define v_th ref
         _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
         v_th_ref = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
 
         # divide the phase space by the angle
-
         theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
-
-        # number_of_time_intervals = 3
-        number_of_time_intervals = data_dict['t'].shape[1]
 
         # fig2, ax2 = plt.subplots(1, 1, figsize=(7, 7), num=2)
         fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6))
@@ -220,9 +234,6 @@ for ind_set in [0]:
         omega_RF = alpha * field_dict['omega_cyclotron']
         omega_RF_over_omega_cyc_0 = omega_RF / omega_cyc_0
         k_RF = 2 * np.pi / field_dict['l'] * beta
-        v_RF = omega_RF / k_RF
-        # v_RF /= v_th_ref # normalized velocity
-        # v_th_T = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
 
         # calculate possible resonance points
         vz_arr = np.linspace(-3, 3, 400) * v_th_ref
@@ -235,10 +246,6 @@ for ind_set in [0]:
                 # B_max_reversal = field_dict['B0'] * (1 + (vz_test / (vt_test + 1e-8 * v_th_ref)) ** 2.0)
                 B_max_reversal = 1.25 * B0
                 B_max = np.min([B_max_mirror, B_max_reversal])
-                # B_res = field_dict['B0']
-                # a = (1 / (B0 * omega_RF_over_omega_cyc_0)) ** 2 + (vt_test / (v_RF * B_res)) ** 2
-                # b = - 2 / (B0 * omega_RF_over_omega_cyc_0)
-                # c = 1 - (vt_test ** 2 + vz_test ** 2) / v_RF ** 2
                 a = (omega_cyc_0 / B0) ** 2.0
                 b = ((k_RF * vt_test) ** 2.0 - 2 * omega_RF * omega_cyc_0) / B0
                 c = omega_RF ** 2.0 - k_RF ** 2.0 * (vz_test ** 2.0 + vt_test ** 2.0)
@@ -342,15 +349,15 @@ for ind_set in [0]:
 
         for ind_p in range(num_particles):
 
-            v = data_dict['v'][ind_p, :]
-            v0 = data_dict['v'][ind_p, 0]
-            vt = data_dict['v_transverse'][ind_p, :]
-            vt0 = data_dict['v_transverse'][ind_p, 0]
-            vz = data_dict['v_axial'][ind_p, :]
-            vz0 = data_dict['v_axial'][ind_p, 0]
+            v = np.array(data_dict['v'][ind_p])
+            v0 = data_dict['v'][ind_p][0]
+            vt = np.array(data_dict['v_transverse'][ind_p])
+            vt0 = data_dict['v_transverse'][ind_p][0]
+            vz = np.array(data_dict['v_axial'][ind_p])
+            vz0 = data_dict['v_axial'][ind_p][0]
             theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
-            Bz = data_dict['Bz'][ind_p, :]
-            Bz0 = data_dict['Bz'][ind_p, 0]
+            Bz = np.array(data_dict['Bz'][ind_p])
+            Bz0 = data_dict['Bz'][ind_p][0]
             vt_adjusted = vt * np.sqrt(
                 Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
 

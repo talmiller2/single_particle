@@ -4,9 +4,9 @@ import pickle
 from scipy.stats import maxwell
 from slurmpy.slurmpy import Slurm
 
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel2
+from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel2()
+evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
 
 import matplotlib.pyplot as plt
 
@@ -99,20 +99,20 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 7), 2)  # set42
-beta_loop_list = np.round(np.linspace(-10, 10, 7), 2)
+alpha_loop_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
+beta_loop_list = [0, 3, -3, -3, -7]
 
-# RF_type = 'electric_transverse'
-# # E_RF_kVm = 0.1  # kV/m
-# # E_RF_kVm = 0.5  # kV/m
-# # E_RF_kVm = 1  # kV/m
-# # E_RF_kVm = 5 # kV/m
-# # E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-# # E_RF_kVm = 50  # kV/m
-# # E_RF_kVm = 100  # kV/m
+RF_type = 'electric_transverse'
+# E_RF_kVm = 0.1  # kV/m
+# E_RF_kVm = 0.5  # kV/m
+# E_RF_kVm = 1  # kV/m
+# E_RF_kVm = 5 # kV/m
+# E_RF_kVm = 10  # kV/m
+E_RF_kVm = 25  # kV/m
+# E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.005  # T
 # B_RF = 0.01  # T
@@ -120,8 +120,8 @@ RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
@@ -162,12 +162,6 @@ for beta_loop in beta_loop_list:
 
         # settings['direction_velocity_sampling_type'] = 'deterministic'
 
-        settings['r_0'] = 0
-        # settings['r_0'] = 1.0
-        # settings['r_0'] = 1.5
-        # settings['r_0'] = settings['l'] / 4
-        # settings['r_0'] = settings['l'] / 2
-
         settings['T_keV'] = 10.0
         # settings['T_keV'] = 30.0 / 1e3
         # settings['T_keV'] = 60.0 / 1e3
@@ -177,7 +171,15 @@ for beta_loop in beta_loop_list:
         # settings['gas_name'] = 'tritium'
         settings['gas_name_for_cyc'] = 'DT_mix'
 
-        settings['time_step_tau_cyclotron_divisions'] = 100  # TODO: testing exploding case
+        settings['time_step_tau_cyclotron_divisions'] = 20
+        # settings['time_step_tau_cyclotron_divisions'] = 40
+        # settings['time_step_tau_cyclotron_divisions'] = 80
+
+        settings['z_0'] = 0.5 * settings['l']
+
+        settings['sigma_r0'] = 0
+        # settings['sigma_r0'] = 0.1
+        # settings['sigma_r0'] = 0.2
 
         settings = define_default_settings(settings)
 
@@ -219,23 +221,11 @@ for beta_loop in beta_loop_list:
         field_dict = define_default_field(settings, field_dict)
 
         # simulation duration
-        # settings['num_snapshots'] = 10
-        # settings['num_snapshots'] = 20
         settings['num_snapshots'] = 30
-        # settings['num_snapshots'] = 50
         # settings['num_snapshots'] = 200
-        # settings['num_snapshots'] = 300
 
-        # tmax_mirror_lengths = 0.2
-        # tmax_mirror_lengths = 0.4
-        # tmax_mirror_lengths = 1
         tmax_mirror_lengths = 2
-        # tmax_mirror_lengths = 3
-        # tmax_mirror_lengths = 5
         # tmax_mirror_lengths = 100
-        # tmax_mirror_lengths = 300
-        # sim_cyclotron_periods = int(
-        #     tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
         sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
                                  / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
         settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -254,15 +244,15 @@ for beta_loop in beta_loop_list:
                 run_name += 'BRF_' + str(field_dict['B_RF'])
             run_name += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
             run_name += '_beta_' + '_'.join([str(b) for b in field_dict['beta_RF_list']])
+        run_name += '_tcycdivs' + str(settings['time_step_tau_cyclotron_divisions'])
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             run_name += '_const_vth'
-        if settings['r_0'] > 0:
-            run_name += '_r0_' + str(settings['r_0'])
-
-        run_name += '_iff' + str(field_dict['induced_fields_factor'])
+        if settings['sigma_r0'] > 0:
+            run_name += '_sigmar0_' + str(settings['sigma_r0'])
+        if settings['induced_fields_factor'] < 1.0:
+            run_name += '_iff' + str(field_dict['induced_fields_factor'])
         if field_dict['with_RF_xy_corrections'] == False:
             run_name += '_woxyRFcor'
-
         if settings['gas_name'] != 'hydrogen':
             run_name += '_' + settings['gas_name']
 
@@ -276,13 +266,8 @@ for beta_loop in beta_loop_list:
 
         # total_number_of_points = 1
         # total_number_of_points = 40
-        # total_number_of_points = 400
-        # total_number_of_points = 1000
-        # total_number_of_points = 2000
-        total_number_of_points = 3000
-        # total_number_of_points = 5000
-        # total_number_of_points = 10000
-        # total_number_of_points = 20000
+        total_number_of_points = 1000
+        # total_number_of_points = 3000
 
         # allow reproducibility
         np.random.seed(0)
@@ -344,6 +329,18 @@ for beta_loop in beta_loop_list:
         for i in range(total_number_of_points):
             v_0[i, :] *= v_abs_samples[i]
         points_dict = {'v_0': v_0}
+
+        # define initial positions of particles
+        # sampling a random 2 pi direction
+        rand_unit_vec = np.random.randn(total_number_of_points, 2)
+        for i in range(total_number_of_points):
+            rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
+        rand_r0_vec = abs(np.random.randn(total_number_of_points) * settings['sigma_r0'])
+        x = rand_unit_vec[:, 0] * rand_r0_vec
+        y = rand_unit_vec[:, 1] * rand_r0_vec
+        z = settings['z_0'] + 0 * rand_r0_vec
+        x_0 = np.array([x, y, z]).T
+        points_dict = {'x_0': x_0}
 
         # random RF phases for each particle
         if settings['apply_random_RF_phase']:

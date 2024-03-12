@@ -46,6 +46,8 @@ def define_default_settings(settings=None):
         settings['r_0'] = 0.0 * settings['l']
     if 'z_0' not in settings:
         settings['z_0'] = 0.5 * settings['l']
+    if 'sigma_r0' not in settings:
+        settings['sigma_r0'] = 0
 
     # simulation parameters
     if 'time_step_tau_cyclotron_divisions' not in settings:

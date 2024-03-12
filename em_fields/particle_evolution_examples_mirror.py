@@ -69,9 +69,9 @@ if plot_magnetic_field_lines:
     ax.plot(0 * z_axis_line, 0 * z_axis_line, z_axis_line, color='k', linewidth=3, alpha=0.8)
 
 inds_sim = []
-# inds_sim += [0]
-# inds_sim += [1]
-inds_sim += [2]
+inds_sim += [0]
+inds_sim += [1]
+# inds_sim += [2]
 for ind_sim in inds_sim:
 
     settings = {}
@@ -81,8 +81,7 @@ for ind_sim in inds_sim:
     # settings['l'] = 3.0  # m (MM cell size)
     settings['T_keV'] = 10.0
     # settings['T_keV'] = 30.0 / 1e3
-    settings['gas_name'] = 'deuterium'  # TODO: testing exploding case
-    settings['time_step_tau_cyclotron_divisions'] = 20  # TODO: testing exploding case
+    settings['time_step_tau_cyclotron_divisions'] = 20
     settings['stop_criterion'] = 't_max_adaptive_dt'
     settings = define_default_settings(settings)
 
@@ -95,7 +94,7 @@ for ind_sim in inds_sim:
     field_dict['Rm'] = 3.0  # mirror ratio
     # field_dict['Rm'] = 5.0  # mirror ratio
 
-    field_dict['RF_type'] = 'electric_transverse'
+    # field_dict['RF_type'] = 'electric_transverse'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1e-3
     # field_dict['E_RF_kVm'] = 0.1
@@ -116,10 +115,10 @@ for ind_sim in inds_sim:
     # field_dict['alpha_RF_list'] = [1.1]
     # field_dict['alpha_RF_list'] = [0.9]
     # field_dict['alpha_RF_list'] = [0.6]
-    field_dict['alpha_RF_list'] = [1.5]  # TODO: testing exploding case
+    field_dict['alpha_RF_list'] = [1.5]
 
-    # field_dict['beta_RF_list'] = [0]
-    field_dict['beta_RF_list'] = [6.67]  # TODO: testing exploding case
+    field_dict['beta_RF_list'] = [0]
+    # field_dict['beta_RF_list'] = [6.67]
 
     field_dict['induced_fields_factor'] = 1.0  # default
     # field_dict['induced_fields_factor'] = 0.5
@@ -129,8 +128,8 @@ for ind_sim in inds_sim:
     field_dict['with_RF_xy_corrections'] = True  # default
     # field_dict['with_RF_xy_corrections'] = False
 
-    # field_dict['phase_RF_addition'] = 0
-    field_dict['phase_RF_addition'] = 3.6999631682413687  # TODO: testing exploding case
+    field_dict['phase_RF_addition'] = 0
+    # field_dict['phase_RF_addition'] = 3.6999631682413687
 
     field_dict = define_default_field(settings, field_dict)
 

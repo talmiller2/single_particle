@@ -25,9 +25,20 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="added stop_criterion='t_max_adaptive_dt'">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="bugfix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel2.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/em_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/em_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave_fenchel2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_old_slurm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_old_slurm_fenchel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_parametric_evolution_in_RF_MM.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/slurm_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/slurm_functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +78,7 @@
     "Python.particle_evolution_examples_mirror.executor": "Run",
     "Python.plot_RF_chirp.executor": "Run",
     "Python.plot_slurm_results13_heatmaps_load_mats_DT.executor": "Run",
+    "Python.plot_slurm_results14_v_space.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true"
   }
 }]]></component>
@@ -236,7 +248,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_slurm_results13_heatmaps_load_mats_DT" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_slurm_results14_v_space" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -246,9 +258,9 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -261,17 +273,17 @@
       <item itemvalue="Python.plot_periodic_square" />
       <item itemvalue="Python.particle_evolution_examples" />
       <item itemvalue="Python.particle_evolution_examples_const_Bz" />
+      <item itemvalue="Python.plot_slurm_results14_v_space" />
       <item itemvalue="Python.particle_evolution_examples_mirror" />
       <item itemvalue="Python.plot_RF_chirp" />
-      <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.particle_evolution_examples_mirror" />
+        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_RF_chirp" />
         <item itemvalue="Python.particle_evolution_examples_const_Bz" />
         <item itemvalue="Python.particle_evolution_examples" />
-        <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT" />
       </list>
     </recent_temporary>
   </component>
@@ -637,7 +649,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="184" />
+    <option name="localTasksCounter" value="185" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -685,11 +697,11 @@
     <MESSAGE value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
     <MESSAGE value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
     <MESSAGE value="-run set42" />
-    <MESSAGE value="bugfix" />
     <MESSAGE value="debugging expm" />
     <MESSAGE value="debugging exploding particle trajectories" />
     <MESSAGE value="added stop_criterion='t_max_adaptive_dt'" />
-    <option name="LAST_COMMIT_MESSAGE" value="added stop_criterion='t_max_adaptive_dt'" />
+    <MESSAGE value="bugfix" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugfix" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
