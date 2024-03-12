@@ -247,7 +247,7 @@ for beta_loop in beta_loop_list:
             run_name += '_const_vth'
         if settings['sigma_r0'] > 0:
             run_name += '_sigmar0_' + str(settings['sigma_r0'])
-        if settings['induced_fields_factor'] < 1.0:
+        if field_dict['induced_fields_factor'] < 1.0:
             run_name += '_iff' + str(field_dict['induced_fields_factor'])
         if field_dict['with_RF_xy_corrections'] == False:
             run_name += '_woxyRFcor'
