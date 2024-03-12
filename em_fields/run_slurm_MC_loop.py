@@ -1,19 +1,17 @@
 import os
 import pickle
 
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import savemat
 from scipy.stats import maxwell
 from slurmpy.slurmpy import Slurm
 
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
-
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
-
-import matplotlib.pyplot as plt
-
 from em_fields.default_settings import define_default_settings, define_default_field
+from em_fields.slurm_functions import get_script_evolution_slave
 
-import numpy as np
-from scipy.io import savemat
+evolution_slave_fenchel_script = get_script_evolution_slave()
+
 
 # slurm_kwargs = {'partition': 'core'}  # default
 # slurm_kwargs = {'partition': 'socket'}

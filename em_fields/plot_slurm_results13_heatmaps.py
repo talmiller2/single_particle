@@ -1,19 +1,10 @@
+import copy
 import pickle
 
-import warnings
-
-warnings.filterwarnings("error")
-
-import numpy as np
-
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
-
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
-
 import matplotlib.pyplot as plt
-import seaborn as sns
-import copy
+import numpy as np
 import pandas as pd
+import seaborn as sns
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})

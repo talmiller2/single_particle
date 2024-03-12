@@ -1,19 +1,11 @@
+import copy
 import pickle
 
-import warnings
-
-warnings.filterwarnings("error")
-
+import matplotlib.pyplot as plt
 import numpy as np
-import copy
 
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_thermal_velocity
-
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
-
-import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})

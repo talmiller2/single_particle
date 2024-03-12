@@ -1,21 +1,8 @@
+import copy
 import pickle
 
-import warnings
-
-warnings.filterwarnings("error")
-
-import numpy as np
-
-from em_fields.slurm_functions import get_script_evolution_slave_fenchel
-
-evolution_slave_fenchel_script = get_script_evolution_slave_fenchel()
-
 import matplotlib.pyplot as plt
-import copy
-
-from warnings import filterwarnings
-
-filterwarnings(action='ignore', category=DeprecationWarning, message='`np.bool` is a deprecated alias')
+import numpy as np
 from scipy.io import savemat
 
 plt.rcParams.update({'font.size': 12})
