@@ -17,7 +17,7 @@ evolution_slave_script = get_script_evolution_slave()
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
 slurm_kwargs = {'partition': 'testSocket'}
-slurm_kwargs['cpus-per-task'] = 1
+# slurm_kwargs['cpus-per-task'] = 1
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
@@ -107,7 +107,7 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 
 use_RF = True
@@ -252,7 +252,7 @@ for combination in combinations_list:
     if settings['absolute_velocity_sampling_type'] == 'const_vth':
         run_name += '_const_vth'
     if settings['sigma_r0'] > 0:
-        run_name += '_sigmar0_' + str(settings['sigma_r0'])
+        run_name += '_sigmar' + str(settings['sigma_r0'])
     if field_dict['induced_fields_factor'] < 1.0:
         run_name += '_iff' + str(field_dict['induced_fields_factor'])
     if field_dict['with_RF_xy_corrections'] == False:

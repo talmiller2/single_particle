@@ -54,14 +54,11 @@ gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
 # gas_name_list += ['tritium']
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
-r_0 = 0
-# r_0 = 1.5
-# r_0 = 3.0
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
 # beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
@@ -142,22 +139,22 @@ set_name_list = []
 # set_name_list += ['4']
 
 ## testing
+with_RF_xy_corrections = True
 induced_fields_factor = 1
+# induced_fields_factor = 0
+time_step_tau_cyclotron_divisions = 20
+# time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 80
+sigma_r0 = 0
+# sigma_r0 = 0.1
 
-# select_alpha_list += [1.0]
-# select_beta_list += [0.0]
-# set_name_list += ['1']
 
-select_alpha_list += [1.5]
-select_beta_list += [3.33]
-set_name_list += ['2']
+select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
+select_beta_list = [0, 3, -3, -3, -7]
+set_name_list += ['0' for _ in range(len(select_beta_list))]
 
 # for ind_set in range(4):
-for ind_set in [0]:
-    ind_set = 0
-    # ind_set = 1
-    # ind_set = 2
-    # ind_set = 3
+for ind_set in [3]:
 
     alpha = select_alpha_list[ind_set]
     beta = select_beta_list[ind_set]
@@ -183,13 +180,17 @@ for ind_set in [0]:
                 set_name += 'BRF_' + str(B_RF)
             set_name += '_alpha_' + str(alpha)
             set_name += '_beta_' + str(beta)
+        set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
         if absolute_velocity_sampling_type == 'const_vth':
-            set_name = 'const_vth_' + set_name
-        if r_0 > 0:
-            set_name += '_r0_' + str(r_0) + '_' + set_name
-        # set_name += '_antiresonant'
-        set_name += '_iff' + str(induced_fields_factor)
+            set_name += '_const_vth'
+        if sigma_r0 > 0:
+            set_name += '_sigmar' + str(sigma_r0)
+        if induced_fields_factor < 1.0:
+            set_name += '_iff' + str(induced_fields_factor)
+        if with_RF_xy_corrections == False:
+            set_name += '_woxyRFcor'
         set_name += '_' + gas_name
+        print(set_name)
 
         save_dir_curr = save_dir + set_name
 
@@ -368,8 +369,8 @@ for ind_set in [0]:
             # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
             dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
-            # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)
-            dist_v /= (2 * v_th_ref)  # as in paper
+            # dist_v /= (2 * v_th_ref)  # as in paper for E_RF
+            dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
             color = cm.rainbow(dist_v)
 
             ax2.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,
@@ -399,20 +400,25 @@ for ind_set in [0]:
             gas_name_shorthand = 'D'
         if gas_name == 'tritium':
             gas_name_shorthand = 'T'
-        text = RF_set_name + ' (' + gas_name_shorthand + ')'
-        # text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
+        # text = RF_set_name + ' (' + gas_name_shorthand + ')'
+        text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
         # text = '(b)'
-        ax2.text(0.20, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-                 horizontalalignment='right', verticalalignment='top',
-                 transform=fig2.axes[0].transAxes)
+        # ax2.text(0.20, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+        #          horizontalalignment='right', verticalalignment='top',
+        #          transform=fig2.axes[0].transAxes)
 
-        # ax2.set_xlabel('$v_z / v_{th}$')
-        # ax2.set_ylabel('$v_{\\perp} / v_{th}$')
-        if ind_set == 3:
-            ax2.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
-        if gas_name == 'deuterium':
-            ax2.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+        ## for testing
+        ax2.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
+        ax2.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+
+        ## for paper:
+        # if ind_set == 3:
+        #     ax2.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
+        # if gas_name == 'deuterium':
+        #     ax2.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+
         # ax2.set_title(title)
+        ax2.set_title(set_name, fontsize=12)
         # ax2.set_xlim([-2.0, 2.0])
         ax2.set_xlim([-2.5, 2.5])
         # ax2.set_ylim([0, 2.0])
@@ -432,50 +438,3 @@ for ind_set in [0]:
         # beingsaved = plt.gcf()
         # # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
         # beingsaved.savefig(save_fig_dir + file_name + '.jpeg', format='jpeg', dpi=300)
-
-### TODO: calculate the average vz in the loss cone
-_, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
-v_th = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
-print('v_th =', v_th)
-
-# v0 = np.sqrt(v_0[:, 0] ** 2 + v_0[:, 1] ** 2 + v_0[:, 2] ** 2)
-# vt0 = np.sqrt(v_0[:, 0] ** 2 + v_0[:, 1] ** 2)
-# vz0 = v_0[:, 2]
-
-v0 = data_dict['v'][:, 0]
-vt0 = data_dict['v_transverse'][:, 0]
-vz0 = data_dict['v_axial'][:, 0]
-
-inds_right_loss_cone = [i for i in range(len(v0))
-                        if vz0[i] > 0 and vt0[i] < vz0[i] * np.sqrt(1 / (field_dict['Rm'] - 1))]
-print(np.mean(vz0[inds_right_loss_cone]) / v_th)
-
-inds_left_loss_cone = [i for i in range(len(v0))
-                       if vz0[i] < 0 and vt0[i] < abs(vz0[i]) * np.sqrt(1 / (field_dict['Rm'] - 1))]
-print(np.mean(vz0[inds_left_loss_cone]) / v_th)
-
-# according to https://en.wikipedia.org/wiki/Maxwell%E2%80%93Boltzmann_distribution#Typical_speeds
-# the integral of v*f(v) is:
-v_MB_mean = 2 / np.sqrt(np.pi) * v_th
-v_z_LC_average_theoretic = v_MB_mean / (2 * field_dict['Rm'] * (1 - np.sqrt(1 - 1 / field_dict['Rm'])))
-print(v_z_LC_average_theoretic / v_th)
-
-# # TODO: testing sphere randomization velocity
-# # total_number_of_points = int(1e6)
-# total_number_of_points = int(3e3)
-# rand_unit_vec = np.random.randn(total_number_of_points, 3)
-# for i in range(total_number_of_points):
-#     rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
-# Rm = 3.0
-# v0 = np.sqrt(rand_unit_vec[:, 0] ** 2 + rand_unit_vec[:, 1] ** 2 + rand_unit_vec[:, 2] ** 2)
-# vt0 = np.sqrt(rand_unit_vec[:, 0] ** 2 + rand_unit_vec[:, 1] ** 2)
-# vz0 = rand_unit_vec[:, 2]
-# inds_cut_off = [i for i in range(len(v0))
-#                         if vz0[i] > 0 and vt0[i] < vz0[i] * np.sqrt(1 / (Rm - 1))]
-# vz0_unit_mean = np.mean(vz0[inds_cut_off])
-# print('vz0_unit_mean = ', vz0_unit_mean)
-# v_th = 1
-# v_mean = 2 / np.sqrt(np.pi) * v_th
-# print('v_mean = ', v_mean)
-# vz_mean = v_mean * vz0_unit_mean
-# print('vz_mean = ', vz_mean)
