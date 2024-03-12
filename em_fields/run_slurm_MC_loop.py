@@ -17,6 +17,7 @@ evolution_slave_script = get_script_evolution_slave()
 # slurm_kwargs = {'partition': 'socket'}
 # slurm_kwargs = {'partition': 'testing'}
 slurm_kwargs = {'partition': 'testSocket'}
+slurm_kwargs['cpus-per-task'] = 1
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
@@ -106,11 +107,11 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     alpha_loop_list = [1]
@@ -132,8 +133,7 @@ else:
 totol_combinations = len(combinations_list)
 print('totol_combinations = ' + str(totol_combinations))
 
-
-# divide the points to a given number of cpus (250 is max in partition core)
+# divide the points to a given number of cpus
 num_cpus = 1
 # num_cpus = 10
 # num_cpus = 50
@@ -175,8 +175,8 @@ for combination in combinations_list:
     # settings['gas_name'] = 'tritium'
     settings['gas_name_for_cyc'] = 'DT_mix'
 
-    settings['time_step_tau_cyclotron_divisions'] = 20
-    # settings['time_step_tau_cyclotron_divisions'] = 40
+    # settings['time_step_tau_cyclotron_divisions'] = 20
+    settings['time_step_tau_cyclotron_divisions'] = 40
     # settings['time_step_tau_cyclotron_divisions'] = 80
 
     settings['z_0'] = 0.5 * settings['l']
@@ -215,9 +215,9 @@ for combination in combinations_list:
     field_dict['mirror_field_type'] = 'post'
     # field_dict['mirror_field_type'] = 'logan'
 
-    field_dict['induced_fields_factor'] = 1
+    # field_dict['induced_fields_factor'] = 1
     # field_dict['induced_fields_factor'] = 0.5
-    # field_dict['induced_fields_factor'] = 0
+    field_dict['induced_fields_factor'] = 0
 
     field_dict['with_RF_xy_corrections'] = True
     # field_dict['with_RF_xy_corrections'] = False
@@ -385,7 +385,6 @@ for combination in combinations_list:
         settings['ind_set'] = ind_set
         settings['points_set'] = points_set
 
-        print('###############')
         if num_cpus == 1:
             slurm_run_name = run_name
             settings['ind_set'] = None
@@ -408,4 +407,5 @@ for combination in combinations_list:
             print('   run set # ' + str(cnt_cpu) + ' / ' + str(num_sets - 1))
         cnt_cpu += 1
 
+    print('###############')
     cnt_combination += 1
