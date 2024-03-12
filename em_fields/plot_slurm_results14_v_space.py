@@ -180,15 +180,15 @@ for ind_set in [3]:
                 set_name += 'BRF_' + str(B_RF)
             set_name += '_alpha_' + str(alpha)
             set_name += '_beta_' + str(beta)
+            if induced_fields_factor < 1.0:
+                set_name += '_iff' + str(induced_fields_factor)
+            if with_RF_xy_corrections == False:
+                set_name += '_woxyRFcor'
         set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
         if absolute_velocity_sampling_type == 'const_vth':
             set_name += '_const_vth'
         if sigma_r0 > 0:
             set_name += '_sigmar' + str(sigma_r0)
-        if induced_fields_factor < 1.0:
-            set_name += '_iff' + str(induced_fields_factor)
-        if with_RF_xy_corrections == False:
-            set_name += '_woxyRFcor'
         set_name += '_' + gas_name
         print(set_name)
 

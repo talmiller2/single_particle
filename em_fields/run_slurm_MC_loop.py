@@ -248,15 +248,15 @@ for combination in combinations_list:
             run_name += 'BRF_' + str(field_dict['B_RF'])
         run_name += '_alpha_' + '_'.join([str(a) for a in field_dict['alpha_RF_list']])
         run_name += '_beta_' + '_'.join([str(b) for b in field_dict['beta_RF_list']])
+        if field_dict['induced_fields_factor'] < 1.0:
+            run_name += '_iff' + str(field_dict['induced_fields_factor'])
+        if field_dict['with_RF_xy_corrections'] == False:
+            run_name += '_woxyRFcor'
     run_name += '_tcycdivs' + str(settings['time_step_tau_cyclotron_divisions'])
     if settings['absolute_velocity_sampling_type'] == 'const_vth':
         run_name += '_const_vth'
     if settings['sigma_r0'] > 0:
         run_name += '_sigmar' + str(settings['sigma_r0'])
-    if field_dict['induced_fields_factor'] < 1.0:
-        run_name += '_iff' + str(field_dict['induced_fields_factor'])
-    if field_dict['with_RF_xy_corrections'] == False:
-        run_name += '_woxyRFcor'
     if settings['gas_name'] != 'hydrogen':
         run_name += '_' + settings['gas_name']
 
