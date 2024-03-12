@@ -270,6 +270,9 @@ for beta_loop in beta_loop_list:
         # allow reproducibility
         np.random.seed(0)
 
+        # initialize points data structure
+        points_dict = {}
+
         # define absolute velocities of particles
         if settings['absolute_velocity_sampling_type'] == 'const_vth':
             # using constant absolute velocity
@@ -326,7 +329,7 @@ for beta_loop in beta_loop_list:
         v_0 = rand_unit_vec
         for i in range(total_number_of_points):
             v_0[i, :] *= v_abs_samples[i]
-        points_dict = {'v_0': v_0}
+        points_dict['v_0'] = v_0
 
         # define initial positions of particles
         # sampling a random 2 pi direction
@@ -338,7 +341,7 @@ for beta_loop in beta_loop_list:
         y = rand_unit_vec[:, 1] * rand_r0_vec
         z = settings['z_0'] + 0 * rand_r0_vec
         x_0 = np.array([x, y, z]).T
-        points_dict = {'x_0': x_0}
+        points_dict['x_0'] = x_0
 
         # random RF phases for each particle
         if settings['apply_random_RF_phase']:
