@@ -34,11 +34,11 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 50  # kV/m
+E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 RF_type = 'magnetic_transverse'
@@ -54,8 +54,8 @@ gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
 # gas_name_list += ['tritium']
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -90,10 +90,6 @@ absolute_velocity_sampling_type = 'maxwell'
 
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
-
-
-alpha_loop_list = np.round(np.linspace(0.5, 1.5, 7), 2)  # set42
-beta_loop_list = np.round(np.linspace(-10, 10, 7), 2)
 
 
 select_alpha_list = []
@@ -142,19 +138,19 @@ set_name_list = []
 with_RF_xy_corrections = True
 induced_fields_factor = 1
 # induced_fields_factor = 0
-time_step_tau_cyclotron_divisions = 20
-# time_step_tau_cyclotron_divisions = 40
-# time_step_tau_cyclotron_divisions = 80
-sigma_r0 = 0
-# sigma_r0 = 0.1
-
+# time_step_tau_cyclotron_divisions = 20
+time_step_tau_cyclotron_divisions = 80
+# sigma_r0 = 0
+sigma_r0 = 0.1
 
 select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 select_beta_list = [0, 3, -3, -3, -7]
 set_name_list += ['0' for _ in range(len(select_beta_list))]
 
-# for ind_set in range(4):
-for ind_set in [3]:
+# ind_sets = [0]
+# ind_sets = [1]
+ind_sets = [3]
+for ind_set in ind_sets:
 
     alpha = select_alpha_list[ind_set]
     beta = select_beta_list[ind_set]
@@ -369,8 +365,8 @@ for ind_set in [3]:
             # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
             dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
-            # dist_v /= (2 * v_th_ref)  # as in paper for E_RF
-            dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
+            dist_v /= (2 * v_th_ref)  # as in paper for E_RF
+            # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
             color = cm.rainbow(dist_v)
 
             ax2.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,

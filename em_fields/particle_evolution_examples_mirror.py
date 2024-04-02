@@ -8,7 +8,8 @@ from em_fields.em_functions import evolve_particle_in_em_fields
 # from mpl_toolkits.mplot3d import Axes3D
 # Axes3D = Axes3D  # pycharm auto import
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 10})
+# plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
@@ -40,13 +41,13 @@ if plot_magnetic_field_lines:
     xy_angles = np.linspace(0, 2 * np.pi, 50)
     xy_angles = xy_angles[0:-1]
     for xy_angle in xy_angles:
-        # r_ini = 2
-        r_ini = 4
-        # r_ini = 20
+        # r_ini = 2 * cyclotron_radius
+        # r_ini = 4 * cyclotron_radius
+        r_ini = settings['l'] / 10
         z_ini = settings['l'] * 0.25
         z_fin = settings['l'] * 1.5
-        x_ini = [-r_ini * cyclotron_radius * np.cos(xy_angle),
-                 r_ini * cyclotron_radius * np.sin(xy_angle),
+        x_ini = [-r_ini * np.cos(xy_angle),
+                 r_ini * np.sin(xy_angle),
                  z_ini]
         x_array = [x_ini]
         dstep = 0.5 * cyclotron_radius
@@ -59,9 +60,12 @@ if plot_magnetic_field_lines:
             direction = B_curr / np.linalg.norm(B_curr)
             x_array += [x_curr + direction * dstep]
         x_array = np.array(x_array)
-        x_field_line = x_array[:, 0] / cyclotron_radius
-        y_field_line = x_array[:, 1] / cyclotron_radius
-        z_field_line = x_array[:, 2] / settings['l']
+        # x_field_line = x_array[:, 0] / cyclotron_radius
+        # y_field_line = x_array[:, 1] / cyclotron_radius
+        # z_field_line = x_array[:, 2] / settings['l']
+        x_field_line = x_array[:, 0]
+        y_field_line = x_array[:, 1]
+        z_field_line = x_array[:, 2]
         ax.plot(x_field_line, y_field_line, z_field_line, color='k', linewidth=1, alpha=0.3)
 
     # add the axis line
@@ -83,6 +87,7 @@ for ind_sim in inds_sim:
     # settings['T_keV'] = 30.0 / 1e3
     settings['time_step_tau_cyclotron_divisions'] = 20
     settings['stop_criterion'] = 't_max_adaptive_dt'
+    # settings['stop_criterion'] = 't_max'
     settings = define_default_settings(settings)
 
     field_dict = {}
@@ -113,12 +118,12 @@ for ind_sim in inds_sim:
     # field_dict['lambda_RF_list'] = [100.0] # [m]
     # field_dict['alpha_RF_list'] = [1.0]
     # field_dict['alpha_RF_list'] = [1.1]
-    # field_dict['alpha_RF_list'] = [0.9]
+    field_dict['alpha_RF_list'] = [0.9]
     # field_dict['alpha_RF_list'] = [0.6]
-    field_dict['alpha_RF_list'] = [1.5]
+    # field_dict['alpha_RF_list'] = [1.5]
 
-    field_dict['beta_RF_list'] = [0]
-    # field_dict['beta_RF_list'] = [6.67]
+    # field_dict['beta_RF_list'] = [0]
+    field_dict['beta_RF_list'] = [6.67]
 
     field_dict['induced_fields_factor'] = 1.0  # default
     # field_dict['induced_fields_factor'] = 0.5
@@ -147,13 +152,12 @@ for ind_sim in inds_sim:
     z = np.cos(angle / 360 * 2 * np.pi)
     unit_vec = np.array([x, y, z]).T
     v_0 = settings['v_th'] * unit_vec
-
-    v_perp = np.sqrt(v_0[0] ** 2 + v_0[1] ** 2)
+    # v_perp = np.sqrt(v_0[0] ** 2 + v_0[1] ** 2)
 
     if ind_sim == 0:
-        x_0 = np.array([0, r_ini * cyclotron_radius, settings['l'] / 2.0])
+        x_0 = np.array([0, r_ini, settings['l'] / 2.0])
     elif ind_sim == 1:
-        x_0 = np.array([-r_ini * cyclotron_radius, 0, settings['l'] / 2.0])
+        x_0 = np.array([-r_ini, 0, settings['l'] / 2.0])
         v_0[1] *= -1
     elif ind_sim == 2:
         # testing exploding fields case
@@ -174,16 +178,23 @@ for ind_sim in inds_sim:
 
     t_max = sim_cyclotron_periods * field_dict['tau_cyclotron']
     num_steps = int(t_max / dt)
+    # num_steps = 1000
+    num_steps = int(1e15)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
                                         stop_criterion=settings['stop_criterion'], num_steps=num_steps, t_max=t_max,
-                                        q=settings['q'], m=settings['mi'], field_dict=field_dict)
+                                        q=settings['q'], m=settings['mi'], field_dict=field_dict,
+                                        r_max=settings['l'],
+                                        )
     t = hist['t']
-    x = hist['x'][:, 0] / cyclotron_radius
-    y = hist['x'][:, 1] / cyclotron_radius
+    x = hist['x'][:, 0]
+    y = hist['x'][:, 1]
+    # x = hist['x'][:, 0] / cyclotron_radius
+    # y = hist['x'][:, 1] / cyclotron_radius
     # x = hist['x'][:, 0] / settings['l']
     # y = hist['x'][:, 1] / settings['l']
-    z = hist['x'][:, 2] / settings['l']
+    z = hist['x'][:, 2]
+    # z = hist['x'][:, 2] / settings['l']
     # vx = hist['v'][:, 0]
     # vy = hist['v'][:, 1]
     # vz = hist['v'][:, 2]
@@ -197,7 +208,8 @@ for ind_sim in inds_sim:
     label = '$E_{RF}$=' + str(field_dict['E_RF_kVm'])
     linewidth = 2
 
-    plt.figure(2, figsize=(14, 5))
+    # plt.figure(2, figsize=(14, 5))
+    plt.figure(num=None, figsize=(14, 5))
     plt.subplot(1, 3, 1)
     plt.plot(t, x, label='x', linewidth=linewidth, color='b')
     plt.plot(t, y, label='y', linewidth=linewidth, color='g')
@@ -206,6 +218,7 @@ for ind_sim in inds_sim:
     plt.legend()
     plt.xlabel('t')
     plt.ylabel('coordinate')
+    plt.title('ind_sim = ' + str(ind_sim))
     plt.grid(True)
     plt.tight_layout()
     #
@@ -279,14 +292,14 @@ for ind_sim in inds_sim:
         ax.plot(x[i:i + 2], y[i:i + 2], z[i:i + 2], color=plt.cm.jet(int(255 * i / len(x))))
     # ax.plot(x, y, z, label=label, linewidth=linewidth, alpha=1)
 
-    # ax.set_xlabel('x')
-    # ax.set_ylabel('y')
-    # ax.set_zlabel('z')
-    ax.set_xlabel('x/$r_{cyc}$')
-    ax.set_ylabel('y/$r_{cyc}$')
+    # ax.set_xlabel('x/$r_{cyc}$')
+    # ax.set_ylabel('y/$r_{cyc}$')
+    ax.set_xlabel('x [m]')
+    ax.set_ylabel('y [m]')
     # ax.set_xlabel('x/l')
     # ax.set_ylabel('y/l')
-    ax.set_zlabel('z/l', rotation=90)
+    # ax.set_zlabel('z/l', rotation=90)
+    ax.set_zlabel('z [m]', rotation=90)
 
     # ax.set_xlim([-3, 3])
     # ax.set_ylim([-3, 3])

@@ -29,8 +29,8 @@ def get_plasma_frequency(ne, qe, me, eps0):
 
 
 def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dict=None, t_0=0, q=1.0, m=1.0,
-                                 stop_criterion='steps', num_steps=None, t_max=None, return_fields=True,
-                                 number_of_cell_center_crosses=None):
+                                 stop_criterion='steps', num_steps=int(1e15), t_max=None, return_fields=True,
+                                 number_of_cell_center_crosses=None, r_max=None):
     """
     Advance a charged particle in time under the influence of E,B fields.
     """
@@ -40,11 +40,14 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
     elif stop_criterion == 't_max':
         num_steps = t_max / dt
     elif stop_criterion == 't_max_adaptive_dt':
-        num_steps = int(1e15)  # picking an "infinite" number
+        # num_steps is the max limit for steps
+        pass
     elif stop_criterion == 'first_cell_center_crossing':
-        num_steps = int(1e15)  # picking an "infinite" number
+        # num_steps is the max limit for steps
+        pass
     elif stop_criterion == 'several_cell_center_crossing':
-        num_steps = int(1e15)  # picking an "infinite" number
+        # num_steps is the max limit for steps
+        pass
         cnt_cell_center_crosses = 0
         inds_cell_center_crossing = [0]
     t = t_0
@@ -101,6 +104,12 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
         elif stop_criterion in ['t_max', 't_max_adaptive_dt']:
             if t >= t_max:
                 break
+            if r_max is not None:
+                r = np.sqrt(x_new[0] ** 2 + x_new[1] ** 2)
+                if r > r_max:
+                    print('*** stopping calculation due to r>r_max '
+                          'in ind_step=' + str(ind_step) + ', t=' + str(t) + 's.')
+                    break
 
     for key in hist:
         hist[key] = np.array(hist[key])

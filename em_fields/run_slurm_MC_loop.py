@@ -101,13 +101,12 @@ plt.close('all')
 alpha_loop_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 beta_loop_list = [0, 3, -3, -3, -7]
 
-
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 
 use_RF = True
@@ -185,6 +184,8 @@ for combination in combinations_list:
     # settings['sigma_r0'] = 0.1
     # settings['sigma_r0'] = 0.2
 
+    settings['r_max'] = settings['l']
+
     settings = define_default_settings(settings)
 
     field_dict = {}
@@ -217,6 +218,8 @@ for combination in combinations_list:
 
     # field_dict['induced_fields_factor'] = 1
     # field_dict['induced_fields_factor'] = 0.5
+    # field_dict['induced_fields_factor'] = 0.1
+    # field_dict['induced_fields_factor'] = 0.01
     field_dict['induced_fields_factor'] = 0
 
     field_dict['with_RF_xy_corrections'] = True

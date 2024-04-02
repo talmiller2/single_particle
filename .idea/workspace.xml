@@ -25,8 +25,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="update plot_slurm_results14_v_space">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/default_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/default_settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/em_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/em_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/particle_evolution_examples_mirror.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
@@ -63,13 +67,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.Python Console.executor": "Run",
     "Python.particle_evolution_examples.executor": "Run",
     "Python.particle_evolution_examples_const_Bz.executor": "Run",
     "Python.particle_evolution_examples_mirror.executor": "Run",
     "Python.plot_RF_chirp.executor": "Run",
+    "Python.plot_color_bar.executor": "Run",
     "Python.plot_slurm_results13_heatmaps_load_mats_DT.executor": "Run",
     "Python.plot_slurm_results14_v_space.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "last_opened_file_path": "/Users/talmiller/Dropbox/UNI/Courses Graduate/Plasma/code/single_particle/em_fields",
     "run.code.analysis.last.selected.profile": "aDefault"
   }
 }]]></component>
@@ -96,37 +103,18 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot_slurm_results14_v_space">
-    <configuration name="particle_evolution_examples" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.particle_evolution_examples_mirror">
+    <configuration name="Python Console" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/particle_evolution_examples.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="particle_evolution_examples_const_Bz" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/particle_evolution_examples_const_Bz.py" />
+      <option name="SCRIPT_NAME" value="/Python Console.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -167,6 +155,25 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_RF_chirp.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plot_color_bar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_color_bar.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -262,19 +269,19 @@
       <item itemvalue="Python.plot_magnetic_field_loop_cartesian" />
       <item itemvalue="Python.plot_magnetic_field_loop_cylindrical" />
       <item itemvalue="Python.plot_periodic_square" />
-      <item itemvalue="Python.particle_evolution_examples" />
-      <item itemvalue="Python.particle_evolution_examples_const_Bz" />
+      <item itemvalue="Python.Python Console" />
+      <item itemvalue="Python.plot_color_bar" />
       <item itemvalue="Python.plot_slurm_results14_v_space" />
       <item itemvalue="Python.particle_evolution_examples_mirror" />
       <item itemvalue="Python.plot_RF_chirp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.particle_evolution_examples_mirror" />
+        <item itemvalue="Python.Python Console" />
+        <item itemvalue="Python.plot_color_bar" />
+        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_RF_chirp" />
-        <item itemvalue="Python.particle_evolution_examples_const_Bz" />
-        <item itemvalue="Python.particle_evolution_examples" />
       </list>
     </recent_temporary>
   </component>
@@ -640,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="194" />
+    <option name="localTasksCounter" value="195" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -667,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add set35" />
     <MESSAGE value="forgot to update T to lower value" />
     <MESSAGE value="more runs" />
     <MESSAGE value="new set36 runs for the paper" />
@@ -692,7 +698,8 @@
     <MESSAGE value="change run method to combination based with matrix/array options" />
     <MESSAGE value="testing cpus-per-task=1" />
     <MESSAGE value="update plot_slurm_results14_v_space" />
-    <option name="LAST_COMMIT_MESSAGE" value="update plot_slurm_results14_v_space" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
