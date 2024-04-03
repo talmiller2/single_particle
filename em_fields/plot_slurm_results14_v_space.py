@@ -136,12 +136,16 @@ set_name_list = []
 
 ## testing
 with_RF_xy_corrections = True
-induced_fields_factor = 1
-# induced_fields_factor = 0
+# induced_fields_factor = 1
+# induced_fields_factor = 0.5
+# induced_fields_factor = 0.1
+# induced_fields_factor = 0.01
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
-time_step_tau_cyclotron_divisions = 80
-# sigma_r0 = 0
-sigma_r0 = 0.1
+time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 80
+sigma_r0 = 0
+# sigma_r0 = 0.1
 
 select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 select_beta_list = [0, 3, -3, -3, -7]
@@ -338,6 +342,7 @@ for ind_set in ind_sets:
 
         for ind_p in range(num_particles):
 
+            t = np.array(data_dict['t'][ind_p])
             v = np.array(data_dict['v'][ind_p])
             v0 = data_dict['v'][ind_p][0]
             vt = np.array(data_dict['v_transverse'][ind_p])
@@ -367,7 +372,8 @@ for ind_set in ind_sets:
             dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
             dist_v /= (2 * v_th_ref)  # as in paper for E_RF
             # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
-            color = cm.rainbow(dist_v)
+            # color = cm.rainbow(dist_v)
+            color = cm.rainbow(t[-1] / 3e-6)
 
             ax2.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,
                      # color=colors[ind_p],

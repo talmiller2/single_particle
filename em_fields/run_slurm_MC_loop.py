@@ -236,6 +236,12 @@ for combination in combinations_list:
     sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
                              / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
+    settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
+    settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
+    if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
+        settings['num_steps'] = int(1e10)
+    else:
+        settings['num_steps'] = int(settings['t_max'] / settings['dt'])
 
     run_name = ''
     # run_name += 'tmax_' + str(settings['sim_cyclotron_periods'])

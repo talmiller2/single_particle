@@ -51,18 +51,15 @@ for ind_point in settings['points_set']:
     x_0 = runs_dict['x_0'][ind_point]
     v_0 = runs_dict['v_0'][ind_point]
 
-    t_max = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
-    dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
-    num_steps = int(t_max / dt)
-
     if settings['apply_random_RF_phase'] is True:
         field_dict['phase_RF_addition'] = runs_dict['phase_RF'][0, ind_point]
         field_dict = define_default_field(settings, field_dict=field_dict)
 
-    hist = evolve_particle_in_em_fields(x_0, v_0, dt, E_RF_function, B_RF_function,
+    hist = evolve_particle_in_em_fields(x_0, v_0, settings['dt'], E_RF_function, B_RF_function,
                                         q=settings['q'], m=settings['mi'],
                                         field_dict=field_dict, stop_criterion=settings['stop_criterion'],
-                                        num_steps=num_steps, t_max=t_max, r_max=settings['r_max'],
+                                        num_steps=settings['num_steps'], t_max=settings['t_max'],
+                                        r_max=settings['r_max'],
                                         number_of_cell_center_crosses=settings['number_of_time_intervals'])
 
     # save snapshots of key simulation metrics
@@ -129,19 +126,23 @@ for ind_point in settings['points_set']:
         z = hist['x'][i, 2]
         curr_data_dict['z'] += [z]
 
-        # velocity (total)
+        # radial position
+        r = np.linalg.norm(hist['x'][i, 0:2])
+        curr_data_dict['r'] += [r]
+
+        # total velocity
         v_abs = np.linalg.norm(hist['v'][i])
         curr_data_dict['v'] += [v_abs]
 
-        # velocity (transverse)
+        # transverse velocity
         v_transverse_abs = np.linalg.norm(hist['v'][i, 0:2])
         curr_data_dict['v_transverse'] += [v_transverse_abs]
 
-        # velocity (axial)
+        # axial velocity
         v_axial = hist['v'][i, 2]
         curr_data_dict['v_axial'] += [v_axial]
 
-        # magnetic field (axial)
+        # axial magnetic field
         Bz = hist['B'][i, 2]
         curr_data_dict['Bz'] += [Bz]
 
