@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 12})
 # figsize_large = (16, 9)
 # figsize_large = (14, 7)
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -136,24 +136,28 @@ set_name_list = []
 
 ## testing
 with_RF_xy_corrections = True
-# induced_fields_factor = 1
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
-sigma_r0 = 0
-# sigma_r0 = 0.1
+# sigma_r0 = 0
+sigma_r0 = 0.1
 
 select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 select_beta_list = [0, 3, -3, -3, -7]
 set_name_list += ['0' for _ in range(len(select_beta_list))]
 
+cnt_filtered_particles = 0
+
 # ind_sets = [0]
 # ind_sets = [1]
-ind_sets = [3]
+# ind_sets = [2]
+# ind_sets = [3]
+ind_sets = [4]
 for ind_set in ind_sets:
 
     alpha = select_alpha_list[ind_set]
@@ -217,7 +221,7 @@ for ind_set in ind_sets:
         # divide the phase space by the angle
         theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
 
-        # fig2, ax2 = plt.subplots(1, 1, figsize=(7, 7), num=2)
+        fig, ax = plt.subplots(1, 1, figsize=(6, 6))
         fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6))
 
         ### plot the theretical resonance points
@@ -290,10 +294,10 @@ for ind_set in ind_sets:
         vz_arr /= v_th_ref  # normalized velocity
         vt_arr /= v_th_ref  # normalized velocity
 
-        ax2.fill_between(vz_arr, vt_min_array, vt_max_array,
-                         color='grey', alpha=0.25,
-                         # color='pink',
-                         )
+        ax.fill_between(vz_arr, vt_min_array, vt_max_array,
+                        color='grey', alpha=0.25,
+                        # color='pink',
+                        )
 
         # fig3, ax3 = plt.subplots(1, 1, figsize=(6, 6))
         # ax3.imshow(resonance_possible_mat)
@@ -343,6 +347,7 @@ for ind_set in ind_sets:
         for ind_p in range(num_particles):
 
             t = np.array(data_dict['t'][ind_p])
+            r = np.array(data_dict['r'][ind_p])
             v = np.array(data_dict['v'][ind_p])
             v0 = data_dict['v'][ind_p][0]
             vt = np.array(data_dict['v_transverse'][ind_p])
@@ -355,47 +360,56 @@ for ind_set in ind_sets:
             vt_adjusted = vt * np.sqrt(
                 Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
 
-            # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt0 ** 2.0 * (Bz / Bz0 - 1))
-            # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz))
-            # theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
+            # catch particles that escape radially
+            if r[-1] > settings['r_max']:
+                print('particle', ind_p, 'escaped radially, filtering it out.')
+                cnt_filtered_particles += 1
+            else:
+                ax2.plot(t, r, color=color, alpha=0.3)
 
-            det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
-            inds_positive = np.where(det > 0)[0]
-            vz_adjusted = np.zeros(len(vz))
-            vz_adjusted[inds_positive] = np.sign(vz0) * np.sqrt(det[inds_positive])
-            # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive])
+                # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt0 ** 2.0 * (Bz / Bz0 - 1))
+                # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz))
+                # theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
 
-            # theta_adjusted = 90.0 * np.ones(len(inds_particles))
-            # theta_adjusted[inds_positive] = np.mod(
-            # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
+                det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
+                inds_positive = np.where(det > 0)[0]
+                vz_adjusted = np.zeros(len(vz))
+                vz_adjusted[inds_positive] = np.sign(vz0) * np.sqrt(det[inds_positive])
+                # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive])
 
-            dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
-            dist_v /= (2 * v_th_ref)  # as in paper for E_RF
-            # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
-            # color = cm.rainbow(dist_v)
-            color = cm.rainbow(t[-1] / 3e-6)
+                # theta_adjusted = 90.0 * np.ones(len(inds_particles))
+                # theta_adjusted[inds_positive] = np.mod(
+                # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
-            ax2.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,
-                     # color=colors[ind_p],
-                     color=color,
-                     alpha=0.2,
-                     )
-            ax2.plot(vz_adjusted[0] / v_th_ref, vt_adjusted[0] / v_th_ref,
-                     # color=colors[ind_p],
-                     color=color,
-                     marker='o',
-                     )
-            # ax2.plot(vz_adjusted[-1] / settings['v_th'], vt_adjusted[-1] / settings['v_th'],
-            #          color=colors[ind_p], marker='o', fillstyle='none',
-            #          )
+                dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
+                dist_v /= (2 * v_th_ref)  # as in paper for E_RF
+                # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
+                color = cm.rainbow(dist_v)
+                # color = cm.rainbow(t[-1] / 3e-6)
+                # color = cm.rainbow(r[-1])
 
-            # plot the diagonal LC lines
-            # if ind_p == 0:
-            if ind_p == num_particles - 1:
-                vz_axis = np.array([0, 4 * v_th_ref])
-                vt_axis = vz_axis * np.sqrt(1 / (field_dict['Rm'] - 1))
-                ax2.plot(vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
-                ax2.plot(-vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
+                ax.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,
+                        # color=colors[ind_p],
+                        color=color,
+                        alpha=0.2,
+                        )
+                ax.plot(vz_adjusted[0] / v_th_ref, vt_adjusted[0] / v_th_ref,
+                        # color=colors[ind_p],
+                        color=color,
+                        marker='o',
+                        )
+                # ax.plot(vz_adjusted[-1] / settings['v_th'], vt_adjusted[-1] / settings['v_th'],
+                #          color=colors[ind_p], marker='o', fillstyle='none',
+                #          )
+
+                # plot the diagonal LC lines
+                # if ind_p == 0:
+                if ind_p == num_particles - 1:
+                    vz_axis = np.array([0, 4 * v_th_ref])
+                    vt_axis = vz_axis * np.sqrt(1 / (field_dict['Rm'] - 1))
+                    ax.plot(vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
+                    ax.plot(-vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
+
 
         # text = '(' + RF_set_name + ')'
         if gas_name == 'deuterium':
@@ -405,30 +419,36 @@ for ind_set in ind_sets:
         # text = RF_set_name + ' (' + gas_name_shorthand + ')'
         text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
         # text = '(b)'
-        # ax2.text(0.20, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+        # ax.text(0.20, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
         #          horizontalalignment='right', verticalalignment='top',
-        #          transform=fig2.axes[0].transAxes)
+        #          transform=fig.axes[0].transAxes)
 
         ## for testing
-        ax2.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
-        ax2.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+        ax.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
+        ax.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
 
         ## for paper:
         # if ind_set == 3:
-        #     ax2.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
+        #     ax.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
         # if gas_name == 'deuterium':
-        #     ax2.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+        #     ax.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
 
-        # ax2.set_title(title)
-        ax2.set_title(set_name, fontsize=12)
-        # ax2.set_xlim([-2.0, 2.0])
-        ax2.set_xlim([-2.5, 2.5])
-        # ax2.set_ylim([0, 2.0])
-        ax2.set_ylim([0, 2.5])
-        # ax2.set_ylim([0, 3.0])
-        # fig2.set_tight_layout(True)
+        # ax.set_title(title)
+        ax.set_title(set_name, fontsize=12)
+        # ax.set_xlim([-2.0, 2.0])
+        ax.set_xlim([-2.5, 2.5])
+        # ax.set_ylim([0, 2.0])
+        ax.set_ylim([0, 2.5])
+        # ax.set_ylim([0, 3.0])
+        # fig.set_tight_layout(True)
+        fig.set_layout_engine(layout='tight')
+        # ax.legend()
+        ax.grid(True)
+
+        ## r, t plot
+        ax2.set_xlabel('t [s]', fontsize=20)
+        ax2.set_ylabel('r [m]', fontsize=20)
         fig2.set_layout_engine(layout='tight')
-        # ax2.legend()
         ax2.grid(True)
 
         # ## save plots to file
@@ -440,3 +460,6 @@ for ind_set in ind_sets:
         # beingsaved = plt.gcf()
         # # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
         # beingsaved.savefig(save_fig_dir + file_name + '.jpeg', format='jpeg', dpi=300)
+
+print('cnt_filtered_particles=' + str(cnt_filtered_particles)
+      + ', in percents ' + str(cnt_filtered_particles / num_particles * 100) + '%.')
