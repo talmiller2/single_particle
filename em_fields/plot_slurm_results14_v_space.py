@@ -32,9 +32,10 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
-save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
@@ -147,8 +148,14 @@ time_step_tau_cyclotron_divisions = 40
 # sigma_r0 = 0
 sigma_r0 = 0.1
 
-select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
-select_beta_list = [0, 3, -3, -3, -7]
+# select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
+# select_beta_list = [0, 3, -3, -3, -7]
+# set_name_list += ['0' for _ in range(len(select_beta_list))]
+
+alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
+beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+select_alpha_list = alpha_loop_list
+select_beta_list = beta_loop_list
 set_name_list += ['0' for _ in range(len(select_beta_list))]
 
 cnt_filtered_particles = 0
@@ -365,7 +372,6 @@ for ind_set in ind_sets:
                 print('particle', ind_p, 'escaped radially, filtering it out.')
                 cnt_filtered_particles += 1
             else:
-                ax2.plot(t, r, color=color, alpha=0.3)
 
                 # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt0 ** 2.0 * (Bz / Bz0 - 1))
                 # vz_adjusted = np.sign(vz0) * np.sqrt(vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz))
@@ -409,6 +415,10 @@ for ind_set in ind_sets:
                     vt_axis = vz_axis * np.sqrt(1 / (field_dict['Rm'] - 1))
                     ax.plot(vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
                     ax.plot(-vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
+
+                ax2.plot(t, r,
+                         color=color,
+                         alpha=0.3)
 
 
         # text = '(' + RF_set_name + ')'
