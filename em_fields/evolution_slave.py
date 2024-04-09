@@ -70,10 +70,10 @@ for ind_point in settings['points_set']:
         # TODO: change from indices to a custom t-grid from 0 to t_max, such that all metrics are
         #  interpolated to the same grid and will be of the same size.
         t_save_array = np.linspace(0, settings['t_max'], settings['num_snapshots'])
-        ind_samples = []
+        inds_samples = []
         for t_save in t_save_array:
             if t_save < settings['t_max']:
-                ind_samples += [np.where(hist['t'] > t_save)[0][0]]
+                inds_samples += [np.where(hist['t'] > t_save)[0][0]]
 
     elif settings['stop_criterion'] == 'first_cell_center_crossing':
         # extract the first and last states of the evolution

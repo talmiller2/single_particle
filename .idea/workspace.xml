@@ -25,13 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="define runs set43">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="in trajectory_save_method intervals change ind_samples to be on a predetermined t_save_array.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -648,7 +644,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -675,7 +671,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="-adding new plot scripts&#10;-another set to treat D,T separately" />
     <MESSAGE value="-divide the heatmap drawing into 2 parts, compiling and plotting&#10;-add another run set with longer time to study saturation better" />
     <MESSAGE value="new runs" />
     <MESSAGE value="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T" />
@@ -700,7 +695,8 @@
     <MESSAGE value="-t_max now given in run_slurm_MC_loop such that even in adaptive_dt calc they end in same absolute time&#10;-refactor t_max,dt,num_steps definitions into run_slurm_MC_loop from evolution_slave&#10;-in evolution_slave also save r" />
     <MESSAGE value="bugfix" />
     <MESSAGE value="define runs set43" />
-    <option name="LAST_COMMIT_MESSAGE" value="define runs set43" />
+    <MESSAGE value="in trajectory_save_method intervals change ind_samples to be on a predetermined t_save_array." />
+    <option name="LAST_COMMIT_MESSAGE" value="in trajectory_save_method intervals change ind_samples to be on a predetermined t_save_array." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
