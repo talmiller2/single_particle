@@ -5,7 +5,7 @@ import ast
 import pickle
 
 import numpy as np
-from scipy.io import savemat, loadmat
+from scipy.io import savemat
 from scipy.signal import argrelextrema
 
 from em_fields.RF_field_forms import E_RF_function, B_RF_function
@@ -24,11 +24,9 @@ print('args.settings = ' + str(args.settings))
 settings = ast.literal_eval(args.settings)
 print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
+print('args.points_dict = ' + str(args.points_dict))
+points_dict = ast.literal_eval(args.points_dict)
 
-# load data for runs
-# runs_dict_file = settings['save_dir'] + '/points_dict.mat'
-runs_dict_file = settings['save_dir'] + '/points_dict_' + settings['run_name'] + '.mat'
-runs_dict = loadmat(runs_dict_file)
 
 # define the file name where the run's data will be saved
 if settings['ind_set'] is not None:
@@ -49,11 +47,11 @@ for ind_point in settings['points_set']:
     print('run_name = ' + run_name)
 
     # initial location and velocity of particle
-    x_0 = runs_dict['x_0'][ind_point]
-    v_0 = runs_dict['v_0'][ind_point]
+    x_0 = points_dict['x_0'][ind_point]
+    v_0 = points_dict['v_0'][ind_point]
 
     if settings['apply_random_RF_phase'] is True:
-        field_dict['phase_RF_addition'] = runs_dict['phase_RF'][0, ind_point]
+        field_dict['phase_RF_addition'] = points_dict['phase_RF'][0, ind_point]
         field_dict = define_default_field(settings, field_dict=field_dict)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, settings['dt'], E_RF_function, B_RF_function,
