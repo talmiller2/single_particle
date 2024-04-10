@@ -25,10 +25,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="save a points_dict file per run, before only one was saved, so most runs were identical">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="supply points_dict to the evolution_slave.py via the arguments instead of the saved files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +103,7 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot_slurm_results14_v_space">
+  <component name="RunManager" selected="Python.plot_slurm_results13_heatmaps_load_mats">
     <configuration name="download_remote" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
@@ -277,8 +277,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats" />
+        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_save_mats" />
         <item itemvalue="Python.plot_slurm_results12_saturation" />
         <item itemvalue="Python.download_remote" />
@@ -647,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="204" />
+    <option name="localTasksCounter" value="205" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -674,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add plot_color_bar" />
     <MESSAGE value="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25" />
     <MESSAGE value="add set41 to plot_slurm_results13_heatmaps_save_mats" />
     <MESSAGE value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
@@ -699,7 +698,8 @@
     <MESSAGE value="fix t_save&lt;t[-1] logic" />
     <MESSAGE value="try to catch the error" />
     <MESSAGE value="save a points_dict file per run, before only one was saved, so most runs were identical" />
-    <option name="LAST_COMMIT_MESSAGE" value="save a points_dict file per run, before only one was saved, so most runs were identical" />
+    <MESSAGE value="supply points_dict to the evolution_slave.py via the arguments instead of the saved files" />
+    <option name="LAST_COMMIT_MESSAGE" value="supply points_dict to the evolution_slave.py via the arguments instead of the saved files" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

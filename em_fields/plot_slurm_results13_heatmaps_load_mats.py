@@ -61,27 +61,27 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 
-# gas_name = 'deuterium'
-# m_curr = 2
+gas_name = 'deuterium'
+m_curr = 2
 # gas_name = 'DT_mix'
 # m_curr = 2.5
-gas_name = 'tritium'
-m_curr = 3
+# gas_name = 'tritium'
+# m_curr = 3
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
 with_RF_xy_corrections = True
 # induced_fields_factor = 1
-# induced_fields_factor = 0.5
+induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
-sigma_r0 = 0
-# sigma_r0 = 0.1
+# sigma_r0 = 0
+sigma_r0 = 0.1
 
 ## save compiled data to file
 set_name = 'compiled_'
