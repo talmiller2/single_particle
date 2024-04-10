@@ -64,15 +64,10 @@ for ind_point in settings['points_set']:
 
     # save snapshots of key simulation metrics
     if settings['trajectory_save_method'] == 'intervals':
-
-        # inds_samples = range(0, len(hist['t']), int(len(hist['t']) / settings['num_snapshots']))
-
-        # TODO: change from indices to a custom t-grid from 0 to t_max, such that all metrics are
-        #  interpolated to the same grid and will be of the same size.
         t_save_array = np.linspace(0, settings['t_max'], settings['num_snapshots'])
         inds_samples = []
         for t_save in t_save_array:
-            if t_save < settings['t_max']:
+            if t_save < hist['t'][-1]:
                 inds_samples += [np.where(hist['t'] > t_save)[0][0]]
 
     elif settings['stop_criterion'] == 'first_cell_center_crossing':

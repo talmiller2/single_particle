@@ -29,16 +29,17 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -148,6 +149,24 @@ select_alpha_list += [0.55]
 select_beta_list += [-7.0]
 set_name_list += ['4']
 
+alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
+beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+select_alpha_list = alpha_loop_list
+select_beta_list = beta_loop_list
+set_name_list += ['0' for _ in range(len(select_beta_list))]
+
+with_RF_xy_corrections = True
+induced_fields_factor = 1
+# induced_fields_factor = 0.5
+# induced_fields_factor = 0.1
+# induced_fields_factor = 0.01
+# induced_fields_factor = 0
+# time_step_tau_cyclotron_divisions = 20
+time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 80
+# sigma_r0 = 0
+sigma_r0 = 0.1
+
 # ind_set = 0
 ind_set = 1
 # ind_set = 2
@@ -177,12 +196,17 @@ for gas_name in gas_name_list:
             set_name += 'BRF_' + str(B_RF)
         set_name += '_alpha_' + str(alpha)
         set_name += '_beta_' + str(beta)
-    if absolute_velocity_sampling_type == 'const_vth':
-        set_name = 'const_vth_' + set_name
-    if r_0 > 0:
-        set_name += '_r0_' + str(r_0) + '_' + set_name
-    # set_name += '_antiresonant'
-    set_name += '_' + gas_name
+        if induced_fields_factor < 1.0:
+            set_name += '_iff' + str(induced_fields_factor)
+        if with_RF_xy_corrections == False:
+            set_name += '_woxyRFcor'
+        set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+        if absolute_velocity_sampling_type == 'const_vth':
+            set_name += '_const_vth'
+        if sigma_r0 > 0:
+            set_name += '_sigmar' + str(sigma_r0)
+        set_name += '_' + gas_name
+        print(set_name)
 
     save_dir_curr = save_dir + set_name
 
@@ -196,6 +220,9 @@ for gas_name in gas_name_list:
     field_dict_file = save_dir + 'field_dict.pickle'
     with open(field_dict_file, 'rb') as fid:
         field_dict = pickle.load(fid)
+
+    # for i in range(100):
+    #     print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
 
     for key in data_dict.keys():
         data_dict[key] = np.array(data_dict[key])
@@ -324,7 +351,9 @@ for gas_name in gas_name_list:
     ## calculate the saturation value to estimate the rate
     # inds_t_saturation = range(7, 21)
     # inds_t_saturation = range(2, 3)
-    inds_t_saturation = range(15, 31)
+    # inds_t_saturation = range(15, 31) # for 2023 paper
+    inds_t_saturation = range(15, 29)
+
     # inds_t_saturation = range(len(t_array))
 
     N_curr = particles_counter_mat2_3d[0, 1, :]

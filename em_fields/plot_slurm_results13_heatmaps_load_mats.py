@@ -32,8 +32,9 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
+save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -43,7 +44,7 @@ field_dict_file = save_dir + 'field_dict.pickle'
 with open(field_dict_file, 'rb') as fid:
     field_dict = pickle.load(fid)
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 0.1 # kV/m
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
@@ -51,7 +52,7 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
@@ -60,12 +61,12 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 
-# gas_name = 'deuterium'
-# m_curr = 2
+gas_name = 'deuterium'
+m_curr = 2
 # gas_name = 'DT_mix'
 # m_curr = 2.5
-gas_name = 'tritium'
-m_curr = 3
+# gas_name = 'tritium'
+# m_curr = 3
 
 set_name = 'compiled_'
 if RF_type == 'electric_transverse':
@@ -149,21 +150,20 @@ if gas_name == 'tritium':
 cbar_kws_dict = {'format': '%.2f', 'ticks': [0, 0.22, 0.45, 0.67, 0.9]}
 
 # lower resolution for xticks and yticks
-import copy
 
-beta_loop_list_copy = copy.deepcopy(beta_loop_list)
-yticklabels_copy = copy.deepcopy(yticklabels)
-beta_loop_list = []
-yticklabels = []
-for i in range(len(beta_loop_list_copy)):
-    if np.mod(i, 2) == 0:
-        beta_loop_list += [str(int(beta_loop_list_copy[i]))]
-        yticklabels += [str(yticklabels_copy[i])]
-    else:
-        beta_loop_list += ['']
-        yticklabels += ['']
-# beta_loop_list = beta_loop_list
-# yticklabels = yticklabels
+# beta_loop_list_copy = copy.deepcopy(beta_loop_list)
+# yticklabels_copy = copy.deepcopy(yticklabels)
+# beta_loop_list = []
+# yticklabels = []
+# for i in range(len(beta_loop_list_copy)):
+#     if np.mod(i, 2) == 0:
+#         beta_loop_list += [str(int(beta_loop_list_copy[i]))]
+#         yticklabels += [str(yticklabels_copy[i])]
+#     else:
+#         beta_loop_list += ['']
+#         yticklabels += ['']
+beta_loop_list = beta_loop_list
+yticklabels = yticklabels
 
 
 ###################
@@ -174,13 +174,13 @@ vmax = 0.9
 if RF_type == 'magnetic_transverse':
     vmax = 0.6
 sns.heatmap(y.T,
-            xticklabels=beta_loop_list, yticklabels=yticklabels,
-            vmin=vmin, vmax=vmax,
-            annot=annot,
-            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-            ax=ax,
-            # cbar=False,
-            cbar_kws=cbar_kws_dict,
+            # xticklabels=beta_loop_list, yticklabels=yticklabels,
+            # vmin=vmin, vmax=vmax,
+            # annot=annot,
+            # annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            # ax=ax,
+            # # cbar=False,
+            # cbar_kws=cbar_kws_dict,
             )
 ax.axes.invert_yaxis()
 for i in range(len(alpha_const_omega_cyc0_right_list)):
@@ -325,57 +325,56 @@ plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'b
 ax.legend().set_visible(False)
 # ax.get_yaxis().set_visible(False)
 
-# ###################
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = selectivity
-# vmin = np.nanmin(y)
-# vmax = np.nanmax(y)
-# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-#             vmin=vmin, vmax=vmax,
-#             annot=annot,
-#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-#             ax=ax,
-#             )
-# ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
-# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
-# ax.set_title('$\\bar{N}_{rc} / \\bar{N}_{lc}$')
-# fig.set_tight_layout(0.5)
-# plt.yticks(rotation=0)
-# text = '(e)'
-# plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-#          horizontalalignment='right', verticalalignment='top', color='w',
-#          transform=fig.axes[0].transAxes)
-# ax.legend().set_visible(False)
-#
-#
-# ###################
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = selectivity_trapped
-# vmin = np.nanmin(y)
-# vmax = np.nanmax(y)
-# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-#             vmin=vmin, vmax=vmax,
-#             annot=annot,
-#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-#             ax=ax,
-#             )
-# ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
-# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
-# ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$')
-# fig.set_tight_layout(0.5)
-# plt.yticks(rotation=0)
-# text = '(f)'
-# plt.text(0.2, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-#          horizontalalignment='right', verticalalignment='top', color='w',
-#          transform=fig.axes[0].transAxes)
-# ax.legend().set_visible(False)
+###################
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = selectivity
+vmin = np.nanmin(y)
+vmax = np.nanmax(y)
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            )
+ax.axes.invert_yaxis()
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel(ylabel)
+ax.set_title('$\\bar{N}_{rc} / \\bar{N}_{lc}$')
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+text = '(e)'
+plt.text(0.15, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+         horizontalalignment='right', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
+
+###################
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = selectivity_trapped
+vmin = np.nanmin(y)
+vmax = np.nanmax(y)
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            )
+ax.axes.invert_yaxis()
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel(ylabel)
+ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$')
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+text = '(f)'
+plt.text(0.2, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+         horizontalalignment='right', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
 
 
 ## save plots to file
