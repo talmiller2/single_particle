@@ -3,7 +3,6 @@ import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.io import savemat
 from scipy.stats import maxwell
 from slurmpy.slurmpy import Slurm
 
@@ -390,11 +389,12 @@ for gas_name in gas_name_list:
                     field_dict_file = settings['save_dir'] + '/field_dict.pickle'
                     with open(field_dict_file, 'wb') as handle:
                         pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-                    points_dict_file = settings['save_dir'] + '/points_dict.mat'
-                    savemat(points_dict_file, points_dict)
+                    # points_dict_file = settings['save_dir'] + '/points_dict.mat'
+                    # savemat(points_dict_file, points_dict)
 
-                # points_dict_file = settings['save_dir'] + '/points_dict_' + run_name + '.mat'
-                # savemat(points_dict_file, points_dict)
+                points_dict_file = settings['save_dir'] + '/points_dict_' + run_name + '.pickle'
+                with open(points_dict_file, 'wb') as handle:
+                    pickle.dump(points_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
                 num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))
                 num_extra_points = np.mod(total_number_of_points, num_cpus)
@@ -428,10 +428,7 @@ for gas_name in gas_name_list:
                     else:
                         command = evolution_slave_script \
                                   + ' --settings "' + str(settings) + '"' \
-                                  + ' --field_dict "' + str(field_dict) + '"' \
-                                  + ' --x_0 "' + str(points_dict['x_0']) + '"' \
-                                  + ' --v_0 "' + str(points_dict['v_0']) + '"' \
-                                  + ' --phase_RF "' + str(points_dict['phase_RF']) + '"'
+                                  + ' --field_dict "' + str(field_dict) + '"'
                         s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
                         s.run(command)
 
