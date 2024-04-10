@@ -68,7 +68,10 @@ for ind_point in settings['points_set']:
         inds_samples = []
         for t_save in t_save_array:
             if t_save < hist['t'][-1]:
-                inds_samples += [np.where(hist['t'] > t_save)[0][0]]
+                try:
+                    inds_samples += [np.where(hist['t'] > t_save)[0][0]]
+                except:
+                    raise ValueError('t_save', t_save, "hist['t'][-1]", hist['t'][-1])
 
     elif settings['stop_criterion'] == 'first_cell_center_crossing':
         # extract the first and last states of the evolution
