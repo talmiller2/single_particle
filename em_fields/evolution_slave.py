@@ -53,7 +53,7 @@ for ind_point in settings['points_set']:
     v_0 = points_dict['v_0'][ind_point]
 
     if settings['apply_random_RF_phase'] is True:
-        field_dict['phase_RF_addition'] = points_dict['phase_RF'][0, ind_point]
+        field_dict['phase_RF_addition'] = points_dict['phase_RF'][ind_point]
         field_dict = define_default_field(settings, field_dict=field_dict)
 
     hist = evolve_particle_in_em_fields(x_0, v_0, settings['dt'], E_RF_function, B_RF_function,

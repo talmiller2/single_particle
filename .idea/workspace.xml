@@ -25,10 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="transmitting the points_dict didnt work, so passing on its constituents instead">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="transmit points_dict using pickle">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -647,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="207" />
+    <option name="localTasksCounter" value="208" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -674,7 +673,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added plot_slurm_results13_heatmaps_load_mats_amplitude_sensitivty to check effect of field amplitude" />
     <MESSAGE value="-correct wrong anticlockwise definition to clockwise, including em_solver and RF_field_forms" />
     <MESSAGE value="-run set42" />
     <MESSAGE value="debugging expm" />
@@ -699,7 +697,8 @@
     <MESSAGE value="supply points_dict to the evolution_slave.py via the arguments instead of the saved files" />
     <MESSAGE value="forgot parser.add_argument" />
     <MESSAGE value="transmitting the points_dict didnt work, so passing on its constituents instead" />
-    <option name="LAST_COMMIT_MESSAGE" value="transmitting the points_dict didnt work, so passing on its constituents instead" />
+    <MESSAGE value="transmit points_dict using pickle" />
+    <option name="LAST_COMMIT_MESSAGE" value="transmit points_dict using pickle" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
