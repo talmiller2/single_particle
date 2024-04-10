@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 14})
 # plt.rcParams["figure.facecolor"] = 'white'
 # plt.rcParams["axes.facecolor"] = 'green'
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -61,20 +61,45 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 
-gas_name = 'deuterium'
-m_curr = 2
+# gas_name = 'deuterium'
+# m_curr = 2
 # gas_name = 'DT_mix'
 # m_curr = 2.5
-# gas_name = 'tritium'
-# m_curr = 3
+gas_name = 'tritium'
+m_curr = 3
 
+absolute_velocity_sampling_type = 'maxwell'
+# absolute_velocity_sampling_type = 'const_vth'
+
+with_RF_xy_corrections = True
+# induced_fields_factor = 1
+# induced_fields_factor = 0.5
+# induced_fields_factor = 0.1
+# induced_fields_factor = 0.01
+induced_fields_factor = 0
+# time_step_tau_cyclotron_divisions = 20
+time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 80
+sigma_r0 = 0
+# sigma_r0 = 0.1
+
+## save compiled data to file
 set_name = 'compiled_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
 elif RF_type == 'magnetic_transverse':
     set_name += 'BRF_' + str(B_RF)
-if gas_name != 'hydrogen':
-    set_name += '_' + gas_name
+if induced_fields_factor < 1.0:
+    set_name += '_iff' + str(induced_fields_factor)
+if with_RF_xy_corrections == False:
+    set_name += '_woxyRFcor'
+set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+if absolute_velocity_sampling_type == 'const_vth':
+    set_name += '_const_vth'
+if sigma_r0 > 0:
+    set_name += '_sigmar' + str(sigma_r0)
+set_name += '_' + gas_name
+print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
 mat_dict = loadmat(save_file)
@@ -86,6 +111,7 @@ N_cr = mat_dict['N_cr']
 N_cl = mat_dict['N_cl']
 # selectivity = mat_dict['selectivity']
 selectivity = N_rc / N_lc
+print('np.max(selectivity))', np.max(selectivity))
 selectivity_trapped = N_cr / N_cl
 
 alpha_const_omega_cyc0_right_list = []
@@ -341,7 +367,8 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel(ylabel)
-ax.set_title('$\\bar{N}_{rc} / \\bar{N}_{lc}$')
+# ax.set_title('$\\bar{N}_{rc} / \\bar{N}_{lc}$')
+ax.set_title('selectivity $\\bar{N}_{rc} / \\bar{N}_{lc}$')
 fig.set_tight_layout(0.5)
 plt.yticks(rotation=0)
 text = '(e)'
@@ -367,7 +394,8 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
 ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
 ax.set_ylabel(ylabel)
-ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$')
+# ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$')
+ax.set_title('selectivity $\\bar{N}_{cr} / \\bar{N}_{cl}$')
 fig.set_tight_layout(0.5)
 plt.yticks(rotation=0)
 text = '(f)'
@@ -375,6 +403,28 @@ plt.text(0.2, 0.95, text, fontdict={'fontname': 'times new roman', 'weight': 'bo
          horizontalalignment='right', verticalalignment='top', color='w',
          transform=fig.axes[0].transAxes)
 ax.legend().set_visible(False)
+
+###################
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = mat_dict['percent_ok']
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+vmin = 90
+vmax = 100
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            )
+ax.axes.invert_yaxis()
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
+ax.set_ylabel(ylabel)
+ax.set_title('percent_ok')
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+ax.legend().set_visible(False)
+
 
 
 ## save plots to file

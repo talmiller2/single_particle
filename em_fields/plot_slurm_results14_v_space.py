@@ -51,9 +51,9 @@ B_RF = 0.04  # T
 
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -137,16 +137,16 @@ set_name_list = []
 
 ## testing
 with_RF_xy_corrections = True
-induced_fields_factor = 1
-# induced_fields_factor = 0.5
+# induced_fields_factor = 1
+induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
 # induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
-# sigma_r0 = 0
-sigma_r0 = 0.1
+sigma_r0 = 0
+# sigma_r0 = 0.1
 
 # select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 # select_beta_list = [0, 3, -3, -3, -7]

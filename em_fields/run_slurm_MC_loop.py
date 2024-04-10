@@ -59,7 +59,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 # save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -126,7 +127,8 @@ loop_method = 'matrix'
 
 gas_name_list = ['deuterium', 'tritium']
 sigma_r0_list = [0, 0.1]
-induced_fields_factor_list = [1, 0.5, 0.1, 0.01, 0]
+# induced_fields_factor_list = [1, 0.5, 0.1, 0.01, 0]
+induced_fields_factor_list = [1, 0.5, 0]
 
 for gas_name in gas_name_list:
     for sigma_r0 in sigma_r0_list:
@@ -294,8 +296,8 @@ for gas_name in gas_name_list:
 
                 # total_number_of_points = 1
                 # total_number_of_points = 40
-                total_number_of_points = 1000
-                # total_number_of_points = 3000
+                # total_number_of_points = 1000
+                total_number_of_points = 3000
 
                 # allow reproducibility
                 np.random.seed(0)
@@ -388,7 +390,8 @@ for gas_name in gas_name_list:
                     field_dict_file = settings['save_dir'] + '/field_dict.pickle'
                     with open(field_dict_file, 'wb') as handle:
                         pickle.dump(field_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-                    points_dict_file = settings['save_dir'] + '/points_dict.mat'
+                    # points_dict_file = settings['save_dir'] + '/points_dict.mat'
+                    points_dict_file = settings['save_dir'] + '/points_dict_' + run_name + '.mat'
                     savemat(points_dict_file, points_dict)
 
                 num_points_per_cpu = int(np.floor(1.0 * total_number_of_points / num_cpus))

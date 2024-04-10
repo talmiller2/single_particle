@@ -51,18 +51,16 @@ B_RF = 0.04  # T
 # gas_name = 'tritium'`
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
-r_0 = 0
-# r_0 = 1.5
-# r_0 = 3.0
+
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
 # beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
@@ -151,8 +149,10 @@ set_name_list += ['4']
 
 alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
-select_alpha_list = alpha_loop_list
-select_beta_list = beta_loop_list
+# select_alpha_list = alpha_loop_list
+# select_beta_list = beta_loop_list
+select_alpha_list = [0.88]
+select_beta_list = [-2.0]
 set_name_list += ['0' for _ in range(len(select_beta_list))]
 
 with_RF_xy_corrections = True
@@ -167,10 +167,11 @@ time_step_tau_cyclotron_divisions = 40
 # sigma_r0 = 0
 sigma_r0 = 0.1
 
-# ind_set = 0
-ind_set = 1
+ind_set = 0
+# ind_set = 1
 # ind_set = 2
 # ind_set = 3
+# ind_set = 10
 
 alpha = select_alpha_list[ind_set]
 beta = select_beta_list[ind_set]
@@ -221,11 +222,21 @@ for gas_name in gas_name_list:
     with open(field_dict_file, 'rb') as fid:
         field_dict = pickle.load(fid)
 
-    # for i in range(100):
-    #     print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
+    for i in range(100):
+        print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
 
+    # for key in data_dict.keys():
+    #     data_dict[key] = np.array(data_dict[key])
+
+    # filter out the particles that ended prematurely
+    num_particles = len(data_dict['t'])
+    inds_ok = []
+    for ind_particle, t in enumerate(data_dict['t']):
+        if len(t) >= 29:
+            inds_ok += [ind_particle]
+    percent_ok = len(inds_ok) / num_particles * 100
     for key in data_dict.keys():
-        data_dict[key] = np.array(data_dict[key])
+        data_dict[key] = np.array([data_dict[key][i][0:29] for i in inds_ok])
 
     # divide the phase space by the angle
     theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))

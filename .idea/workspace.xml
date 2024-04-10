@@ -25,9 +25,14 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="fix t_save&lt;t[-1] logic">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="try to catch the error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/evolution_slave.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/evolution_slave.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +107,7 @@
       <recent name="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.plot_slurm_results13_heatmaps_load_mats">
+  <component name="RunManager" selected="Python.plot_slurm_results14_v_space">
     <configuration name="download_remote" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
@@ -276,10 +281,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_save_mats" />
         <item itemvalue="Python.plot_slurm_results12_saturation" />
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.download_remote" />
       </list>
     </recent_temporary>
@@ -646,7 +651,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="202" />
+    <option name="localTasksCounter" value="203" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -673,7 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new runs" />
     <MESSAGE value="add set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T" />
     <MESSAGE value="add plot_color_bar" />
     <MESSAGE value="add set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25" />
@@ -698,7 +702,8 @@
     <MESSAGE value="in trajectory_save_method intervals change ind_samples to be on a predetermined t_save_array." />
     <MESSAGE value="bugfix" />
     <MESSAGE value="fix t_save&lt;t[-1] logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix t_save&lt;t[-1] logic" />
+    <MESSAGE value="try to catch the error" />
+    <option name="LAST_COMMIT_MESSAGE" value="try to catch the error" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

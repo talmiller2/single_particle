@@ -26,7 +26,8 @@ print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
 
 # load data for runs
-runs_dict_file = settings['save_dir'] + '/points_dict.mat'
+# runs_dict_file = settings['save_dir'] + '/points_dict.mat'
+runs_dict_file = settings['save_dir'] + '/points_dict_' + settings['run_name'] + '.mat'
 runs_dict = loadmat(runs_dict_file)
 
 # define the file name where the run's data will be saved
