@@ -18,7 +18,11 @@ parser.add_argument('--settings', help='settings (dict) for the maxwell simulati
                     type=str, required=True)
 parser.add_argument('--field_dict', help='field_dict do define the field the particle will experience',
                     type=str, required=True)
-parser.add_argument('--points_dict', help='points_dict to define the initial particles x,v,phase',
+parser.add_argument('--x_0', help='particle initial state x_0',
+                    type=str, required=True)
+parser.add_argument('--v_0', help='particle initial state v_0',
+                    type=str, required=True)
+parser.add_argument('--phase_RF', help='particle initial state phase_RF',
                     type=str, required=True)
 
 args = parser.parse_args()
@@ -26,8 +30,17 @@ print('args.settings = ' + str(args.settings))
 settings = ast.literal_eval(args.settings)
 print('args.field_dict = ' + str(args.field_dict))
 field_dict = ast.literal_eval(args.field_dict)
-print('args.points_dict = ' + str(args.points_dict))
-points_dict = ast.literal_eval(args.points_dict)
+print('args.x_0 = ' + str(args.x_0))
+x_0 = ast.literal_eval(args.x_0)
+print('args.v_0 = ' + str(args.v_0))
+v_0 = ast.literal_eval(args.v_0)
+print('args.phase_RF = ' + str(args.phase_RF))
+phase_RF = ast.literal_eval(args.phase_RF)
+
+points_dict = {}
+points_dict['x_0'] = x_0
+points_dict['v_0'] = v_0
+points_dict['phase_RF'] = phase_RF
 
 
 # define the file name where the run's data will be saved

@@ -429,7 +429,9 @@ for gas_name in gas_name_list:
                         command = evolution_slave_script \
                                   + ' --settings "' + str(settings) + '"' \
                                   + ' --field_dict "' + str(field_dict) + '"' \
-                                  + ' --points_dict "' + str(points_dict) + '"'
+                                  + ' --x_0 "' + str(points_dict['x_0']) + '"' \
+                                  + ' --v_0 "' + str(points_dict['v_0']) + '"' \
+                                  + ' --phase_RF "' + str(points_dict['phase_RF']) + '"'
                         s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
                         s.run(command)
 

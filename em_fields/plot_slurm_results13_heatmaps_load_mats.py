@@ -72,8 +72,8 @@ absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
 with_RF_xy_corrections = True
-# induced_fields_factor = 1
-induced_fields_factor = 0.5
+induced_fields_factor = 1
+# induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
 # induced_fields_factor = 0
@@ -407,6 +407,7 @@ ax.legend().set_visible(False)
 ###################
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 y = mat_dict['percent_ok']
+print('percent_ok min=' + str(np.min(mat_dict['percent_ok'])) + ', max=' + str(np.max(mat_dict['percent_ok'])))
 # vmin = np.nanmin(y)
 # vmax = np.nanmax(y)
 vmin = 90
