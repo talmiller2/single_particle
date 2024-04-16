@@ -29,8 +29,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-# save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -51,9 +51,9 @@ B_RF = 0.04  # T
 # gas_name = 'tritium'`
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -222,8 +222,8 @@ for gas_name in gas_name_list:
     with open(field_dict_file, 'rb') as fid:
         field_dict = pickle.load(fid)
 
-    for i in range(100):
-        print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
+    # for i in range(100):
+    #     print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
 
     # for key in data_dict.keys():
     #     data_dict[key] = np.array(data_dict[key])
@@ -232,11 +232,11 @@ for gas_name in gas_name_list:
     num_particles = len(data_dict['t'])
     inds_ok = []
     for ind_particle, t in enumerate(data_dict['t']):
-        if len(t) >= 29:
+        if len(t) == 30:
             inds_ok += [ind_particle]
     percent_ok = len(inds_ok) / num_particles * 100
     for key in data_dict.keys():
-        data_dict[key] = np.array([data_dict[key][i][0:29] for i in inds_ok])
+        data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
 
     # divide the phase space by the angle
     theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))

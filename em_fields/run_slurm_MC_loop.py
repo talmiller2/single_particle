@@ -11,12 +11,12 @@ from em_fields.slurm_functions import get_script_evolution_slave
 
 evolution_slave_script = get_script_evolution_slave()
 
-
-# slurm_kwargs = {'partition': 'core'}  # default
-# slurm_kwargs = {'partition': 'socket'}
-# slurm_kwargs = {'partition': 'testing'}
-slurm_kwargs = {'partition': 'testSocket'}
+slurm_kwargs = {}
+slurm_kwargs['partition'] = 'core'
+# slurm_kwargs['partition'] = 'socket'
+# slurm_kwargs['partition'] = 'testSocket'
 # slurm_kwargs['cpus-per-task'] = 1
+slurm_kwargs['ntasks'] = 2
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
@@ -59,7 +59,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -112,7 +113,9 @@ E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
 RF_type = 'magnetic_transverse'
-B_RF = 0.04  # T
+# B_RF = 0.02  # T
+# B_RF = 0.04  # T
+B_RF = 0.08  # T
 
 use_RF = True
 # use_RF = False
@@ -126,7 +129,6 @@ loop_method = 'matrix'
 
 gas_name_list = ['deuterium', 'tritium']
 sigma_r0_list = [0, 0.1]
-# induced_fields_factor_list = [1, 0.5, 0.1, 0.01, 0]
 induced_fields_factor_list = [1, 0.5, 0]
 
 for gas_name in gas_name_list:
@@ -206,7 +208,8 @@ for gas_name in gas_name_list:
                 field_dict = {}
 
                 # field_dict['B0'] = 0.1  # Tesla (1000 Gauss)
-                field_dict['B0'] = 1.0  # Tesla
+                # field_dict['B0'] = 1.0  # Tesla
+                field_dict['B0'] = 2.0  # Tesla
 
                 # field_dict['Rm'] = 1.3  # mirror ratio
                 # field_dict['Rm'] = 2.0  # mirror ratio
@@ -252,7 +255,8 @@ for gas_name in gas_name_list:
                 sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
                                          / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
                 settings['sim_cyclotron_periods'] = sim_cyclotron_periods
-                settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
+                # settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
+                settings['t_max'] = 2.2937178074285e-06
                 settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
                 if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
                     settings['num_steps'] = int(1e10)
