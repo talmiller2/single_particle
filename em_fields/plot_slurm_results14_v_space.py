@@ -33,7 +33,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -138,15 +138,15 @@ set_name_list = []
 ## testing
 with_RF_xy_corrections = True
 # induced_fields_factor = 1
-induced_fields_factor = 0.5
+# induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
-sigma_r0 = 0
-# sigma_r0 = 0.1
+# sigma_r0 = 0
+sigma_r0 = 0.1
 
 # select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 # select_beta_list = [0, 3, -3, -3, -7]
@@ -388,8 +388,8 @@ for ind_set in ind_sets:
                 # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
                 dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
-                dist_v /= (2 * v_th_ref)  # as in paper for E_RF
-                # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
+                # dist_v /= (2 * v_th_ref)  # as in paper for E_RF
+                dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
                 color = cm.rainbow(dist_v)
                 # color = cm.rainbow(t[-1] / 3e-6)
                 # color = cm.rainbow(r[-1])

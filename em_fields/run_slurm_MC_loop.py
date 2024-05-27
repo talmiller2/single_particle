@@ -12,11 +12,12 @@ from em_fields.slurm_functions import get_script_evolution_slave
 evolution_slave_script = get_script_evolution_slave()
 
 slurm_kwargs = {}
-slurm_kwargs['partition'] = 'core'
+# slurm_kwargs['partition'] = 'core'
+slurm_kwargs['partition'] = 'testCore'
 # slurm_kwargs['partition'] = 'socket'
 # slurm_kwargs['partition'] = 'testSocket'
-# slurm_kwargs['cpus-per-task'] = 1
-slurm_kwargs['ntasks'] = 2
+slurm_kwargs['ntasks'] = 1
+slurm_kwargs['cpus-per-task'] = 1
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
@@ -60,7 +61,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set43_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -104,8 +106,11 @@ plt.close('all')
 # alpha_loop_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 # beta_loop_list = [0, 3, -3, -3, -7]
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
+# beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47
+beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # kV/m
@@ -114,8 +119,8 @@ E_RF_kVm = 50  # kV/m
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # T
-# B_RF = 0.04  # T
-B_RF = 0.08  # T
+B_RF = 0.04  # T
+# B_RF = 0.08  # T
 
 use_RF = True
 # use_RF = False
@@ -128,8 +133,10 @@ loop_method = 'matrix'
 # loop_method = 'array'
 
 gas_name_list = ['deuterium', 'tritium']
-sigma_r0_list = [0, 0.1]
-induced_fields_factor_list = [1, 0.5, 0]
+# sigma_r0_list = [0, 0.1]
+# induced_fields_factor_list = [1, 0.5, 0]
+sigma_r0_list = [0.1]
+induced_fields_factor_list = [1, 0]
 
 for gas_name in gas_name_list:
     for sigma_r0 in sigma_r0_list:
@@ -208,8 +215,8 @@ for gas_name in gas_name_list:
                 field_dict = {}
 
                 # field_dict['B0'] = 0.1  # Tesla (1000 Gauss)
-                # field_dict['B0'] = 1.0  # Tesla
-                field_dict['B0'] = 2.0  # Tesla
+                field_dict['B0'] = 1.0  # Tesla
+                # field_dict['B0'] = 2.0  # Tesla
 
                 # field_dict['Rm'] = 1.3  # mirror ratio
                 # field_dict['Rm'] = 2.0  # mirror ratio
@@ -299,8 +306,8 @@ for gas_name in gas_name_list:
 
                 # total_number_of_points = 1
                 # total_number_of_points = 40
-                # total_number_of_points = 1000
-                total_number_of_points = 3000
+                total_number_of_points = 1000
+                # total_number_of_points = 3000
 
                 # allow reproducibility
                 np.random.seed(0)

@@ -56,8 +56,8 @@ E_RF_kVm = 50  # kV/m
 RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
-B_RF = 0.02  # T
-# B_RF = 0.04  # T
+# B_RF = 0.02  # T
+B_RF = 0.04  # T
 # B_RF = 0.08  # T
 
 # gas_name = 'deuterium'
@@ -71,11 +71,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
 with_RF_xy_corrections = True
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
@@ -235,124 +235,122 @@ ax.legend().set_visible(False)
 # ax.get_xaxis().set_visible(False)
 
 ###################
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = N_lc
-# # vmin = np.nanmin(y)
-# # vmax = np.nanmax(y)
-# vmin = 0
-# # vmax = 0.9
-# vmax = 1.0
-# # if RF_type == 'magnetic_transverse':
-# #     vmax = 0.6
-# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-#             vmin=vmin, vmax=vmax,
-#             annot=annot,
-#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-#             ax=ax,
-#             cbar_kws=cbar_kws_dict,
-#             )
-# ax.axes.invert_yaxis()
-# for i in range(len(alpha_const_omega_cyc0_right_list)):
-#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
-# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
-# title = '$\\bar{N}_{lc}$'
-# title += ' (' + gas_name_shorthand + ')'
-# ax.set_title(title, fontsize=20)
-# fig.set_tight_layout(0.5)
-# plt.yticks(rotation=0)
-# if gas_name == 'deuterium':
-#     text = '(b)'
-# else:
-#     text = '(f)'
-# plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-#          horizontalalignment='left', verticalalignment='top', color='w',
-#          transform=fig.axes[0].transAxes)
-# ax.legend().set_visible(False)
-# # ax.get_xaxis().set_visible(False)
-# # ax.get_yaxis().set_visible(False)
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = N_lc
+# vmin = np.nanmin(y)
+# vmax = np.nanmax(y)
+vmin = 0
+# vmax = 0.9
+vmax = 1.0
+# if RF_type == 'magnetic_transverse':
+#     vmax = 0.6
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            cbar_kws=cbar_kws_dict,
+            )
+ax.axes.invert_yaxis()
+for i in range(len(alpha_const_omega_cyc0_right_list)):
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+ax.set_ylabel(ylabel, fontsize=axes_label_size)
+title = '$\\bar{N}_{lc}$'
+title += ' (' + gas_name_shorthand + ')'
+ax.set_title(title, fontsize=20)
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+if gas_name == 'deuterium':
+    text = '(b)'
+else:
+    text = '(f)'
+plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+         horizontalalignment='left', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
+# ax.get_xaxis().set_visible(False)
+# ax.get_yaxis().set_visible(False)
 
 ###################
 
 # cbar_kws_dict = {'format': '%.2f', 'ticks': [0, 0.01, 0.02, 0.03, 0.04]}
+cbar_kws_dict = None
 
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = N_cr
-# vmin = 0
-# vmax = 0.04
-# if RF_type == 'magnetic_transverse':
-#     vmax = 0.15
-# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-#             vmin=vmin, vmax=vmax,
-#             annot=annot,
-#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-#             ax=ax,
-#             # cbar=False,
-#             cbar_kws=cbar_kws_dict,
-#             )
-# ax.axes.invert_yaxis()
-# # for i in range(len(alpha_const_omega_cyc0_right_list)):
-# #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
-# #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i])
-# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
-# # if gas_name == 'tritium':
-# #     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# # else:
-# #     ax.get_xaxis().set_visible(False)
-# title = '$\\bar{N}_{cr}$'
-# title += ' (' + gas_name_shorthand + ')'
-# ax.set_title(title, fontsize=20)
-# fig.set_tight_layout(0.5)
-# plt.yticks(rotation=0)
-# if gas_name == 'deuterium':
-#     text = '(c)'
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = N_cr
+vmin = 0
+vmax = 0.16
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            # cbar=False,
+            cbar_kws=cbar_kws_dict,
+            )
+ax.axes.invert_yaxis()
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i])
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# if gas_name == 'tritium':
+#     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
 # else:
-#     text = '(g)'
-# plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-#          horizontalalignment='left', verticalalignment='top', color='w',
-#          transform=fig.axes[0].transAxes)
-# ax.legend().set_visible(False)
+#     ax.get_xaxis().set_visible(False)
+title = '$\\bar{N}_{cr}$'
+title += ' (' + gas_name_shorthand + ')'
+ax.set_title(title, fontsize=20)
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+if gas_name == 'deuterium':
+    text = '(c)'
+else:
+    text = '(g)'
+plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+         horizontalalignment='left', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
 
 ###################
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-# y = N_cl
-# vmin = 0
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+y = N_cl
+vmin = 0
 # vmax = 0.04
-# if RF_type == 'magnetic_transverse':
-#     vmax = 0.15
-# sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-#             vmin=vmin, vmax=vmax,
-#             annot=annot,
-#             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-#             ax=ax,
-#             cbar_kws=cbar_kws_dict,
-#             )
-# ax.axes.invert_yaxis()
-# # for i in range(len(alpha_const_omega_cyc0_right_list)):
-# #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
-# #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i])
-# ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
-# # if gas_name == 'tritium':
-# #     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# # else:
-# #     ax.get_xaxis().set_visible(False)
-# # ax.set_ylabel(ylabel, fontsize=axes_label_size)
-# title = '$\\bar{N}_{cl}$'
-# title += ' (' + gas_name_shorthand + ')'
-# ax.set_title(title, fontsize=20)
-# fig.set_tight_layout(0.5)
-# plt.yticks(rotation=0)
-# if gas_name == 'deuterium':
-#     text = '(d)'
+vmax = 0.16
+sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
+            vmin=vmin, vmax=vmax,
+            annot=annot,
+            annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+            ax=ax,
+            cbar_kws=cbar_kws_dict,
+            )
+ax.axes.invert_yaxis()
+# for i in range(len(alpha_const_omega_cyc0_right_list)):
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
+#     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i])
+ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# if gas_name == 'tritium':
+#     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
 # else:
-#     text = '(h)'
-# plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-#          horizontalalignment='left', verticalalignment='top', color='w',
-#          transform=fig.axes[0].transAxes)
-# ax.legend().set_visible(False)
-# # ax.get_yaxis().set_visible(False)
+#     ax.get_xaxis().set_visible(False)
+# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+title = '$\\bar{N}_{cl}$'
+title += ' (' + gas_name_shorthand + ')'
+ax.set_title(title, fontsize=20)
+fig.set_tight_layout(0.5)
+plt.yticks(rotation=0)
+if gas_name == 'deuterium':
+    text = '(d)'
+else:
+    text = '(h)'
+plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+         horizontalalignment='left', verticalalignment='top', color='w',
+         transform=fig.axes[0].transAxes)
+ax.legend().set_visible(False)
+# ax.get_yaxis().set_visible(False)
 
 ###################
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))

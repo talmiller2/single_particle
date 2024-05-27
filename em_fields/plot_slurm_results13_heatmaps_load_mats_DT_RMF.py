@@ -15,7 +15,7 @@ plt.rcParams.update({'font.size': 12})
 # plt.rcParams["figure.facecolor"] = 'white'
 # plt.rcParams["axes.facecolor"] = 'green'
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -31,52 +31,27 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
+save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 
 select_alpha_list = []
 select_beta_list = []
 set_name_list = []
 
-select_alpha_list += [1.4]
-select_beta_list += [3.0]
+select_alpha_list += [0.7]
+select_beta_list += [-2]
 set_name_list += ['1']
 
-# select_alpha_list += [1.3]
-# select_beta_list += [0.0]
-# set_name_list += ['2']
+select_alpha_list += [0.82]
+select_beta_list += [-2]
+set_name_list += ['2']
 
-select_alpha_list += [1.0]
-select_beta_list += [-3.0]
-# set_name_list += ['3']
-set_name_list += ['2']  # new numbering
-
-# select_alpha_list += [0.6]
-# select_beta_list += [-2.0]
-# set_name_list += ['4']
-
-select_alpha_list += [0.7]
-select_beta_list += [-3.0]
-# set_name_list += ['5']
-set_name_list += ['3']  # new numbering
-
-# select_alpha_list += [0.6]
-# select_beta_list += [-4.0]
-# set_name_list += ['6']
-
-# select_alpha_list += [0.55]
-# select_beta_list += [-3.0]
-# set_name_list += ['7']
-
-# select_alpha_list += [0.5]
-# select_beta_list += [-4.0]
-# set_name_list += ['8']
-
-select_alpha_list += [0.55]
-select_beta_list += [-7.0]
-# set_name_list += ['9']
-set_name_list += ['4']  # new numbering
+select_alpha_list += [0.98]
+select_beta_list += [-1.6]
+set_name_list += ['3']
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -86,39 +61,48 @@ field_dict_file = save_dir + 'field_dict.pickle'
 with open(field_dict_file, 'rb') as fid:
     field_dict = pickle.load(fid)
 
-RF_type = 'electric_transverse'
-# E_RF_kVm = 0.1 # kV/m
-# E_RF_kVm = 1 # kV/m
-# E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
-# E_RF_kVm = 100  # kV/m
-
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
-# B_RF = 0.05  # T
-# B_RF = 0.1  # T
-
+# B_RF = 0.08  # T
 
 gas_name = 'deuterium'
 # gas_name = 'DT_mix'
 # gas_name = 'tritium'
 
-if gas_name == 'deuterium':
-    gas_name_shorthand = 'D'
-if gas_name == 'tritium':
-    gas_name_shorthand = 'T'
+absolute_velocity_sampling_type = 'maxwell'
+# absolute_velocity_sampling_type = 'const_vth'
+
+with_RF_xy_corrections = True
+induced_fields_factor = 1
+# induced_fields_factor = 0.5
+# induced_fields_factor = 0.1
+# induced_fields_factor = 0.01
+# induced_fields_factor = 0
+# time_step_tau_cyclotron_divisions = 20
+time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 80
+# sigma_r0 = 0
+sigma_r0 = 0.1
 
 set_name = 'compiled_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
 elif RF_type == 'magnetic_transverse':
     set_name += 'BRF_' + str(B_RF)
-if gas_name != 'hydrogen':
-    set_name += '_' + gas_name
+if induced_fields_factor < 1.0:
+    set_name += '_iff' + str(induced_fields_factor)
+if with_RF_xy_corrections == False:
+    set_name += '_woxyRFcor'
+set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+if absolute_velocity_sampling_type == 'const_vth':
+    set_name += '_const_vth'
+if sigma_r0 > 0:
+    set_name += '_sigmar' + str(sigma_r0)
+set_name += '_' + gas_name
+print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
 mat_dict = loadmat(save_file)
@@ -149,8 +133,17 @@ if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
 elif RF_type == 'magnetic_transverse':
     set_name += 'BRF_' + str(B_RF)
-if gas_name != 'hydrogen':
-    set_name += '_' + gas_name
+if induced_fields_factor < 1.0:
+    set_name += '_iff' + str(induced_fields_factor)
+if with_RF_xy_corrections == False:
+    set_name += '_woxyRFcor'
+set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+if absolute_velocity_sampling_type == 'const_vth':
+    set_name += '_const_vth'
+if sigma_r0 > 0:
+    set_name += '_sigmar' + str(sigma_r0)
+set_name += '_' + gas_name
+print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
 mat_dict = loadmat(save_file)
@@ -164,9 +157,6 @@ selectivity_trapped = N_cr_2 / N_cl_2
 
 # selectivity_2 = copy.deepcopy(selectivity)
 selectivity_2 = selectivity
-
-
-# selectivity_2 = selectivity_trapped
 
 
 # selectivity_2 = selectivity_trapped
@@ -296,7 +286,9 @@ def plot_interest_points(ax):
                    # facecolor='none',
                    facecolor='b',
                    edgecolor='b', linewidth=2)
-        ax.text(ind_beta - 0.2 + 0.5, ind_alpha - 0.2 + 0.5, set_name, color='w',
+        # ax.text(ind_beta - 0.2 + 0.5, ind_alpha - 0.2 + 0.5, set_name, color='w',
+        #         fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
+        ax.text(ind_beta - 0.125 + 0.5, ind_alpha - 0.125 + 0.5, set_name, color='w',
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
@@ -314,7 +306,6 @@ for i in range(len(beta_loop_list)):
 # yticklabels = yticklabels
 
 axes_label_size = 14
-
 
 # do_plots = False
 do_plots = True
@@ -388,33 +379,8 @@ if do_plots == True:
              transform=fig.axes[0].transAxes)
     ax.legend().set_visible(False)
 
-    ############### DIFFERENCE PLOT ###########
-    # fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-    # y = np.abs((selectivity_2 - selectivity_1) / (selectivity_2 + selectivity_1))
-    # vmin = 0
-    # vmax = 0.5
-    # sns.heatmap(y.T, xticklabels=beta_loop_list, yticklabels=yticklabels,
-    #             vmin=vmin, vmax=vmax,
-    #             annot=annot,
-    #             annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
-    #             ax=ax,
-    #             )
-    # ax.axes.invert_yaxis()
-    # plot_resonance_lines()
-    # plot_interest_points(ax)
-    # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-    # ax.set_ylabel(ylabel)
-    # ax.set_title('difference', fontsize=20)
-    # fig.set_tight_layout(0.5)
-    # plt.yticks(rotation=0)
-    # text = '(b)'
-    # plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
-    #          horizontalalignment='left', verticalalignment='top', color='w',
-    #          transform=fig.axes[0].transAxes)
-    # ax.legend().set_visible(False)
-
     ## save plots to file
-    save_dir = '../../../Papers/texts/paper2022/pics/'
+    save_dir = '../../../Papers/texts/paper2024/pics/'
 
     # file_name = 's_heatmap_D'
     # if RF_type == 'magnetic_transverse':
