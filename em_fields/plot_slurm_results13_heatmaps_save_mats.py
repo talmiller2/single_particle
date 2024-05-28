@@ -14,7 +14,7 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-save_dir = '/home/talm/code/single_particle/'
+save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
