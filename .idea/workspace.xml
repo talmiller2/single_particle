@@ -25,13 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="adding ntasks=2 toggle to slurm, and running B0=2T runs">
-      <change afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT_RMF.py" afterDir="false" />
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="adding set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_load_mats_DT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results14_v_space.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results13_heatmaps_save_mats.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -655,7 +651,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="210" />
+    <option name="localTasksCounter" value="211" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -682,7 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debugging expm" />
     <MESSAGE value="debugging exploding particle trajectories" />
     <MESSAGE value="added stop_criterion='t_max_adaptive_dt'" />
     <MESSAGE value="-deprecated run_slurm_MC, run_old*, evolution_slave_fenchel, remove the &quot;2&quot; for evolution_slave_fenchel2&#10;-slightly modified t_max_adaptive_dt condition&#10;-added initial position randomization as well with sigma_r0&#10;-printing sigma_r0, tcycdivs in run name" />
@@ -707,7 +702,8 @@
     <MESSAGE value="fix" />
     <MESSAGE value="adding slurm_kwargs['ntasks'] = 2" />
     <MESSAGE value="adding ntasks=2 toggle to slurm, and running B0=2T runs" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding ntasks=2 toggle to slurm, and running B0=2T runs" />
+    <MESSAGE value="adding set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

@@ -14,7 +14,9 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-save_dir = '/Users/talmiller/Downloads/single_particle/'
+save_dir = '/home/talm/code/single_particle/'
+# save_dir = '/Users/talmiller/Downloads/single_particle/'
+
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set28_B0_1T_l_10m_Post_Rm_3_first_cell_center_crossing/'
@@ -32,7 +34,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -54,7 +57,7 @@ RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
-# B_RF = 0.04  # T
+B_RF = 0.04  # T
 # B_RF = 0.08  # T
 
 use_RF = True
@@ -95,13 +98,17 @@ absolute_velocity_sampling_type = 'maxwell'
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
 # beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
+# beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47
+beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 gas_name_list = ['deuterium', 'tritium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
-B_RF_list = [0.02, 0.04, 0.08]  # [T]
+# B_RF_list = [0.02, 0.04, 0.08]  # [T]
+B_RF_list = [0.04]  # [T]
 sigma_r0_list = [0.1]
 induced_fields_factor_list = [1, 0]
 with_RF_xy_corrections = True
