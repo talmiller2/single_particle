@@ -28,18 +28,19 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set36_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-# save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
@@ -51,9 +52,9 @@ B_RF = 0.04  # T
 # gas_name = 'tritium'`
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
@@ -396,6 +397,20 @@ for gas_name in gas_name_list:
     label = '$\\bar{N}_{cl}$'
     label += '=' + '{:.3f}'.format(saturation_value)
     ax.plot(t_array, N_curr, color='orange', linestyle='-', label=label)
+    ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
+              color='orange', linewidth=2, linestyle='--')
+
+    # TODO: plut the deltaNneteffect
+    LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
+    trapped_ini_fraction = 1 - 2 * LC_ini_fraction
+    N_rc = particles_counter_mat2_3d[0, 1, :]
+    N_cr = particles_counter_mat2_3d[1, 0, :]
+    cone_escape_rate_1 = (N_rc * LC_ini_fraction - N_cr * trapped_ini_fraction) / LC_ini_fraction
+    N_curr = cone_escape_rate_1
+    saturation_value = np.mean(N_curr[inds_t_saturation])
+    label = '$(N_{rc}-N_{cr})/N_{cone}$'
+    label += '=' + '{:.3f}'.format(saturation_value)
+    ax.plot(t_array, N_curr, color='black', linestyle='-', label=label)
     ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
               color='orange', linewidth=2, linestyle='--')
 

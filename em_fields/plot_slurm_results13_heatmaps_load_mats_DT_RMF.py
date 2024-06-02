@@ -34,24 +34,30 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
-save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 select_alpha_list = []
 select_beta_list = []
 set_name_list = []
 
-select_alpha_list += [0.7]
-select_beta_list += [-2]
+select_alpha_list += [0.64]
+select_beta_list += [-1.8]
 set_name_list += ['1']
 
-select_alpha_list += [0.82]
-select_beta_list += [-2]
+select_alpha_list += [0.7]
+select_beta_list += [-0.8]
 set_name_list += ['2']
 
-select_alpha_list += [0.98]
-select_beta_list += [-1.6]
+select_alpha_list += [1.06]
+select_beta_list += [-1.8]
 set_name_list += ['3']
+
+select_alpha_list += [1.12]
+select_beta_list += [1.42]
+set_name_list += ['4']
+
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -60,6 +66,9 @@ with open(settings_file, 'rb') as fid:
 field_dict_file = save_dir + 'field_dict.pickle'
 with open(field_dict_file, 'rb') as fid:
     field_dict = pickle.load(fid)
+
+LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
+trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.001  # T
@@ -76,11 +85,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
 with_RF_xy_corrections = True
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
@@ -123,6 +132,7 @@ selectivity_1 = selectivity
 # selectivity_1 = N_lc
 # selectivity_1 = N_cr
 # selectivity_1 = N_cl
+cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
 
 # gas_name = 'deuterium'
 # gas_name = 'DT_mix'
@@ -157,6 +167,7 @@ selectivity_trapped = N_cr_2 / N_cl_2
 
 # selectivity_2 = copy.deepcopy(selectivity)
 selectivity_2 = selectivity
+cone_escape_rate_2 = (N_rc_2 * LC_ini_fraction - N_cr_2 * trapped_ini_fraction) / LC_ini_fraction
 
 
 # selectivity_2 = selectivity_trapped
@@ -175,21 +186,24 @@ def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, color='w'):
     # ax_line = sns.lineplot(data=data, x='x', y='y', ax=ax)
     # ax_line.lines[0].set_linestyle(linestyle)
 
-    sns.lineplot(data=data, x='x', y='y', style=True, dashes=[(2, 2)], color=color, linewidth=3, )
+    sns.lineplot(data=data, x='x', y='y', style=True, dashes=[(2, 2)], color=color, linewidth=2)
 
     return
 
 
-vz_over_vth = 0.8
+# vz_over_vth = 0.8
 # vz_over_vth = 0.56
+vz_over_vth = 1.025  # mean of vz in loss cone
 m_curr = 2
 offset = 2.5 / m_curr
 slope = 2 * np.pi * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
 alpha_const_omega_mass2_right = offset + slope * beta_loop_list
+alpha_const_omega_mass2_left = offset - slope * beta_loop_list
 m_curr = 3
 offset = 2.5 / m_curr
 slope = 2 * np.pi * vz_over_vth * settings['v_th'] / field_dict['omega_cyclotron']
 alpha_const_omega_mass3_right = offset + slope * beta_loop_list
+alpha_const_omega_mass3_left = offset - slope * beta_loop_list
 
 ### PLOTS
 
@@ -197,8 +211,8 @@ annot = False
 annot_fontsize = 8
 annot_fmt = '.2f'
 
-yticklabels = alpha_loop_list
-ylabel = '$f_{\\omega}$'
+# yticklabels = alpha_loop_list
+# ylabel = '$f_{\\omega}$'
 
 _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
 q = Z_ion * settings['e']  # Coulomb
@@ -257,8 +271,10 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
 
 
 def plot_resonance_lines():
-    # plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass2_right, color='lawngreen')
-    # plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass3_right, color='cyan')
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass2_right, color='lawngreen')
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass2_left, color='lawngreen')
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass3_right, color='cyan')
+    plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_mass3_left, color='cyan')
     # plt.text(0.58, 0.95, 'D resonance', fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 16},
     #          horizontalalignment='right', verticalalignment='top', color='lawngreen', rotation=70,
     #          transform=fig.axes[0].transAxes)
@@ -286,10 +302,10 @@ def plot_interest_points(ax):
                    # facecolor='none',
                    facecolor='b',
                    edgecolor='b', linewidth=2)
-        # ax.text(ind_beta - 0.2 + 0.5, ind_alpha - 0.2 + 0.5, set_name, color='w',
-        #         fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
-        ax.text(ind_beta - 0.125 + 0.5, ind_alpha - 0.125 + 0.5, set_name, color='w',
+        ax.text(ind_beta - 0.2 + 0.5, ind_alpha - 0.2 + 0.5, set_name, color='w',
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
+        # ax.text(ind_beta - 0.125 + 0.5, ind_alpha - 0.125 + 0.5, set_name, color='w',
+        #         fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
 # lower resolution for xticks and yticks
@@ -297,8 +313,10 @@ xticklabels_str = []
 yticklabels_str = []
 for i in range(len(beta_loop_list)):
     if np.mod(i, 2) == 0:
-        xticklabels_str += [str(int(beta_loop_list[i]))]
+        # xticklabels_str += [str(int(beta_loop_list[i]))]
         yticklabels_str += [str(yticklabels[i])]
+        xticklabels_str += [str(beta_loop_list[i])]
+        # yticklabels_str += [str(alpha_loop_list[i])]
     else:
         xticklabels_str += ['']
         yticklabels_str += ['']
@@ -328,6 +346,7 @@ if do_plots == True:
                 annot=annot,
                 annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
                 ax=ax,
+                # alpha=0.5,
                 )
     ax.axes.invert_yaxis()
     plot_resonance_lines()
@@ -362,6 +381,7 @@ if do_plots == True:
                 annot=annot,
                 annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
                 ax=ax,
+                # alpha=0.5,
                 )
     ax.axes.invert_yaxis()
     plot_resonance_lines()
@@ -378,6 +398,74 @@ if do_plots == True:
              horizontalalignment='left', verticalalignment='top', color='w',
              transform=fig.axes[0].transAxes)
     ax.legend().set_visible(False)
+
+    ###############
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    y = cone_escape_rate_1
+    vmin = np.nanmin(y)
+    vmax = np.nanmax(y)
+    sns.heatmap(y.T, xticklabels=xticklabels_str, yticklabels=yticklabels_str,
+                vmin=vmin,
+                # vmax=vmax,
+                annot=annot,
+                annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+                ax=ax,
+                # alpha=0.5,
+                )
+    ax.axes.invert_yaxis()
+    plot_resonance_lines()
+    plot_interest_points(ax)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+    ax.set_ylabel(ylabel, fontsize=axes_label_size)
+    ax.set_title('$(N_{rc}-N_{cr})/N_{cone}$ (D)', fontsize=20)
+    # fig.set_tight_layout(0.5)
+    fig.set_layout_engine(layout='tight')
+    plt.yticks(rotation=0)
+    text = '(b)'
+    plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+             horizontalalignment='left', verticalalignment='top', color='w',
+             transform=fig.axes[0].transAxes)
+    ax.legend().set_visible(False)
+
+    ###############
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    y = cone_escape_rate_2
+    vmin = np.nanmin(y)
+    vmax = np.nanmax(y)
+    sns.heatmap(y.T, xticklabels=xticklabels_str, yticklabels=yticklabels_str,
+                vmin=vmin,
+                # vmax=vmax,
+                annot=annot,
+                annot_kws={"fontsize": annot_fontsize}, fmt=annot_fmt,
+                ax=ax,
+                # alpha=0.5,
+                )
+    ax.axes.invert_yaxis()
+    plot_resonance_lines()
+    plot_interest_points(ax)
+    ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
+    ax.set_ylabel(ylabel, fontsize=axes_label_size)
+    ax.set_title('$(N_{rc}-N_{cr})/N_{cone}$ (T)', fontsize=20)
+    # fig.set_tight_layout(0.5)
+    fig.set_layout_engine(layout='tight')
+    plt.yticks(rotation=0)
+    text = '(b)'
+    plt.text(0.04, 0.97, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+             horizontalalignment='left', verticalalignment='top', color='w',
+             transform=fig.axes[0].transAxes)
+    ax.legend().set_visible(False)
+
+    ## contour plot
+    # plt.figure()
+    # X = beta_loop_list
+    # Y = omega / omega0
+    # levels = [0.5] + [i for i in range(1, 10)]
+    # Z = selectivity_1.T
+    # contour = plt.contour(X, Y, Z, levels)
+    # plt.clabel(contour, inline=True, fontsize=8)
+    # Z = selectivity_2.T
+    # contour = plt.contour(X, Y, Z, levels, linestyles='--')
+    # plt.clabel(contour, inline=True, fontsize=8)
 
     ## save plots to file
     save_dir = '../../../Papers/texts/paper2024/pics/'

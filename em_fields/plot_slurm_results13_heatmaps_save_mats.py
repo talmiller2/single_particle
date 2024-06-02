@@ -14,8 +14,8 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-save_dir = '/home/talm/code/single_particle/slurm_runs/'
-# save_dir = '/Users/talmiller/Downloads/single_particle/'
+# save_dir = '/home/talm/code/single_particle/slurm_runs/'
+save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -35,7 +35,7 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set41_B0_1T_l_1m_Post_Rm_3_intervals_D_T_ERF_25/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set47_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
