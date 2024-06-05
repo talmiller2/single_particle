@@ -29,9 +29,6 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set37_B0_1T_l_1m_Post_Rm_3_intervals/'
 # save_dir += '/set38_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-# save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-# save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
-# save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -43,94 +40,24 @@ E_RF_kVm = 50  # kV/m
 # RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
-B_RF = 0.04  # T
+# B_RF = 0.04  # T
 # B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
-# gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-# gas_name = 'tritium'`
-
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
 gas_name_list += ['tritium']
 
 use_RF = True
 # use_RF = False
 
-absolute_velocity_sampling_type = 'maxwell'
-# absolute_velocity_sampling_type = 'const_vth'
-
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
-# beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
-# beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
-# beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
-# beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
-# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
-
 alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39
 beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
-# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
-
-# for ind_beta, beta_RF in enumerate(beta_loop_list):
-#     for ind_alpha, alpha_RF in enumerate(alpha_loop_list):
-# ind_alpha = 0
-# ind_alpha = 1
-# ind_alpha = 2
-# ind_alpha = 4
-# ind_alpha = 5
-# ind_alpha = 7
-# ind_beta = 1
-# ind_beta = 2
-# ind_beta = 5
-# ind_beta = 4
-# ind_beta = 3
-# alpha = alpha_loop_list[ind_alpha]
-# beta = beta_loop_list[ind_beta]
-
 
 select_alpha_list = []
 select_beta_list = []
 set_name_list = []
-
-# select_alpha_list += [1.3]
-# select_beta_list += [0.0]
-# set_name_list += ['1']
-#
-# select_alpha_list += [1.4]
-# select_beta_list += [3.0]
-# set_name_list += ['2']
-#
-# select_alpha_list += [0.8]
-# select_beta_list += [0.0]
-# set_name_list += ['3']
-#
-# select_alpha_list += [1.0]
-# select_beta_list += [-3.0]
-# set_name_list += ['4']
-#
-# select_alpha_list += [0.6]
-# select_beta_list += [-2.0]
-# set_name_list += ['5']
-
 
 select_alpha_list += [1.4]
 select_beta_list += [3.0]
@@ -148,35 +75,15 @@ select_alpha_list += [0.55]
 select_beta_list += [-7.0]
 set_name_list += ['4']
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
-# select_alpha_list = alpha_loop_list
-# select_beta_list = beta_loop_list
-select_alpha_list = [0.88]
-select_beta_list = [-2.0]
-set_name_list += ['0' for _ in range(len(select_beta_list))]
-
-with_RF_xy_corrections = True
-induced_fields_factor = 1
-# induced_fields_factor = 0.5
-# induced_fields_factor = 0.1
-# induced_fields_factor = 0.01
-# induced_fields_factor = 0
-# time_step_tau_cyclotron_divisions = 20
-time_step_tau_cyclotron_divisions = 40
-# time_step_tau_cyclotron_divisions = 80
-# sigma_r0 = 0
-sigma_r0 = 0.1
-
 ind_set = 0
 # ind_set = 1
 # ind_set = 2
 # ind_set = 3
-# ind_set = 10
 
 alpha = select_alpha_list[ind_set]
 beta = select_beta_list[ind_set]
 RF_set_name = set_name_list[ind_set]
+# RF_set_name = '$\\alpha$=' + str(alpha) + ', $\\beta$=' + str(beta)
 
 for gas_name in gas_name_list:
 
@@ -198,15 +105,6 @@ for gas_name in gas_name_list:
             set_name += 'BRF_' + str(B_RF)
         set_name += '_alpha_' + str(alpha)
         set_name += '_beta_' + str(beta)
-        if induced_fields_factor < 1.0:
-            set_name += '_iff' + str(induced_fields_factor)
-        if with_RF_xy_corrections == False:
-            set_name += '_woxyRFcor'
-        set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-        if absolute_velocity_sampling_type == 'const_vth':
-            set_name += '_const_vth'
-        if sigma_r0 > 0:
-            set_name += '_sigmar' + str(sigma_r0)
         set_name += '_' + gas_name
         print(set_name)
 
@@ -226,18 +124,18 @@ for gas_name in gas_name_list:
     # for i in range(100):
     #     print(len(data_dict['t'][i]), data_dict['t'][i][-1], data_dict['r'][i][-1])
 
-    # for key in data_dict.keys():
-    #     data_dict[key] = np.array(data_dict[key])
-
-    # filter out the particles that ended prematurely
-    num_particles = len(data_dict['t'])
-    inds_ok = []
-    for ind_particle, t in enumerate(data_dict['t']):
-        if len(t) == 30:
-            inds_ok += [ind_particle]
-    percent_ok = len(inds_ok) / num_particles * 100
     for key in data_dict.keys():
-        data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
+        data_dict[key] = np.array(data_dict[key])
+
+    # # filter out the particles that ended prematurely
+    # num_particles = len(data_dict['t'])
+    # inds_ok = []
+    # for ind_particle, t in enumerate(data_dict['t']):
+    #     if len(t) == 30:
+    #         inds_ok += [ind_particle]
+    # percent_ok = len(inds_ok) / num_particles * 100
+    # for key in data_dict.keys():
+    #     data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
 
     # divide the phase space by the angle
     theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
@@ -273,6 +171,7 @@ for gas_name in gas_name_list:
         #     print(ind_t)
 
         inds_particles = range(data_dict['t'].shape[0])
+        # inds_particles = range(len(data_dict['t']))
         # inds_particles = [0, 1, 2]
         # inds_particles = range(1001)
         if ind_t == 0:
@@ -363,8 +262,8 @@ for gas_name in gas_name_list:
     ## calculate the saturation value to estimate the rate
     # inds_t_saturation = range(7, 21)
     # inds_t_saturation = range(2, 3)
-    # inds_t_saturation = range(15, 31) # for 2023 paper
-    inds_t_saturation = range(15, 29)
+    inds_t_saturation = range(15, 31)  # for 2023 paper
+    # inds_t_saturation = range(15, 29)
 
     # inds_t_saturation = range(len(t_array))
 
@@ -400,16 +299,15 @@ for gas_name in gas_name_list:
     ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
               color='orange', linewidth=2, linestyle='--')
 
-    # TODO: plut the deltaNneteffect
     LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
     trapped_ini_fraction = 1 - 2 * LC_ini_fraction
     N_rc = particles_counter_mat2_3d[0, 1, :]
     N_cr = particles_counter_mat2_3d[1, 0, :]
     cone_escape_rate_1 = (N_rc * LC_ini_fraction - N_cr * trapped_ini_fraction) / LC_ini_fraction
     N_curr = cone_escape_rate_1
-    saturation_value = np.mean(N_curr[inds_t_saturation])
+    # saturation_value = np.mean(N_curr[inds_t_saturation])
     label = '$(N_{rc}-N_{cr})/N_{cone}$'
-    label += '=' + '{:.3f}'.format(saturation_value)
+    # label += '=' + '{:.3f}'.format(saturation_value)
     ax.plot(t_array, N_curr, color='black', linestyle='-', label=label)
     ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
               color='orange', linewidth=2, linestyle='--')
@@ -423,12 +321,12 @@ for gas_name in gas_name_list:
     # ax.set_xlabel('$t / \\tau_{th}$',
     #               fontsize=20)
     # ax.set_ylim([0, 0.9])
-    ax.set_ylim([0, 1.0])
-    ax.set_xlim([0, 1.75])
+    # ax.set_ylim([0, 1.0])
+    # ax.set_xlim([0, 1.75])
     # ax.set_title(gas_name)
     # ax.set_title(title)
-    ax.legend(loc='upper left',
-              fontsize=20)
+    # ax.legend(loc='upper left', fontsize=20)
+    ax.legend(loc='upper left', fontsize=15)
     # ax.legend(loc='center right', fontsize=16)
     # ax.legend(fontsize=16)
     ax.grid(True)
@@ -439,7 +337,9 @@ for gas_name in gas_name_list:
         gas_name_shorthand = 'T'
     # text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
     text = RF_set_name + ' (' + gas_name_shorthand + ')'
-    plt.text(0.99, 0.98, text, fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+    plt.text(0.99, 0.98, text,
+             # fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+             fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
              horizontalalignment='right', verticalalignment='top', color='k',
              transform=fig.axes[0].transAxes)
     # fig.set_tight_layout({'pad': 0.5, 'rect': (0, 0, 1, 0.95)})

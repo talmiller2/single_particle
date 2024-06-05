@@ -55,8 +55,12 @@ select_beta_list += [-1.8]
 set_name_list += ['3']
 
 select_alpha_list += [1.12]
-select_beta_list += [1.42]
+select_beta_list += [1.4]
 set_name_list += ['4']
+
+select_alpha_list += [0.88]
+select_beta_list += [0]
+set_name_list += ['5']
 
 
 save_dir_curr = save_dir + 'without_RF'
