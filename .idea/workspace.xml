@@ -25,9 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add plot_slurm_results12_saturation_RMF">
-      <change afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results15_trajectories.py" afterDir="false" />
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add plot_slurm_results15_trajectories.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results15_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results15_trajectories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +78,7 @@
     &quot;Python.plot_slurm_results13_heatmaps_load_mats_DT_forRMF.executor&quot;: &quot;Run&quot;,
     &quot;Python.plot_slurm_results13_heatmaps_save_mats.executor&quot;: &quot;Run&quot;,
     &quot;Python.plot_slurm_results14_v_space.executor&quot;: &quot;Run&quot;,
+    &quot;Python.plot_slurm_results15_trajectories.executor&quot;: &quot;Run&quot;,
     &quot;Python.plot_slurm_results15_vz_trajectories.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
@@ -225,9 +226,6 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -296,9 +294,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.plot_slurm_results15_trajectories" />
-        <item itemvalue="Python.plot_slurm_results14_v_space" />
-        <item itemvalue="Python.plot_slurm_results12_saturation_RMF" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT_RMF" />
+        <item itemvalue="Python.plot_slurm_results12_saturation_RMF" />
+        <item itemvalue="Python.plot_slurm_results14_v_space" />
         <item itemvalue="Python.plot_slurm_results12_saturation" />
       </list>
     </recent_temporary>
@@ -665,7 +663,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="215" />
+    <option name="localTasksCounter" value="216" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -692,7 +690,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="-remove old irrelevant scripts&#10;-remove the fenchel suffix &#10;-remove filter warnings" />
     <MESSAGE value="remove comments from setup" />
     <MESSAGE value="mod permissions on evolution_slave.py" />
     <MESSAGE value="change run method to combination based with matrix/array options" />
@@ -717,7 +714,8 @@
     <MESSAGE value="compile plot_slurm_results13_heatmaps_save_mats on cluster" />
     <MESSAGE value="test commit in diff workdir" />
     <MESSAGE value="add plot_slurm_results12_saturation_RMF" />
-    <option name="LAST_COMMIT_MESSAGE" value="add plot_slurm_results12_saturation_RMF" />
+    <MESSAGE value="add plot_slurm_results15_trajectories.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="add plot_slurm_results15_trajectories.py" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

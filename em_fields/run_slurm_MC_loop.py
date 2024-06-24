@@ -18,6 +18,8 @@ slurm_kwargs = {}
 slurm_kwargs['partition'] = 'testSocket'
 slurm_kwargs['ntasks'] = 1
 slurm_kwargs['cpus-per-task'] = 1
+local = False
+# local = True
 
 save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set5/'
@@ -62,7 +64,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set44_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -111,6 +114,22 @@ plt.close('all')
 
 alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47
 beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+
+# specific values for set48
+select_alpha_list = []
+select_beta_list = []
+select_alpha_list += [0.64]  # [set1]
+select_beta_list += [-1.8]
+select_alpha_list += [0.7]  # [set2]
+select_beta_list += [-0.8]
+select_alpha_list += [1.06]  # [set3]
+select_beta_list += [-1.8]
+select_alpha_list += [1.12]  # [set4]
+select_beta_list += [1.4]
+select_alpha_list += [0.88]  # [set5]
+select_beta_list += [0.0]
+alpha_loop_list = select_alpha_list
+beta_loop_list = select_beta_list
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # kV/m
@@ -256,11 +275,11 @@ for gas_name in gas_name_list:
                 field_dict = define_default_field(settings, field_dict)
 
                 # simulation duration
-                settings['num_snapshots'] = 30
-                # settings['num_snapshots'] = 200
+                # settings['num_snapshots'] = 30
+                settings['num_snapshots'] = 10 * 30  # for specific runs
 
-                tmax_mirror_lengths = 2
-                # tmax_mirror_lengths = 100
+                # tmax_mirror_lengths = 2
+                tmax_mirror_lengths = 10 * 2  # for specific runs
                 sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
                                          / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
                 settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -308,8 +327,9 @@ for gas_name in gas_name_list:
 
                 # total_number_of_points = 1
                 # total_number_of_points = 40
-                total_number_of_points = 1000
+                # total_number_of_points = 1000
                 # total_number_of_points = 3000
+                total_number_of_points = 5000
 
                 # allow reproducibility
                 np.random.seed(0)
@@ -443,7 +463,7 @@ for gas_name in gas_name_list:
                                   + ' --settings "' + str(settings) + '"' \
                                   + ' --field_dict "' + str(field_dict) + '"'
                         s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
-                        s.run(command)
+                        s.run(command, local=local)
 
                     if num_cpus > 1:
                         print('   run set # ' + str(cnt_cpu) + ' / ' + str(num_sets - 1))
