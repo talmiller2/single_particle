@@ -15,11 +15,9 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-plot_saturation_lines = True
-# plot_saturation_lines = False
-
 save_dir = '/Users/talmiller/Downloads/single_particle/'
-save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -68,8 +66,8 @@ set_name_list += ['noRF']
 # select_beta_list += [0.0]
 # set_name_list += ['5']
 
-# plot_trajectories = True
-plot_trajectories = False
+plot_trajectories = True
+# plot_trajectories = False
 
 # use_RF = True
 use_RF = False
@@ -82,8 +80,8 @@ induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
-# sigma_r0 = 0
-sigma_r0 = 0.1
+sigma_r0 = 0
+# sigma_r0 = 0.1
 
 fig_num = 0
 
@@ -137,11 +135,11 @@ for gas_name in gas_name_list:
         with open(field_dict_file, 'rb') as fid:
             field_dict = pickle.load(fid)
 
-        num_particles = len(data_dict['t'])
+        # num_particles = len(data_dict['t'])
         # num_particles = 1
         # num_particles = 3
         # num_particles = 50
-        # num_particles = 200
+        num_particles = 200
 
         # define v_th ref
         _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
@@ -151,7 +149,8 @@ for gas_name in gas_name_list:
         theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
 
         ### plot the theretical resonance points
-        _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+        # _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+        _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
         q = Z_ion * settings['e']  # Coulomb
         omega_cyc_0 = get_cyclotron_angular_frequency(q, field_dict['B0'], mi)
         omega_RF = alpha * field_dict['omega_cyclotron']
@@ -161,10 +160,10 @@ for gas_name in gas_name_list:
             v_RF = omega_RF / (2 * np.pi * k_RF)
 
         if use_RF:
-            RF_str = ('($\\omega_{RF}/\\omega_{cyc0}$=' + '{:.2f}'.format(omega_RF_over_omega_cyc_0)
-                      + ', $k_{RF}/2\\pi$=' + '{:.2f}'.format(k_RF / (2 * np.pi)) + ')')
+            RF_str = ('$\\omega_{RF}/\\omega_{cyc,T}$=' + '{:.2f}'.format(omega_RF_over_omega_cyc_0)
+                      + ', $k_{RF}/2\\pi$=' + '{:.2f}'.format(k_RF / (2 * np.pi)))
         else:
-            RF_str = '(no RF)'
+            RF_str = 'no RF'
 
         ## plot
         if plot_trajectories:

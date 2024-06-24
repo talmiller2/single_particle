@@ -141,23 +141,23 @@ RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 # B_RF = 0.08  # T
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     B_RF = 0
     alpha_loop_list = [1]
     beta_loop_list = [0]
 
-loop_method = 'matrix'
-# loop_method = 'array'
+# loop_method = 'matrix'
+loop_method = 'array'
 
 gas_name_list = ['deuterium', 'tritium']
 sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
 # sigma_r0_list = [0.1]
-# induced_fields_factor_list = [1, 0]
-induced_fields_factor_list = [1]
+induced_fields_factor_list = [1, 0]
+# induced_fields_factor_list = [1]
 
 for gas_name in gas_name_list:
     for sigma_r0 in sigma_r0_list:
@@ -279,12 +279,12 @@ for gas_name in gas_name_list:
                 settings['num_snapshots'] = 10 * 30  # for specific runs
 
                 # tmax_mirror_lengths = 2
-                tmax_mirror_lengths = 10 * 2  # for specific runs
-                sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
-                                         / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
-                settings['sim_cyclotron_periods'] = sim_cyclotron_periods
+                # sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
+                #                          / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
+                # settings['sim_cyclotron_periods'] = sim_cyclotron_periods
                 # settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
-                settings['t_max'] = 2.2937178074285e-06
+                # settings['t_max'] = 2.2937178074285e-06
+                settings['t_max'] = 2.3e-05  # longer time for specific runs
                 settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
                 if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
                     settings['num_steps'] = int(1e10)

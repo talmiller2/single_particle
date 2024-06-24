@@ -25,7 +25,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add plot_slurm_results15_trajectories.py">
+    <list default="true" id="1d305b32-6453-44b4-849e-b75aa6c4372c" name="Default Changelist" comment="add set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T spcific long runs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/plot_slurm_results15_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/plot_slurm_results15_trajectories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/em_fields/run_slurm_MC_loop.py" afterDir="false" />
@@ -111,6 +111,25 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.plot_slurm_results15_trajectories">
+    <configuration name="Python Console" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="single_particle" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="/Python Console.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="plot_magnetic_field_loop_cartesian" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="single_particle" />
       <option name="ENV_FILES" value="" />
@@ -171,28 +190,6 @@
       <option name="SCRIPT_NAME" value="C:\Users\Tal Miller\Dropbox\UNI\Courses Graduate\Plasma\code\single_particle\loop_fields\plot_periodic_square.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="plot_slurm_results12_saturation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="single_particle" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/em_fields" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/em_fields/plot_slurm_results12_saturation.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -285,19 +282,19 @@
       <item itemvalue="Python.plot_magnetic_field_loop_cartesian" />
       <item itemvalue="Python.plot_magnetic_field_loop_cylindrical" />
       <item itemvalue="Python.plot_periodic_square" />
+      <item itemvalue="Python.Python Console" />
       <item itemvalue="Python.plot_slurm_results12_saturation_RMF" />
       <item itemvalue="Python.plot_slurm_results15_trajectories" />
       <item itemvalue="Python.plot_slurm_results14_v_space" />
-      <item itemvalue="Python.plot_slurm_results12_saturation" />
       <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT_RMF" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.plot_slurm_results15_trajectories" />
+        <item itemvalue="Python.Python Console" />
         <item itemvalue="Python.plot_slurm_results13_heatmaps_load_mats_DT_RMF" />
         <item itemvalue="Python.plot_slurm_results12_saturation_RMF" />
         <item itemvalue="Python.plot_slurm_results14_v_space" />
-        <item itemvalue="Python.plot_slurm_results12_saturation" />
       </list>
     </recent_temporary>
   </component>
@@ -663,7 +660,7 @@
       <option name="project" value="LOCAL" />
       <updated>1680465862281</updated>
     </task>
-    <option name="localTasksCounter" value="216" />
+    <option name="localTasksCounter" value="217" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -690,7 +687,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="remove comments from setup" />
     <MESSAGE value="mod permissions on evolution_slave.py" />
     <MESSAGE value="change run method to combination based with matrix/array options" />
     <MESSAGE value="testing cpus-per-task=1" />
@@ -715,7 +711,8 @@
     <MESSAGE value="test commit in diff workdir" />
     <MESSAGE value="add plot_slurm_results12_saturation_RMF" />
     <MESSAGE value="add plot_slurm_results15_trajectories.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="add plot_slurm_results15_trajectories.py" />
+    <MESSAGE value="add set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T spcific long runs" />
+    <option name="LAST_COMMIT_MESSAGE" value="add set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T spcific long runs" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
