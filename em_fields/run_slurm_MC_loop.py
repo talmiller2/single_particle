@@ -65,7 +65,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -112,24 +113,24 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49
 beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
-# specific values for set48
-select_alpha_list = []
-select_beta_list = []
-select_alpha_list += [0.64]  # [set1]
-select_beta_list += [-1.8]
-select_alpha_list += [0.7]  # [set2]
-select_beta_list += [-0.8]
-select_alpha_list += [1.06]  # [set3]
-select_beta_list += [-1.8]
-select_alpha_list += [1.12]  # [set4]
-select_beta_list += [1.4]
-select_alpha_list += [0.88]  # [set5]
-select_beta_list += [0.0]
-alpha_loop_list = select_alpha_list
-beta_loop_list = select_beta_list
+# # specific values for set48
+# select_alpha_list = []
+# select_beta_list = []
+# select_alpha_list += [0.64]  # [set1]
+# select_beta_list += [-1.8]
+# select_alpha_list += [0.7]  # [set2]
+# select_beta_list += [-0.8]
+# select_alpha_list += [1.06]  # [set3]
+# select_beta_list += [-1.8]
+# select_alpha_list += [1.12]  # [set4]
+# select_beta_list += [1.4]
+# select_alpha_list += [0.88]  # [set5]
+# select_beta_list += [0.0]
+# alpha_loop_list = select_alpha_list
+# beta_loop_list = select_beta_list
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # kV/m
@@ -141,21 +142,21 @@ RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 # B_RF = 0.08  # T
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     B_RF = 0
     alpha_loop_list = [1]
     beta_loop_list = [0]
 
-# loop_method = 'matrix'
-loop_method = 'array'
+loop_method = 'matrix'
+# loop_method = 'array'
 
 gas_name_list = ['deuterium', 'tritium']
-sigma_r0_list = [0, 0.1]
+# sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
-# sigma_r0_list = [0.1]
+sigma_r0_list = [0.1]
 induced_fields_factor_list = [1, 0]
 # induced_fields_factor_list = [1]
 
@@ -220,8 +221,9 @@ for gas_name in gas_name_list:
                 settings['gas_name_for_cyc'] = 'DT_mix'
 
                 # settings['time_step_tau_cyclotron_divisions'] = 20
-                settings['time_step_tau_cyclotron_divisions'] = 40
+                # settings['time_step_tau_cyclotron_divisions'] = 40 # for set 48 and before
                 # settings['time_step_tau_cyclotron_divisions'] = 80
+                settings['time_step_tau_cyclotron_divisions'] = 50  # for set 49
 
                 settings['z_0'] = 0.5 * settings['l']
 
@@ -275,16 +277,18 @@ for gas_name in gas_name_list:
                 field_dict = define_default_field(settings, field_dict)
 
                 # simulation duration
-                # settings['num_snapshots'] = 30
-                settings['num_snapshots'] = 10 * 30  # for specific runs
+                settings['num_snapshots'] = 30
+                # settings['num_snapshots'] = 10 * 30  # for specific runs, set 48
 
                 # tmax_mirror_lengths = 2
                 # sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
                 #                          / settings['v_th_for_cyc'] / field_dict['tau_cyclotron'])
                 # settings['sim_cyclotron_periods'] = sim_cyclotron_periods
                 # settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
-                # settings['t_max'] = 2.2937178074285e-06
-                settings['t_max'] = 2.3e-05  # longer time for specific runs
+                # settings['t_max'] = 2.2937178074285e-06 (sets 47 and before)
+                # settings['t_max'] = 2.3e-05  # longer time for specific runs (set 48)
+                settings['t_max'] = 5 * settings['l'] / settings[
+                    'v_th']  # longer time that depends on D,T v_th (set 49)
                 settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
                 if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
                     settings['num_steps'] = int(1e10)

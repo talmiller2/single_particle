@@ -19,7 +19,8 @@ plt.close('all')
 plot_saturation_lines = False
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
-save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -27,6 +28,7 @@ save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
+
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
@@ -36,9 +38,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -47,7 +49,7 @@ set_name_list = []
 # select_alpha_list += [0.64]
 # select_beta_list += [-1.8]
 # set_name_list += ['1']
-#
+
 # select_alpha_list += [0.7]
 # select_beta_list += [-0.8]
 # set_name_list += ['2']
@@ -65,12 +67,13 @@ select_beta_list += [0.0]
 set_name_list += ['5']
 
 use_RF = True
+# use_RF = False
 with_RF_xy_corrections = True
-# induced_fields_factor = 1
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
 # time_step_tau_cyclotron_divisions = 80
@@ -110,11 +113,11 @@ for gas_name in gas_name_list:
                 set_name += '_iff' + str(induced_fields_factor)
             if with_RF_xy_corrections == False:
                 set_name += '_woxyRFcor'
-            set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-            if sigma_r0 > 0:
-                set_name += '_sigmar' + str(sigma_r0)
-            set_name += '_' + gas_name
-            print(set_name)
+        set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+        if sigma_r0 > 0:
+            set_name += '_sigmar' + str(sigma_r0)
+        set_name += '_' + gas_name
+        print(set_name)
 
         save_dir_curr = save_dir + set_name
 
@@ -122,6 +125,7 @@ for gas_name in gas_name_list:
         data_dict_file = save_dir_curr + '.pickle'
         with open(data_dict_file, 'rb') as fid:
             data_dict = pickle.load(fid)
+        # print('data_dict.keys', data_dict.keys())
         settings_file = save_dir + 'settings.pickle'
         with open(settings_file, 'rb') as fid:
             settings = pickle.load(fid)
@@ -133,11 +137,13 @@ for gas_name in gas_name_list:
         num_particles = len(data_dict['t'])
         inds_ok = []
         for ind_particle, t in enumerate(data_dict['t']):
-            if len(t) == 30:
-                inds_ok += [ind_particle]
+            # if len(t) == 30:
+            #     inds_ok += [ind_particle]
+            inds_ok += [ind_particle]
         percent_ok = len(inds_ok) / num_particles * 100
         for key in data_dict.keys():
-            data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
+            # data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
+            data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
 
         # divide the phase space by the angle
         theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
@@ -155,7 +161,8 @@ for gas_name in gas_name_list:
             theta_bins_max_list += [theta_bins_max_list[-1] + dtheta_LC]
         theta_bins_min_list = [0] + theta_bins_max_list[:-1]
 
-        number_of_time_intervals = data_dict['t'].shape[1]
+        # number_of_time_intervals = data_dict['t'].shape[1]
+        number_of_time_intervals = len(data_dict['t'][0])
 
         particles_counter_mat_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
         particles_counter_mat2_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
@@ -172,7 +179,9 @@ for gas_name in gas_name_list:
             # for ind_t in [0, 10, 20]:
             #     print(ind_t)
 
-            inds_particles = range(data_dict['t'].shape[0])
+            # inds_particles = range(data_dict['t'].shape[0])
+            inds_particles = range(len(data_dict['t']))
+            # inds_particles = range(1000)
             # inds_particles = [0, 1, 2]
             # inds_particles = range(1001)
             if ind_t == 0:
@@ -194,6 +203,7 @@ for gas_name in gas_name_list:
             inds_positive = np.where(det > 0)[0]
             vz_adjusted = np.zeros(len(inds_particles))
             vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
+            # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive]) # TODO: updated criterion
 
             theta_adjusted = 90.0 * np.ones(len(inds_particles))
             theta_adjusted[inds_positive] = np.mod(
@@ -304,6 +314,26 @@ for gas_name in gas_name_list:
             ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
                       color='orange', linewidth=2, linestyle='--')
 
+        N_curr = particles_counter_mat2_3d[0, 2, :]
+        saturation_value = np.mean(N_curr[inds_t_saturation])
+        label = '$\\bar{N}_{rl}$'
+        # label += '=' + '{:.3f}'.format(saturation_value)
+        ax.plot(t_array, N_curr, color='k', linestyle='--', label=label, linewidth=2)
+        if plot_saturation_lines:
+            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
+                      color='k', linewidth=2, linestyle='--')
+
+        N_curr = particles_counter_mat2_3d[2, 0, :]
+        saturation_value = np.mean(N_curr[inds_t_saturation])
+        label = '$\\bar{N}_{lr}$'
+        # label += '=' + '{:.3f}'.format(saturation_value)
+        ax.plot(t_array, N_curr, color='brown', linestyle='--', label=label, linewidth=2)
+        if plot_saturation_lines:
+            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
+                      color='brown', linewidth=2, linestyle='--')
+
+
+
         LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
         trapped_ini_fraction = 1 - 2 * LC_ini_fraction
         N_rc = particles_counter_mat2_3d[0, 1, :]
@@ -344,7 +374,8 @@ for gas_name in gas_name_list:
         # ax.set_title(gas_name)
         # ax.set_title(title)
         # ax.legend(loc='upper left', fontsize=20)
-        ax.legend(loc='upper left', fontsize=15)
+        # ax.legend(loc='upper left', fontsize=15)
+        ax.legend(loc='lower right', fontsize=15)
         ax.grid(True)
         # text = '(a)'
         if gas_name == 'deuterium':
