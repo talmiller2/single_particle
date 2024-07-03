@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from em_fields.default_settings import define_plasma_parameters
-from em_fields.em_functions import get_thermal_velocity
+from em_fields.em_functions import get_thermal_velocity, get_cyclotron_angular_frequency
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
@@ -20,7 +20,8 @@ plot_saturation_lines = False
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -38,9 +39,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -53,29 +54,34 @@ set_name_list = []
 # select_alpha_list += [0.7]
 # select_beta_list += [-0.8]
 # set_name_list += ['2']
-#
+
 # select_alpha_list += [1.06]
 # select_beta_list += [-1.8]
 # set_name_list += ['3']
-#
+
 # select_alpha_list += [1.12]
 # select_beta_list += [1.4]
 # set_name_list += ['4']
 
-select_alpha_list += [0.88]
-select_beta_list += [0.0]
-set_name_list += ['5']
+# select_alpha_list += [0.88]
+# select_beta_list += [0.0]
+# set_name_list += ['5']
+
+select_alpha_list += [1.48]
+select_beta_list += [-1.4]
+set_name_list += ['TEST']
 
 use_RF = True
 # use_RF = False
 with_RF_xy_corrections = True
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
-time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 40
+time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
 sigma_r0 = 0.1
@@ -134,13 +140,15 @@ for gas_name in gas_name_list:
             field_dict = pickle.load(fid)
 
         # filter out the particles that ended prematurely
+        len_t_expected = 30
         num_particles = len(data_dict['t'])
         inds_ok = []
         for ind_particle, t in enumerate(data_dict['t']):
-            # if len(t) == 30:
-            #     inds_ok += [ind_particle]
-            inds_ok += [ind_particle]
+            if len(t) == len_t_expected:
+                inds_ok += [ind_particle]
+            # inds_ok += [ind_particle]
         percent_ok = len(inds_ok) / num_particles * 100
+        print('percent_ok:', percent_ok)
         for key in data_dict.keys():
             # data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
             data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
@@ -165,7 +173,6 @@ for gas_name in gas_name_list:
         number_of_time_intervals = len(data_dict['t'][0])
 
         particles_counter_mat_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
-        particles_counter_mat2_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
 
         from matplotlib import cm
 
@@ -201,22 +208,21 @@ for gas_name in gas_name_list:
 
             det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
             inds_positive = np.where(det > 0)[0]
-            vz_adjusted = np.zeros(len(inds_particles))
-            vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
-            # vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(det[inds_positive]) # TODO: updated criterion
 
-            theta_adjusted = 90.0 * np.ones(len(inds_particles))
+            vz_adjusted = np.zeros(len(inds_particles))
+            # vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
+            vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(
+                det[inds_positive])  # TODO: updated criterion
+
+            theta_adjusted = 90.0 * np.ones(len(inds_particles))  # if det<0 particle probably close to vz=0
             theta_adjusted[inds_positive] = np.mod(
                 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
             color = colors[ind_t]
 
-            # track if a particle left the population, and then cancel counting it for the following times
             if ind_t == 0:
-                particles_counter_mat = np.zeros([N_theta, N_theta])
                 inds_bins_ini = []
-                cancelled_particles = np.zeros(len(inds_particles))
-            particles_counter_mat2 = np.zeros([N_theta, N_theta])
+            particles_counter_mat = np.zeros([N_theta, N_theta])
 
             for ind_p in inds_particles:
                 # if not cancelled_particles[ind_p]:
@@ -225,170 +231,150 @@ for gas_name in gas_name_list:
                                if theta_curr > t1 and theta_curr <= t2][0]
                 if ind_t == 0:
                     inds_bins_ini += [ind_bin_fin]
-                    particles_counter_mat[ind_bin_fin, ind_bin_fin] += 1
 
                 ind_bin_ini = inds_bins_ini[ind_p]
 
-                particles_counter_mat2[ind_bin_ini, ind_bin_fin] += 1
-                if ind_bin_fin != ind_bin_ini:
-                    if not cancelled_particles[ind_p]:
-                        particles_counter_mat[ind_bin_ini, ind_bin_ini] -= 1
-                        particles_counter_mat[ind_bin_ini, ind_bin_fin] += 1
-                        cancelled_particles[ind_p] = 1
+                particles_counter_mat[ind_bin_ini, ind_bin_fin] += 1
 
             if ind_t == 0:
                 N0 = copy.deepcopy(np.diag(particles_counter_mat))
 
             particles_counter_mat_3d[:, :, ind_t] = particles_counter_mat
-            particles_counter_mat2_3d[:, :, ind_t] = particles_counter_mat2
 
         # divide all densities by the parent initial density
         for ind_t in range(number_of_time_intervals):
             for ind_bin in range(N_theta):
                 particles_counter_mat_3d[ind_bin, :, ind_t] /= (1.0 * N0[ind_bin])
-                particles_counter_mat2_3d[ind_bin, :, ind_t] /= (1.0 * N0[ind_bin])
-        particles_counter_mat2_for_fit_3d = copy.deepcopy(particles_counter_mat2_3d)
 
         t_array = data_dict['t'][0]
         # t_array /= settings['l'] / settings['v_th']
         # t_array /= settings['l'] / settings['v_th_for_cyc']
+
+        _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+        v_th_curr = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
+        t_array /= settings['l'] / v_th_curr
+
         # define v_th ref
         _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
         v_th_ref = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
-        t_array /= settings['l'] / v_th_ref
+        q = Z_ion * settings['e']  # Coulomb
+        omega_cyc_0 = get_cyclotron_angular_frequency(q, field_dict['B0'], mi)
+        omega_RF = alpha * field_dict['omega_cyclotron']
+        omega_RF_over_omega_cyc_0 = omega_RF / omega_cyc_0
+        k_RF = 2 * np.pi / field_dict['l'] * beta
+        if k_RF != 0:
+            v_RF = omega_RF / (2 * np.pi * k_RF)
 
-        colors = cm.rainbow(np.linspace(0, 1, N_theta))
-        nu_decay_list = []
-        nu_mat = np.zeros([N_theta, N_theta])
-
-        do_fit = True
-        # do_fit = False
+        # t_array /= settings['l'] / v_th_ref
 
         inds_t_array = range(len(t_array))
         fig, ax = plt.subplots(1, 1,
-                               figsize=(6, 6),
+                               figsize=(9, 6),
                                )
         # fig.suptitle(title)
 
         ## calculate the saturation value to estimate the rate
-        # inds_t_saturation = range(7, 21)
-        # inds_t_saturation = range(2, 3)
         # inds_t_saturation = range(15, 31) # for 2023 paper
-        inds_t_saturation = range(15, 29)
-
-        # inds_t_saturation = range(len(t_array))
-
-        N_curr = particles_counter_mat2_3d[0, 1, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{rc}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='b', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='b', linewidth=2, linestyle='--')
-
-        N_curr = particles_counter_mat2_3d[1, 0, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{cr}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='g', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='g', linewidth=2, linestyle='--')
-
-        N_curr = particles_counter_mat2_3d[2, 1, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{lc}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='r', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='r', linewidth=2, linestyle='--')
-
-        N_curr = particles_counter_mat2_3d[1, 2, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{cl}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='orange', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='orange', linewidth=2, linestyle='--')
-
-        N_curr = particles_counter_mat2_3d[0, 2, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{rl}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='k', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='k', linewidth=2, linestyle='--')
-
-        N_curr = particles_counter_mat2_3d[2, 0, :]
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$\\bar{N}_{lr}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='brown', linestyle='--', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='brown', linewidth=2, linestyle='--')
+        # inds_t_saturation = range(15, 29)
+        inds_t_saturation = range(15, 30)  # for 2024 paper
 
 
+        def plot_line(x, y, label, color, linestyle='-', linewidth=2, plot_saturation=False, saturation_linestyl=':'):
+            if plot_saturation:
+                saturation_value = np.mean(y[inds_t_saturation])
+                label += '=' + '{:.3f}'.format(saturation_value)
+                ax.hlines(saturation_value, x[inds_t_saturation[0]], x[inds_t_saturation[-1]],
+                          color=color, linewidth=linewidth, linestyle=saturation_linestyl)
+
+            ax.plot(x, y, color=color, linestyle=linestyle, label=label, linewidth=linewidth)
+
+
+        linestyle1 = '-'
+        linestyle2 = '--'
+        plot_saturation = True
+
+        N_rc_tilde = particles_counter_mat_3d[0, 1, :]
+        plot_line(t_array, N_rc_tilde, label='$\\bar{N}_{rc}$', color='b', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
+
+        N_cr_tilde = particles_counter_mat_3d[1, 0, :]
+        plot_line(t_array, N_cr_tilde, label='$\\bar{N}_{cr}$', color='g', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
+
+        N_lc_tilde = particles_counter_mat_3d[2, 1, :]
+        plot_line(t_array, N_lc_tilde, label='$\\bar{N}_{lc}$', color='r', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
+
+        N_cl_tilde = particles_counter_mat_3d[1, 2, :]
+        plot_line(t_array, N_cl_tilde, label='$\\bar{N}_{cl}$', color='orange', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
+
+        N_rl_tilde = particles_counter_mat_3d[0, 2, :]
+        plot_line(t_array, N_rl_tilde, label='$\\bar{N}_{rl}$', color='k', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
+
+        N_lr_tilde = particles_counter_mat_3d[2, 0, :]
+        plot_line(t_array, N_lr_tilde, label='$\\bar{N}_{lr}$', color='brown', linestyle=linestyle1,
+                  plot_saturation=plot_saturation)
 
         LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
         trapped_ini_fraction = 1 - 2 * LC_ini_fraction
-        N_rc = particles_counter_mat2_3d[0, 1, :]
-        N_cr = particles_counter_mat2_3d[1, 0, :]
-        cone_escape_rate_1 = (N_rc * LC_ini_fraction - N_cr * trapped_ini_fraction) / LC_ini_fraction
-        N_curr = cone_escape_rate_1
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$(N_{rc}-N_{cr})/N_{cone}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='blue', linestyle='-', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='blue', linewidth=2, linestyle='--')
 
-        N_lc = particles_counter_mat2_3d[2, 1, :]
-        N_cl = particles_counter_mat2_3d[1, 2, :]
-        cone_escape_rate_2 = (N_lc * LC_ini_fraction - N_cl * trapped_ini_fraction) / LC_ini_fraction
-        N_curr = cone_escape_rate_2
-        saturation_value = np.mean(N_curr[inds_t_saturation])
-        label = '$(N_{lc}-N_{cl})/N_{cone}$'
-        # label += '=' + '{:.3f}'.format(saturation_value)
-        ax.plot(t_array, N_curr, color='red', linestyle='-', label=label, linewidth=2)
-        if plot_saturation_lines:
-            ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
-                      color='red', linewidth=2, linestyle='--')
+        cone_escape_rate_R = (N_rc_tilde * LC_ini_fraction - N_cr_tilde * trapped_ini_fraction) / LC_ini_fraction
+        plot_line(t_array, cone_escape_rate_R, label='$(N_{rc}-N_{cr})/N_{cone}$', color='b', linestyle=linestyle2,
+                  plot_saturation=plot_saturation)
 
-        # ax.plot(t_array, particles_counter_mat2_3d[2, 1, :], color='g', linestyle='-', label='$\\bar{N}_{lc}$')
-        # ax.plot(t_array, particles_counter_mat2_3d[1, 0, :], color='r', linestyle='-', label='$\\bar{N}_{cr}$')
-        # ax.plot(t_array, particles_counter_mat2_3d[1, 2, :], color='orange', linestyle='-', label='$\\bar{N}_{cl}$')
+        cone_escape_rate_L = (N_lc_tilde * LC_ini_fraction - N_cl_tilde * trapped_ini_fraction) / LC_ini_fraction
+        plot_line(t_array, cone_escape_rate_L, label='$(N_{lc}-N_{cl})/N_{cone}$', color='r', linestyle=linestyle2,
+                  plot_saturation=plot_saturation)
 
         # ax.set_xlabel('$t \\cdot v_{th} / l$')
-        # ax.set_xlabel('$t \\cdot v_{th,T} / l$')
+        # ax.set_xlabel('t/($l/v_{th,T}$)', fontsize=12)
+        ax.set_xlabel('t/($l/v_{th}$)', fontsize=12)
         # ax.set_xlabel('$t / \\tau_{th}$',
         #               fontsize=20)
         # ax.set_ylim([0, 0.9])
         # ax.set_ylim([0, 1.0])
         # ax.set_xlim([0, 1.75])
-        # ax.set_title(gas_name)
-        # ax.set_title(title)
+
         # ax.legend(loc='upper left', fontsize=20)
         # ax.legend(loc='upper left', fontsize=15)
         ax.legend(loc='lower right', fontsize=15)
         ax.grid(True)
+
         # text = '(a)'
         if gas_name == 'deuterium':
             gas_name_shorthand = 'D'
         if gas_name == 'tritium':
             gas_name_shorthand = 'T'
         # text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
-        text = RF_set_name + ' (' + gas_name_shorthand + ')'
-        plt.text(0.99, 0.98, text,
-                 # fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
+        # text = RF_set_name + ' (' + gas_name_shorthand + ')'
+        E_ratio_mean = np.mean(data_dict['v'][inds_particles, -1] ** 2) / np.mean(
+            data_dict['v'][inds_particles, 0] ** 2)
+        # E_ratio_std = np.std(data_dict['v'][inds_particles, -1] ** 2) / np.std(data_dict['v'][inds_particles, 0] ** 2)
+        text = '$\\bar{E}_{fin}/\\bar{E}_{ini}=$' + '{:.2f}'.format(E_ratio_mean)
+        # text += ', $\\sigma\\left(E_{fin}\\right)/\\sigma\\left(E_{ini}\\right)=$' + '{:.2f}'.format(E_ratio_std)
+        plt.text(
+            # 0.99, 0.98, text,
+            0.02, 0.98,
+            text,
+            # fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 30},
                  fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 20},
-                 horizontalalignment='right', verticalalignment='top', color='k',
+            # horizontalalignment='right', verticalalignment='top',
+            horizontalalignment='left', verticalalignment='top',
+            color='k',
                  transform=fig.axes[0].transAxes)
+
+        # title = gas_name + ': '
+        # if use_RF:
+        #     title += ('$\\omega_{RF}/\\omega_{cyc,T}$=' + '{:.2f}'.format(omega_RF_over_omega_cyc_0)
+        #              + ', $k_{RF}/2\\pi$=' + '{:.2f}'.format(k_RF / (2 * np.pi)))
+        # else:
+        #     title += 'no RF'
+        title = set_name
+        # ax.set_title(gas_name)
+        ax.set_title(title)
+
         # fig.set_tight_layout({'pad': 0.5, 'rect': (0, 0, 1, 0.95)})
         fig.set_layout_engine(layout='tight')
 

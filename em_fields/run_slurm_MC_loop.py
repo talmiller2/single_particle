@@ -17,7 +17,9 @@ slurm_kwargs = {}
 # slurm_kwargs['partition'] = 'socket'
 slurm_kwargs['partition'] = 'testSocket'
 slurm_kwargs['ntasks'] = 1
-slurm_kwargs['cpus-per-task'] = 1
+# slurm_kwargs['cpus-per-task'] = 1
+# slurm_kwargs['cores-per-socket'] = 1
+
 local = False
 # local = True
 

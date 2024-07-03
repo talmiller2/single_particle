@@ -17,7 +17,8 @@ plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -73,8 +74,8 @@ plot_axial_trajectories = True
 plot_population_tracker = False
 # plot_population_tracker = True
 
-use_RF = True
-# use_RF = False
+# use_RF = True
+use_RF = False
 with_RF_xy_corrections = True
 # induced_fields_factor = 1
 # induced_fields_factor = 0.5
@@ -82,7 +83,8 @@ with_RF_xy_corrections = True
 # induced_fields_factor = 0.01
 induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
-time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 40
+time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
 sigma_r0 = 0.1

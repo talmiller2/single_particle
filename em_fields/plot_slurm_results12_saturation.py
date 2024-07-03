@@ -312,9 +312,9 @@ for gas_name in gas_name_list:
     ax.hlines(saturation_value, t_array[inds_t_saturation[0]], t_array[inds_t_saturation[-1]],
               color='orange', linewidth=2, linestyle='--')
 
-    # ax.plot(t_array, particles_counter_mat2_3d[2, 1, :], color='g', linestyle='-', label='$\\bar{N}_{lc}$')
-    # ax.plot(t_array, particles_counter_mat2_3d[1, 0, :], color='r', linestyle='-', label='$\\bar{N}_{cr}$')
-    # ax.plot(t_array, particles_counter_mat2_3d[1, 2, :], color='orange', linestyle='-', label='$\\bar{N}_{cl}$')
+    # ax.plot(t_array, particles_counter_mat_3d[2, 1, :], color='g', linestyle='-', label='$\\bar{N}_{lc}$')
+    # ax.plot(t_array, particles_counter_mat_3d[1, 0, :], color='r', linestyle='-', label='$\\bar{N}_{cr}$')
+    # ax.plot(t_array, particles_counter_mat_3d[1, 2, :], color='orange', linestyle='-', label='$\\bar{N}_{cl}$')
 
     # ax.set_xlabel('$t \\cdot v_{th} / l$')
     # ax.set_xlabel('$t \\cdot v_{th,T} / l$')
