@@ -168,7 +168,7 @@ annot_fontsize = 8
 annot_fmt = '.2f'
 
 # yticklabels = alpha_loop_list
-# ylabel = '$f_{\\omega}$'
+# y_label = '$f_{\\omega}$'
 
 _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
 q = Z_ion * settings['e']  # Coulomb
@@ -238,7 +238,7 @@ ax.axes.invert_yaxis()
 for i in range(len(alpha_const_omega_cyc0_right_list)):
     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# ax.set_ylabel(y_label, fontsize=axes_label_size)
 title = '$\\bar{N}_{lc}$'
 title += ' (' + gas_name_shorthand + ')'
 title += ' (50kV/m to 25kV/m ratio)'
@@ -311,7 +311,7 @@ for i in range(len(alpha_const_omega_cyc0_right_list)):
     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
 if gas_name == 'tritium':
     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# ax.set_ylabel(y_label, fontsize=axes_label_size)
 title = '$\\bar{N}_{cl}$'
 title += ' (' + gas_name_shorthand + ')'
 title += ' (50kV/m to 25kV/m ratio)'

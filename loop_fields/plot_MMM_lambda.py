@@ -196,7 +196,7 @@ for ind_current_ratio, current_ratio in enumerate(current_ratio_list):
         # plt.plot(z[inds_MMM_section[0]], 8, 'o')
         # plt.plot(z[inds_MMM_section[-1]], 8, 'x')
         plt.xlabel('z [m]', size=15)
-        # plt.ylabel('$B_z$ [T]', size=15)
+        # plt.y_label('$B_z$ [T]', size=15)
         plt.ylabel('$B_z/B_{z,0}$', size=15)
         plt.title('Axial magnetic field on axis (normalized), current ratio = ' + str(current_ratio), size=15)
         plt.tight_layout()

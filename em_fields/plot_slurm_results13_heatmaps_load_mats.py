@@ -162,7 +162,7 @@ annot_fontsize = 8
 annot_fmt = '.2f'
 
 # yticklabels = alpha_loop_list
-# ylabel = '$f_{\\omega}$'
+# y_label = '$f_{\\omega}$'
 
 _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
 q = Z_ion * settings['e']  # Coulomb
@@ -346,7 +346,7 @@ ax.set_ylabel(ylabel, fontsize=axes_label_size)
 #     ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
 # else:
 #     ax.get_xaxis().set_visible(False)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# ax.set_ylabel(y_label, fontsize=axes_label_size)
 title = '$\\bar{N}_{cl}$'
 title += ' (' + gas_name_shorthand + ')'
 ax.set_title(title, fontsize=20)
@@ -405,7 +405,7 @@ ax.legend().set_visible(False)
 #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i], color='k')
 #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i], color='k')
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
+# ax.set_ylabel(y_label)
 # # ax.set_title('$\\bar{N}_{cr} / \\bar{N}_{cl}$')
 # ax.set_title('selectivity $\\bar{N}_{cr} / \\bar{N}_{cl}$')
 # fig.set_tight_layout(0.5)
@@ -442,7 +442,7 @@ ax.legend().set_visible(False)
 # # axes_label_size = 20
 # axes_label_size = 14
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# ax.set_ylabel(y_label, fontsize=axes_label_size)
 # title = '$\\bar{N}_{rc}/\\bar{N}_{cr}$'
 # title += ' absolute'
 # title += ' (' + gas_name_shorthand + ')'
@@ -482,7 +482,7 @@ ax.legend().set_visible(False)
 # # axes_label_size = 20
 # axes_label_size = 14
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$', fontsize=axes_label_size)
-# ax.set_ylabel(ylabel, fontsize=axes_label_size)
+# ax.set_ylabel(y_label, fontsize=axes_label_size)
 # title = '$\\bar{N}_{cr}/\\bar{N}_{rc}$'
 # title += ' absolute'
 # title += ' (' + gas_name_shorthand + ')'
@@ -588,7 +588,7 @@ ax.legend().set_visible(False)
 #             )
 # ax.axes.invert_yaxis()
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
+# ax.set_ylabel(y_label)
 # ax.set_title('%ok')
 # fig.set_tight_layout(0.5)
 # plt.yticks(rotation=0)
@@ -612,7 +612,7 @@ ax.legend().set_visible(False)
 #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_right_list[i])
 #     plot_line_on_heatmap(beta_loop_list, alpha_loop_list, alpha_const_omega_cyc0_left_list[i])
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
+# ax.set_ylabel(y_label)
 # ax.set_title('mean($E_f/E_i$)')
 # fig.set_tight_layout(0.5)
 # plt.yticks(rotation=0)
@@ -631,7 +631,7 @@ ax.legend().set_visible(False)
 #             )
 # ax.axes.invert_yaxis()
 # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-# ax.set_ylabel(ylabel)
+# ax.set_ylabel(y_label)
 # ax.set_title('std($E_f/E_i$)')
 # fig.set_tight_layout(0.5)
 # plt.yticks(rotation=0)

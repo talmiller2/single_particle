@@ -12,10 +12,10 @@ from em_fields.slurm_functions import get_script_evolution_slave
 evolution_slave_script = get_script_evolution_slave()
 
 slurm_kwargs = {}
-# slurm_kwargs['partition'] = 'core'
+slurm_kwargs['partition'] = 'core'
 # slurm_kwargs['partition'] = 'testCore'
 # slurm_kwargs['partition'] = 'socket'
-slurm_kwargs['partition'] = 'testSocket'
+# slurm_kwargs['partition'] = 'testSocket'
 slurm_kwargs['ntasks'] = 1
 # slurm_kwargs['cpus-per-task'] = 1
 # slurm_kwargs['cores-per-socket'] = 1

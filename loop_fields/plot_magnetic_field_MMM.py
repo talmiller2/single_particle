@@ -123,7 +123,7 @@ for ind_phase, phase in enumerate(phase_list):
     plt.plot(z, B_z_tot[int(B_z_tot.shape[0] / 2), :] / B_z_tot[int(B_z_tot.shape[0] / 2), int(B_z_tot.shape[1] / 8)],
              label='MMM phase = ' + str(phase / np.pi) + '$\pi$')
     plt.xlabel('z [m]', size=15)
-    # plt.ylabel('$B_z$ [T]', size=15)
+    # plt.y_label('$B_z$ [T]', size=15)
     plt.ylabel('$B_z/B_{z,0}$', size=15)
     plt.title('Axial magnetic field on axis (normalized)', size=15)
     plt.tight_layout()

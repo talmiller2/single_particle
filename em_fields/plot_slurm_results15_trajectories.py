@@ -35,9 +35,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -47,9 +47,9 @@ set_name_list = []
 # select_beta_list += [0]
 # set_name_list += ['noRF']
 #
-select_alpha_list += [0.64]
-select_beta_list += [-1.8]
-set_name_list += ['1']
+# select_alpha_list += [0.64]
+# select_beta_list += [-1.8]
+# set_name_list += ['1']
 
 # select_alpha_list += [0.7]
 # select_beta_list += [-0.8]
@@ -67,21 +67,36 @@ set_name_list += ['1']
 # select_beta_list += [0.0]
 # set_name_list += ['5']
 
+# select_alpha_list += [1.0]
+# select_beta_list += [-1.8]
+# set_name_list += ['6']
+
+select_alpha_list += [0.88]
+select_beta_list += [-1.8]
+set_name_list += ['7']
+
 plot_theta_trajectories = False
 # plot_theta_trajectories = True
+
 # plot_axial_trajectories = False
 plot_axial_trajectories = True
+
+# plot_radial_trajectories = False
+plot_radial_trajectories = True
+
 plot_population_tracker = False
 # plot_population_tracker = True
 
-# use_RF = True
-use_RF = False
+
+use_RF = True
+# use_RF = False
 with_RF_xy_corrections = True
-# induced_fields_factor = 1
+# with_RF_xy_corrections = False
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 # time_step_tau_cyclotron_divisions = 40
 time_step_tau_cyclotron_divisions = 50
@@ -178,116 +193,141 @@ for gas_name in gas_name_list:
         if plot_axial_trajectories:
             fig_num += 1
             fig2, axs2 = plt.subplots(num=fig_num, nrows=1, ncols=2, figsize=(12, 6))
+        if plot_radial_trajectories:
+            fig_num += 1
+            fig3, axs3 = plt.subplots(num=fig_num, nrows=1, ncols=2, figsize=(12, 6))
 
         num_particles_LC = 0
 
         for ind_p in range(num_particles):
 
             t = np.array(data_dict['t'][ind_p])
-            t /= (field_dict['l'] / v_th_ref)
 
-            r = np.array(data_dict['r'][ind_p])
-            z = np.array(data_dict['z'][ind_p])
-            v = np.array(data_dict['v'][ind_p])
+            # if len(t) < 15:
+            if ind_p == 44:
+                print('index of particle that ended prematurely:', ind_p)
 
-            v0 = data_dict['v'][ind_p][0]
-            vt = np.array(data_dict['v_transverse'][ind_p])
-            vt0 = data_dict['v_transverse'][ind_p][0]
-            vz = np.array(data_dict['v_axial'][ind_p])
-            vz0 = data_dict['v_axial'][ind_p][0]
-            theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
-            Bz = np.array(data_dict['Bz'][ind_p])
-            Bz0 = data_dict['Bz'][ind_p][0]
-            vt_adjusted = vt * np.sqrt(
-                Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
+                t /= (field_dict['l'] / v_th_ref)
 
-            det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
-            inds_positive = np.where(det > 0)[0]
-            vz_adjusted = np.zeros(len(vz))
-            vz_adjusted[inds_positive] = np.sign(vz0) * np.sqrt(det[inds_positive])
-            # vz_adjusted[inds_positive] = np.sign(vz) * np.sqrt(det[inds_positive])
-            theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
+                r = np.array(data_dict['r'][ind_p])
+                z = np.array(data_dict['z'][ind_p])
+                v = np.array(data_dict['v'][ind_p])
 
-            if plot_population_tracker:
-                # initialize tracking 3 populations as a function of time according to axial location
-                if ind_p == 0:
-                    populations_counter_mat = np.zeros([len(t), 3, 3])
-                    z_mirror_max = settings['l']
-                    z_mirror_min = 0
-                    labels_dict = {0: 'right', 2: 'left', 1: 'trap'}
+                v0 = data_dict['v'][ind_p][0]
+                vt = np.array(data_dict['v_transverse'][ind_p])
+                vt0 = data_dict['v_transverse'][ind_p][0]
+                vz = np.array(data_dict['v_axial'][ind_p])
+                vz0 = data_dict['v_axial'][ind_p][0]
+                theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
+                Bz = np.array(data_dict['Bz'][ind_p])
+                Bz0 = data_dict['Bz'][ind_p][0]
+                vt_adjusted = vt * np.sqrt(
+                    Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
 
-                if theta[0] < theta_LC:
-                    ind_ini = 0  # right loss cone
-                    num_particles_LC += 1
-                elif theta[0] > 180 - theta_LC:
-                    ind_ini = 2  # left loss cone
-                else:
-                    ind_ini = 1  # trapped
+                det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
+                inds_positive = np.where(det > 0)[0]
+                vz_adjusted = np.zeros(len(vz))
+                vz_adjusted[inds_positive] = np.sign(vz0) * np.sqrt(det[inds_positive])
+                # vz_adjusted[inds_positive] = np.sign(vz) * np.sqrt(det[inds_positive])
+                theta_adjusted = np.mod(360 / (2 * np.pi) * np.arctan(vt_adjusted / vz_adjusted), 180)
 
-                for ind_t in range(len(t)):
-                    if z[ind_t] > z_mirror_max:
-                        ind_fin = 0
-                    elif z[ind_t] < z_mirror_min:
-                        ind_fin = 2
+                if plot_population_tracker:
+                    # initialize tracking 3 populations as a function of time according to axial location
+                    if ind_p == 0:
+                        populations_counter_mat = np.zeros([len(t), 3, 3])
+                        z_mirror_max = settings['l']
+                        z_mirror_min = 0
+                        labels_dict = {0: 'right', 2: 'left', 1: 'trap'}
+
+                    if theta[0] < theta_LC:
+                        ind_ini = 0  # right loss cone
+                        num_particles_LC += 1
+                    elif theta[0] > 180 - theta_LC:
+                        ind_ini = 2  # left loss cone
                     else:
-                        ind_fin = 1
-                    populations_counter_mat[ind_t, ind_ini, ind_fin] += 1
+                        ind_ini = 1  # trapped
 
-            if plot_theta_trajectories or plot_axial_trajectories:
-                ## color the lines according to a metric
-                # metric = abs((max(vz_adjusted) - min(vz_adjusted)) / vz_adjusted[0])
-                # metric = (max(vz_adjusted) - min(vz_adjusted)) / v_th_ref
-                # metric = (max(theta_adjusted) - min(theta_adjusted)) / 180 * 2
-                # metric = (max(vz_adjusted) - min(vz_adjusted)) / (2 * v_th_ref)
-                metric = theta[0] / 180
-                color = cm.rainbow(metric)
+                    for ind_t in range(len(t)):
+                        if z[ind_t] > z_mirror_max:
+                            ind_fin = 0
+                        elif z[ind_t] < z_mirror_min:
+                            ind_fin = 2
+                        else:
+                            ind_fin = 1
+                        populations_counter_mat[ind_t, ind_ini, ind_fin] += 1
 
-            if plot_theta_trajectories:
-                for ind_ax, ax in enumerate(axs):
+                if plot_theta_trajectories or plot_axial_trajectories:
+                    ## color the lines according to a metric
+                    # metric = abs((max(vz_adjusted) - min(vz_adjusted)) / vz_adjusted[0])
+                    # metric = (max(vz_adjusted) - min(vz_adjusted)) / v_th_ref
+                    # metric = (max(theta_adjusted) - min(theta_adjusted)) / 180 * 2
+                    # metric = (max(vz_adjusted) - min(vz_adjusted)) / (2 * v_th_ref)
+                    metric = theta[0] / 180
+                    color = cm.rainbow(metric)
 
-                    # if ind_p == num_particles - 1 and k_RF != 0
-                    #     ax.hlines(v_RF / v_th_ref, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                    ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                    ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                if plot_theta_trajectories:
+                    for ind_ax, ax in enumerate(axs):
 
-                    alpha_lines = 0.4
-                    plot_particle = False
-                    if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
-                        plot_particle = True
-                    if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
-                        plot_particle = True
+                        # if ind_p == num_particles - 1 and k_RF != 0
+                        #     ax.hlines(v_RF / v_th_ref, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
 
-                    if plot_particle:
-                        ax.plot(t,
-                                # vz_adjusted / v_th_ref,
-                                theta_adjusted,
-                                color=color,
-                                alpha=alpha_lines,
-                                )
+                        alpha_lines = 0.4
+                        plot_particle = False
+                        if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
+                            plot_particle = True
+                        if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
+                            plot_particle = True
 
-            if plot_axial_trajectories:
-                for ind_ax, ax in enumerate(axs2):
-                    ax.hlines(0, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                    ax.hlines(field_dict['l'], 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        if plot_particle:
+                            ax.plot(t,
+                                    # vz_adjusted / v_th_ref,
+                                    theta_adjusted,
+                                    color=color,
+                                    alpha=alpha_lines,
+                                    )
 
-                    alpha_lines = 0.4
+                if plot_axial_trajectories:
+                    for ind_ax, ax in enumerate(axs2):
+                        ax.hlines(0, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        ax.hlines(field_dict['l'], 0, max(t), colors='k', linestyles='dashed', linewidth=2)
 
-                    plot_particle = False
-                    if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
-                        # if ind_ax == 0 and theta[0] < theta_LC:
-                        # if ind_ax == 0 and theta[0] > theta_LC:
-                        plot_particle = True
-                    if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
-                        # if ind_ax == 1 and theta[0] > 180 - theta_LC:
-                        # if ind_ax == 1 and theta[0] < 180 - theta_LC:
-                        plot_particle = True
+                        alpha_lines = 0.4
 
-                    if plot_particle:
-                        ax.plot(t,
-                                z,
-                                color=color,
-                                alpha=alpha_lines,
-                                )
+                        plot_particle = False
+                        if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
+                            # if ind_ax == 0 and theta[0] < theta_LC:
+                            # if ind_ax == 0 and theta[0] > theta_LC:
+                            plot_particle = True
+                        if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
+                            # if ind_ax == 1 and theta[0] > 180 - theta_LC:
+                            # if ind_ax == 1 and theta[0] < 180 - theta_LC:
+                            plot_particle = True
+
+                        if plot_particle:
+                            ax.plot(t,
+                                    z,
+                                    color=color,
+                                    alpha=alpha_lines,
+                                    )
+
+                if plot_radial_trajectories:
+                    for ind_ax, ax in enumerate(axs3):
+                        alpha_lines = 0.4
+
+                        plot_particle = False
+                        if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
+                            plot_particle = True
+                        if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
+                            plot_particle = True
+
+                        if plot_particle:
+                            ax.plot(t,
+                                    r,
+                                    color=color,
+                                    alpha=alpha_lines,
+                                    )
 
         if plot_theta_trajectories:
             for ind_ax, ax in enumerate(axs):
@@ -319,6 +359,22 @@ for gas_name in gas_name_list:
                 ax.set_ylabel('z [m]', fontsize=12)
                 # ax.set_ylim([-field_dict['l'], 2 * field_dict['l']])
                 ax.set_ylim([-3 * field_dict['l'], 4 * field_dict['l']])
+                ax.grid(True)
+            fig2.set_layout_engine(layout='tight')
+
+        if plot_radial_trajectories:
+            for ind_ax, ax in enumerate(axs3):
+                if ind_ax == 0:
+                    title_prefix = 'initially in loss cones '
+                elif ind_ax == 1:
+                    title_prefix = 'initially trapped '
+
+                ax.set_title(title_prefix + RF_str, fontsize=12)
+                # ax.set_xlabel('t [s]', fontsize=12)
+                ax.set_xlabel('t/($l/v_{th,T}$)', fontsize=12)
+                ax.set_ylabel('r [m]', fontsize=12)
+                # ax.set_ylim([-field_dict['l'], 2 * field_dict['l']])
+                # ax.set_ylim([-3 * field_dict['l'], 4 * field_dict['l']])
                 ax.grid(True)
             fig2.set_layout_engine(layout='tight')
 

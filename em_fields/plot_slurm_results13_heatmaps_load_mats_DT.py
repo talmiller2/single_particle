@@ -403,7 +403,7 @@ if do_plots == True:
     # plot_resonance_lines()
     # plot_interest_points(ax)
     # ax.set_xlabel('$k/\\left( 2 \\pi m^{-1} \\right)$')
-    # ax.set_ylabel(ylabel)
+    # ax.set_ylabel(y_label)
     # ax.set_title('difference', fontsize=20)
     # fig.set_tight_layout(0.5)
     # plt.yticks(rotation=0)

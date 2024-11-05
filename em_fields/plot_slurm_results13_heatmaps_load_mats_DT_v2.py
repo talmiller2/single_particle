@@ -37,6 +37,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 select_alpha_list = []
 select_beta_list = []
@@ -96,11 +97,16 @@ with_RF_xy_corrections = True
 induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
 sigma_r0 = 0.1
 
+# theta_type = 'sign_vz0'
+# theta_type = 'sign_vz'
+
 set_name = 'compiled_'
+# set_name += theta_type + '_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
 elif RF_type == 'magnetic_transverse':
@@ -125,10 +131,13 @@ N_rc_1 = mat_dict['N_rc']
 N_lc_1 = mat_dict['N_lc']
 N_cr_1 = mat_dict['N_cr']
 N_cl_1 = mat_dict['N_cl']
-# selectivity = mat_dict['selectivity']
+# N_rl_1 = mat_dict['N_rl']
+# N_lr_1 = mat_dict['N_lr']
+# percent_ok_1 = mat_dict['percent_ok']
+# E_ratio_mean_1 = mat_dict['E_ratio_mean']
+
 selectivity = N_rc_1 / N_lc_1
 selectivity_trapped = N_cr_1 / N_cl_1
-
 # selectivity_1 = copy.deepcopy(selectivity)
 selectivity_1 = selectivity
 # selectivity_1 = selectivity_trapped
@@ -216,7 +225,7 @@ annot_fontsize = 8
 annot_fmt = '.2f'
 
 # yticklabels = alpha_loop_list
-# ylabel = '$f_{\\omega}$'
+# y_label = '$f_{\\omega}$'
 
 _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
 q = Z_ion * settings['e']  # Coulomb

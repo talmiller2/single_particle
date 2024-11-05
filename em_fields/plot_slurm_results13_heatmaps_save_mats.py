@@ -100,7 +100,7 @@ RF_type_list += ['magnetic_transverse']
 # RF_amplitude_list = [0.02, 0.04, 0.08]  # [T]
 RF_amplitude_list += [0.04]  # [T]
 RF_type_list += ['electric_transverse']
-RF_amplitude_list += [25]  # kV/m
+RF_amplitude_list += [50]  # kV/m
 
 sigma_r0_list = [0.1]
 induced_fields_factor_list = [1, 0]
