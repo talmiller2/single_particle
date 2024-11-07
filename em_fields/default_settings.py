@@ -46,6 +46,8 @@ def define_default_settings(settings=None):
         settings['r_0'] = 0.0 * settings['l']
     if 'z_0' not in settings:
         settings['z_0'] = 0.5 * settings['l']
+    if 'radial_distribution' not in settings:
+        settings['radial_distribution'] = 'uniform'
     if 'sigma_r0' not in settings:
         settings['sigma_r0'] = 0
 

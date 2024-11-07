@@ -406,7 +406,11 @@ for gas_name in gas_name_list:
                 rand_unit_vec = np.random.randn(total_number_of_points, 2)
                 for i in range(total_number_of_points):
                     rand_unit_vec[i, :] /= np.linalg.norm(rand_unit_vec[i, :])
-                rand_r0_vec = abs(np.random.randn(total_number_of_points) * settings['sigma_r0'])
+                if settings['radial_distribution'] == 'normal':
+                    rand_r0_vec = abs(np.random.randn(total_number_of_points) * settings['sigma_r0'])
+                elif settings['radial_distribution'] == 'uniform':
+                    rand_r0_vec = abs(np.random.rand(total_number_of_points) * settings['sigma_r0'])
+
                 x = rand_unit_vec[:, 0] * rand_r0_vec
                 y = rand_unit_vec[:, 1] * rand_r0_vec
                 z = settings['z_0'] + 0 * rand_r0_vec
