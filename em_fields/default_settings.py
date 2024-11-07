@@ -121,8 +121,8 @@ def define_default_field(settings, field_dict=None):
     field_dict['E_RF'] = field_dict['E_RF_kVm'] * 1e3  # the SI units is V/m
     if 'B_RF' not in field_dict:
         field_dict['B_RF'] = 1e-3  # the SI units is T
-    if 'with_RF_xy_corrections' not in field_dict:
-        field_dict['with_RF_xy_corrections'] = True
+    if 'with_kr_correction' not in field_dict:
+        field_dict['with_kr_correction'] = True
     if 'induced_fields_factor' not in field_dict:
         field_dict['induced_fields_factor'] = 1.0
 

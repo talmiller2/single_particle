@@ -68,7 +68,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 plt.close('all')
 
@@ -115,7 +116,7 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
 beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # # specific values for set48
@@ -158,7 +159,8 @@ loop_method = 'matrix'
 gas_name_list = ['deuterium', 'tritium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
-sigma_r0_list = [0.1]
+# sigma_r0_list = [0.1]
+sigma_r0_list = [0.05]
 induced_fields_factor_list = [1, 0]
 # induced_fields_factor_list = [1]
 
@@ -273,8 +275,8 @@ for gas_name in gas_name_list:
                 # field_dict['induced_fields_factor'] = 0
                 field_dict['induced_fields_factor'] = induced_fields_factor
 
-                field_dict['with_RF_xy_corrections'] = True
-                # field_dict['with_RF_xy_corrections'] = False
+                field_dict['with_kr_correction'] = True
+                # field_dict['with_kr_correction'] = False
 
                 field_dict = define_default_field(settings, field_dict)
 
@@ -313,13 +315,18 @@ for gas_name in gas_name_list:
                     run_name += '_beta_' + '_'.join([str(b) for b in field_dict['beta_RF_list']])
                     if field_dict['induced_fields_factor'] < 1.0:
                         run_name += '_iff' + str(field_dict['induced_fields_factor'])
-                    if field_dict['with_RF_xy_corrections'] == False:
-                        run_name += '_woxyRFcor'
+                    if field_dict['with_kr_correction'] == True:
+                        run_name += '_withkrcor'
                 run_name += '_tcycdivs' + str(settings['time_step_tau_cyclotron_divisions'])
                 if settings['absolute_velocity_sampling_type'] == 'const_vth':
                     run_name += '_const_vth'
                 if settings['sigma_r0'] > 0:
                     run_name += '_sigmar' + str(settings['sigma_r0'])
+                    if settings['radial_distribution'] == 'normal':
+                        run_name += 'norm'
+                    elif settings['radial_distribution'] == 'uniform':
+                        run_name += 'unif'
+
                 if settings['gas_name'] != 'hydrogen':
                     run_name += '_' + settings['gas_name']
 

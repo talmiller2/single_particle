@@ -41,9 +41,11 @@ if plot_magnetic_field_lines:
     xy_angles = np.linspace(0, 2 * np.pi, 50)
     xy_angles = xy_angles[0:-1]
     for xy_angle in xy_angles:
+        r_ini = 1 * cyclotron_radius
         # r_ini = 2 * cyclotron_radius
         # r_ini = 4 * cyclotron_radius
-        r_ini = settings['l'] / 10
+        # r_ini = 10 * cyclotron_radius
+        # r_ini = settings['l'] / 10
         z_ini = settings['l'] * 0.25
         z_fin = settings['l'] * 1.5
         x_ini = [-r_ini * np.cos(xy_angle),
@@ -104,7 +106,8 @@ for ind_sim in inds_sim:
     # field_dict['E_RF_kVm'] = 1e-3
     # field_dict['E_RF_kVm'] = 0.1
     # field_dict['E_RF_kVm'] = 1
-    field_dict['E_RF_kVm'] = 10
+    # field_dict['E_RF_kVm'] = 10
+    field_dict['E_RF_kVm'] = 50
     # field_dict['E_RF_kVm'] = 20
     # field_dict['E_RF_kVm'] = 100
     field_dict['RF_type'] = 'magnetic_transverse'
@@ -123,15 +126,20 @@ for ind_sim in inds_sim:
     # field_dict['alpha_RF_list'] = [1.5]
 
     # field_dict['beta_RF_list'] = [0]
-    field_dict['beta_RF_list'] = [6.67]
+    field_dict['beta_RF_list'] = [2]
+    # field_dict['beta_RF_list'] = [6.67]
 
     field_dict['induced_fields_factor'] = 1.0  # default
     # field_dict['induced_fields_factor'] = 0.5
     # field_dict['induced_fields_factor'] = 0.1
     # field_dict['induced_fields_factor'] = 0
 
-    field_dict['with_RF_xy_corrections'] = True  # default
-    # field_dict['with_RF_xy_corrections'] = False
+    # field_dict['with_kr_correction'] = True  # default
+    field_dict['with_kr_correction'] = False
+    # if ind_sim == 0:
+    #     field_dict['with_kr_correction'] = False
+    # elif ind_sim == 1:
+    #     field_dict['with_kr_correction'] = True
 
     field_dict['phase_RF_addition'] = 0
     # field_dict['phase_RF_addition'] = 3.6999631682413687
@@ -143,6 +151,7 @@ for ind_sim in inds_sim:
     #     angle = 0.99 * loss_cone_angle
     # elif ind_sim == 1:
     #     angle = 1.01 * loss_cone_angle
+    # angle = 1.2 * loss_cone_angle
     if ind_sim == 0:
         angle = 0.8 * loss_cone_angle
     else:
@@ -154,6 +163,7 @@ for ind_sim in inds_sim:
     v_0 = settings['v_th'] * unit_vec
     # v_perp = np.sqrt(v_0[0] ** 2 + v_0[1] ** 2)
 
+    # x_0 = np.array([0, r_ini, settings['l'] / 2.0])
     if ind_sim == 0:
         x_0 = np.array([0, r_ini, settings['l'] / 2.0])
     elif ind_sim == 1:
@@ -281,6 +291,7 @@ for ind_sim in inds_sim:
     # plt.figure(9)
     plt.subplot(1, 3, 3)
     plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
+    plt.ylim([0, 1.1 * max(hist['dt'])])
     plt.legend()
     plt.xlabel('t')
     plt.ylabel('dt')
