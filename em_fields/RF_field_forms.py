@@ -5,7 +5,7 @@ from em_fields.magnetic_forms import get_mirror_magnetic_field
 
 def E_RF_function(x_vec, t, **field_dict):
     """
-    Electric field of planar RF wave in the z direction.
+    Electric field of RF
     """
 
     # choose RF where the electric or magnetic fields are transverse
@@ -14,26 +14,26 @@ def E_RF_function(x_vec, t, **field_dict):
     z = x_vec[2]
     clockwise = field_dict['clockwise']
     z_0 = field_dict['z_0']
-    c = field_dict['c']
+    ind_fac = field_dict['induced_fields_factor']
 
     E_RF_vector = 0
+
     if field_dict['RF_type'] == 'electric_transverse':
         E_RF = field_dict['E_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
-            E_RF_vector += E_RF * np.array([np.cos(k * (z - z_0) - omega * t + phase_RF),
-                                            clockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-                                            0])
+            phase = k * (z - z_0) - omega * t + phase_RF
+            E_RF_vector += E_RF * np.array([np.cos(phase), clockwise * np.sin(phase), 0])
+            if field_dict['with_kr_correction']:
+                E_RF_vector += ind_fac * k * np.array([0, 0, clockwise * y * np.cos(phase) - x * np.sin(phase)])
 
     elif field_dict['RF_type'] == 'magnetic_transverse':
         B_RF = field_dict['B_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
-            Ez = -B_RF * omega * (clockwise * x * np.cos(k * (z - z_0) - omega * t + phase_RF)
-                                  + y * np.sin(k * (z - z_0) - omega * t + phase_RF))
-            E_RF_vector += field_dict['induced_fields_factor'] * np.array([0, 0, Ez])
-            if field_dict['with_RF_xy_corrections']:
-                dEdz = -B_RF * omega * (-clockwise * x * k * np.sin(k * (z - z_0) - omega * t + phase_RF)
-                                        + y * k * np.cos(k * (z - z_0) - omega * t + phase_RF))
-                E_RF_vector += field_dict['induced_fields_factor'] * np.array([-x / 2 * dEdz, -y / 2 * dEdz, 0])
+            phase = k * (z - z_0) - omega * t + phase_RF
+            E_amp = - ind_fac * B_RF * omega
+            E_RF_vector += E_amp * np.array([0, 0, clockwise * x * np.cos(phase) + y * np.sin(phase)])
+            if field_dict['with_kr_correction']:
+                E_RF_vector += - E_amp * k * x * y * np.array([np.cos(phase), - clockwise * np.sin(phase)])
 
     return E_RF_vector
 
@@ -53,26 +53,27 @@ def B_RF_function(x_vec, t, **field_dict):
     y = x_vec[1]
     z = x_vec[2]
     clockwise = field_dict['clockwise']
+    ind_fac = field_dict['induced_fields_factor']
     z_0 = field_dict['z_0']
     c = field_dict['c']
 
     B_RF_vector = 0
+
     if field_dict['RF_type'] == 'electric_transverse':
         E_RF = field_dict['E_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
-            Bz = E_RF * omega / c ** 2 * (clockwise * x * np.cos(k * (z - z_0) - omega * t + phase_RF)
-                                          + y * np.sin(k * (z - z_0) - omega * t + phase_RF))
-            B_RF_vector += field_dict['induced_fields_factor'] * np.array([0, 0, Bz])
-            if field_dict['with_RF_xy_corrections']:
-                dBdz = E_RF * omega / c ** 2 * (-clockwise * x * k * np.sin(k * (z - z_0) - omega * t + phase_RF)
-                                                + y * k * np.cos(k * (z - z_0) - omega * t + phase_RF))
-                B_RF_vector += field_dict['induced_fields_factor'] * np.array([-x / 2 * dBdz, -y / 2 * dBdz, 0])
+            phase = k * (z - z_0) - omega * t + phase_RF
+            B_amp = ind_fac * E_RF * omega / c ** 2
+            B_RF_vector += B_amp * np.array([0, 0, clockwise * x * np.cos(phase) + y * np.sin(phase)])
+            if field_dict['with_kr_correction']:
+                B_RF_vector += - B_amp * k * x * y * np.array([np.cos(phase), - clockwise * np.sin(phase)])
 
     elif field_dict['RF_type'] == 'magnetic_transverse':
         B_RF = field_dict['B_RF']
         for k, omega, phase_RF in zip(field_dict['k_RF'], field_dict['omega_RF'], field_dict['phase_RF']):
-            B_RF_vector += B_RF * np.array([np.cos(k * (z - z_0) - omega * t + phase_RF),
-                                            clockwise * np.sin(k * (z - z_0) - omega * t + phase_RF),
-                                            0])
+            phase = k * (z - z_0) - omega * t + phase_RF
+            B_RF_vector += B_RF * np.array([np.cos(phase), clockwise * np.sin(phase), 0])
+            if field_dict['with_kr_correction']:
+                B_RF_vector += ind_fac * k * np.array([0, 0, clockwise * y * np.cos(phase) - x * np.sin(phase)])
 
     return B_mirror + B_RF_vector
