@@ -36,7 +36,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -89,7 +90,7 @@ absolute_velocity_sampling_type = 'maxwell'
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
 beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 gas_name_list = ['deuterium', 'tritium']

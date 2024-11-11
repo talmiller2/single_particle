@@ -13,6 +13,7 @@ evolution_slave_script = get_script_evolution_slave()
 
 slurm_kwargs = {}
 slurm_kwargs['partition'] = 'core'
+slurm_kwargs['partition'] = 'core'
 # slurm_kwargs['partition'] = 'testCore'
 # slurm_kwargs['partition'] = 'socket'
 # slurm_kwargs['partition'] = 'testSocket'
@@ -145,8 +146,8 @@ RF_type = 'magnetic_transverse'
 B_RF = 0.04  # T
 # B_RF = 0.08  # T
 
-# use_RF = True
-use_RF = False
+use_RF = True
+# use_RF = False
 if use_RF is False:
     E_RF_kVm = 0
     B_RF = 0
@@ -156,7 +157,8 @@ if use_RF is False:
 loop_method = 'matrix'
 # loop_method = 'array'
 
-gas_name_list = ['deuterium', 'tritium']
+# gas_name_list = ['deuterium', 'tritium']
+gas_name_list = ['deuterium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
 # sigma_r0_list = [0.1]
@@ -341,8 +343,9 @@ for gas_name in gas_name_list:
                 # total_number_of_points = 1
                 # total_number_of_points = 40
                 # total_number_of_points = 1000
+                total_number_of_points = 2500
                 # total_number_of_points = 3000
-                total_number_of_points = 5000
+                # total_number_of_points = 5000
 
                 # allow reproducibility
                 np.random.seed(0)
