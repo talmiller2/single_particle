@@ -13,7 +13,6 @@ evolution_slave_script = get_script_evolution_slave()
 
 slurm_kwargs = {}
 slurm_kwargs['partition'] = 'core'
-slurm_kwargs['partition'] = 'core'
 # slurm_kwargs['partition'] = 'testCore'
 # slurm_kwargs['partition'] = 'socket'
 # slurm_kwargs['partition'] = 'testSocket'
