@@ -14,8 +14,8 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-# save_dir = '/home/talm/code/single_particle/slurm_runs/'
-save_dir = '/Users/talmiller/Downloads/single_particle/'
+save_dir = '/home/talm/code/single_particle/slurm_runs/'
+# save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -55,6 +55,7 @@ use_RF = True
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
+radial_distribution = 'uniform'
 
 # alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
 # beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
@@ -135,6 +136,10 @@ for theta_type in theta_type_list:
                             set_name += '_const_vth'
                         if sigma_r0 > 0:
                             set_name += '_sigmar' + str(sigma_r0)
+                            if radial_distribution == 'normal':
+                                set_name += 'norm'
+                            elif radial_distribution == 'uniform':
+                                set_name += 'unif'
                         set_name += '_' + gas_name
                         compiled_save_file = save_dir + '/' + set_name + '.mat'
                         print('****** compiled_save_file', compiled_save_file)
@@ -183,6 +188,10 @@ for theta_type in theta_type_list:
                                         set_name += '_const_vth'
                                     if sigma_r0 > 0:
                                         set_name += '_sigmar' + str(sigma_r0)
+                                        if radial_distribution == 'normal':
+                                            set_name += 'norm'
+                                        elif radial_distribution == 'uniform':
+                                            set_name += 'unif'
                                     set_name += '_' + gas_name
 
                                     # print(set_name)
