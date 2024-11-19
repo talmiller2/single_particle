@@ -142,8 +142,8 @@ E_RF_kVm = 50  # kV/m
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # T
-B_RF = 0.04  # T
-# B_RF = 0.08  # T
+# B_RF = 0.04  # T
+B_RF = 0.08  # T
 
 use_RF = True
 # use_RF = False
@@ -156,15 +156,16 @@ if use_RF is False:
 loop_method = 'matrix'
 # loop_method = 'array'
 
-# gas_name_list = ['deuterium', 'tritium']
-gas_name_list = ['deuterium']
+gas_name_list = ['deuterium', 'tritium']
+# gas_name_list = ['deuterium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
 # sigma_r0_list = [0.1]
 sigma_r0_list = [0.05]
 induced_fields_factor_list = [1, 0]
 # induced_fields_factor_list = [1]
-with_kr_correction_list = [False, True]
+# with_kr_correction_list = [False, True]
+with_kr_correction_list = [True]
 
 for gas_name in gas_name_list:
     for sigma_r0 in sigma_r0_list:
