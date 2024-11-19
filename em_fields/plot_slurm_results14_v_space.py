@@ -33,7 +33,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set39_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -135,18 +136,22 @@ set_name_list = []
 # select_beta_list += [-7.0]
 # set_name_list += ['4']
 
-## testing
-with_RF_xy_corrections = True
-# induced_fields_factor = 1
+### testing
+# with_kr_correction = False
+with_kr_correction = True
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
-time_step_tau_cyclotron_divisions = 40
+# time_step_tau_cyclotron_divisions = 40
+time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
-sigma_r0 = 0.1
+sigma_r0 = 0.05
+# sigma_r0 = 0.1
+radial_distribution = 'uniform'
 
 # select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 # select_beta_list = [0, 3, -3, -3, -7]
@@ -193,13 +198,17 @@ for ind_set in ind_sets:
             set_name += '_beta_' + str(beta)
             if induced_fields_factor < 1.0:
                 set_name += '_iff' + str(induced_fields_factor)
-            if with_RF_xy_corrections == False:
-                set_name += '_woxyRFcor'
+            if with_kr_correction == True:
+                set_name += '_withkrcor'
         set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
         if absolute_velocity_sampling_type == 'const_vth':
             set_name += '_const_vth'
         if sigma_r0 > 0:
             set_name += '_sigmar' + str(sigma_r0)
+            if radial_distribution == 'normal':
+                set_name += 'norm'
+            elif radial_distribution == 'uniform':
+                set_name += 'unif'
         set_name += '_' + gas_name
         print(set_name)
 

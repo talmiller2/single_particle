@@ -19,6 +19,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m

@@ -21,11 +21,13 @@ plot_saturation_lines = False
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
+# E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
@@ -55,9 +57,9 @@ set_name_list = []
 # select_beta_list += [-0.8]
 # set_name_list += ['2']
 
-# select_alpha_list += [1.06]
-# select_beta_list += [-1.8]
-# set_name_list += ['3']
+select_alpha_list += [1.06]
+select_beta_list += [-1.8]
+set_name_list += ['3']
 
 # select_alpha_list += [1.12]
 # select_beta_list += [1.4]
@@ -67,24 +69,27 @@ set_name_list = []
 # select_beta_list += [0.0]
 # set_name_list += ['5']
 
-select_alpha_list += [1.48]
-select_beta_list += [-1.4]
-set_name_list += ['TEST']
+# select_alpha_list += [1.48]
+# select_beta_list += [-1.4]
+# set_name_list += ['TEST']
 
 use_RF = True
 # use_RF = False
-with_RF_xy_corrections = True
-# induced_fields_factor = 1
+# with_kr_correction = False
+with_kr_correction = True
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 # time_step_tau_cyclotron_divisions = 40
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
-sigma_r0 = 0.1
+sigma_r0 = 0.05
+# sigma_r0 = 0.1
+radial_distribution = 'uniform'
 
 fig_num = 0
 
@@ -117,11 +122,15 @@ for gas_name in gas_name_list:
             set_name += '_beta_' + str(beta)
             if induced_fields_factor < 1.0:
                 set_name += '_iff' + str(induced_fields_factor)
-            if with_RF_xy_corrections == False:
-                set_name += '_woxyRFcor'
+            if with_kr_correction == True:
+                set_name += '_withkrcor'
         set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
         if sigma_r0 > 0:
             set_name += '_sigmar' + str(sigma_r0)
+            if radial_distribution == 'normal':
+                set_name += 'norm'
+            elif radial_distribution == 'uniform':
+                set_name += 'unif'
         set_name += '_' + gas_name
         print(set_name)
 

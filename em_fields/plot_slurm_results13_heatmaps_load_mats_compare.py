@@ -54,33 +54,58 @@ select_alpha_list = []
 select_beta_list = []
 set_name_list = []
 
-select_alpha_list += [0.64]
-select_beta_list += [-1.8]
-set_name_list += ['1']
+####
 
-select_alpha_list += [0.7]
-select_beta_list += [-0.8]
-set_name_list += ['2']
+# select_alpha_list += [0.64]
+# select_beta_list += [-1.8]
+# set_name_list += ['1']
+#
+# select_alpha_list += [0.7]
+# select_beta_list += [-0.8]
+# set_name_list += ['2']
+#
+# select_alpha_list += [1.06]
+# select_beta_list += [-1.8]
+# set_name_list += ['3']
+#
+# select_alpha_list += [1.12]
+# select_beta_list += [1.4]
+# set_name_list += ['4']
+#
+# select_alpha_list += [0.88]
+# select_beta_list += [0]
+# set_name_list += ['5']
+#
+# select_alpha_list += [1.0]
+# select_beta_list += [-1.8]
+# set_name_list += ['6']
+#
+# select_alpha_list += [0.88]
+# select_beta_list += [-1.8]
+# set_name_list += ['7']
 
-select_alpha_list += [1.06]
-select_beta_list += [-1.8]
-set_name_list += ['3']
+####
 
-select_alpha_list += [1.12]
-select_beta_list += [1.4]
-set_name_list += ['4']
+select_alpha_list += [1.3, 1.48, 1.12, 1.06, 1.0]
+select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
+set_name_list += ['1', '2', '3', '4', '5']
 
-select_alpha_list += [0.88]
-select_beta_list += [0]
-set_name_list += ['5']
+select_alpha_list += [0.88, 1.06, 0.76, 0.7, 0.64]
+select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
+set_name_list += ['6', '7', '8', '9', '10']
 
-select_alpha_list += [1.0]
-select_beta_list += [-1.8]
-set_name_list += ['6']
+select_alpha_list += [0.82, 1.06]
+select_beta_list += [-1.8, 0]
+set_name_list += ['11', '12']
 
-select_alpha_list += [0.88]
-select_beta_list += [-1.8]
-set_name_list += ['7']
+# alpha_loop_list
+# Out[54]:
+# array([0.4 , 0.46, 0.52, 0.58, 0.64, 0.7 , 0.76, 0.82, 0.88, 0.94, 1.  ,
+#        1.06, 1.12, 1.18, 1.24, 1.3 , 1.36, 1.42, 1.48, 1.54, 1.6 ])
+# beta_loop_list
+# Out[55]:
+# array([-2. , -1.8, -1.6, -1.4, -1.2, -1. , -0.8, -0.6, -0.4, -0.2,  0. ,
+#         0.2,  0.4,  0.6,  0.8,  1. ,  1.2,  1.4,  1.6,  1.8,  2. ])
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -94,15 +119,12 @@ LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
 # RF_type = 'electric_transverse'
-# E_RF_kVm = 50  # [kV/m]
+# E_RF_kVm = 50 # [kV/m]
 RF_type = 'magnetic_transverse'
 B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
-
-# with_kr_correction = False
-with_kr_correction = True
 
 induced_fields_factor = 1
 # induced_fields_factor = 0.5
@@ -119,9 +141,22 @@ radial_distribution = 'uniform'
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-# gas_name = 'deuterium'
+gas_name = 'deuterium'
 # gas_name = 'DT_mix'
-gas_name = 'tritium'
+# gas_name = 'tritium'
+
+if gas_name == 'deuterium':
+    gas_name_short = 'D'
+elif gas_name == 'tritium':
+    gas_name_short = 'T'
+else:
+    gas_name_short = 'DTmix'
+
+# with_kr_correction = False
+with_kr_correction = True
+
+# label_1 = gas_name_short + ', wo/kr'
+label_1 = gas_name_short + ', iff=1'
 
 set_name = 'compiled_'
 set_name += theta_type + '_'
@@ -160,9 +195,17 @@ E_ratio_mean_1 = mat_dict_1['E_ratio_mean']
 selectivity_1 = N_rc_1 / N_lc_1
 cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
 
-# gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-gas_name = 'tritium'
+########
+
+
+with_kr_correction = True
+# with_kr_correction = False
+# induced_fields_factor = 1
+induced_fields_factor = 0
+
+# label_2 = gas_name_short + ', w/kr'
+label_2 = gas_name_short + ', iff=0'
+
 set_name = 'compiled_'
 set_name += theta_type + '_'
 if RF_type == 'electric_transverse':
@@ -261,40 +304,76 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
 
     ## Print for python mm_rate_eqs
     # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
-    print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
-          beta)
-    print('D:')
-    print('RF_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
-    print('RF_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
-    print('RF_rl_list += [' + '{:.3f}'.format(N_rl_1[ind_beta, ind_alpha]) + ']')
-    print('RF_lr_list += [' + '{:.3f}'.format(N_lr_1[ind_beta, ind_alpha]) + ']')
-    print('T:')
-    print('RF_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
-    print('RF_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
-    print('RF_rl_list += [' + '{:.3f}'.format(N_rl_2[ind_beta, ind_alpha]) + ']')
-    print('RF_lr_list += [' + '{:.3f}'.format(N_lr_2[ind_beta, ind_alpha]) + ']')
+    # print('set', set_name, ', alpha=', alpha,
+    #       ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
+    #       ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', 1)
+    # print('RF_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_rl_list += [' + '{:.3f}'.format(N_rl_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_lr_list += [' + '{:.3f}'.format(N_lr_1[ind_beta, ind_alpha]) + ']')
+    # print('set', set_name, ', alpha=', alpha,
+    #       ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
+    #       ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', 0)
+    # print('RF_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_rl_list += [' + '{:.3f}'.format(N_rl_2[ind_beta, ind_alpha]) + ']')
+    # print('RF_lr_list += [' + '{:.3f}'.format(N_lr_2[ind_beta, ind_alpha]) + ']')
 
-    # ## Print for latex
-    # print(set_name, '(D) & ',
-    #       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0_D), ' & ',
-    #       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
-    #       str(beta), ' & ',
-    #       '{:.2f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
-    #       '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
-    # print(set_name, '(T) & & & &',
-    #       '{:.2f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.2f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
-    #       '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
-    # print('\\hline')
+    # print('ratio between 1 and 2 values:')
+    # print('RF_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha] / N_rc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha] / N_cr_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha] / N_cl_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_rl_list += [' + '{:.3f}'.format(N_rl_2[ind_beta, ind_alpha] / N_rl_1[ind_beta, ind_alpha]) + ']')
+    # print('RF_lr_list += [' + '{:.3f}'.format(N_lr_2[ind_beta, ind_alpha] / N_lr_1[ind_beta, ind_alpha]) + ']')
+
+    # shorter notation
+    induced_fields_factor = 1
+    print('#set', set_name, ', alpha=', alpha,
+          ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
+          ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', induced_fields_factor)
+    print('set_name_list += ["' + set_name + ' (' + gas_name_short + ', iff=' + str(induced_fields_factor) + ')"]')
+    print('gas_type_list += ["' + gas_name + '"]')
+    RF_str = 'RF_rate_list += [['
+    for N_rate in [N_rc_1, N_lc_1, N_cr_1, N_cl_1, N_rl_1, N_lr_1]:
+        RF_str += '{:.3f}'.format(N_rate[ind_beta, ind_alpha]) + ', '
+    RF_str += ']]'
+    print(RF_str)
+
+    # induced_fields_factor = 0
+    # print('#set', set_name, ', alpha=', alpha,
+    #       ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
+    #       ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', induced_fields_factor)
+    # print('set_name_list += ["' + set_name + ' (' + gas_name_short + ', iff=' + str(induced_fields_factor) + ')"]')
+    # print('gas_type_list += ["' + gas_name + '"]')
+    # RF_str = 'RF_rate_list += [['
+    # for N_rate in [N_rc_2, N_lc_2, N_cr_2, N_cl_2, N_rl_2, N_lr_2]:
+    #     RF_str += '{:.3f}'.format(N_rate[ind_beta, ind_alpha]) + ', '
+    # RF_str += ']]'
+    # print(RF_str)
+
+
+# ## Print for latex
+# print(set_name, '(D) & ',
+#       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0_D), ' & ',
+#       '{:.2f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), ' & ',
+#       str(beta), ' & ',
+#       '{:.2f}'.format(N_rc_1[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_lc_1[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_cr_1[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_cl_1[ind_beta, ind_alpha]), ' & ',
+#       '{:.1f}'.format(N_rc_1[ind_beta, ind_alpha] / N_lc_1[ind_beta, ind_alpha]), "\\\\")
+# print(set_name, '(T) & & & &',
+#       '{:.2f}'.format(N_rc_2[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_lc_2[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_cr_2[ind_beta, ind_alpha]), ' & ',
+#       '{:.2f}'.format(N_cl_2[ind_beta, ind_alpha]), ' & ',
+#       '{:.1f}'.format(N_rc_2[ind_beta, ind_alpha] / N_lc_2[ind_beta, ind_alpha]), "\\\\")
+# print('\\hline')
 
 
 def plot_resonance_lines():
@@ -330,8 +409,14 @@ def plot_interest_points(ax):
                    edgecolor='b', linewidth=2)
         # points_x_loc += 0.5
         # points_y_loc += 0.5
-        points_x_loc -= 0.04
-        points_y_loc -= 0.02
+        # points_x_loc -= 0.04
+        # points_y_loc -= 0.02
+        if len(set_name) == 1:
+            points_x_loc -= 0.05
+            points_y_loc -= 0.03
+        else:
+            points_x_loc -= 0.10
+            points_y_loc -= 0.03
         ax.text(points_x_loc, points_y_loc,
                 set_name, color='w',
                 fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
@@ -389,99 +474,65 @@ if do_plots == True:
     fig, axes = plt.subplots(2, 2, figsize=(15, 7))
 
     Z = selectivity_1
-    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (D)'
+    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (' + label_1 + ')'
     ax = axes[0, 0]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     plot_interest_points(ax)
 
     Z = selectivity_2
-    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (T)'
+    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (' + label_2 + ')'
     ax = axes[0, 1]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     plot_interest_points(ax)
 
     Z = cone_escape_rate_1
-    title = '$(N_{rc}-N_{cr})/N_{cone}$ (D)'
+    title = '$(N_{rc}-N_{cr})/N_{cone}$ (' + label_1 + ')'
     ax = axes[1, 0]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     # plot_interest_points(ax)
 
     Z = cone_escape_rate_2
-    title = '$(N_{rc}-N_{cr})/N_{cone}$ (T)'
+    title = '$(N_{rc}-N_{cr})/N_{cone}$ (' + label_2 + ')'
     ax = axes[1, 1]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     # plot_interest_points(ax)
 
     #########################
-    # fig, axes = plt.subplots(2, 2, figsize=(15, 7))
-    #
-    # Z = percent_ok_1
-    # title = '%ok (D)'
-    # ax = axes[0, 0]
-    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # # plot_resonance_lines()
-    # # plot_interest_points(ax)
-    #
-    # Z = percent_ok_2
-    # title = '%ok (T)'
-    # ax = axes[0, 1]
-    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # # plot_resonance_lines()
-    # # plot_interest_points(ax)
-    #
-    # Z = E_ratio_mean_1
-    # title = 'E_ratio_mean (D)'
-    # ax = axes[1, 0]
-    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # # plot_resonance_lines()
-    # # plot_interest_points(ax)
-    #
-    # Z = E_ratio_mean_2
-    # title = 'E_ratio_mean (T)'
-    # ax = axes[1, 1]
-    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # # plot_resonance_lines()
-    # # plot_interest_points(ax)
+    fig, axes = plt.subplots(2, 2, figsize=(15, 7))
 
-    #########################
-    fig, axes = plt.subplots(1, 2, figsize=(15, 7))
+    Z = percent_ok_1
+    title = '%ok (' + label_1 + ')'
+    ax = axes[0, 0]
+    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # plot_resonance_lines()
+    # plot_interest_points(ax)
+
+    Z = E_ratio_mean_1
+    title = 'E_ratio_mean (' + label_1 + ')'
+    ax = axes[1, 0]
+    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # plot_resonance_lines()
+    # plot_interest_points(ax)
 
     Z = percent_ok_2
-    title = '%ok (T)'
-    ax = axes[0]
+    title = '%ok (' + label_2 + ')'
+    ax = axes[0, 1]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     plot_interest_points(ax)
 
     Z = E_ratio_mean_2
-    title = 'E_ratio_mean (T)'
-    ax = axes[1]
+    title = 'E_ratio_mean (' + label_2 + ')'
+    ax = axes[1, 1]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
     plot_interest_points(ax)
 
     #########################
-
-    # fig, axes = plt.subplots(4, 3, figsize=(15, 7))
-    #
-    # processes = ['rc', 'cr', 'rl', 'lc', 'cl', 'lr']
-    # ind_rows = [0, 0, 0, 1, 1, 1]
-    # ind_cols = [0, 1, 2, 0, 1, 2]
-    #
-    # for ind_mat_dict, mat_dict in enumerate([mat_dict_1, mat_dict_2]):
-    #     for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
-    #         if ind_mat_dict == 0:
-    #             gas_name = ' (D)'
-    #         else:
-    #             gas_name = ' (T)'
-    #         Z = mat_dict['N_' + process]
-    #         title = '$N_{' + process + '}$' + gas_name
-    #         ax = axes[2 * ind_mat_dict + ind_row, ind_col]
-    #         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
 
     processes = ['rc', 'cr', 'rl', 'lc', 'cl', 'lr']
     ind_rows = [0, 0, 0, 1, 1, 1]
@@ -489,18 +540,41 @@ if do_plots == True:
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_1
-    gas_name = ' (D)'
-    for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    title_suffix = ' (' + label_1 + ')'
+    vmin_list = [0, 0, 0, 0, 0, 0]
+    vmax_list = [0.9, 0.05, 0.15, 0.9, 0.05, 0.15]
+    # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
         Z = mat_dict['N_' + process]
-        title = '$N_{' + process + '}$' + gas_name
+        title = '$N_{' + process + '}$' + title_suffix
         ax = axes[ind_row, ind_col]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax,
+                            # vmin=None, vmax=None,
+                            vmin=vmin, vmax=vmax,
+                            )
+        plot_interest_points(ax)
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_2
-    gas_name = ' (T)'
-    for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    title_suffix = ' (' + label_2 + ')'
+    vmin_list = [0, 0, 0, 0, 0, 0]
+    vmax_list = [0.9, 0.15, 0.15, 0.9, 0.15, 0.15]
+    # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
         Z = mat_dict['N_' + process]
-        title = '$N_{' + process + '}$' + gas_name
+        title = '$N_{' + process + '}$' + title_suffix
         ax = axes[ind_row, ind_col]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax,
+                            # vmin=None, vmax=None,
+                            vmin=vmin, vmax=vmax,
+                            )
+        plot_interest_points(ax)
+
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # mat_dict = mat_dict_2
+    # gas_name = ' (diff)'
+    # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    #     Z = mat_dict_2['N_' + process] - mat_dict_1['N_' + process]
+    #     title = '$N_{' + process + '}$' + gas_name
+    #     ax = axes[ind_row, ind_col]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
