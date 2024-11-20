@@ -121,7 +121,8 @@ trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 50 # [kV/m]
 RF_type = 'magnetic_transverse'
-B_RF = 0.04  # [T]
+# B_RF = 0.04  # [T]
+B_RF = 0.08  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -141,9 +142,9 @@ radial_distribution = 'uniform'
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-gas_name = 'deuterium'
+# gas_name = 'deuterium'
 # gas_name = 'DT_mix'
-# gas_name = 'tritium'
+gas_name = 'tritium'
 
 if gas_name == 'deuterium':
     gas_name_short = 'D'
@@ -344,17 +345,17 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
     RF_str += ']]'
     print(RF_str)
 
-    # induced_fields_factor = 0
-    # print('#set', set_name, ', alpha=', alpha,
-    #       ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
-    #       ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', induced_fields_factor)
-    # print('set_name_list += ["' + set_name + ' (' + gas_name_short + ', iff=' + str(induced_fields_factor) + ')"]')
-    # print('gas_type_list += ["' + gas_name + '"]')
-    # RF_str = 'RF_rate_list += [['
-    # for N_rate in [N_rc_2, N_lc_2, N_cr_2, N_cl_2, N_rl_2, N_lr_2]:
-    #     RF_str += '{:.3f}'.format(N_rate[ind_beta, ind_alpha]) + ', '
-    # RF_str += ']]'
-    # print(RF_str)
+    induced_fields_factor = 0
+    print('#set', set_name, ', alpha=', alpha,
+          ', omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0),
+          ', beta=', beta, ', gas=', gas_name, ', induced_fields_factor=', induced_fields_factor)
+    print('set_name_list += ["' + set_name + ' (' + gas_name_short + ', iff=' + str(induced_fields_factor) + ')"]')
+    print('gas_type_list += ["' + gas_name + '"]')
+    RF_str = 'RF_rate_list += [['
+    for N_rate in [N_rc_2, N_lc_2, N_cr_2, N_cl_2, N_rl_2, N_lr_2]:
+        RF_str += '{:.3f}'.format(N_rate[ind_beta, ind_alpha]) + ', '
+    RF_str += ']]'
+    print(RF_str)
 
 
 # ## Print for latex
