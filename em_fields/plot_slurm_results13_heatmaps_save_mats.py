@@ -37,7 +37,9 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
+# save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -91,8 +93,12 @@ radial_distribution = 'uniform'
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
-beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
+# beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52
+beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
 
 gas_name_list = ['deuterium', 'tritium']
 
@@ -100,14 +106,16 @@ RF_type_list = []
 RF_amplitude_list = []
 RF_type_list += ['magnetic_transverse']
 # RF_amplitude_list = [0.02, 0.04, 0.08]  # [T]
-RF_amplitude_list += [0.04]  # [T]
+# RF_amplitude_list += [0.04]  # [T]
+RF_amplitude_list += [0.08]  # [T]
 # RF_type_list += ['electric_transverse']
 # RF_amplitude_list += [50]  # kV/m
 
 # sigma_r0_list = [0.1]
 sigma_r0_list = [0.05]
 induced_fields_factor_list = [1, 0]
-with_kr_correction_list = [False, True]
+# with_kr_correction_list = [False, True]
+with_kr_correction_list = [True]
 time_step_tau_cyclotron_divisions = 50
 
 # theta_type_list = ['sign_vz0', 'sign_vz']

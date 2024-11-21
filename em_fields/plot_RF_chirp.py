@@ -43,7 +43,8 @@ B_logan_slope = B_logan + B_slope
 B_post_slope = B_post + B_slope
 
 v_z_0 = 1.0
-v_t_0 = 1.0
+# v_t_0 = 1.0
+v_t_0 = 0.1
 
 dz = z[1] - z[0]
 
@@ -93,6 +94,6 @@ plt.plot(t_post, B_post, label='Post', color='r')
 plt.plot(t_post_slope, B_post_slope, '--', label='Post + slope', color='r')
 plt.legend()
 plt.xlabel('t [s]')
-# plt.y_label('$B_z$ [T] $\propto \\omega_z$')
+plt.ylabel('$B_z$ [T] $\propto \\omega_z$')
 plt.grid(True)
 plt.tight_layout()
