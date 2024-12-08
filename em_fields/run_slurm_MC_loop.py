@@ -218,8 +218,8 @@ for gas_name in gas_name_list:
                     # settings['stop_criterion'] = 'several_cell_center_crossing'
                     # settings['number_of_time_intervals'] = 3
 
-                    # settings['l'] = 1.0  # m (MM cell size)
-                    settings['l'] = 2.0  # m (MM cell size)
+                    settings['l'] = 1.0  # m (MM cell size)
+                    # settings['l'] = 2.0  # m (MM cell size)
 
                     # settings['absolute_velocity_sampling_type'] = 'const_vth'
                     settings['absolute_velocity_sampling_type'] = 'maxwell'
@@ -258,7 +258,8 @@ for gas_name in gas_name_list:
                     # field_dict['B0'] = 2.0  # Tesla
 
                     # field_dict['Rm'] = 3.0  # mirror ratio
-                    field_dict['Rm'] = 6.0  # mirror ratio
+                    # field_dict['Rm'] = 6.0  # mirror ratio
+                    field_dict['Rm'] = 10.0  # mirror ratio
 
                     if RF_type == 'electric_transverse':
                         field_dict['RF_type'] = 'electric_transverse'
@@ -479,7 +480,7 @@ for gas_name in gas_name_list:
                             settings['ind_set'] = None
                         elif num_cpus > 1:
                             slurm_run_name = 'set_' + str(ind_set) + '_' + run_name
-                        print('run_name = ' + run_name)
+                        # print('run_name = ' + run_name)
 
                         # checking if the save file already exists
                         save_file = settings['save_dir'] + '/' + run_name + '.pickle'

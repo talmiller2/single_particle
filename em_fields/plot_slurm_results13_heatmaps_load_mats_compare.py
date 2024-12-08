@@ -48,7 +48,15 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set46_B0_2T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
+# save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+
+plot_rate_eqs_flux = True
+mm_rate_eqs_main_dir = '/Users/talmiller/Downloads/mm_rate_eqs/'
+mm_rate_eqs_main_dir += '/runs/slurm_runs/set47_MM_Rm_10_ni_1e21_Ti_10keV_withRMF'
+
 
 select_alpha_list = []
 select_beta_list = []
@@ -86,17 +94,33 @@ set_name_list = []
 
 ####
 
-select_alpha_list += [1.3, 1.48, 1.12, 1.06, 1.0]
-select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
-set_name_list += ['1', '2', '3', '4', '5']
+# select_alpha_list += [1.3, 1.48, 1.12, 1.06, 1.0]
+# select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
+# set_name_list += ['1', '2', '3', '4', '5']
+#
+# select_alpha_list += [0.88, 1.06, 0.76, 0.7, 0.64]
+# select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
+# set_name_list += ['6', '7', '8', '9', '10']
+#
+# select_alpha_list += [0.82, 1.06]
+# select_beta_list += [-1.8, 0]
+# set_name_list += ['11', '12']
 
-select_alpha_list += [0.88, 1.06, 0.76, 0.7, 0.64]
-select_beta_list += [0, 1.4, -1.0, -1.4, -1.8]
-set_name_list += ['6', '7', '8', '9', '10']
+#######
+# alpha_loop_list
+# beta_loop_list
 
-select_alpha_list += [0.82, 1.06]
-select_beta_list += [-1.8, 0]
-set_name_list += ['11', '12']
+select_alpha_list += [1.3, 1.12, 1.06, 1.0, 1.42, 1.48]
+select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
+set_name_list += ['1', '2', '3', '4', '5', '6']
+
+select_alpha_list += [0.88, 0.76, 0.7, 0.64, 1.0, 1.06]
+select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
+set_name_list += ['7', '8', '9', '10', '11', '12']
+
+select_alpha_list += [1.06, 0.94, 0.88, 0.82]
+select_beta_list += [0, -1.0, -1.4, -1.8]
+set_name_list += ['13', '14', '15', '16']
 
 # alpha_loop_list
 # Out[54]:
@@ -119,10 +143,12 @@ LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
 # RF_type = 'electric_transverse'
+# E_RF_kVm = 25 # [kV/m]
 # E_RF_kVm = 50 # [kV/m]
 RF_type = 'magnetic_transverse'
+B_RF = 0.02  # [T]
 # B_RF = 0.04  # [T]
-B_RF = 0.08  # [T]
+# B_RF = 0.08  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -196,6 +222,14 @@ E_ratio_mean_1 = mat_dict_1['E_ratio_mean']
 selectivity_1 = N_rc_1 / N_lc_1
 cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
 
+if plot_rate_eqs_flux:
+    num_cells = 50
+    rate_eqs_state_file = mm_rate_eqs_main_dir + '/' + set_name + '_N_' + str(num_cells) + '.mat'
+    mm_rate_eqs_mat_dict = loadmat(rate_eqs_state_file)
+    cross_section_main_cell = 0.19634954084936207
+    flux_lawson_ignition_piel = 2.908441211385411e+22
+    rate_eqs_flux_1 = mm_rate_eqs_mat_dict['flux_mat'] * cross_section_main_cell / flux_lawson_ignition_piel
+
 ########
 
 
@@ -241,6 +275,12 @@ percent_ok_2 = mat_dict_2['percent_ok']
 E_ratio_mean_2 = mat_dict_2['E_ratio_mean']
 selectivity_2 = N_rc_2 / N_lc_2
 cone_escape_rate_2 = (N_rc_2 * LC_ini_fraction - N_cr_2 * trapped_ini_fraction) / LC_ini_fraction
+
+if plot_rate_eqs_flux:
+    num_cells = 50
+    rate_eqs_state_file = mm_rate_eqs_main_dir + '/' + set_name + '_N_' + str(num_cells) + '.mat'
+    mm_rate_eqs_mat_dict = loadmat(rate_eqs_state_file)
+    rate_eqs_flux_2 = mm_rate_eqs_mat_dict['flux_mat'] * cross_section_main_cell / flux_lawson_ignition_piel
 
 
 def plot_line_on_heatmap(x_heatmap, y_heatmap, y_line, color='w'):
@@ -386,43 +426,44 @@ def plot_resonance_lines():
 
 
 def plot_interest_points(ax):
-    for ind_set, (alpha, beta, set_name) in enumerate(zip(select_alpha_list, select_beta_list, set_name_list)):
-        ind_alpha = np.where(alpha_loop_list >= alpha)[0][0]
-        ind_beta = np.where(beta_loop_list >= beta)[0][0]
-        # data = {'y': [ind_alpha], 'x': [ind_beta]}
-        # print(data)
-        # sns.scatterplot(data=data, x='x', y='y', size=100, color="b", marker="o")
-        # sns.scatterplot(data=data, x='x', y='y',
-        #                 # markersize=2000, color="none", marker="o",
-        #                 # edgecolor='b'
-        #                 kwargs={'s': 50}
-        #                 )
-        # sns.scatterplot(data=data, x='x', y='y', marker='o',ms=60,mec='r',mfc='none')
-        # points_x_loc = ind_beta + 0.5
-        # points_y_loc = ind_alpha + 0.5
-        points_x_loc = beta
-        points_y_loc = alpha * field_dict['omega_cyclotron'] / omega0
-        ax.scatter(points_x_loc, points_y_loc,
-                   s=200, marker='o',
-                   # alpha=0.5,
-                   # facecolor='none',
-                   facecolor='b',
-                   edgecolor='b', linewidth=2)
-        # points_x_loc += 0.5
-        # points_y_loc += 0.5
-        # points_x_loc -= 0.04
-        # points_y_loc -= 0.02
-        if len(set_name) == 1:
-            points_x_loc -= 0.05
-            points_y_loc -= 0.03
-        else:
-            points_x_loc -= 0.10
-            points_y_loc -= 0.03
-        ax.text(points_x_loc, points_y_loc,
-                set_name, color='w',
-                fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
-        # ax.text(ind_beta - 0.125 + 0.5, ind_alpha - 0.125 + 0.5, set_name, color='w',
-        #         fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
+    pass
+    # for ind_set, (alpha, beta, set_name) in enumerate(zip(select_alpha_list, select_beta_list, set_name_list)):
+    #     ind_alpha = np.where(alpha_loop_list >= alpha)[0][0]
+    #     ind_beta = np.where(beta_loop_list >= beta)[0][0]
+    #     # data = {'y': [ind_alpha], 'x': [ind_beta]}
+    #     # print(data)
+    #     # sns.scatterplot(data=data, x='x', y='y', size=100, color="b", marker="o")
+    #     # sns.scatterplot(data=data, x='x', y='y',
+    #     #                 # markersize=2000, color="none", marker="o",
+    #     #                 # edgecolor='b'
+    #     #                 kwargs={'s': 50}
+    #     #                 )
+    #     # sns.scatterplot(data=data, x='x', y='y', marker='o',ms=60,mec='r',mfc='none')
+    #     # points_x_loc = ind_beta + 0.5
+    #     # points_y_loc = ind_alpha + 0.5
+    #     points_x_loc = beta
+    #     points_y_loc = alpha * field_dict['omega_cyclotron'] / omega0
+    #     ax.scatter(points_x_loc, points_y_loc,
+    #                s=200, marker='o',
+    #                # alpha=0.5,
+    #                # facecolor='none',
+    #                facecolor='b',
+    #                edgecolor='b', linewidth=2)
+    #     # points_x_loc += 0.5
+    #     # points_y_loc += 0.5
+    #     # points_x_loc -= 0.04
+    #     # points_y_loc -= 0.02
+    #     if len(set_name) == 1:
+    #         points_x_loc -= 0.05
+    #         points_y_loc -= 0.03
+    #     else:
+    #         points_x_loc -= 0.10
+    #         points_y_loc -= 0.03
+    #     ax.text(points_x_loc, points_y_loc,
+    #             set_name, color='w',
+    #             fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
+    #     # ax.text(ind_beta - 0.125 + 0.5, ind_alpha - 0.125 + 0.5, set_name, color='w',
+    #     #         fontdict={'fontname': 'times new roman', 'weight': 'bold', 'size': 12}, )
 
 
 def plot_colormesh(Z, title, fig=None, ax=None, vmin=None, vmax=None):
@@ -544,6 +585,7 @@ if do_plots == True:
     title_suffix = ' (' + label_1 + ')'
     vmin_list = [0, 0, 0, 0, 0, 0]
     vmax_list = [0.9, 0.05, 0.15, 0.9, 0.05, 0.15]
+    # vmax_list = [0.95, 0.05, 0.1, 0.95, 0.05, 0.1]
     # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
     for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
         Z = mat_dict['N_' + process]
@@ -558,8 +600,9 @@ if do_plots == True:
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_2
     title_suffix = ' (' + label_2 + ')'
-    vmin_list = [0, 0, 0, 0, 0, 0]
-    vmax_list = [0.9, 0.15, 0.15, 0.9, 0.15, 0.15]
+    # vmin_list = [0, 0, 0, 0, 0, 0]
+    # vmax_list = [0.9, 0.15, 0.15, 0.9, 0.15, 0.15]
+    # vmax_list = [0.95, 0.1, 0.1, 0.95, 0.1, 0.1]
     # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
     for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
         Z = mat_dict['N_' + process]
@@ -579,3 +622,20 @@ if do_plots == True:
     #     title = '$N_{' + process + '}$' + gas_name
     #     ax = axes[ind_row, ind_col]
     #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+
+    #########################
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+    Z = np.log(rate_eqs_flux_1)
+    title = 'flux (' + label_1 + ')'
+    ax = axes[0]
+    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # plot_resonance_lines()
+    # plot_interest_points(ax)
+
+    Z = np.log(rate_eqs_flux_2)
+    title = 'flux (' + label_2 + ')'
+    ax = axes[1]
+    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # plot_resonance_lines()
+    # plot_interest_points(ax)
