@@ -110,17 +110,22 @@ set_name_list = []
 # alpha_loop_list
 # beta_loop_list
 
-select_alpha_list += [1.3, 1.12, 1.06, 1.0, 1.42, 1.48]
-select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
-set_name_list += ['1', '2', '3', '4', '5', '6']
+# select_alpha_list += [1.3, 1.12, 1.06, 1.0, 1.42, 1.48]
+# select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
+# set_name_list += ['1', '2', '3', '4', '5', '6']
+#
+# select_alpha_list += [0.88, 0.76, 0.7, 0.64, 1.0, 1.06]
+# select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
+# set_name_list += ['7', '8', '9', '10', '11', '12']
+#
+# select_alpha_list += [1.06, 0.94, 0.88, 0.82]
+# select_beta_list += [0, -1.0, -1.4, -1.8]
+# set_name_list += ['13', '14', '15', '16']
 
-select_alpha_list += [0.88, 0.76, 0.7, 0.64, 1.0, 1.06]
-select_beta_list += [0, -1.0, -1.4, -1.8, 0.8, 1.4]
-set_name_list += ['7', '8', '9', '10', '11', '12']
 
-select_alpha_list += [1.06, 0.94, 0.88, 0.82]
-select_beta_list += [0, -1.0, -1.4, -1.8]
-set_name_list += ['13', '14', '15', '16']
+select_alpha_list += [1.54, 1.54]
+select_beta_list += [1.4, 1.6]
+set_name_list += ['1', '2']
 
 # alpha_loop_list
 # Out[54]:
@@ -142,10 +147,10 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# RF_type = 'electric_transverse'
-# E_RF_kVm = 25 # [kV/m]
+RF_type = 'electric_transverse'
+E_RF_kVm = 25  # [kV/m]
 # E_RF_kVm = 50 # [kV/m]
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 B_RF = 0.02  # [T]
 # B_RF = 0.04  # [T]
 # B_RF = 0.08  # [T]
@@ -235,8 +240,8 @@ if plot_rate_eqs_flux:
 
 with_kr_correction = True
 # with_kr_correction = False
-# induced_fields_factor = 1
-induced_fields_factor = 0
+induced_fields_factor = 1
+# induced_fields_factor = 0
 
 # label_2 = gas_name_short + ', w/kr'
 label_2 = gas_name_short + ', iff=0'
@@ -397,6 +402,9 @@ for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_l
     RF_str += ']]'
     print(RF_str)
 
+    if plot_rate_eqs_flux:
+        flux_str = 'flux = ' + '{:.3f}'.format(rate_eqs_flux_1[ind_beta, ind_alpha])
+        print(flux_str)
 
 # ## Print for latex
 # print(set_name, '(D) & ',

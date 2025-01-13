@@ -1,15 +1,17 @@
+import copy
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-from em_fields.RF_field_forms import E_RF_function, B_RF_function
+from em_fields.RF_field_forms import E_RF_function, B_RF_function, get_RF_angular_frequency
 from em_fields.default_settings import define_default_settings, define_default_field
-from em_fields.em_functions import evolve_particle_in_em_fields
+from em_fields.em_functions import evolve_particle_in_em_fields, get_cyclotron_angular_frequency
 
 # from mpl_toolkits.mplot3d import Axes3D
 # Axes3D = Axes3D  # pycharm auto import
 
-plt.rcParams.update({'font.size': 10})
-# plt.rcParams.update({'font.size': 14})
+# plt.rcParams.update({'font.size': 10})
+plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 16})
 plt.rcParams.update({'axes.labelpad': 15})
 
@@ -21,7 +23,8 @@ ax = fig.add_subplot(1, 1, 1, projection='3d')
 ax.axes.xaxis.labelpad = 5
 ax.axes.yaxis.labelpad = 5
 ax.axes.zaxis.labelpad = 5
-ax.view_init(elev=15, azim=-50)
+# ax.view_init(elev=15, azim=-50)
+ax.view_init(elev=45, azim=-45)
 
 ## plot the magnetic field lines of a mirror field alone
 # plot_magnetic_field_lines = False
@@ -35,12 +38,14 @@ settings = define_default_settings()
 field_dict = {'mirror_field_type': mirror_field_type}
 field_dict = define_default_field(settings, field_dict)
 cyclotron_radius = settings['v_th'] / field_dict['omega_cyclotron']
+field_dict_default = copy.deepcopy(field_dict)
 
 if plot_magnetic_field_lines:
     ## plot mirror magnetic field lines
     xy_angles = np.linspace(0, 2 * np.pi, 50)
     xy_angles = xy_angles[0:-1]
     for xy_angle in xy_angles:
+        # r_ini = 0
         r_ini = 1 * cyclotron_radius
         # r_ini = 2 * cyclotron_radius
         # r_ini = 4 * cyclotron_radius
@@ -75,9 +80,9 @@ if plot_magnetic_field_lines:
     ax.plot(0 * z_axis_line, 0 * z_axis_line, z_axis_line, color='k', linewidth=3, alpha=0.8)
 
 inds_sim = []
-inds_sim += [0]
-inds_sim += [1]
-# inds_sim += [2]
+# inds_sim += [0]
+# inds_sim += [1]
+inds_sim += [2]
 for ind_sim in inds_sim:
 
     settings = {}
@@ -102,31 +107,37 @@ for ind_sim in inds_sim:
     # field_dict['Rm'] = 5.0  # mirror ratio
 
     field_dict['RF_type'] = 'electric_transverse'
-    # field_dict['E_RF_kVm'] = 0
-    # field_dict['E_RF_kVm'] = 1e-3
-    # field_dict['E_RF_kVm'] = 0.1
-    # field_dict['E_RF_kVm'] = 1
-    # field_dict['E_RF_kVm'] = 10
-    field_dict['E_RF_kVm'] = 50
-    # field_dict['E_RF_kVm'] = 20
-    # field_dict['E_RF_kVm'] = 100
     # field_dict['RF_type'] = 'magnetic_transverse'
-    # field_dict['B_RF'] = 0
-    # field_dict['B_RF'] = 0.001
-    # field_dict['B_RF'] = 0.01
-    # field_dict['B_RF'] = 0.03
-    field_dict['B_RF'] = 0.04
-    # field_dict['B_RF'] = 0.05
-    # field_dict['B_RF'] = 0.1
+    if ind_sim == 0:
+        field_dict['E_RF_kVm'] = 0
+        field_dict['B_RF'] = 0
+    else:
+        # field_dict['E_RF_kVm'] = 1e-3
+        # field_dict['E_RF_kVm'] = 0.1
+        # field_dict['E_RF_kVm'] = 1
+        # field_dict['E_RF_kVm'] = 10
+        # field_dict['E_RF_kVm'] = 20
+        field_dict['E_RF_kVm'] = 30
+        # field_dict['E_RF_kVm'] = 50
+        # field_dict['E_RF_kVm'] = 20
+        # field_dict['E_RF_kVm'] = 100
+        # field_dict['B_RF'] = 0
+        # field_dict['B_RF'] = 0.001
+        # field_dict['B_RF'] = 0.01
+        # field_dict['B_RF'] = 0.03
+        field_dict['B_RF'] = 0.04
+        # field_dict['B_RF'] = 0.05
+        # field_dict['B_RF'] = 0.1
+
     # field_dict['lambda_RF_list'] = [100.0] # [m]
-    # field_dict['alpha_RF_list'] = [1.0]
+    field_dict['alpha_RF_list'] = [1.0]
     # field_dict['alpha_RF_list'] = [1.1]
-    field_dict['alpha_RF_list'] = [0.9]
+    # field_dict['alpha_RF_list'] = [0.9]
     # field_dict['alpha_RF_list'] = [0.6]
     # field_dict['alpha_RF_list'] = [1.5]
 
-    # field_dict['beta_RF_list'] = [0]
-    field_dict['beta_RF_list'] = [2]
+    field_dict['beta_RF_list'] = [0]
+    # field_dict['beta_RF_list'] = [2]
     # field_dict['beta_RF_list'] = [6.67]
 
     field_dict['induced_fields_factor'] = 1.0  # default
@@ -134,14 +145,31 @@ for ind_sim in inds_sim:
     # field_dict['induced_fields_factor'] = 0.1
     # field_dict['induced_fields_factor'] = 0
 
-    # field_dict['with_kr_correction'] = True  # default
-    field_dict['with_kr_correction'] = False
+    field_dict['with_kr_correction'] = True  # default
+    # field_dict['with_kr_correction'] = False
     # if ind_sim == 0:
     #     field_dict['with_kr_correction'] = False
     # elif ind_sim == 1:
     #     field_dict['with_kr_correction'] = True
 
+    # mirror slope and RF chirp
+    if ind_sim == 2:
+        field_dict['use_mirror_slope'] = True
+        field_dict['B_slope'] = 0.2  # [T]
+        # field_dict['B_slope'] = 0.5 # [T]
+        # field_dict['B_slope'] = 1.0 # [T]
+        field_dict['B_slope_smooth_length'] = 0.2
+        field_dict['use_RF_chirp'] = True
+        # field_dict['RF_chirp_period'] = 0.9e-6 # [s]
+        # field_dict['RF_chirp_period'] = 1.0 * settings['l'] / settings['v_th'] # [s]
+        field_dict['RF_chirp_period'] = 1.0 * settings['l'] / settings['v_th']  # [s]
+        # omega_cyc_0 = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
+        field_dict['RF_chirp_amplitude'] = 0.3
+        # field_dict['RF_chirp_amplitude'] = 0.9
+        field_dict['RF_chirp_time_offset'] = field_dict['RF_chirp_period'] / 2
+
     field_dict['phase_RF_addition'] = 0
+    # field_dict['phase_RF_addition'] = np.pi / 2
     # field_dict['phase_RF_addition'] = 3.6999631682413687
 
     field_dict = define_default_field(settings, field_dict)
@@ -152,10 +180,13 @@ for ind_sim in inds_sim:
     # elif ind_sim == 1:
     #     angle = 1.01 * loss_cone_angle
     # angle = 1.2 * loss_cone_angle
-    if ind_sim == 0:
-        angle = 0.8 * loss_cone_angle
-    else:
-        angle = 1.2 * loss_cone_angle
+    # if ind_sim == 0:
+    #     angle = 0.8 * loss_cone_angle
+    # else:
+    #     angle = 1.2 * loss_cone_angle
+    angle = 0.8 * loss_cone_angle
+    # angle = 0.5 * loss_cone_angle
+    # angle = 0.1 * loss_cone_angle
     x = 0
     y = np.sin(angle / 360 * 2 * np.pi)
     z = np.cos(angle / 360 * 2 * np.pi)
@@ -163,16 +194,16 @@ for ind_sim in inds_sim:
     v_0 = settings['v_th'] * unit_vec
     # v_perp = np.sqrt(v_0[0] ** 2 + v_0[1] ** 2)
 
-    # x_0 = np.array([0, r_ini, settings['l'] / 2.0])
-    if ind_sim == 0:
-        x_0 = np.array([0, r_ini, settings['l'] / 2.0])
-    elif ind_sim == 1:
-        x_0 = np.array([-r_ini, 0, settings['l'] / 2.0])
-        v_0[1] *= -1
-    elif ind_sim == 2:
-        # testing exploding fields case
-        x_0 = np.array([0., 0., 0.5])
-        v_0 = np.array([1270241.4443987, 1084444.96273159, 155314.40349702])
+    x_0 = np.array([0, r_ini, settings['l'] / 2.0])
+    # if ind_sim == 0:
+    #     x_0 = np.array([0, r_ini, settings['l'] / 2.0])
+    # elif ind_sim == 1:
+    #     x_0 = np.array([-r_ini, 0, settings['l'] / 2.0])
+    #     v_0[1] *= -1
+    # elif ind_sim == 2:
+    #     # testing exploding fields case
+    #     x_0 = np.array([0., 0., 0.5])
+    #     v_0 = np.array([1270241.4443987, 1084444.96273159, 155314.40349702])
 
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # sim_cyclotron_periods = 50
@@ -180,8 +211,9 @@ for ind_sim in inds_sim:
     # sim_cyclotron_periods = 100
     # tmax_mirror_lengths = 0.1
     # tmax_mirror_lengths = 1
-    # tmax_mirror_lengths = 2
+    # tmax_mirror_lengths = 3
     tmax_mirror_lengths = 4
+    # tmax_mirror_lengths = 5
     sim_cyclotron_periods = int(
         tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -208,27 +240,73 @@ for ind_sim in inds_sim:
     # vx = hist['v'][:, 0]
     # vy = hist['v'][:, 1]
     # vz = hist['v'][:, 2]
-    v_abs = np.sqrt(hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2 + hist['v'][:, 2] ** 2)
-    energy_change = 100.0 * (v_abs - v_abs[0]) / v_abs[0]
+    # v_abs = np.sqrt(hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2 + hist['v'][:, 2] ** 2)
+    # energy_change = 100.0 * ((v_abs / v_abs[0]) ** 2 - 1)
+    E_tot = hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2 + hist['v'][:, 2] ** 2
+    E_transverse = hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2
+    energy_transverse_ratio = E_transverse / E_tot
+
+    # mapping to center of mirror
+    vt = np.sqrt(hist['v'][:, 0] ** 2 + hist['v'][:, 1] ** 2)
+    vz = hist['v'][:, 2]
+    Bz = hist['B'][:, 2]
+    vt_adj = vt * np.sqrt(Bz[0] / Bz)
+    det = vz ** 2.0 + vt ** 2.0 * (1 - Bz[0] / Bz)
+    vz_adj = np.sign(vz) * np.sqrt(det)
+    energy_transverse_ratio_adj = vt_adj ** 2 / (vt_adj ** 2 + vz_adj ** 2)
 
     R = np.sqrt(x ** 2 + y ** 2)
     # v_norm = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
 
+    omega_cyc_0 = get_cyclotron_angular_frequency(settings['q'], field_dict['B0'], settings['mi'])
+    omega_cyc_local = get_cyclotron_angular_frequency(settings['q'], Bz, settings['mi'])
+    omega_RF_base = field_dict['omega_RF'][0]
+    omega_RF_chirped = get_RF_angular_frequency(omega_RF_base, t, field_dict)
+
     ### Plots
+    # t_label = 't [s]'
+    t /= field_dict['tau_cyclotron']
+    t_label = '$t / \\tau_{cyc,0}$'
+
     label = '$E_{RF}$=' + str(field_dict['E_RF_kVm'])
     linewidth = 2
 
-    # plt.figure(2, figsize=(14, 5))
-    plt.figure(num=None, figsize=(14, 5))
-    plt.subplot(1, 3, 1)
-    plt.plot(t, x, label='x', linewidth=linewidth, color='b')
-    plt.plot(t, y, label='y', linewidth=linewidth, color='g')
-    plt.plot(t, z, label='z', linewidth=linewidth, color='r')
-    plt.plot(t, R, label='R', linewidth=linewidth, color='k')
+    if ind_sim == inds_sim[0]:
+        # plt.figure(2, figsize=(14, 5))
+        plt.figure(2, figsize=(12, 9))
+
+    if field_dict['RF_type'] == 'electric_transverse':
+        RF_type_short = 'REF'
+    else:
+        RF_type_short = 'RMF'
+
+    if ind_sim == 0:
+        # linestyle = '-.'
+        linestyle = '-'
+        color = 'g'
+        sim_label = 'w/o RF'
+    elif ind_sim == 1:
+        # linestyle = '--'
+        linestyle = '-'
+        color = 'b'
+        sim_label = RF_type_short
+    else:
+        linestyle = '-'
+        sim_label = RF_type_short + '+slope+chirp'
+        color = 'r'
+
+    # plt.subplot(1, 3, 1)
+    plt.subplot(2, 2, 1)
+    # plt.plot(t, x, label='x', linewidth=linewidth, color='b', linestyle=linestyle)
+    # plt.plot(t, y, label='y', linewidth=linewidth, color='g', linestyle=linestyle)
+    # plt.plot(t, z, linewidth=linewidth, color='r', linestyle=linestyle, label='z ' + sim_label)
+    plt.plot(t, z, linewidth=linewidth, color=color, linestyle=linestyle, label=sim_label)
+    # plt.plot(t, R, linewidth=linewidth, color='k', linestyle=linestyle, label='R ' + sim_label)
     plt.legend()
-    plt.xlabel('t')
-    plt.ylabel('coordinate')
-    plt.title('ind_sim = ' + str(ind_sim))
+    plt.xlabel(t_label)
+    # plt.ylabel('coordinate [m]')
+    plt.ylabel('z [m]')
+    # plt.title('ind_sim = ' + str(ind_sim))
     plt.grid(True)
     plt.tight_layout()
     #
@@ -268,33 +346,64 @@ for ind_sim in inds_sim:
     # plt.grid(True)
     # plt.tight_layout()
 
-    # plt.figure(7)
-    # plt.plot(t, energy_change, linewidth=linewidth)
-    # plt.legend()
-    # plt.x_label('t')
-    # plt.y_label('E change %')
-    # plt.grid(True)
-    # plt.tight_layout()
-
-    # plt.figure(8)
-    plt.subplot(1, 3, 2)
-    plt.plot(t, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
-    plt.plot(t, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
-    plt.plot(t, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
-    plt.plot(t, np.linalg.norm(hist['B'], axis=1), label='$B_{norm}$', linewidth=linewidth, color='k')
+    plt.subplot(2, 2, 2)
+    plt.plot(t, E_tot / E_tot[0], label=sim_label, linestyle=linestyle, linewidth=linewidth, color=color)
     plt.legend()
-    plt.xlabel('t')
-    plt.ylabel('B')
+    plt.xlabel(t_label)
+    plt.ylabel('$E/E_0$')
     plt.grid(True)
     plt.tight_layout()
 
-    # plt.figure(9)
-    plt.subplot(1, 3, 3)
-    plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
-    plt.ylim([0, 1.1 * max(hist['dt'])])
+    # plt.figure(7)
+    # plt.subplot(1, 3, 2)
+    plt.subplot(2, 2, 3)
+    if ind_sim == inds_sim[0]:
+        plt.plot(t, 0 * t + 1 / field_dict['Rm'], linewidth=linewidth, linestyle='--', color='k', label='$1/R_m$')
+    # plt.plot(t, energy_change, linewidth=linewidth)
+    # plt.plot(t, energy_transverse_ratio, linewidth=linewidth, linestyle=linestyle, color='b')
+    plt.plot(t, energy_transverse_ratio_adj, linewidth=linewidth, linestyle=linestyle, color=color, label=sim_label)
     plt.legend()
-    plt.xlabel('t')
-    plt.ylabel('dt')
+    plt.xlabel(t_label)
+    # plt.ylabel('E change %')
+    plt.ylabel('adjusted $E_{\perp}/E_{tot}$')
+    plt.grid(True)
+    plt.tight_layout()
+
+    # # plt.figure(8)
+    # plt.subplot(1, 3, 2)
+    # plt.plot(t, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
+    # plt.plot(t, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
+    # plt.plot(t, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
+    # plt.plot(t, np.linalg.norm(hist['B'], axis=1), label='$B_{norm}$', linewidth=linewidth, color='k')
+    # plt.legend()
+    # plt.xlabel('t')
+    # plt.ylabel('B')
+    # plt.grid(True)
+    # plt.tight_layout()
+
+    # # plt.figure(9)
+    # plt.subplot(1, 3, 3)
+    # plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
+    # plt.ylim([0, 1.1 * max(hist['dt'])])
+    # plt.legend()
+    # plt.xlabel('t')
+    # plt.ylabel('dt')
+    # plt.grid(True)
+    # plt.tight_layout()
+
+    # plt.figure(9)
+    # plt.subplot(1, 3, 3)
+    plt.subplot(2, 2, 4)
+    # plt.plot(t, omega_cyc_local / omega_cyc_0, linewidth=linewidth, linestyle=linestyle, color='b', label='$\\omega_{cyc}$ ' + sim_label)
+    # plt.plot(t, omega_RF_chirped / omega_cyc_0, linewidth=linewidth, linestyle=linestyle, color='r', label='$\\omega_{RF}$ ' + sim_label)
+    plt.plot(t, omega_cyc_local / omega_cyc_0, linewidth=linewidth, linestyle='-', color=color,
+             label='$\\omega_{cyc}$ ' + sim_label)
+    plt.plot(t, omega_RF_chirped / omega_cyc_0, linewidth=linewidth, linestyle='--', color=color,
+             label='$\\omega_{RF}$ ' + sim_label)
+    plt.legend()
+    plt.xlabel(t_label)
+    # plt.ylabel('$\\omega$')
+    plt.ylabel('$\\omega / \\omega_{cyc,0}$')
     plt.grid(True)
     plt.tight_layout()
 
@@ -320,6 +429,7 @@ for ind_sim in inds_sim:
     # ax.set_zlim([-0.5, 1.5])
     ax.set_zlim([z_ini, z_fin])
     # ax.set_title('particle 3d trajectory')
+    ax.set_title('particle 3d trajectory: ' + sim_label)
     # plt.legend()
     plt.tight_layout()
     # plt.tight_layout(h_pad=0.05, w_pad=0.05)
@@ -338,9 +448,14 @@ for ind_sim in inds_sim:
 # print(viridis)
 
 ### saving figure
-# save_dir = '/Users/talmiller/Dropbox/UNI/Courses Graduate/Plasma/Papers/texts/research_proposal/pics/'
-# # file_name = 'mirror_trajectories_examples'
-# file_name = 'mirror_trajectories_examples_with_RF'
-# beingsaved = plt.figure(6)
-# # beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
+save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/research_update/pics/'
+
+# file_name = 'mirror_trajectories_metrics'
+# beingsaved = plt.figure(2)
+# beingsaved.savefig(save_dir + file_name + '.pdf', format='pdf')
+
+# file_name = 'mirror_trajectories_examples_noRF'
+# file_name = 'mirror_trajectories_examples_REF'
+# file_name = 'mirror_trajectories_examples_REF_slope_chirp'
+# beingsaved = plt.figure(1)
 # beingsaved.savefig(save_dir + file_name + '.pdf', format='pdf')

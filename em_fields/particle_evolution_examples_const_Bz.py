@@ -35,7 +35,6 @@ for ind_sim in range(1):
     # field_dict['mirror_field_type'] = 'logan'
 
     field_dict['RF_type'] = 'electric_transverse'
-    # field_dict['RF_type'] = 'electric_transverse_v2'
     # field_dict['E_RF_kVm'] = 0
     # field_dict['E_RF_kVm'] = 1
     # field_dict['E_RF_kVm'] = 10

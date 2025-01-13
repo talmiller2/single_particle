@@ -91,8 +91,7 @@ for ind_point in settings['points_set']:
         # pick the indices where the magnetic field crosses the minimum
         B_mirror = []
         for x_curr, t_curr in zip(hist['x'], hist['t']):
-            B_mirror += [get_mirror_magnetic_field(x_curr, field_dict['B0'], field_dict['Rm'], field_dict['l'],
-                                                   mirror_field_type=field_dict['mirror_field_type'])]
+            B_mirror += [get_mirror_magnetic_field(x_curr, field_dict)]
         Bz_mirror = np.array(B_mirror)[:, 2]
         inds_Bz_mirror_extrema = list(argrelextrema(abs(Bz_mirror - field_dict['B0']), np.less)[0])
         inds_Bz_mirror_extrema.insert(0, 0)  # add the initial point

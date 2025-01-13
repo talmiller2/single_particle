@@ -107,6 +107,24 @@ def define_default_field(settings, field_dict=None):
     field_dict['l'] = settings['l']
     field_dict['z_0'] = settings['z_0']
 
+    # mirror slope properties
+    if 'use_mirror_slope' not in field_dict:
+        field_dict['use_mirror_slope'] = False
+    if 'B_slope' not in field_dict:
+        field_dict['B_slope'] = 1.0  # [T]
+    if 'B_slope_smooth_length' not in field_dict:
+        field_dict['B_slope_smooth_length'] = 0.2
+
+    # RF chirp properties
+    if 'use_RF_chirp' not in field_dict:
+        field_dict['use_RF_chirp'] = False
+    if 'RF_chirp_period' not in field_dict:
+        field_dict['RF_chirp_period'] = 1e3
+    if 'RF_chirp_amplitude' not in field_dict:
+        field_dict['RF_chirp_amplitude'] = 0.1
+    if 'RF_chirp_time_offset' not in field_dict:
+        field_dict['RF_chirp_time_offset'] = 0
+
     # RF properties
     if 'clockwise' not in field_dict:
         if field_dict['B0'] == 0:  # pick a default
