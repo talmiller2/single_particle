@@ -22,16 +22,16 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
-
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
@@ -41,9 +41,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -53,21 +53,21 @@ set_name_list = []
 # select_beta_list += [-1.8]
 # set_name_list += ['1']
 
-# select_alpha_list += [0.7]
-# select_beta_list += [-0.8]
-# set_name_list += ['2']
+select_alpha_list += [0.7]
+select_beta_list += [-0.8]
+set_name_list += ['2']
 
 select_alpha_list += [1.06]
 select_beta_list += [-1.8]
 set_name_list += ['3']
 
-# select_alpha_list += [1.12]
-# select_beta_list += [1.4]
-# set_name_list += ['4']
+select_alpha_list += [1.12]
+select_beta_list += [1.4]
+set_name_list += ['4']
 
-# select_alpha_list += [0.88]
-# select_beta_list += [0.0]
-# set_name_list += ['5']
+select_alpha_list += [0.88]
+select_beta_list += [0.0]
+set_name_list += ['5']
 
 # select_alpha_list += [1.48]
 # select_beta_list += [-1.4]
@@ -77,11 +77,11 @@ use_RF = True
 # use_RF = False
 # with_kr_correction = False
 with_kr_correction = True
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 # time_step_tau_cyclotron_divisions = 40
 time_step_tau_cyclotron_divisions = 50
@@ -221,7 +221,7 @@ for gas_name in gas_name_list:
             vz_adjusted = np.zeros(len(inds_particles))
             # vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
             vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(
-                det[inds_positive])  # TODO: updated criterion
+                det[inds_positive])  # updated criterion
 
             theta_adjusted = 90.0 * np.ones(len(inds_particles))  # if det<0 particle probably close to vz=0
             theta_adjusted[inds_positive] = np.mod(
@@ -326,16 +326,16 @@ for gas_name in gas_name_list:
         plot_line(t_array, N_lr_tilde, label='$\\bar{N}_{lr}$', color='brown', linestyle=linestyle1,
                   plot_saturation=plot_saturation)
 
-        LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
-        trapped_ini_fraction = 1 - 2 * LC_ini_fraction
-
-        cone_escape_rate_R = (N_rc_tilde * LC_ini_fraction - N_cr_tilde * trapped_ini_fraction) / LC_ini_fraction
-        plot_line(t_array, cone_escape_rate_R, label='$(N_{rc}-N_{cr})/N_{cone}$', color='b', linestyle=linestyle2,
-                  plot_saturation=plot_saturation)
-
-        cone_escape_rate_L = (N_lc_tilde * LC_ini_fraction - N_cl_tilde * trapped_ini_fraction) / LC_ini_fraction
-        plot_line(t_array, cone_escape_rate_L, label='$(N_{lc}-N_{cl})/N_{cone}$', color='r', linestyle=linestyle2,
-                  plot_saturation=plot_saturation)
+        # LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
+        # trapped_ini_fraction = 1 - 2 * LC_ini_fraction
+        #
+        # cone_escape_rate_R = (N_rc_tilde * LC_ini_fraction - N_cr_tilde * trapped_ini_fraction) / LC_ini_fraction
+        # plot_line(t_array, cone_escape_rate_R, label='$(N_{rc}-N_{cr})/N_{cone}$', color='b', linestyle=linestyle2,
+        #           plot_saturation=plot_saturation)
+        #
+        # cone_escape_rate_L = (N_lc_tilde * LC_ini_fraction - N_cl_tilde * trapped_ini_fraction) / LC_ini_fraction
+        # plot_line(t_array, cone_escape_rate_L, label='$(N_{lc}-N_{cl})/N_{cone}$', color='r', linestyle=linestyle2,
+        #           plot_saturation=plot_saturation)
 
         # ax.set_xlabel('$t \\cdot v_{th} / l$')
         # ax.set_xlabel('t/($l/v_{th,T}$)', fontsize=12)

@@ -70,8 +70,10 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
+# save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
 # save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
 plt.close('all')
 
@@ -121,8 +123,11 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
 # beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52, 53
+# beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
+beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
 # # specific values for set48
 # select_alpha_list = []
@@ -291,8 +296,8 @@ for gas_name in gas_name_list:
                     field_dict = define_default_field(settings, field_dict)
 
                     # simulation duration
-                    settings['num_snapshots'] = 30
-                    # settings['num_snapshots'] = 10 * 30  # for specific runs, set 48
+                    # settings['num_snapshots'] = 30
+                    settings['num_snapshots'] = 50
 
                     # tmax_mirror_lengths = 2
                     # sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
@@ -351,9 +356,10 @@ for gas_name in gas_name_list:
                     # total_number_of_points = 1
                     # total_number_of_points = 40
                     # total_number_of_points = 1000
-                    total_number_of_points = 2500
+                    # total_number_of_points = 2500
                     # total_number_of_points = 3000
                     # total_number_of_points = 5000
+                    total_number_of_points = 10000
 
                     # allow reproducibility
                     np.random.seed(0)

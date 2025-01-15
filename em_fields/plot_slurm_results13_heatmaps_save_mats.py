@@ -283,11 +283,8 @@ for theta_type in theta_type_list:
 
                                         theta_adjusted = 90.0 * np.ones(
                                             len(inds_particles))  # if det<0 particle probably close to vz=0
-                                        theta_adjusted[inds_positive] = np.mod(360 / (2 * np.pi)
-                                                                               * np.arctan(vt_adjusted[inds_positive]
-                                                                                           / vz_adjusted[
-                                                                                               inds_positive]),
-                                                                               180)
+                                        theta_adjusted[inds_positive] = np.mod(360 / (2 * np.pi) * np.arctan(
+                                            vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
                                         if ind_t == 0:
                                             inds_bins_ini = []
