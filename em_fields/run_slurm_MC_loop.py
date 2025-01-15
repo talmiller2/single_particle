@@ -306,8 +306,9 @@ for gas_name in gas_name_list:
                     # settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
                     # settings['t_max'] = 2.2937178074285e-06 (sets 47 and before)
                     # settings['t_max'] = 2.3e-05  # longer time for specific runs (set 48)
-                    settings['t_max'] = 5 * settings['l'] / settings[
-                        'v_th']  # longer time that depends on D,T v_th (set 49)
+                    # settings['t_max'] = 5 * settings['l'] / settings['v_th']  # longer time that depends on D,T v_th (set 49)
+                    settings['t_max'] = 1 * settings['l'] / settings[
+                        'v_th']  # shorter time that depends on D,T v_th (set 49)
                     settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
                     if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
                         settings['num_steps'] = int(1e10)
