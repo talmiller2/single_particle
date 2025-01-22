@@ -46,7 +46,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'  # TODO: 5x5 treat locally
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/' # TODO: 21x21 treat later, with parallelism on cluster
 
-save_dir_curr = save_dir + 'without_RF'
+# save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
 with open(settings_file, 'rb') as fid:
     settings = pickle.load(fid)
@@ -174,8 +174,6 @@ for theta_type in theta_type_list:
                                 for ind_alpha, alpha in enumerate(alpha_loop_list):
                                     ind_file += 1
 
-                                    # print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
-
                                     set_name = ''
                                     if use_RF is False:
                                         set_name += 'without_RF'
@@ -204,6 +202,7 @@ for theta_type in theta_type_list:
 
                                     # print(set_name)
                                     print('#' + str(ind_file) + '/' + str(num_files) + ': ' + set_name)
+                                    print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
 
                                     save_dir_curr = save_dir + set_name
                                     # load runs data
