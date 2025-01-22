@@ -168,7 +168,7 @@ for theta_type in theta_type_list:
                         settings['gas_name'] = gas_name
                         settings['compiled_save_file'] = compiled_save_file
 
-                        # checking if the save file already exists
+                        #  checking if the save file already exists
                         if os.path.exists(compiled_save_file):
                             print('already exists, not running.')
                         else:
