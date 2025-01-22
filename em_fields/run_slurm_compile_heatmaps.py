@@ -119,6 +119,8 @@ time_step_tau_cyclotron_divisions = 50
 # theta_type_list = ['sign_vz0', 'sign_vz']
 theta_type_list = ['sign_vz']
 
+os.chdir(save_dir)
+
 for theta_type in theta_type_list:
     for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
         for gas_name in gas_name_list:

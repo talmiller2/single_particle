@@ -25,7 +25,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-plt.close('all')
+# plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -95,6 +95,7 @@ LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
 # RF_type = 'electric_transverse'
+# E_RF_kVm = 25  # [kV/m]
 # E_RF_kVm = 50  # [kV/m]
 RF_type = 'magnetic_transverse'
 B_RF = 0.02  # [T]
