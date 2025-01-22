@@ -6,7 +6,6 @@ import pandas as pd
 import seaborn as sns
 from scipy.io import loadmat
 
-#
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_cyclotron_angular_frequency
 from em_fields.plot_functions import update_format_coord
