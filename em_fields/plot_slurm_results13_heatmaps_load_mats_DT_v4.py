@@ -121,9 +121,9 @@ radial_distribution = 'uniform'
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-# gas_name = 'deuterium'
+gas_name = 'deuterium'
 # gas_name = 'DT_mix'
-gas_name = 'tritium'
+# gas_name = 'tritium'
 
 set_name = 'compiled_'
 set_name += theta_type + '_'
@@ -151,12 +151,12 @@ save_file = save_dir + '/' + set_name + '.mat'
 mat_dict_1 = loadmat(save_file)
 alpha_loop_list = mat_dict_1['alpha_loop_list'][0]
 beta_loop_list = mat_dict_1['beta_loop_list'][0]
-N_rc_1 = mat_dict_1['N_rc']
-N_lc_1 = mat_dict_1['N_lc']
-N_cr_1 = mat_dict_1['N_cr']
-N_cl_1 = mat_dict_1['N_cl']
-N_rl_1 = mat_dict_1['N_rl']
-N_lr_1 = mat_dict_1['N_lr']
+N_rc_1 = mat_dict_1['N_rc_end']
+N_lc_1 = mat_dict_1['N_lc_end']
+N_cr_1 = mat_dict_1['N_cr_end']
+N_cl_1 = mat_dict_1['N_cl_end']
+N_rl_1 = mat_dict_1['N_rl_end']
+N_lr_1 = mat_dict_1['N_lr_end']
 percent_ok_1 = mat_dict_1['percent_ok']
 E_ratio_mean_1 = mat_dict_1['E_ratio_mean']
 selectivity_1 = N_rc_1 / N_lc_1
@@ -189,12 +189,12 @@ print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
 mat_dict_2 = loadmat(save_file)
-N_rc_2 = mat_dict_2['N_rc']
-N_lc_2 = mat_dict_2['N_lc']
-N_cr_2 = mat_dict_2['N_cr']
-N_cl_2 = mat_dict_2['N_cl']
-N_rl_2 = mat_dict_2['N_rl']
-N_lr_2 = mat_dict_2['N_lr']
+N_rc_2 = mat_dict_2['N_rc_end']
+N_lc_2 = mat_dict_2['N_lc_end']
+N_cr_2 = mat_dict_2['N_cr_end']
+N_cl_2 = mat_dict_2['N_cl_end']
+N_rl_2 = mat_dict_2['N_rl_end']
+N_lr_2 = mat_dict_2['N_lr_end']
 percent_ok_2 = mat_dict_2['percent_ok']
 E_ratio_mean_2 = mat_dict_2['E_ratio_mean']
 selectivity_2 = N_rc_2 / N_lc_2
@@ -488,12 +488,14 @@ if do_plots == True:
     processes = ['rc', 'cr', 'rl', 'lc', 'cl', 'lr']
     ind_rows = [0, 0, 0, 1, 1, 1]
     ind_cols = [0, 1, 2, 0, 1, 2]
+    process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
 
+    # rate numbers
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_1
     gas_name = ' (D)'
     for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
-        Z = mat_dict['N_' + process]
+        Z = mat_dict['N_' + process + '_end']
         title = '$N_{' + process + '}$' + gas_name
         ax = axes[ind_row, ind_col]
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
@@ -502,7 +504,46 @@ if do_plots == True:
     mat_dict = mat_dict_2
     gas_name = ' (T)'
     for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
-        Z = mat_dict['N_' + process]
+        Z = mat_dict['N_' + process + '_end']
         title = '$N_{' + process + '}$' + gas_name
         ax = axes[ind_row, ind_col]
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+
+    # curves
+    fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
+    mat_dict = mat_dict_1
+    t_array = mat_dict['t_array_normed'][0]
+    for ind_beta, beta_curr in enumerate(beta_loop_list):
+        for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
+            ax = axes[ind_alpha, ind_beta]
+            for process, process_color in zip(processes, process_colors):
+                curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
+                curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
+                ax.plot(t_array, curve_mean, color=process_color)
+                ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
+                                alpha=0.5)
+                ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
+                ax.set_xticks([])
+                ax.set_yticks([])
+                ax.set_ylim([0, 1])
+    fig.suptitle('(D)')
+    fig.set_layout_engine(layout='tight')
+
+    fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
+    mat_dict = mat_dict_2
+    t_array = mat_dict['t_array_normed'][0]
+    for ind_beta, beta_curr in enumerate(beta_loop_list):
+        for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
+            ax = axes[ind_alpha, ind_beta]
+            for process, process_color in zip(processes, process_colors):
+                curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
+                curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
+                ax.plot(t_array, curve_mean, color=process_color)
+                ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
+                                alpha=0.5)
+                ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
+                ax.set_xticks([])
+                ax.set_yticks([])
+                ax.set_ylim([0, 1])
+    fig.suptitle('(T)')
+    fig.set_layout_engine(layout='tight')

@@ -260,12 +260,12 @@ for gas_name in gas_name_list:
     # fig.suptitle(title)
 
     ## calculate the saturation value to estimate the rate
-    # inds_t_saturation = range(7, 21)
-    # inds_t_saturation = range(2, 3)
+    # inds_t_avg = range(7, 21)
+    # inds_t_avg = range(2, 3)
     inds_t_saturation = range(15, 31)  # for 2023 paper
-    # inds_t_saturation = range(15, 29)
+    # inds_t_avg = range(15, 29)
 
-    # inds_t_saturation = range(len(t_array))
+    # inds_t_avg = range(len(t_array))
 
     N_curr = particles_counter_mat2_3d[0, 1, :]
     saturation_value = np.mean(N_curr[inds_t_saturation])
@@ -305,7 +305,7 @@ for gas_name in gas_name_list:
     N_cr = particles_counter_mat2_3d[1, 0, :]
     cone_escape_rate_1 = (N_rc * LC_ini_fraction - N_cr * trapped_ini_fraction) / LC_ini_fraction
     N_curr = cone_escape_rate_1
-    # saturation_value = np.mean(N_curr[inds_t_saturation])
+    # saturation_value = np.mean(N_curr[inds_t_avg])
     label = '$(N_{rc}-N_{cr})/N_{cone}$'
     # label += '=' + '{:.3f}'.format(saturation_value)
     ax.plot(t_array, N_curr, color='black', linestyle='-', label=label)

@@ -283,8 +283,8 @@ for gas_name in gas_name_list:
         # fig.suptitle(title)
 
         ## calculate the saturation value to estimate the rate
-        # inds_t_saturation = range(15, 31) # for 2023 paper
-        # inds_t_saturation = range(15, 29)
+        # inds_t_avg = range(15, 31) # for 2023 paper
+        # inds_t_avg = range(15, 29)
         inds_t_saturation = range(15, 30)  # for 2024 paper
 
 

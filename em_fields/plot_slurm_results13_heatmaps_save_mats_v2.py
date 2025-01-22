@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import savemat
 
+from em_fields.default_settings import define_plasma_parameters
+from em_fields.em_functions import get_thermal_velocity
+
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
 # plt.rcParams.update({'font.size': 8})
@@ -14,8 +17,8 @@ plt.rcParams.update({'font.size': 12})
 
 plt.close('all')
 
-save_dir = '/home/talm/code/single_particle/slurm_runs/'
-# save_dir = '/Users/talmiller/Downloads/single_particle/'
+# save_dir = '/home/talm/code/single_particle/slurm_runs/'
+save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -38,8 +41,10 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
+# save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
 # save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'  # TODO: 5x5 treat locally
+# save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/' # TODO: 21x21 treat later, with parallelism on cluster
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -48,8 +53,6 @@ with open(settings_file, 'rb') as fid:
 field_dict_file = save_dir + 'field_dict.pickle'
 with open(field_dict_file, 'rb') as fid:
     field_dict = pickle.load(fid)
-
-
 
 use_RF = True
 # use_RF = False
@@ -96,20 +99,20 @@ radial_distribution = 'uniform'
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
 # beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52
+# beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
+beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
 gas_name_list = ['deuterium', 'tritium']
 
 RF_type_list = []
 RF_amplitude_list = []
-RF_type_list += ['magnetic_transverse']
-# RF_amplitude_list = [0.02, 0.04, 0.08]  # [T]
-# RF_amplitude_list += [0.04]  # [T]
-RF_amplitude_list += [0.08]  # [T]
-# RF_type_list += ['electric_transverse']
-# RF_amplitude_list += [50]  # kV/m
+RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
+RF_amplitude_list = [0.02, 0.04]  # [T]
+RF_type_list += ['electric_transverse', 'electric_transverse']
+RF_amplitude_list += [25, 50]  # kV/m
 
 # sigma_r0_list = [0.1]
 sigma_r0_list = [0.05]
@@ -160,21 +163,18 @@ for theta_type in theta_type_list:
                             num_files = len(alpha_loop_list) * len(beta_loop_list)
                             ind_file = 0
 
-                            N_rc = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            N_lc = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            N_cr = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            N_cl = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            N_rl = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            N_lr = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            percent_ok = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
-                            E_ratio_mean = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+                            process_names = ['rc', 'lc', 'cr', 'cl', 'rl', 'lr']
+                            process_index_pairs = [(0, 1), (2, 1), (1, 0), (1, 2), (0, 2), (2, 0)]
+
+                            compiled_dict = {}
+                            compiled_dict['alpha_loop_list'] = alpha_loop_list
+                            compiled_dict['beta_loop_list'] = beta_loop_list
 
                             for ind_beta, beta in enumerate(beta_loop_list):
                                 for ind_alpha, alpha in enumerate(alpha_loop_list):
                                     ind_file += 1
 
                                     # print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
-                                    # try:
 
                                     set_name = ''
                                     if use_RF is False:
@@ -211,19 +211,49 @@ for theta_type in theta_type_list:
                                     with open(data_dict_file, 'rb') as fid:
                                         data_dict = pickle.load(fid)
 
-                                    # for key in data_dict.keys():
-                                    #     data_dict[key] = np.array(data_dict[key])
-
                                     # filter out the particles that ended prematurely
-                                    len_t_expected = 30
+                                    len_t_expected = len(data_dict['t'][0])
                                     num_particles = len(data_dict['t'])
+
+                                    if ind_alpha == 0 and ind_beta == 0:
+
+                                        _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+                                        v_th = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
+                                        t_array = data_dict['t'][0] / (settings['l'] / v_th)
+
+                                        compiled_dict['t_array_normed'] = t_array
+                                        compiled_dict['l'] = settings['l']
+                                        compiled_dict['v_th'] = settings['v_th']
+
+                                        zero_mat = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
+                                        for process_name in process_names:
+                                            for suffix in ['end', 'end_std']:
+                                                compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(
+                                                    zero_mat)
+
+                                        for key in ['percent_ok', 'E_ratio_mean']:
+                                            compiled_dict[key] = copy.deepcopy(zero_mat)
+
+                                        zero_tensor = np.nan * np.zeros(
+                                            [len(beta_loop_list), len(alpha_loop_list), len(t_array)])
+                                        for process_name in process_names:
+                                            for suffix in ['curve_mean', 'curve_std']:
+                                                compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(
+                                                    zero_tensor)
+
+                                    # calc percent_ok
                                     inds_ok = []
                                     for ind_particle, t in enumerate(data_dict['t']):
                                         if len(t) == len_t_expected:
                                             inds_ok += [ind_particle]
-                                    percent_ok_curr = len(inds_ok) / num_particles * 100
+                                    compiled_dict['percent_ok'][ind_beta, ind_alpha] = len(
+                                        inds_ok) / num_particles * 100
+
                                     for key in data_dict.keys():
-                                        data_dict[key] = np.array([data_dict[key][i][0:30] for i in inds_ok])
+                                        data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
+
+                                    compiled_dict['E_ratio_mean'][ind_beta, ind_alpha] = np.nanmean(
+                                        data_dict['v'][:, -1] ** 2) / np.nanmean(data_dict['v'][:, 0] ** 2)
 
                                     # divide the phase space by the angle
                                     if ind_beta == 0 and ind_alpha == 0:
@@ -242,118 +272,89 @@ for theta_type in theta_type_list:
                                             theta_bins_max_list += [theta_bins_max_list[-1] + dtheta_LC]
                                         theta_bins_min_list = [0] + theta_bins_max_list[:-1]
 
-                                    # number_of_time_intervals = 3
-                                    number_of_time_intervals = data_dict['t'].shape[1]
-                                    # number_of_time_intervals = 5
+                                    number_of_time_intervals = len(data_dict['t'][0])
+                                    num_bootstrap_samples = 10
+                                    particles_counter_mat_4d = np.zeros(
+                                        [N_theta, N_theta, number_of_time_intervals, num_bootstrap_samples])
 
-                                    particles_counter_mat_3d = np.zeros([N_theta, N_theta, number_of_time_intervals])
-
-                                    for ind_t in range(number_of_time_intervals):
-
-                                        inds_particles = range(data_dict['t'].shape[0])
-                                        # inds_particles = [0, 1, 2]
-                                        # inds_particles = range(1001)
-                                        # if ind_t == 0:
-                                        #     print('num particles = ' + str(len(inds_particles)))
-
-                                        v = data_dict['v'][inds_particles, ind_t]
-                                        v0 = data_dict['v'][inds_particles, 0]
-                                        vt = data_dict['v_transverse'][inds_particles, ind_t]
-                                        vt0 = data_dict['v_transverse'][inds_particles, 0]
-                                        vz = data_dict['v_axial'][inds_particles, ind_t]
-                                        vz0 = data_dict['v_axial'][inds_particles, 0]
-                                        theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
-                                        Bz = data_dict['Bz'][inds_particles, ind_t]
-                                        Bz0 = data_dict['Bz'][inds_particles, 0]
-                                        vt_adjusted = vt * np.sqrt(
-                                            Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
-
-                                        det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
-                                        inds_positive = np.where(det > 0)[0]
-                                        vz_adjusted = np.zeros(len(inds_particles))
-
-                                        if theta_type == 'sign_vz0':
-                                            vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(
-                                                det[inds_positive])
-                                        elif theta_type == 'sign_vz':
-                                            vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(
-                                                det[inds_positive])
+                                    for ind_boot in range(num_bootstrap_samples):
+                                        if ind_boot == 0:
+                                            inds_particles = range(num_particles)
                                         else:
-                                            raise ValueError('invalid theta_type:', theta_type)
+                                            inds_particles = np.random.randint(low=0, high=num_particles,
+                                                                               size=num_particles)  # random set of particles
 
-                                        theta_adjusted = 90.0 * np.ones(
-                                            len(inds_particles))  # if det<0 particle probably close to vz=0
-                                        theta_adjusted[inds_positive] = np.mod(360 / (2 * np.pi) * np.arctan(
-                                            vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
+                                        for ind_t in range(number_of_time_intervals):
 
-                                        if ind_t == 0:
-                                            inds_bins_ini = []
-                                        particles_counter_mat = np.zeros([N_theta, N_theta])
+                                            v = data_dict['v'][inds_particles, ind_t]
+                                            v0 = data_dict['v'][inds_particles, 0]
+                                            vt = data_dict['v_transverse'][inds_particles, ind_t]
+                                            vt0 = data_dict['v_transverse'][inds_particles, 0]
+                                            vz = data_dict['v_axial'][inds_particles, ind_t]
+                                            vz0 = data_dict['v_axial'][inds_particles, 0]
+                                            theta = np.mod(360 / (2 * np.pi) * np.arctan(vt / vz), 180)
+                                            Bz = data_dict['Bz'][inds_particles, ind_t]
+                                            Bz0 = data_dict['Bz'][inds_particles, 0]
+                                            vt_adjusted = vt * np.sqrt(
+                                                Bz0 / Bz)  # no need to adjust v to B_min because energy is conserved (assuming no RF)
 
-                                        for ind_p in inds_particles:
-                                            theta_curr = theta_adjusted[ind_p]
-                                            ind_bin_fin = \
-                                                [k for k, (t1, t2) in
-                                                 enumerate(zip(theta_bins_min_list, theta_bins_max_list))
-                                                 if theta_curr > t1 and theta_curr <= t2][0]
+                                            det = vz ** 2.0 + vt ** 2.0 * (1 - Bz0 / Bz)
+                                            inds_positive = np.where(det > 0)[0]
+
+                                            vz_adjusted = np.zeros(len(inds_particles))
+                                            # vz_adjusted[inds_positive] = np.sign(vz0[inds_positive]) * np.sqrt(det[inds_positive])
+                                            vz_adjusted[inds_positive] = np.sign(vz[inds_positive]) * np.sqrt(
+                                                det[inds_positive])  # updated criterion
+
+                                            theta_adjusted = 90.0 * np.ones(
+                                                len(inds_particles))  # if det<0 particle probably close to vz=0
+                                            theta_adjusted[inds_positive] = np.mod(360 / (2 * np.pi) * np.arctan(
+                                                vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
+
+                                            # initialize
                                             if ind_t == 0:
-                                                inds_bins_ini += [ind_bin_fin]
+                                                inds_bins_ini = [np.nan for _ in range(num_particles)]
 
-                                            ind_bin_ini = inds_bins_ini[ind_p]
+                                            particles_counter_mat = np.zeros([N_theta, N_theta])
 
-                                            particles_counter_mat[ind_bin_ini, ind_bin_fin] += 1
+                                            for ind_p in inds_particles:
+                                                theta_curr = theta_adjusted[ind_p]
+                                                ind_bin_fin = [k for k, (t1, t2) in
+                                                               enumerate(zip(theta_bins_min_list, theta_bins_max_list))
+                                                               if theta_curr > t1 and theta_curr <= t2][0]
+                                                if ind_t == 0:
+                                                    inds_bins_ini[ind_p] = ind_bin_fin
+                                                ind_bin_ini = inds_bins_ini[ind_p]
 
-                                        if ind_t == 0:
-                                            N0 = copy.deepcopy(np.diag(particles_counter_mat))
+                                                particles_counter_mat[ind_bin_ini, ind_bin_fin] += 1
 
-                                        particles_counter_mat_3d[:, :, ind_t] = particles_counter_mat
+                                            if ind_t == 0:
+                                                N0 = copy.deepcopy(np.diag(particles_counter_mat))
 
-                                    # divide all densities by the parent initial density
-                                    for ind_t in range(number_of_time_intervals):
-                                        for ind_bin in range(N_theta):
-                                            particles_counter_mat_3d[ind_bin, :, ind_t] /= (1.0 * N0[ind_bin])
+                                            particles_counter_mat_4d[:, :, ind_t, ind_boot] = particles_counter_mat
 
-                                    t_array = data_dict['t'][0]
-                                    t_array /= settings['l'] / settings['v_th']
+                                        # divide all densities by the parent initial density
+                                        for ind_t in range(number_of_time_intervals):
+                                            for ind_bin in range(N_theta):
+                                                particles_counter_mat_4d[ind_bin, :, ind_t, ind_boot] /= (
+                                                            1.0 * N0[ind_bin])
 
-                                    # calc the saturattion value
-                                    for i, j in [[0, 1], [N_theta - 1, N_theta - 2]]:
-                                        # inds_t_avg = range(7, 21)
-                                        # inds_t_avg = range(15, 31) # for 2023 paper
-                                        inds_t_saturation = range(15, 30)  # for 2024 paper
-                                        # inds_t_avg = range(len(t_array))
-                                        saturation_value = np.mean(particles_counter_mat_3d[i, j, inds_t_saturation])
+                                    # compile the results from the bootstrap procedure
+                                    for process_name, process_index_pair in zip(process_names, process_index_pairs):
+                                        pi, pj = process_index_pair[0], process_index_pair[1]
+                                        compiled_dict['N_' + process_name + '_curve_mean'][
+                                            ind_beta, ind_alpha] = np.mean(particles_counter_mat_4d[pi, pj, :, :],
+                                                                           axis=1)
+                                        compiled_dict['N_' + process_name + '_curve_std'][ind_beta, ind_alpha] = np.std(
+                                            particles_counter_mat_4d[pi, pj, :, :], axis=1)
 
-                                    N_rc[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[0, 1, inds_t_saturation])
-                                    N_lc[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[2, 1, inds_t_saturation])
-                                    N_cr[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[1, 0, inds_t_saturation])
-                                    N_cl[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[1, 2, inds_t_saturation])
-                                    N_rl[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[0, 2, inds_t_saturation])
-                                    N_lr[ind_beta, ind_alpha] = np.mean(
-                                        particles_counter_mat_3d[2, 0, inds_t_saturation])
-                                    percent_ok[ind_beta, ind_alpha] = percent_ok_curr
-                                    E_ratio_mean[ind_beta, ind_alpha] = (
-                                                np.mean(data_dict['v'][inds_particles, -1] ** 2)
-                                                / np.mean(data_dict['v'][inds_particles, 0] ** 2))
+                                        num_t_inds_avg = 5
+                                        inds_t_avg = range(number_of_time_intervals - num_t_inds_avg,
+                                                           number_of_time_intervals)  # only the last few indices
+                                        compiled_dict['N_' + process_name + '_end'][ind_beta, ind_alpha] = np.mean(
+                                            particles_counter_mat_4d[pi, pj, inds_t_avg, 0])
+                                        compiled_dict['N_' + process_name + '_end_std'][ind_beta, ind_alpha] = np.std(
+                                            particles_counter_mat_4d[pi, pj, inds_t_avg, :])
 
-                                    # except:
-                                    #     print('*** FAILED ***')
-
-                            mat_dict = {}
-                            mat_dict['alpha_loop_list'] = alpha_loop_list
-                            mat_dict['beta_loop_list'] = beta_loop_list
-                            mat_dict['N_rc'] = N_rc
-                            mat_dict['N_lc'] = N_lc
-                            mat_dict['N_cr'] = N_cr
-                            mat_dict['N_cl'] = N_cl
-                            mat_dict['N_rl'] = N_rl
-                            mat_dict['N_lr'] = N_lr
-                            mat_dict['percent_ok'] = percent_ok
-                            mat_dict['E_ratio_mean'] = E_ratio_mean
-
-                            savemat(compiled_save_file, mat_dict)
+                            # save the compiled data for all alpha, beta matrix
+                            savemat(compiled_save_file, compiled_dict)

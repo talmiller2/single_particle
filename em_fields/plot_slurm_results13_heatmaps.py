@@ -264,10 +264,10 @@ for ind_beta, beta in enumerate(beta_loop_list):
 
             # calc the saturattion value
             for i, j in [[0, 1], [N_theta - 1, N_theta - 2]]:
-                # inds_t_saturation = range(7, 21)
+                # inds_t_avg = range(7, 21)
                 inds_t_saturation = range(15, 31)
-                # inds_t_saturation = range(15, 34)
-                # inds_t_saturation = range(len(t_array))
+                # inds_t_avg = range(15, 34)
+                # inds_t_avg = range(len(t_array))
                 saturation_value = np.mean(particles_counter_mat2_3d[i, j, inds_t_saturation])
                 nu = saturation_value / 1.0
                 if i == 0 and j == 1:
