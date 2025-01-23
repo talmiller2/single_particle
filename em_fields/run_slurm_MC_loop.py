@@ -200,8 +200,8 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             for beta, alpha in zip(beta_loop_list, alpha_loop_list):
                                 combinations_list += [{'alpha': alpha, 'beta': beta}]
 
-                        totol_combinations = len(combinations_list)
-                        print('totol_combinations = ' + str(totol_combinations))
+                        total_combinations = len(combinations_list)
+                        print('totol_combinations = ' + str(total_combinations))
 
                         # divide the points to a given number of cpus
                         num_cpus = 1
@@ -214,7 +214,7 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                         for combination in combinations_list:
                             alpha = combination['alpha']
                             beta = combination['beta']
-                            print('run combination #' + str(cnt_combination) + '/' + str(totol_combinations)
+                            print('run combination #' + str(cnt_combination) + '/' + str(total_combinations)
                                   + ': alpha=' + str(alpha) + ', beta=' + str(beta))
 
                             # define settings
