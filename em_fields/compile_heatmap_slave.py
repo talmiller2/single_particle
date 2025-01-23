@@ -101,8 +101,9 @@ else:
 
             if ind_alpha == 0 and ind_beta == 0:
 
-                compiled_dict['t_array'] = np.array(data_dict['t'][0])
-                compiled_dict['t_array_normed'] = compiled_dict['t_array'] / (l / v_th)
+                t_array = np.array(data_dict['t'][0])
+                compiled_dict['t_array'] = t_array
+                compiled_dict['t_array_normed'] = t_array / (l / v_th)
 
                 zero_mat = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
                 for process_name in process_names:
