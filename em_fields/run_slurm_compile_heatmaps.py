@@ -175,7 +175,6 @@ for theta_type in theta_type_list:
                             print('already exists, not running.')
                         else:
                             command = compile_heatmap_slave_script + ' --settings "' + str(settings) + '"'
-                            slurm_run_name = 'compile_' + set_name
-                            print('running', slurm_run_name)
-                            s = Slurm(slurm_run_name, slurm_kwargs=slurm_kwargs)
+                            print('running', set_name)
+                            s = Slurm(set_name, slurm_kwargs=slurm_kwargs)
                             s.run(command, local=local)
