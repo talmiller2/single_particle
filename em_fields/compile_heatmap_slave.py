@@ -9,36 +9,36 @@ import pickle
 import numpy as np
 from scipy.io import savemat
 
-from em_fields.default_settings import define_plasma_parameters
-from em_fields.em_functions import get_thermal_velocity
-
 parser = argparse.ArgumentParser()
-parser.add_argument('--settings', help='settings (dict) for the compilation',
+parser.add_argument('--passed_dict', help='settings dict for the compilation',
                     type=str, required=True)
 
 args = parser.parse_args()
-print('args.settings = ' + str(args.settings))
-settings = ast.literal_eval(args.settings)
+print('args.passed_dict = ' + str(args.passed_dict))
+passed_dict = ast.literal_eval(args.passed_dict)
 
 ###########
 
 # extract variables from passed dict
+use_RF = passed_dict['use_RF']
+alpha_loop_list = passed_dict['alpha_loop_list']
+beta_loop_list = passed_dict['beta_loop_list']
+save_dir = passed_dict['save_dir']
+set_name = passed_dict['set_name']
+RF_type = passed_dict['RF_type']
+RF_amplitude = passed_dict['RF_amplitude']
+induced_fields_factor = passed_dict['induced_fields_factor']
+with_kr_correction = passed_dict['with_kr_correction']
+time_step_tau_cyclotron_divisions = passed_dict['time_step_tau_cyclotron_divisions']
+absolute_velocity_sampling_type = passed_dict['absolute_velocity_sampling_type']
+sigma_r0 = passed_dict['sigma_r0']
+radial_distribution = passed_dict['radial_distribution']
+gas_name = passed_dict['gas_name']
+compiled_save_file = passed_dict['compiled_save_file']
+Rm = passed_dict['Rm']
+l = passed_dict['l']
+v_th = passed_dict['v_th']
 
-use_RF = settings['use_RF']
-alpha_loop_list = settings['alpha_loop_list']
-beta_loop_list = settings['beta_loop_list']
-save_dir = settings['save_dir']
-set_name = settings['set_name']
-RF_type = settings['RF_type']
-RF_amplitude = settings['RF_amplitude']
-induced_fields_factor = settings['induced_fields_factor']
-with_kr_correction = settings['with_kr_correction']
-time_step_tau_cyclotron_divisions = settings['time_step_tau_cyclotron_divisions']
-absolute_velocity_sampling_type = settings['absolute_velocity_sampling_type']
-sigma_r0 = settings['sigma_r0']
-radial_distribution = settings['radial_distribution']
-gas_name = settings['gas_name']
-compiled_save_file = settings['compiled_save_file']
 
 print('****** compiled_save_file', compiled_save_file)
 
@@ -75,7 +75,6 @@ else:
                     set_name += '_iff' + str(induced_fields_factor)
                 if with_kr_correction == True:
                     set_name += '_withkrcor'
-
             set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
             if absolute_velocity_sampling_type == 'const_vth':
                 set_name += '_const_vth'
@@ -102,13 +101,8 @@ else:
 
             if ind_alpha == 0 and ind_beta == 0:
 
-                _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
-                v_th = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
-                t_array = data_dict['t'][0] / (settings['l'] / v_th)
-
-                compiled_dict['t_array_normed'] = t_array
-                compiled_dict['l'] = settings['l']
-                compiled_dict['v_th'] = settings['v_th']
+                compiled_dict['t_array'] = data_dict['t'][0]
+                compiled_dict['t_array_normed'] = data_dict['t'][0] / (l / v_th)
 
                 zero_mat = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list)])
                 for process_name in process_names:
@@ -138,7 +132,7 @@ else:
 
             # divide the phase space by the angle
             if ind_beta == 0 and ind_alpha == 0:
-                theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
+                theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(Rm))
                 N_theta_LC = 1
                 N_theta_T = 1
                 N_theta = 2 * N_theta_LC + N_theta_T

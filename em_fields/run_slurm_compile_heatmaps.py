@@ -1,8 +1,11 @@
 import os
+import pickle
 
 import numpy as np
 from slurmpy.slurmpy import Slurm
 
+from em_fields.default_settings import define_plasma_parameters
+from em_fields.em_functions import get_thermal_velocity
 from em_fields.slurm_functions import get_compile_heatmap_slave
 
 compile_heatmap_slave_script = get_compile_heatmap_slave()
@@ -119,6 +122,15 @@ time_step_tau_cyclotron_divisions = 50
 # theta_type_list = ['sign_vz0', 'sign_vz']
 theta_type_list = ['sign_vz']
 
+# extract variables from saved single particle calcs
+settings_file = save_dir + 'settings.pickle'
+with open(settings_file, 'rb') as fid:
+    settings = pickle.load(fid)
+field_dict_file = save_dir + 'field_dict.pickle'
+with open(field_dict_file, 'rb') as fid:
+    field_dict = pickle.load(fid)
+
+# change dir to save_dir so all run information will be saved there
 os.chdir(save_dir)
 
 for theta_type in theta_type_list:
@@ -153,28 +165,35 @@ for theta_type in theta_type_list:
                         print('****** compiled_save_file', compiled_save_file)
 
                         # collect all necessary info in a dict to be passed on
-                        settings = {}
-                        settings['use_RF'] = use_RF
-                        settings['alpha_loop_list'] = list(alpha_loop_list)
-                        settings['beta_loop_list'] = list(beta_loop_list)
-                        settings['save_dir'] = save_dir
-                        settings['set_name'] = set_name
-                        settings['RF_type'] = RF_type
-                        settings['RF_amplitude'] = RF_amplitude
-                        settings['induced_fields_factor'] = induced_fields_factor
-                        settings['with_kr_correction'] = with_kr_correction
-                        settings['time_step_tau_cyclotron_divisions'] = time_step_tau_cyclotron_divisions
-                        settings['absolute_velocity_sampling_type'] = absolute_velocity_sampling_type
-                        settings['sigma_r0'] = sigma_r0
-                        settings['radial_distribution'] = radial_distribution
-                        settings['gas_name'] = gas_name
-                        settings['compiled_save_file'] = compiled_save_file
+                        passed_dict = {}
+                        passed_dict['use_RF'] = use_RF
+                        passed_dict['alpha_loop_list'] = list(alpha_loop_list)
+                        passed_dict['beta_loop_list'] = list(beta_loop_list)
+                        passed_dict['save_dir'] = save_dir
+                        passed_dict['set_name'] = set_name
+                        passed_dict['RF_type'] = RF_type
+                        passed_dict['RF_amplitude'] = RF_amplitude
+                        passed_dict['induced_fields_factor'] = induced_fields_factor
+                        passed_dict['with_kr_correction'] = with_kr_correction
+                        passed_dict['time_step_tau_cyclotron_divisions'] = time_step_tau_cyclotron_divisions
+                        passed_dict['absolute_velocity_sampling_type'] = absolute_velocity_sampling_type
+                        passed_dict['sigma_r0'] = sigma_r0
+                        passed_dict['radial_distribution'] = radial_distribution
+                        passed_dict['gas_name'] = gas_name
+                        passed_dict['compiled_save_file'] = compiled_save_file
+
+                        # additional info
+                        passed_dict['Rm'] = field_dict['Rm']
+                        passed_dict['l'] = settings['l']
+                        _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
+                        v_th = get_thermal_velocity(settings['T_keV'] * 1e3, mi, settings['kB_eV'])
+                        passed_dict['v_th'] = settings['v_th']
 
                         #  checking if the save file already exists
                         if os.path.exists(compiled_save_file):
                             print('already exists, not running.')
                         else:
-                            command = compile_heatmap_slave_script + ' --settings "' + str(settings) + '"'
+                            command = compile_heatmap_slave_script + ' --passed_dict "' + str(passed_dict) + '"'
                             print('running', set_name)
                             s = Slurm(set_name, slurm_kwargs=slurm_kwargs)
                             s.run(command, local=local)
