@@ -155,8 +155,8 @@ for theta_type in theta_type_list:
                         # collect all necessary info in a dict to be passed on
                         settings = {}
                         settings['use_RF'] = use_RF
-                        settings['alpha_loop_list'] = alpha_loop_list
-                        settings['beta_loop_list'] = beta_loop_list
+                        settings['alpha_loop_list'] = list(alpha_loop_list)
+                        settings['beta_loop_list'] = list(beta_loop_list)
                         settings['save_dir'] = save_dir
                         settings['set_name'] = set_name
                         settings['RF_type'] = RF_type
