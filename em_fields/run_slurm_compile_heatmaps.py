@@ -49,7 +49,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set51_B0_1T_l_1m_Post_Rm_6_intervals_D_T/'
 # save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
 use_RF = True
 # use_RF = False
@@ -96,8 +97,8 @@ radial_distribution = 'uniform'
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
 # beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52, 55
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56
+beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
 # beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
