@@ -34,6 +34,9 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
+# TODO: alpha/beta lists should be loaded from settings
+
+
 os.chdir(save_dir)
 
 compiled_files = glob.glob('compiled_*.mat')

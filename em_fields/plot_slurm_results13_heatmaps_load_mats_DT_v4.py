@@ -25,7 +25,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -49,39 +49,10 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
-select_alpha_list = []
-select_beta_list = []
-set_name_list = []
-
-select_alpha_list += [0.64]
-select_beta_list += [-1.8]
-set_name_list += ['1']
-
-select_alpha_list += [0.7]
-select_beta_list += [-0.8]
-set_name_list += ['2']
-
-select_alpha_list += [1.06]
-select_beta_list += [-1.8]
-set_name_list += ['3']
-
-select_alpha_list += [1.12]
-select_beta_list += [1.4]
-set_name_list += ['4']
-
-select_alpha_list += [0.88]
-select_beta_list += [0]
-set_name_list += ['5']
-
-select_alpha_list += [1.0]
-select_beta_list += [-1.8]
-set_name_list += ['6']
-
-select_alpha_list += [0.88]
-select_beta_list += [-1.8]
-set_name_list += ['7']
 
 save_dir_curr = save_dir + 'without_RF'
 settings_file = save_dir + 'settings.pickle'
@@ -94,12 +65,12 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
-# E_RF_kVm = 50  # [kV/m]
-RF_type = 'magnetic_transverse'
-B_RF = 0.02  # [T]
-# B_RF = 0.04  # [T]
+E_RF_kVm = 50  # [kV/m]
+# RF_type = 'magnetic_transverse'
+# B_RF = 0.02  # [T]
+B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -126,7 +97,8 @@ gas_name = 'deuterium'
 # gas_name = 'DT_mix'
 # gas_name = 'tritium'
 
-set_name = 'compiled_'
+# set_name = 'compiled_'
+set_name = 'smooth_compiled_'
 set_name += theta_type + '_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
@@ -146,6 +118,7 @@ if sigma_r0 > 0:
     elif radial_distribution == 'uniform':
         set_name += 'unif'
 set_name += '_' + gas_name
+title1 = set_name
 print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
@@ -166,7 +139,8 @@ cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) 
 # gas_name = 'deuterium'
 # gas_name = 'DT_mix'
 gas_name = 'tritium'
-set_name = 'compiled_'
+set_name = 'smooth_compiled_'
+# set_name = 'compiled_'
 set_name += theta_type + '_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
@@ -186,6 +160,7 @@ if sigma_r0 > 0:
     elif radial_distribution == 'uniform':
         set_name += 'unif'
 set_name += '_' + gas_name
+title2 = set_name
 print(set_name)
 save_file = save_dir + '/' + set_name + '.mat'
 
@@ -258,28 +233,29 @@ x_label = '$k/\\left( 2 \\pi m^{-1} \\right)$'
 
 X, Y = np.meshgrid(x_array, y_array)
 
-for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_list):
-    ind_alpha = np.where(alpha_loop_list >= alpha)[0][0]
-    ind_beta = np.where(beta_loop_list >= beta)[0][0]
 
-    ## Print for python mm_rate_eqs
-    # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
-    print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
-          beta)
-    print('D:')
-    print('RF_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
-    print('RF_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
-    print('RF_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
-    print('RF_rl_list += [' + '{:.3f}'.format(N_rl_1[ind_beta, ind_alpha]) + ']')
-    print('RF_lr_list += [' + '{:.3f}'.format(N_lr_1[ind_beta, ind_alpha]) + ']')
-    print('T:')
-    print('RF_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
-    print('RF_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
-    print('RF_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
-    print('RF_rl_list += [' + '{:.3f}'.format(N_rl_2[ind_beta, ind_alpha]) + ']')
-    print('RF_lr_list += [' + '{:.3f}'.format(N_lr_2[ind_beta, ind_alpha]) + ']')
+# for alpha, beta, set_name in zip(select_alpha_list, select_beta_list, set_name_list):
+#     ind_alpha = np.where(alpha_loop_list >= alpha)[0][0]
+#     ind_beta = np.where(beta_loop_list >= beta)[0][0]
+
+# ## Print for python mm_rate_eqs
+# # print('set', set_name, 'alpha=', alpha, 'omega/omega0=', alpha * field_dict['omega_cyclotron'] / omega0, 'beta=', beta)
+# print('set', set_name, 'omega/omega0=', '{:.3f}'.format(alpha * field_dict['omega_cyclotron'] / omega0), 'beta=',
+#       beta)
+# print('D:')
+# print('RF_rc_list += [' + '{:.3f}'.format(N_rc_1[ind_beta, ind_alpha]) + ']')
+# print('RF_lc_list += [' + '{:.3f}'.format(N_lc_1[ind_beta, ind_alpha]) + ']')
+# print('RF_cr_list += [' + '{:.3f}'.format(N_cr_1[ind_beta, ind_alpha]) + ']')
+# print('RF_cl_list += [' + '{:.3f}'.format(N_cl_1[ind_beta, ind_alpha]) + ']')
+# print('RF_rl_list += [' + '{:.3f}'.format(N_rl_1[ind_beta, ind_alpha]) + ']')
+# print('RF_lr_list += [' + '{:.3f}'.format(N_lr_1[ind_beta, ind_alpha]) + ']')
+# print('T:')
+# print('RF_rc_list += [' + '{:.3f}'.format(N_rc_2[ind_beta, ind_alpha]) + ']')
+# print('RF_lc_list += [' + '{:.3f}'.format(N_lc_2[ind_beta, ind_alpha]) + ']')
+# print('RF_cr_list += [' + '{:.3f}'.format(N_cr_2[ind_beta, ind_alpha]) + ']')
+# print('RF_cl_list += [' + '{:.3f}'.format(N_cl_2[ind_beta, ind_alpha]) + ']')
+# print('RF_rl_list += [' + '{:.3f}'.format(N_rl_2[ind_beta, ind_alpha]) + ']')
+# print('RF_lr_list += [' + '{:.3f}'.format(N_lr_2[ind_beta, ind_alpha]) + ']')
 
     # ## Print for latex
     # print(set_name, '(D) & ',
@@ -388,36 +364,36 @@ do_plots = True
 
 if do_plots == True:
 
-    #########################
-    fig, axes = plt.subplots(2, 2, figsize=(15, 7))
-
-    Z = selectivity_1
-    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (D)'
-    ax = axes[0, 0]
-    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # plot_resonance_lines()
-    plot_interest_points(ax)
-
-    Z = selectivity_2
-    title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (T)'
-    ax = axes[0, 1]
-    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # plot_resonance_lines()
-    plot_interest_points(ax)
-
-    Z = cone_escape_rate_1
-    title = '$(N_{rc}-N_{cr})/N_{cone}$ (D)'
-    ax = axes[1, 0]
-    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # plot_resonance_lines()
+    # #########################
+    # fig, axes = plt.subplots(2, 2, figsize=(15, 7))
+    #
+    # Z = selectivity_1
+    # title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (D)'
+    # ax = axes[0, 0]
+    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # # plot_resonance_lines()
     # plot_interest_points(ax)
-
-    Z = cone_escape_rate_2
-    title = '$(N_{rc}-N_{cr})/N_{cone}$ (T)'
-    ax = axes[1, 1]
-    ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    # plot_resonance_lines()
+    #
+    # Z = selectivity_2
+    # title = '$\\bar{N}_{rc} / \\bar{N}_{lc}$ (T)'
+    # ax = axes[0, 1]
+    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # # plot_resonance_lines()
     # plot_interest_points(ax)
+    #
+    # Z = cone_escape_rate_1
+    # title = '$(N_{rc}-N_{cr})/N_{cone}$ (D)'
+    # ax = axes[1, 0]
+    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # # plot_resonance_lines()
+    # # plot_interest_points(ax)
+    #
+    # Z = cone_escape_rate_2
+    # title = '$(N_{rc}-N_{cr})/N_{cone}$ (T)'
+    # ax = axes[1, 1]
+    # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    # # plot_resonance_lines()
+    # # plot_interest_points(ax)
 
     #########################
     # fig, axes = plt.subplots(2, 2, figsize=(15, 7))
@@ -458,14 +434,14 @@ if do_plots == True:
     ax = axes[0]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
-    plot_interest_points(ax)
+    # plot_interest_points(ax)
 
     Z = E_ratio_mean_2
     title = 'E_ratio_mean (T)'
     ax = axes[1]
     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     # plot_resonance_lines()
-    plot_interest_points(ax)
+    # plot_interest_points(ax)
 
     #########################
 
@@ -491,7 +467,7 @@ if do_plots == True:
     ind_cols = [0, 1, 2, 0, 1, 2]
     process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
 
-    # rate numbers
+    # rate values
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_1
     gas_name = ' (D)'
@@ -500,6 +476,7 @@ if do_plots == True:
         title = '$N_{' + process + '}$' + gas_name
         ax = axes[ind_row, ind_col]
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    fig.suptitle(title1, fontsize=title_fontsize)
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     mat_dict = mat_dict_2
@@ -509,42 +486,71 @@ if do_plots == True:
         title = '$N_{' + process + '}$' + gas_name
         ax = axes[ind_row, ind_col]
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    fig.suptitle(title2, fontsize=title_fontsize)
+
+    #
+    # # rate values after smoothing
+    # smoothing_sigma = 1
+    #
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # mat_dict = mat_dict_1
+    # gas_name = ' (D) smoothed'
+    # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    #     Z = mat_dict['N_' + process + '_end']
+    #     mat_dict['N_' + process + '_end']
+    #     smoothed_image = gaussian_filter(Z, sigma=smoothing_sigma)
+    #     title = '$N_{' + process + '}$' + gas_name
+    #     ax = axes[ind_row, ind_col]
+    #     ax = plot_colormesh(smoothed_image.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # mat_dict = mat_dict_2
+    # gas_name = ' (T) smoothed'
+    # for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
+    #     Z = mat_dict['N_' + process + '_end']
+    #     smoothed_image = gaussian_filter(Z, sigma=smoothing_sigma)
+    #     title = '$N_{' + process + '}$' + gas_name
+    #     ax = axes[ind_row, ind_col]
+    #     ax = plot_colormesh(smoothed_image.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+
 
     # curves
-    fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
-    mat_dict = mat_dict_1
-    t_array = mat_dict['t_array_normed'][0]
-    for ind_beta, beta_curr in enumerate(beta_loop_list):
-        for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
-            ax = axes[ind_alpha, ind_beta]
-            for process, process_color in zip(processes, process_colors):
-                curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
-                curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
-                ax.plot(t_array, curve_mean, color=process_color)
-                ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
-                                alpha=0.5)
-                ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
-                ax.set_xticks([])
-                ax.set_yticks([])
-                ax.set_ylim([0, 1])
-    fig.suptitle('(D)')
-    fig.set_layout_engine(layout='tight')
+    # fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
+    # mat_dict = mat_dict_1
+    # t_array = mat_dict['t_array_normed'][0]
+    # for ind_beta, beta_curr in enumerate(beta_loop_list):
+    #     for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
+    #         ax = axes[ind_alpha, ind_beta]
+    #         for process, process_color in zip(processes, process_colors):
+    #             curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
+    #             curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
+    #             ax.plot(t_array, curve_mean, color=process_color)
+    #             ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
+    #                             alpha=0.5)
+    #             # ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
+    #             ax.set_xticks([])
+    #             ax.set_yticks([])
+    #             ax.set_ylim([0, 1])
+    # fig.suptitle('(D)')
+    # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
+    # # fig.set_layout_engine(layout='tight')
 
-    fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
-    mat_dict = mat_dict_2
-    t_array = mat_dict['t_array_normed'][0]
-    for ind_beta, beta_curr in enumerate(beta_loop_list):
-        for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
-            ax = axes[ind_alpha, ind_beta]
-            for process, process_color in zip(processes, process_colors):
-                curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
-                curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
-                ax.plot(t_array, curve_mean, color=process_color)
-                ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
-                                alpha=0.5)
-                ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
-                ax.set_xticks([])
-                ax.set_yticks([])
-                ax.set_ylim([0, 1])
-    fig.suptitle('(T)')
-    fig.set_layout_engine(layout='tight')
+    # fig, axes = plt.subplots(len(alpha_loop_list), len(beta_loop_list), figsize=(15, 7))
+    # mat_dict = mat_dict_2
+    # t_array = mat_dict['t_array_normed'][0]
+    # for ind_beta, beta_curr in enumerate(beta_loop_list):
+    #     for ind_alpha, alpha_curr in enumerate(alpha_loop_list):
+    #         ax = axes[ind_alpha, ind_beta]
+    #         for process, process_color in zip(processes, process_colors):
+    #             curve_mean = mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
+    #             curve_std = mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
+    #             ax.plot(t_array, curve_mean, color=process_color)
+    #             ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
+    #                             alpha=0.5)
+    #             # ax.set_title('$\\alpha$=' + str(alpha_curr) + ', $\\beta$=' + str(beta_curr))
+    #             ax.set_xticks([])
+    #             ax.set_yticks([])
+    #             ax.set_ylim([0, 1])
+    # fig.suptitle('(T)')
+    # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
+    # # fig.set_layout_engine(layout='tight')

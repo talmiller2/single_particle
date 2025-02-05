@@ -45,7 +45,9 @@ scale_list_main_cell = [0.5 for i in range(num_main_cell_coils)]
 
 # phase_list = [0, np.pi/4, np.pi/2]
 # phase_list = [0, np.pi / 2, np.pi]
-phase_list = [0]
+# phase_list = [0]
+# phase_list = [0, np.pi/4, np.pi/2, np.pi*3/4, np.pi, np.pi*5/4]
+phase_list = [0, np.pi / 2, np.pi, np.pi * 3 / 2]
 
 for ind_phase, phase in enumerate(phase_list):
     print('ind_phase = ' + str(ind_phase))

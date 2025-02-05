@@ -103,6 +103,7 @@ beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
 # beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
+# TODO: alpha/beta lists should be loaded from settings
 
 gas_name_list = ['deuterium', 'tritium']
 
