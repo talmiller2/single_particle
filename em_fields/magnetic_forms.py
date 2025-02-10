@@ -3,7 +3,23 @@ import numpy as np
 
 def get_mirror_magnetic_field(x, field_dict):
     """
-    Single function that calls the various forms of mirror field: logan, jaeger or post.
+    Returns the various forms of mirror fields, all components x,y,z.
+    """
+
+    Bz, dBz_dz = get_mirror_magnetic_field_z_component(x, field_dict)
+
+    if field_dict['use_transverse_fields'] == True:
+        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
+    else:
+        Bx, By = 0, 0
+
+    return np.array([Bx, By, Bz])
+
+
+def get_mirror_magnetic_field_z_component(x, field_dict):
+    """
+    Returns the various forms of mirror fields, including option to add a slope.
+    Return only the z-component Bz and the derivative dBz_dz
     """
 
     # define defaults
@@ -21,13 +37,13 @@ def get_mirror_magnetic_field(x, field_dict):
         field_dict['l'] = 1  # [m]
 
     if field_dict['mirror_field_type'] == 'logan':
-        B_mirror = magnetic_field_logan(x, field_dict)
+        B_mirror, dB_mirror_dz = magnetic_field_logan(x, field_dict)
     elif field_dict['mirror_field_type'] == 'jaeger':
-        B_mirror = magnetic_field_jaeger(x, field_dict)
+        B_mirror, dB_mirror_dz = magnetic_field_jaeger(x, field_dict)
     elif field_dict['mirror_field_type'] == 'post':
-        B_mirror = magnetic_field_post(x, field_dict)
+        B_mirror, dB_mirror_dz = magnetic_field_post(x, field_dict)
     elif field_dict['mirror_field_type'] == 'const':
-        B_mirror = np.array([0, 0, field_dict['B0']])
+        B_mirror, dB_mirror_dz = field_dict['B0'], 0
     else:
         raise TypeError('invalid mirror_field_type: ' + str(field_dict['mirror_field_type']))
 
@@ -36,11 +52,14 @@ def get_mirror_magnetic_field(x, field_dict):
             field_dict['B_slope_fac'] = 1.0
         if 'B_slope_smooth_length' not in field_dict:
             field_dict['B_slope_smooth_length'] = 0.2
-        B_slope = magnetic_field_slope(x, field_dict)
+        B_slope, dB_slope_dz = magnetic_field_slope(x, field_dict)
     else:
-        B_slope = 0
+        B_slope, dB_slope_dz = 0, 0
 
-    return B_mirror + B_slope
+    Bz = B_mirror + B_slope
+    dBz_dz = dB_mirror_dz + dB_slope_dz
+
+    return Bz, dBz_dz
 
 
 def get_radius(x):
@@ -67,12 +86,7 @@ def magnetic_field_linear(x, field_dict):
     z = x[2] - z0
     dBz_dz = B0 / (1 * l)
     Bz = B0 + dBz_dz * (z - l / 2)
-    if field_dict['use_transverse_fields'] == True:
-        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
-    else:
-        Bx, By = 0, 0
-    return np.array([Bx, By, Bz])
-
+    return Bz, dBz_dz
 
 def magnetic_field_logan(x, field_dict):
     """
@@ -86,11 +100,7 @@ def magnetic_field_logan(x, field_dict):
     Bz = B0 * (1 + (Rm - 1.0) * np.sin(np.pi * (z - l / 2.0) / l) ** 2.0)
     dBz_dz = 2 * np.pi / l * B0 * (Rm - 1.0) * np.cos(np.pi * (z - l / 2.0) / l) \
              * np.sin(np.pi * (z - l / 2.0) / l)
-    if field_dict['use_transverse_fields'] == True:
-        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
-    else:
-        Bx, By = 0, 0
-    return np.array([Bx, By, Bz])
+    return Bz, dBz_dz
 
 
 def magnetic_field_jaeger(x, field_dict):
@@ -104,11 +114,7 @@ def magnetic_field_jaeger(x, field_dict):
     z = x[2] - z0
     Bz = B0 * (1 + (Rm - 1) / 2.0 * (1 - np.cos(2 * np.pi * (z - l / 2) / l)))
     dBz_dz = np.pi / l * B0 * (Rm - 1) * np.sin(2 * np.pi * (z - l / 2) / l)
-    if field_dict['use_transverse_fields'] == True:
-        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
-    else:
-        Bx, By = 0, 0
-    return np.array([Bx, By, Bz])
+    return Bz, dBz_dz
 
 
 def magnetic_field_post(x, field_dict):
@@ -127,12 +133,7 @@ def magnetic_field_post(x, field_dict):
     dBz_dz = - lamda * 2 * np.pi / l * B0 * (Rm - 1.0) * np.cos(np.pi * z / l) \
              * np.sin(np.pi * z / l) \
              * np.exp(- lamda * np.sin(np.pi * z / l) ** 2.0)
-    if field_dict['use_transverse_fields'] == True:
-        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
-    else:
-        Bx, By = 0, 0
-    return np.array([Bx, By, Bz])
-
+    return Bz, dBz_dz
 
 def magnetic_field_slope(x, field_dict):
     """
@@ -156,10 +157,4 @@ def magnetic_field_slope(x, field_dict):
     dBz_dz += (B_s * 2 * (z_mod - l / 2.0) * (z_mod - l) / l / sigma_s ** 2
                * (np.exp(- (z_mod - l) ** 2.0 / sigma_s ** 2.0)
                   * (1 - np.exp(- z_mod ** 2.0 / sigma_s ** 2.0))))
-
-    if field_dict['use_transverse_fields'] == True:
-        Bx, By = get_transverse_magnetic_fields(x, dBz_dz)
-    else:
-        Bx, By = 0, 0
-
-    return np.array([Bx, By, Bz])
+    return Bz, dBz_dz
