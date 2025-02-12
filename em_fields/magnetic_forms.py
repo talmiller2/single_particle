@@ -22,20 +22,6 @@ def get_mirror_magnetic_field_z_component(x, field_dict):
     Return only the z-component Bz and the derivative dBz_dz
     """
 
-    # define defaults
-    if 'mirror_field_type' not in field_dict:
-        field_dict['mirror_field_type'] = 'post'
-    if 'use_transverse_fields' not in field_dict:
-        field_dict['use_transverse_fields'] = True
-    if 'z0' not in field_dict:
-        field_dict['z0'] = 0
-    if 'B0' not in field_dict:
-        field_dict['B0'] = 1  # [T]
-    if 'Rm' not in field_dict:
-        field_dict['Rm'] = 3
-    if 'l' not in field_dict:
-        field_dict['l'] = 1  # [m]
-
     if field_dict['mirror_field_type'] == 'logan':
         B_mirror, dB_mirror_dz = magnetic_field_logan(x, field_dict)
     elif field_dict['mirror_field_type'] == 'jaeger':
@@ -48,10 +34,6 @@ def get_mirror_magnetic_field_z_component(x, field_dict):
         raise TypeError('invalid mirror_field_type: ' + str(field_dict['mirror_field_type']))
 
     if field_dict['use_mirror_slope']:
-        if 'B_slope_fac' not in field_dict:
-            field_dict['B_slope_fac'] = 1.0
-        if 'B_slope_smooth_length' not in field_dict:
-            field_dict['B_slope_smooth_length'] = 0.2
         B_slope, dB_slope_dz = magnetic_field_slope(x, field_dict)
     else:
         B_slope, dB_slope_dz = 0, 0
@@ -80,7 +62,7 @@ def magnetic_field_linear(x, field_dict):
     """
     Linear profile for testing
     """
-    z0 = field_dict['z0']
+    z0 = field_dict['z_mirror_shift']
     B0 = field_dict['B0']
     l = field_dict['l']
     z = x[2] - z0
@@ -92,7 +74,7 @@ def magnetic_field_logan(x, field_dict):
     """
     Magnetic field from Logan et al (1972)
     """
-    z0 = field_dict['z0']
+    z0 = field_dict['z_mirror_shift']
     B0 = field_dict['B0']
     Rm = field_dict['Rm']
     l = field_dict['l']
@@ -107,7 +89,7 @@ def magnetic_field_jaeger(x, field_dict):
     """
     Magnetic field based on Jaeger et al (1972), actually same as Logan via trigonometric identities
     """
-    z0 = field_dict['z0']
+    z0 = field_dict['z_mirror_shift']
     B0 = field_dict['B0']
     Rm = field_dict['Rm']
     l = field_dict['l']
@@ -121,7 +103,7 @@ def magnetic_field_post(x, field_dict):
     """
     Magnetic field from Logan et al (1972), describing the more localized form of Post (1967)
     """
-    z0 = field_dict['z0']
+    z0 = field_dict['z_mirror_shift']
     B0 = field_dict['B0']
     Rm = field_dict['Rm']
     l = field_dict['l']
@@ -139,7 +121,7 @@ def magnetic_field_slope(x, field_dict):
     """
     Magnetic field slope
     """
-    z0 = field_dict['z0']
+    z0 = field_dict['z_mirror_shift']
     l = field_dict['l']
     B_s = field_dict['B_slope']
     B_slope_smooth_length = field_dict['B_slope_smooth_length']

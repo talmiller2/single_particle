@@ -13,10 +13,9 @@ z = np.linspace(-5, 5, 1000)
 
 ## definitions
 settings = define_default_settings()
-field_dict = {'Rm': 3, 'mirror_field_type': 'post'}
-field_dict['MMM_z_wall'] = 1
-field_dict['MMM_dz_wall'] = 0.05
-field_dict['z0'] = 0.5
+field_dict = {}
+# field_dict['use_static_main_cell'] = False
+field_dict['use_static_main_cell'] = True
 field_dict = define_default_field(settings, field_dict)
 # field_dict['U_MMM'] = 1e-4
 field_dict['U_MMM'] = 0.1 * settings['v_th']
@@ -24,9 +23,9 @@ field_dict['U_MMM'] = 0.1 * settings['v_th']
 # tau = settings['l'] / settings['v_th']
 tau = settings['l'] / field_dict['U_MMM']
 
-frac_list = [0]
+# frac_list = [0]
 # frac_list = [0, 0.5, 1.0]
-# frac_list = [0, 0.2, 0.4, 0.6, 0.8]
+frac_list = [0, 0.2, 0.4, 0.6, 0.8]
 # frac_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 colors = cm.rainbow(np.linspace(0, 1, len(frac_list)))
 

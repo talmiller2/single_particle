@@ -3,14 +3,31 @@ import numpy as np
 from em_fields.magnetic_forms import get_mirror_magnetic_field_z_component, get_transverse_magnetic_fields, get_radius
 
 
-def get_mail_cell_wall_function(x, **field_dict):
-    z = x[2]
-    z_wall = field_dict['MMM_z_wall']
-    dz_wall = field_dict['MMM_dz_wall']
-    W = 1 / (1 + np.exp(- (z - z_wall) / dz_wall))
-    dW_dz = np.exp(- (z - z_wall) / dz_wall) / dz_wall / (1 + np.exp(- (z - z_wall) / dz_wall)) ** 2
+def smooth_step_function(z, z_step, dz_step, sigma_cutoff=6):
+    """
+    smooth step function that is 0 for z<z_step and 1 for z>step, with a smoothing length dz_step
+    """
+    if -(z - z_step) / dz_step > sigma_cutoff:
+        W, dW_dz = 0, 0
+    elif -(z - z_step) / dz_step < -sigma_cutoff:
+        W, dW_dz = 1, 0
+    else:
+        W = 1 / (1 + np.exp(-(z - z_step) / dz_step))
+        dW_dz = np.exp(-(z - z_step) / dz_step) / dz_step / (1 + np.exp(-(z - z_step) / dz_step)) ** 2
     return W, dW_dz
 
+
+def get_main_cell_static_field(x, sigma_cutoff=6, **field_dict):
+    z = x[2]
+    Bz_static, dB_dz_static = 0, 0
+    B_max = field_dict['B0'] * (field_dict['Rm'] - 1)
+    dz_main = field_dict['MMM_static_main_cell_dz']
+    for sign in [+1, -1]:
+        zi = sign * field_dict['MMM_static_main_cell_z']
+        if abs(z - zi) < sigma_cutoff * dz_main:
+            Bz_static += B_max * np.exp(-((z - zi) / dz_main) ** 2)
+            dB_dz_static += B_max * (-2 * (z - zi) / dz_main ** 2) * np.exp(-((z - zi) / dz_main) ** 2)
+    return Bz_static, dB_dz_static
 
 def get_MMM_magnetic_field(x, t, **field_dict):
     """
@@ -19,6 +36,11 @@ def get_MMM_magnetic_field(x, t, **field_dict):
     Bz_MMM = field_dict['B0']
     dBz_MMM_dz = 0
 
+    if field_dict['use_static_main_cell'] == True:
+        Bz_static, dB_dz_static = get_main_cell_static_field(x, **field_dict)
+        Bz_MMM += Bz_static
+        dBz_MMM_dz += dB_dz_static
+
     for sign in [+1, -1]:
         # moving field component
         x_m = [x[0], x[1], x[2] + sign * field_dict['U_MMM'] * t]
@@ -26,8 +48,7 @@ def get_MMM_magnetic_field(x, t, **field_dict):
         B_mz -= field_dict['B0']
 
         # static main-cell-wall field component
-        x_s = [x[0], x[1], sign * x[2]]
-        W, dW_dz = get_mail_cell_wall_function(x_s, **field_dict)
+        W, dW_dz = smooth_step_function(x[2], sign * field_dict['MMM_z_wall'], sign * field_dict['MMM_dz_wall'])
 
         # total z component field
         B_z = B_mz * W
@@ -59,8 +80,7 @@ def get_MMM_electric_field(x, t, **field_dict):
             _, dB_mz_dz = get_mirror_magnetic_field_z_component(x_m, field_dict)
 
             # static main-cell-wall field component
-            x_s = [x[0], x[1], sign * x[2]]
-            W, _ = get_mail_cell_wall_function(x_s, **field_dict)
+            W, _ = smooth_step_function(x[2], sign * field_dict['MMM_z_wall'], sign * field_dict['MMM_dz_wall'])
 
             # total E field magnitude
             E_MMM_magnitude += - r / 2 * sign * field_dict['U_MMM'] * dB_mz_dz * W

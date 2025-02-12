@@ -42,8 +42,8 @@ def define_default_settings(settings=None):
     if 'l' not in settings:
         settings['l'] = 1.0  # m (MM cell size)
         # settings['l'] = 10.0  # m (MM cell size)
-    if 'r_0' not in settings:
-        settings['r_0'] = 0.0 * settings['l']
+    # if 'r_0' not in settings: # TODO: deleted, check if breaking
+    #     settings['r_0'] = 0.0 * settings['l']
     if 'z_0' not in settings:
         settings['z_0'] = 0.5 * settings['l']
     if 'radial_distribution' not in settings:
@@ -92,11 +92,11 @@ def define_default_field(settings, field_dict=None):
 
     # single mirror properties
     if 'mirror_field_type' not in field_dict:
-        field_dict['mirror_field_type'] = 'logan'
-        # field_dict['mirror_field_type'] = 'post'
+        # field_dict['mirror_field_type'] = 'logan'
+        field_dict['mirror_field_type'] = 'post'
         # field_dict['mirror_field_type'] = 'const'
     if 'Rm' not in field_dict:
-        field_dict['Rm'] = 2.0  # mirror ratio
+        field_dict['Rm'] = 3.0  # mirror ratio
     field_dict['loss_cone_angle'] = np.arcsin(field_dict['Rm'] ** (-0.5)) * 360 / (2 * np.pi)
     if 'B0' not in field_dict:
         # field_dict['B0'] = 0.1  # Tesla
@@ -104,8 +104,12 @@ def define_default_field(settings, field_dict=None):
     field_dict['omega_cyclotron'] = get_cyclotron_angular_frequency(settings['q_for_cyc'], field_dict['B0'],
                                                                     settings['mi_for_cyc'])
     field_dict['tau_cyclotron'] = 2 * np.pi / field_dict['omega_cyclotron']
-    field_dict['l'] = settings['l']
-    field_dict['z_0'] = settings['z_0']
+    if 'l' not in field_dict:
+        field_dict['l'] = settings['l']
+    if 'z_mirror_shift' not in field_dict:
+        field_dict['z_mirror_shift'] = 0
+    if 'use_transverse_fields' not in field_dict:
+        field_dict['use_transverse_fields'] = True
 
     # mirror slope properties
     if 'use_mirror_slope' not in field_dict:
@@ -166,6 +170,21 @@ def define_default_field(settings, field_dict=None):
     field_dict['omega_RF'] = omega_RF
     field_dict['k_RF'] = k_RF
     field_dict['phase_RF'] = phase_RF
+
+    # MMM definitions
+    if 'MMM_z_wall' not in field_dict:
+        field_dict['MMM_z_wall'] = 1.0  # [m]
+        # field_dict['MMM_z_wall'] = 1.1  # [m]
+    if 'MMM_dz_wall' not in field_dict:
+        field_dict['MMM_dz_wall'] = 0.05  # [m]
+        # field_dict['MMM_dz_wall'] = 0.1  # [m]
+    if 'use_static_main_cell' not in field_dict:
+        field_dict['use_static_main_cell'] = True
+    if 'MMM_static_main_cell_z' not in field_dict:
+        field_dict['MMM_static_main_cell_z'] = 1.0  # [m]
+    if 'MMM_static_main_cell_dz' not in field_dict:
+        field_dict['MMM_static_main_cell_dz'] = 0.05  # [m]
+        # field_dict['MMM_static_main_cell_dz'] = 0.1 # [m]
 
     return field_dict
 

@@ -29,12 +29,10 @@ settings = {}
 settings['time_step_tau_cyclotron_divisions'] = 20
 settings['stop_criterion'] = 't_max_adaptive_dt'
 settings = define_default_settings(settings)
-field_dict = {'Rm': 3, 'mirror_field_type': 'post'}
-field_dict = define_default_field(settings, field_dict)
-field_dict['MMM_z_wall'] = 1
-# field_dict['MMM_z_wall'] = 3
-field_dict['MMM_dz_wall'] = 0.05
-field_dict['z0'] = 0.5
+
+field_dict = {}
+field_dict['use_static_main_cell'] = True
+# field_dict['use_static_main_cell'] = False
 # field_dict['U_MMM'] = 0
 # field_dict['U_MMM'] = 1e-4 * settings['v_th']
 # field_dict['U_MMM'] = 0.01 * settings['v_th']
@@ -43,8 +41,10 @@ field_dict['U_MMM'] = 0.1 * settings['v_th']
 # field_dict['U_MMM'] = 1.0 * settings['v_th']
 # field_dict['induced_fields_factor'] = 0
 field_dict['induced_fields_factor'] = 1
+field_dict = define_default_field(settings, field_dict)
 # tau = settings['l'] / settings['v_th']
 # tau = settings['l'] / field_dict['U_MMM']
+
 cyclotron_radius = settings['v_th'] / field_dict['omega_cyclotron']
 
 
@@ -79,11 +79,11 @@ def get_loss_cone_angles(U, vth, Rm):
 theta_nom, theta_low, theta_high = get_loss_cone_angles(field_dict['U_MMM'], settings['v_th'], field_dict['Rm'])
 
 
-def plot_MMM_lines(t, t_fac):
+def plot_MMM_lines(t, t_fac, plot_static_cell):
     num_lines = 6
     for sign in [+1, -1]:
         for i in range(num_lines):
-            z = field_dict['z0'] + i * field_dict['l'] - field_dict['U_MMM'] * t
+            z = field_dict['z_mirror_shift'] + i * field_dict['l'] - field_dict['U_MMM'] * t
             z *= sign
             ind_wall_first = np.where(abs(z) < field_dict['MMM_z_wall'])[0]
             if len(ind_wall_first) > 0:
@@ -94,6 +94,11 @@ def plot_MMM_lines(t, t_fac):
                 label = None
             plt.plot(t * t_fac, z, linewidth=2, color='grey', alpha=0.7, label=label)
 
+        if plot_static_cell:
+            plt.plot(t * t_fac, sign * field_dict['MMM_static_main_cell_z'] + 0 * t, linewidth=2, color='grey',
+                     alpha=0.7)
+
+    return
 
 inds_sim = []
 inds_sim += [0]
@@ -134,9 +139,9 @@ for ind_sim in inds_sim:
     if ind_sim <= 1:
         z_ini = 0
     elif ind_sim == 2:
-        z_ini = 3
+        z_ini = 3.5
     elif ind_sim == 3:
-        z_ini = -3
+        z_ini = -3.5
 
     # z_ini = 2
     # x_0 = np.array([0, r_ini, settings['l'] / 2.0])
@@ -150,7 +155,7 @@ for ind_sim in inds_sim:
     x_0 = np.array([0, r_ini, z_ini])
 
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
-    tmax_mirror_lengths = 30
+    tmax_mirror_lengths = 35
     sim_cyclotron_periods = int(
         tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -197,7 +202,7 @@ for ind_sim in inds_sim:
     plt.figure(num=None, figsize=(14, 5))
     # plt.subplot(1, 3, 1)
     plt.subplot(1, 4, 1)
-    plot_MMM_lines(t, t_fac)
+    plot_MMM_lines(t, t_fac, field_dict['use_static_main_cell'])
     plt.plot(t * t_fac, x, label='x', linewidth=linewidth, color='b')
     plt.plot(t * t_fac, y, label='y', linewidth=linewidth, color='g')
     plt.plot(t * t_fac, z, label='z', linewidth=linewidth, color='r')
@@ -257,7 +262,7 @@ for ind_sim in inds_sim:
     plt.plot(t * t_fac, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
     plt.plot(t * t_fac, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
     plt.plot(t * t_fac, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
-    plt.plot(t * t_fac, np.linalg.norm(hist['B'], axis=1), label='$B_{norm}$', linewidth=linewidth, color='k')
+    plt.plot(t * t_fac, np.linalg.norm(hist['B'], axis=1), label='$|B|$', linewidth=linewidth, color='k')
     plt.legend()
     plt.xlabel(t_label)
     plt.ylabel('B [T]')
