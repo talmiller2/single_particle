@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import cm
 
 from em_fields.MMM_field_forms import get_MMM_electric_field, get_MMM_magnetic_field
 from em_fields.default_settings import define_default_settings, define_default_field
@@ -33,14 +34,19 @@ settings = define_default_settings(settings)
 field_dict = {}
 field_dict['use_static_main_cell'] = True
 # field_dict['use_static_main_cell'] = False
+field_dict['Rm'] = 5
+# field_dict['Rm'] = 3
+field_dict['Rm_main'] = 3
+# field_dict['MMM_z_wall'] = 1.0  # [m]
+field_dict['MMM_z_wall'] = 1.2  # [m]
 # field_dict['U_MMM'] = 0
 # field_dict['U_MMM'] = 1e-4 * settings['v_th']
 # field_dict['U_MMM'] = 0.01 * settings['v_th']
 # field_dict['U_MMM'] = 0.05 * settings['v_th']
 field_dict['U_MMM'] = 0.1 * settings['v_th']
 # field_dict['U_MMM'] = 1.0 * settings['v_th']
-# field_dict['induced_fields_factor'] = 0
-field_dict['induced_fields_factor'] = 1
+field_dict['induced_fields_factor'] = 0
+# field_dict['induced_fields_factor'] = 1
 field_dict = define_default_field(settings, field_dict)
 # tau = settings['l'] / settings['v_th']
 # tau = settings['l'] / field_dict['U_MMM']
@@ -80,7 +86,7 @@ theta_nom, theta_low, theta_high = get_loss_cone_angles(field_dict['U_MMM'], set
 
 
 def plot_MMM_lines(t, t_fac, plot_static_cell):
-    num_lines = 6
+    num_lines = 10
     for sign in [+1, -1]:
         for i in range(num_lines):
             z = field_dict['z_mirror_shift'] + i * field_dict['l'] - field_dict['U_MMM'] * t
@@ -92,7 +98,7 @@ def plot_MMM_lines(t, t_fac, plot_static_cell):
                 label = '$B_{max}$'
             else:
                 label = None
-            plt.plot(t * t_fac, z, linewidth=2, color='grey', alpha=0.7, label=label)
+            plt.plot(t * t_fac, z, linewidth=2, color='grey', alpha=0.5, label=label)
 
         if plot_static_cell:
             plt.plot(t * t_fac, sign * field_dict['MMM_static_main_cell_z'] + 0 * t, linewidth=2, color='grey',
@@ -100,11 +106,17 @@ def plot_MMM_lines(t, t_fac, plot_static_cell):
 
     return
 
+
+t_list = []
+z_list = []
+
 inds_sim = []
 inds_sim += [0]
 inds_sim += [1]
 inds_sim += [2]
 inds_sim += [3]
+inds_sim += [4]
+inds_sim += [5]
 for ind_sim in inds_sim:
 
     loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
@@ -138,16 +150,17 @@ for ind_sim in inds_sim:
     # r_ini = 1 * cyclotron_radius
     if ind_sim <= 1:
         z_ini = 0
-    elif ind_sim == 2:
+    elif ind_sim in [2, 4]:
         z_ini = 3.5
-    elif ind_sim == 3:
+    elif ind_sim in [3, 5]:
         z_ini = -3.5
 
     # z_ini = 2
     # x_0 = np.array([0, r_ini, settings['l'] / 2.0])
     # if ind_sim == 0:
     #     x_0 = np.array([0, r_ini, z_ini])
-    if ind_sim == 1:
+    # if ind_sim == 1:
+    if ind_sim in [1, 4, 5]:
         # x_0 = np.array([-r_ini, 0, z_ini])
         # v_0[1] *= -1
         v_0[2] *= -1
@@ -155,7 +168,7 @@ for ind_sim in inds_sim:
     x_0 = np.array([0, r_ini, z_ini])
 
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
-    tmax_mirror_lengths = 35
+    tmax_mirror_lengths = 40
     sim_cyclotron_periods = int(
         tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -292,6 +305,8 @@ for ind_sim in inds_sim:
     plt.grid(True)
     plt.tight_layout()
 
+    t_list += [t]
+    z_list += [z]
     if plot_3d:
         ## plot path with changing color as time evolves
         for i in range(len(x) - 1):
@@ -318,3 +333,21 @@ for ind_sim in inds_sim:
         # plt.legend()
         plt.tight_layout()
         # plt.tight_layout(h_pad=0.05, w_pad=0.05)
+
+# combined trajectories plot
+plt.figure(num=None, figsize=(7, 5))
+colors = cm.rainbow(np.linspace(0, 1, len(t_list)))
+plot_MMM_lines(t, t_fac, field_dict['use_static_main_cell'])
+for i, (t, z, color) in enumerate(zip(t_list, z_list, colors)):
+    plt.plot(t * t_fac, z, label='#' + str(i), linewidth=linewidth, color=color)
+plt.legend()
+plt.xlabel(t_label)
+plt.ylabel('z [m]')
+title = 'main cell: $z_{main}=$' + str(field_dict['MMM_static_main_cell_z']) + 'm, $R_m=$' + str(field_dict['Rm_main'])
+title += ', MMM: $z_{wall}=$' + str(field_dict['MMM_z_wall']) + 'm, $R_m=$' + str(field_dict['Rm'])
+if field_dict['induced_fields_factor'] == False:
+    title += ', w/o E fields'
+plt.title(title)
+plt.ylim([-5, 5])
+plt.grid(True)
+plt.tight_layout()

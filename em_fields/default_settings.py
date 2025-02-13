@@ -41,9 +41,6 @@ def define_default_settings(settings=None):
     settings['v_th_for_cyc'] = get_thermal_velocity(settings['T_eV'], settings['mi_for_cyc'], settings['kB_eV'])
     if 'l' not in settings:
         settings['l'] = 1.0  # m (MM cell size)
-        # settings['l'] = 10.0  # m (MM cell size)
-    # if 'r_0' not in settings: # TODO: deleted, check if breaking
-    #     settings['r_0'] = 0.0 * settings['l']
     if 'z_0' not in settings:
         settings['z_0'] = 0.5 * settings['l']
     if 'radial_distribution' not in settings:
@@ -174,10 +171,12 @@ def define_default_field(settings, field_dict=None):
     # MMM definitions
     if 'MMM_z_wall' not in field_dict:
         field_dict['MMM_z_wall'] = 1.0  # [m]
-        # field_dict['MMM_z_wall'] = 1.1  # [m]
+        # field_dict['MMM_z_wall'] = 1.2  # [m]
     if 'MMM_dz_wall' not in field_dict:
         field_dict['MMM_dz_wall'] = 0.05  # [m]
         # field_dict['MMM_dz_wall'] = 0.1  # [m]
+    if 'Rm_main' not in field_dict:
+        field_dict['Rm_main'] = field_dict['Rm']
     if 'use_static_main_cell' not in field_dict:
         field_dict['use_static_main_cell'] = True
     if 'MMM_static_main_cell_z' not in field_dict:

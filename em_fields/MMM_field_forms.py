@@ -20,7 +20,7 @@ def smooth_step_function(z, z_step, dz_step, sigma_cutoff=6):
 def get_main_cell_static_field(x, sigma_cutoff=6, **field_dict):
     z = x[2]
     Bz_static, dB_dz_static = 0, 0
-    B_max = field_dict['B0'] * (field_dict['Rm'] - 1)
+    B_max = field_dict['B0'] * (field_dict['Rm_main'] - 1)
     dz_main = field_dict['MMM_static_main_cell_dz']
     for sign in [+1, -1]:
         zi = sign * field_dict['MMM_static_main_cell_z']
