@@ -34,22 +34,22 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set40_B0_1T_l_1m_Logan_Rm_3_intervals_D_T/'
 # save_dir += '/set42_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set45_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-RF_type = 'magnetic_transverse'
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
 B_RF = 0.04  # T
 # B_RF = 0.05  # T
 # B_RF = 0.1  # T
-
 
 gas_name_list = []
 # gas_name_list += ['deuterium']
@@ -62,63 +62,11 @@ use_RF = True
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
 
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set26
-# beta_loop_list = np.round(np.linspace(0, 1, 11), 11)
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 21), 2)  # set27
-# beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.6, 1.0, 21), 2)  # set28
-# beta_loop_list = np.round(np.linspace(-5, 0, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 21), 2)  # set29, set30
-# beta_loop_list = np.round(np.linspace(-10, 0, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 11), 2)  # set31, 32, 33
-# beta_loop_list = np.round(np.linspace(-10, 0, 11), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.9, 1.1, 11), 2)  # set34
-# beta_loop_list = np.round(np.linspace(-5, 5, 11), 2)
-
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.0, 5), 2)  # set35
-# beta_loop_list = np.round(np.linspace(-10, 0, 5), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.8, 1.2, 21), 2)  # set36
-# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.5, 1.5, 21), 2)  # set37, 39, 40
-# beta_loop_list = np.round(np.linspace(-10, 10, 21), 2)
-
-# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 21), 2)  # set38
-# beta_loop_list = np.round(np.linspace(-5, 5, 21), 2)
-
-
 select_alpha_list = []
 select_beta_list = []
 set_name_list = []
 
-# select_alpha_list += [1.3]
-# select_beta_list += [0.0]
-# set_name_list += ['1']
-#
-# select_alpha_list += [1.4]
-# select_beta_list += [3.0]
-# set_name_list += ['2']
-#
-# select_alpha_list += [0.8]
-# select_beta_list += [0.0]
-# set_name_list += ['3']
-#
-# select_alpha_list += [1.0]
-# select_beta_list += [-3.0]
-# set_name_list += ['4']
-#
-# select_alpha_list += [0.6]
-# select_beta_list += [-2.0]
-# set_name_list += ['5']
-
-# ## For 2023 paper:
+## For 2023 paper:
 #
 # select_alpha_list += [1.4]
 # select_beta_list += [3.0]
@@ -135,6 +83,29 @@ set_name_list = []
 # select_alpha_list += [0.55]
 # select_beta_list += [-7.0]
 # set_name_list += ['4']
+
+## For 2025 paper:
+
+select_alpha_list += [1.0]
+select_beta_list += [0.0]
+set_name_list += ['1']
+
+select_alpha_list += [1.0]
+select_beta_list += [-0.6]
+set_name_list += ['2']
+
+select_alpha_list += [0.4]
+select_beta_list += [-1.8]
+set_name_list += ['3']
+
+select_alpha_list += [1.12]
+select_beta_list += [2.0]
+set_name_list += ['4']
+
+select_alpha_list += [1.54]
+select_beta_list += [1.2]
+set_name_list += ['5']
+
 
 ### testing
 # with_kr_correction = False
@@ -153,24 +124,38 @@ sigma_r0 = 0.05
 # sigma_r0 = 0.1
 radial_distribution = 'uniform'
 
+if RF_type == 'electric_transverse':
+    title_RF_prefix = '$E_{RF}=$' + str(E_RF_kVm) + 'kV/m'
+else:
+    title_RF_prefix = '$B_{RF}=$' + str(int(1e3 * B_RF)) + 'mT'
+    if induced_fields_factor == 1:
+        title_RF_prefix += ' (w/E)'
+    else:
+        title_RF_prefix += ' (wo/E)'
+
 # select_alpha_list = [1, 1.4, 1, 0.7, 0.55]  # set42, select sets from 2023 paper
 # select_beta_list = [0, 3, -3, -3, -7]
 # set_name_list += ['0' for _ in range(len(select_beta_list))]
 
-alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
-beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
-select_alpha_list = alpha_loop_list
-select_beta_list = beta_loop_list
-set_name_list += ['0' for _ in range(len(select_beta_list))]
+# alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
+# beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56
+# beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+
+# select_alpha_list = alpha_loop_list
+# select_beta_list = beta_loop_list
+# set_name_list += ['0' for _ in range(len(select_beta_list))]
 
 cnt_filtered_particles = 0
 
-# ind_sets = [0]
+ind_sets = [0]
 # ind_sets = [1]
 # ind_sets = [2]
 # ind_sets = [3]
-ind_sets = [4]
-for ind_set in ind_sets:
+# ind_sets = [4]
+# for ind_set in ind_sets:
+for ind_set in range(len(select_beta_list)):
 
     alpha = select_alpha_list[ind_set]
     beta = select_beta_list[ind_set]
@@ -238,7 +223,7 @@ for ind_set in ind_sets:
         theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
 
         fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-        fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6))
+        # fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6))
 
         ### plot the theretical resonance points
         _, _, mi, _, Z_ion = define_plasma_parameters(gas_name=gas_name)
@@ -247,6 +232,10 @@ for ind_set in ind_sets:
         omega_RF = alpha * field_dict['omega_cyclotron']
         omega_RF_over_omega_cyc_0 = omega_RF / omega_cyc_0
         k_RF = 2 * np.pi / field_dict['l'] * beta
+        title_RF = title_RF_prefix
+        # title_RF += ', $\\omega / \\omega_{cyc,T}=$' + str(np.round(omega_RF_over_omega_cyc_0, 1))
+        title_RF += ', $\\omega / \\omega_{cyc}=$' + str(np.round(omega_RF_over_omega_cyc_0, 1))
+        title_RF += ', $k/2\pi=$' + str(np.round(k_RF / (2 * np.pi), 1))
 
         # calculate possible resonance points
         vz_arr = np.linspace(-3, 3, 400) * v_th_ref
@@ -320,9 +309,11 @@ for ind_set in ind_sets:
 
         ### plot particle trajectories
 
+        num_particles = 100
         # num_particles = 300
         # num_particles = 500
-        num_particles = 1000
+        # num_particles = 1
+        # num_particles = 1000
         # num_particles = 3000
         # colors = cm.rainbow(np.linspace(0, 1, num_particles))
 
@@ -397,8 +388,8 @@ for ind_set in ind_sets:
                 # 360 / (2 * np.pi) * np.arctan(vt_adjusted[inds_positive] / vz_adjusted[inds_positive]), 180)
 
                 dist_v = max(np.sqrt((vz_adjusted - vz_adjusted[0]) ** 2 + (vt_adjusted - vt_adjusted[0]) ** 2))
-                # dist_v /= (2 * v_th_ref)  # as in paper for E_RF
-                dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
+                dist_v /= (2 * v_th_ref)  # as in paper for E_RF
+                # dist_v /= np.sqrt((vz_adjusted[0]) ** 2 + (vt_adjusted[0]) ** 2)  # for B_RF
                 color = cm.rainbow(dist_v)
                 # color = cm.rainbow(t[-1] / 3e-6)
                 # color = cm.rainbow(r[-1])
@@ -406,6 +397,7 @@ for ind_set in ind_sets:
                 ax.plot(vz_adjusted / v_th_ref, vt_adjusted / v_th_ref,
                         # color=colors[ind_p],
                         color=color,
+                        # color='r',
                         alpha=0.2,
                         )
                 ax.plot(vz_adjusted[0] / v_th_ref, vt_adjusted[0] / v_th_ref,
@@ -425,9 +417,11 @@ for ind_set in ind_sets:
                     ax.plot(vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
                     ax.plot(-vz_axis / v_th_ref, vt_axis / v_th_ref, color='k', linestyle='--')
 
-                ax2.plot(t, r,
-                         color=color,
-                         alpha=0.3)
+                # ax2.plot(t, r, color=color, alpha=0.3)
+                # ax2.plot(t, vz_adjusted / v_th_ref, color='r', alpha=0.3)
+                # ax2.plot(t, vt_adjusted / v_th_ref, linestyle='--', color='r', alpha=0.3)
+                # ax2.plot(t, vz / v_th_ref, color='b', alpha=0.3)
+                # ax2.plot(t, vt / v_th_ref, linestyle='--', color='b', alpha=0.3)
 
 
         # text = '(' + RF_set_name + ')'
@@ -443,8 +437,12 @@ for ind_set in ind_sets:
         #          transform=fig.axes[0].transAxes)
 
         ## for testing
-        ax.set_xlabel('$v_z / v_{th,T}$', fontsize=20)
-        ax.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
+        # fontsize_labels = 20
+        fontsize_labels = 16
+        # ax.set_xlabel('$v_z / v_{th,T}$', fontsize=fontsize_labels)
+        # ax.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=fontsize_labels)
+        ax.set_xlabel('$v_z / v_{th}$', fontsize=fontsize_labels)
+        ax.set_ylabel('$v_{\\perp} / v_{th}$', fontsize=fontsize_labels)
 
         ## for paper:
         # if ind_set == 3:
@@ -453,7 +451,8 @@ for ind_set in ind_sets:
         #     ax.set_ylabel('$v_{\\perp} / v_{th,T}$', fontsize=20)
 
         # ax.set_title(title)
-        ax.set_title(set_name, fontsize=12)
+        # ax.set_title(set_name, fontsize=12)
+        ax.set_title(title_RF, fontsize=fontsize_labels)
         # ax.set_xlim([-2.0, 2.0])
         ax.set_xlim([-2.5, 2.5])
         # ax.set_ylim([0, 2.0])
@@ -464,11 +463,11 @@ for ind_set in ind_sets:
         # ax.legend()
         ax.grid(True)
 
-        ## r, t plot
-        ax2.set_xlabel('t [s]', fontsize=20)
-        ax2.set_ylabel('r [m]', fontsize=20)
-        fig2.set_layout_engine(layout='tight')
-        ax2.grid(True)
+        # ## r, t plot
+        # ax2.set_xlabel('t [s]', fontsize=20)
+        # ax2.set_ylabel('r [m]', fontsize=20)
+        # fig2.set_layout_engine(layout='tight')
+        # ax2.grid(True)
 
         # ## save plots to file
         # save_fig_dir = '../../../Papers/texts/paper2022/pics/'

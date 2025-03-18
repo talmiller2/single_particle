@@ -16,6 +16,7 @@ plt.rcParams.update({'axes.labelpad': 15})
 
 plt.close('all')
 
+plot_1d = False
 plot_3d = False
 if plot_3d:
     # define the 3d plot
@@ -34,19 +35,21 @@ settings = define_default_settings(settings)
 field_dict = {}
 field_dict['use_static_main_cell'] = True
 # field_dict['use_static_main_cell'] = False
-field_dict['Rm'] = 5
+field_dict['Rm'] = 6
+# field_dict['Rm'] = 5
 # field_dict['Rm'] = 3
 field_dict['Rm_main'] = 3
-# field_dict['MMM_z_wall'] = 1.0  # [m]
-field_dict['MMM_z_wall'] = 1.2  # [m]
+field_dict['MMM_z_wall'] = 1.0  # [m]
+# field_dict['MMM_z_wall'] = 1.2  # [m]
+# field_dict['MMM_z_wall'] = 0.8  # [m]
 # field_dict['U_MMM'] = 0
 # field_dict['U_MMM'] = 1e-4 * settings['v_th']
 # field_dict['U_MMM'] = 0.01 * settings['v_th']
 # field_dict['U_MMM'] = 0.05 * settings['v_th']
 field_dict['U_MMM'] = 0.1 * settings['v_th']
 # field_dict['U_MMM'] = 1.0 * settings['v_th']
-field_dict['induced_fields_factor'] = 0
-# field_dict['induced_fields_factor'] = 1
+# field_dict['induced_fields_factor'] = 0
+field_dict['induced_fields_factor'] = 1
 field_dict = define_default_field(settings, field_dict)
 # tau = settings['l'] / settings['v_th']
 # tau = settings['l'] / field_dict['U_MMM']
@@ -109,14 +112,18 @@ def plot_MMM_lines(t, t_fac, plot_static_cell):
 
 t_list = []
 z_list = []
+v_abs_list = []
 
 inds_sim = []
 inds_sim += [0]
 inds_sim += [1]
 inds_sim += [2]
 inds_sim += [3]
-inds_sim += [4]
-inds_sim += [5]
+# inds_sim += [4]
+# inds_sim += [5]
+inds_sim += [6]
+inds_sim += [7]
+
 for ind_sim in inds_sim:
 
     loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm']))
@@ -130,7 +137,10 @@ for ind_sim in inds_sim:
     # angle = 1.1 * theta_high
     # angle = 1.5 * theta_high
     # angle = 1.01 * theta_low
-    angle = 60
+    if ind_sim <= 5:
+        angle = 60
+    else:
+        angle = 80
 
     # angle = 0.99 * loss_cone_angle    # elif ind_sim == 1:
     #     angle = 1.01 * loss_cone_angle
@@ -148,11 +158,13 @@ for ind_sim in inds_sim:
 
     r_ini = 0
     # r_ini = 1 * cyclotron_radius
+    # r_ini = 5 * cyclotron_radius
     if ind_sim <= 1:
         z_ini = 0
-    elif ind_sim in [2, 4]:
+    # elif ind_sim in [2, 3]:
+    elif ind_sim in [2, 3, 6, 7]:
         z_ini = 3.5
-    elif ind_sim in [3, 5]:
+    elif ind_sim in [4, 5]:
         z_ini = -3.5
 
     # z_ini = 2
@@ -160,7 +172,7 @@ for ind_sim in inds_sim:
     # if ind_sim == 0:
     #     x_0 = np.array([0, r_ini, z_ini])
     # if ind_sim == 1:
-    if ind_sim in [1, 4, 5]:
+    if ind_sim in [1, 3, 5, 7]:
         # x_0 = np.array([-r_ini, 0, z_ini])
         # v_0[1] *= -1
         v_0[2] *= -1
@@ -210,103 +222,106 @@ for ind_sim in inds_sim:
     # t_fac = 1
     t_label = '$t \cdot v_{th} / l$'
     t_fac = settings['v_th'] / settings['l']
-
-    # plt.figure(2, figsize=(14, 5))
-    plt.figure(num=None, figsize=(14, 5))
-    # plt.subplot(1, 3, 1)
-    plt.subplot(1, 4, 1)
-    plot_MMM_lines(t, t_fac, field_dict['use_static_main_cell'])
-    plt.plot(t * t_fac, x, label='x', linewidth=linewidth, color='b')
-    plt.plot(t * t_fac, y, label='y', linewidth=linewidth, color='g')
-    plt.plot(t * t_fac, z, label='z', linewidth=linewidth, color='r')
-    plt.plot(t * t_fac, R, label='R', linewidth=linewidth, color='k')
-    plt.legend()
-    plt.xlabel(t_label)
-    plt.ylabel('coordinate [m]')
-    plt.title('ind_sim = ' + str(ind_sim))
-    plt.grid(True)
-    plt.tight_layout()
-
-    # plt.figure(4)
-    plt.subplot(1, 4, 2)
     v_fac = 1 / settings['v_th']
-    # plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
-    # plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
-    plt.plot(t * t_fac, vz * v_fac, label='$v_z$', linewidth=linewidth, color='r')
-    plt.plot(t * t_fac, abs(vz) * v_fac, label='$|v_z|$', linewidth=linewidth, color='orange')
-    plt.plot(t * t_fac, vt * v_fac, label='$v_{\\perp}$', linewidth=linewidth, color='k')
-    plt.plot(t * t_fac, v_abs * v_fac, label='$|v|$', linewidth=linewidth, color='grey')
-    plt.legend()
-    plt.xlabel(t_label)
-    # plt.ylabel('velocity [m/s]')
-    plt.ylabel('$v / v_{th}$')
-    plt.grid(True)
-    plt.tight_layout()
-    #
-    #
-    # plt.figure(3)
-    # plt.plot(R, z, label=label, linewidth=linewidth)
-    # plt.x_label('R')
-    # plt.y_label('z')
-    # plt.grid(True)
-    # plt.legend()
-    # plt.tight_layout()
-    #
-    # plt.figure(5)
-    # E = 0.5 * v_norm ** 2.0
-    # plt.plot(t, E, label='$E$', linewidth=linewidth)
-    # plt.legend()
-    # plt.x_label('t')
-    # plt.y_label('kinetic energy')
-    # plt.grid(True)
-    # plt.tight_layout()
-
-    # plt.figure(7)
-    # plt.plot(t, energy_change, linewidth=linewidth)
-    # plt.legend()
-    # plt.x_label('t')
-    # plt.y_label('E change %')
-    # plt.grid(True)
-    # plt.tight_layout()
-
-    # plt.figure(8)
-    # plt.subplot(1, 3, 2)
-    plt.subplot(1, 4, 3)
-    plt.plot(t * t_fac, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
-    plt.plot(t * t_fac, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
-    plt.plot(t * t_fac, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
-    plt.plot(t * t_fac, np.linalg.norm(hist['B'], axis=1), label='$|B|$', linewidth=linewidth, color='k')
-    plt.legend()
-    plt.xlabel(t_label)
-    plt.ylabel('B [T]')
-    plt.grid(True)
-    plt.tight_layout()
-
-    # plt.figure(9)
-    # plt.subplot(1, 3, 3)
-    # plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
-    # plt.ylim([0, 1.1 * max(hist['dt'])])
-    # plt.legend()
-    # plt.xlabel(t_label)
-    # plt.ylabel('dt')
-    # plt.grid(True)
-    # plt.tight_layout()
-
-    # plt.subplot(1, 3, 3)
-    plt.subplot(1, 4, 4)
-    E_fac = 1e-3
-    plt.plot(t * t_fac, hist['E'][:, 0] * E_fac, label='$E_x$', linewidth=linewidth, color='b')
-    plt.plot(t * t_fac, hist['E'][:, 1] * E_fac, label='$E_y$', linewidth=linewidth, color='g')
-    plt.plot(t * t_fac, hist['E'][:, 2] * E_fac, label='$E_z$', linewidth=linewidth, color='r')
-    plt.plot(t * t_fac, np.linalg.norm(hist['E'], axis=1) * E_fac, label='$|E|$', linewidth=linewidth, color='k')
-    plt.legend()
-    plt.xlabel(t_label)
-    plt.ylabel('E [kV/m]')
-    plt.grid(True)
-    plt.tight_layout()
 
     t_list += [t]
     z_list += [z]
+    v_abs_list += [v_abs]
+
+    if plot_1d:
+        # plt.figure(2, figsize=(14, 5))
+        plt.figure(num=None, figsize=(14, 5))
+        # plt.subplot(1, 3, 1)
+        plt.subplot(1, 4, 1)
+        plot_MMM_lines(t, t_fac, field_dict['use_static_main_cell'])
+        plt.plot(t * t_fac, x, label='x', linewidth=linewidth, color='b')
+        plt.plot(t * t_fac, y, label='y', linewidth=linewidth, color='g')
+        plt.plot(t * t_fac, z, label='z', linewidth=linewidth, color='r')
+        plt.plot(t * t_fac, R, label='R', linewidth=linewidth, color='k')
+        plt.legend()
+        plt.xlabel(t_label)
+        plt.ylabel('coordinate [m]')
+        plt.title('ind_sim = ' + str(ind_sim))
+        plt.grid(True)
+        plt.tight_layout()
+
+        # plt.figure(4)
+        plt.subplot(1, 4, 2)
+        # plt.plot(t, vx, label='$v_x$', linewidth=linewidth, color='b')
+        # plt.plot(t, vy, label='$v_y$', linewidth=linewidth, color='g')
+        plt.plot(t * t_fac, vz * v_fac, label='$v_z$', linewidth=linewidth, color='r')
+        plt.plot(t * t_fac, abs(vz) * v_fac, label='$|v_z|$', linewidth=linewidth, color='orange')
+        plt.plot(t * t_fac, vt * v_fac, label='$v_{\\perp}$', linewidth=linewidth, color='k')
+        plt.plot(t * t_fac, v_abs * v_fac, label='$|v|$', linewidth=linewidth, color='grey')
+        plt.legend()
+        plt.xlabel(t_label)
+        # plt.ylabel('velocity [m/s]')
+        plt.ylabel('$v / v_{th}$')
+        plt.grid(True)
+        plt.tight_layout()
+        #
+        #
+        # plt.figure(3)
+        # plt.plot(R, z, label=label,s linewidth=linewidth)
+        # plt.x_label('R')
+        # plt.y_label('z')
+        # plt.grid(True)
+        # plt.legend()
+        # plt.tight_layout()
+        #
+        # plt.figure(5)
+        # E = 0.5 * v_norm ** 2.0
+        # plt.plot(t, E, label='$E$', linewidth=linewidth)
+        # plt.legend()
+        # plt.x_label('t')
+        # plt.y_label('kinetic energy')
+        # plt.grid(True)
+        # plt.tight_layout()
+
+        # plt.figure(7)
+        # plt.plot(t, energy_change, linewidth=linewidth)
+        # plt.legend()
+        # plt.x_label('t')
+        # plt.y_label('E change %')
+        # plt.grid(True)
+        # plt.tight_layout()
+
+        # plt.figure(8)
+        # plt.subplot(1, 3, 2)
+        plt.subplot(1, 4, 3)
+        plt.plot(t * t_fac, hist['B'][:, 0], label='$B_x$', linewidth=linewidth, color='b')
+        plt.plot(t * t_fac, hist['B'][:, 1], label='$B_y$', linewidth=linewidth, color='g')
+        plt.plot(t * t_fac, hist['B'][:, 2], label='$B_z$', linewidth=linewidth, color='r')
+        plt.plot(t * t_fac, np.linalg.norm(hist['B'], axis=1), label='$|B|$', linewidth=linewidth, color='k')
+        plt.legend()
+        plt.xlabel(t_label)
+        plt.ylabel('B [T]')
+        plt.grid(True)
+        plt.tight_layout()
+
+        # plt.figure(9)
+        # plt.subplot(1, 3, 3)
+        # plt.plot(t, hist['dt'], linewidth=linewidth, color='b')
+        # plt.ylim([0, 1.1 * max(hist['dt'])])
+        # plt.legend()
+        # plt.xlabel(t_label)
+        # plt.ylabel('dt')
+        # plt.grid(True)
+        # plt.tight_layout()
+
+        # plt.subplot(1, 3, 3)
+        plt.subplot(1, 4, 4)
+        E_fac = 1e-3
+        plt.plot(t * t_fac, hist['E'][:, 0] * E_fac, label='$E_x$', linewidth=linewidth, color='b')
+        plt.plot(t * t_fac, hist['E'][:, 1] * E_fac, label='$E_y$', linewidth=linewidth, color='g')
+        plt.plot(t * t_fac, hist['E'][:, 2] * E_fac, label='$E_z$', linewidth=linewidth, color='r')
+        plt.plot(t * t_fac, np.linalg.norm(hist['E'], axis=1) * E_fac, label='$|E|$', linewidth=linewidth, color='k')
+        plt.legend()
+        plt.xlabel(t_label)
+        plt.ylabel('E [kV/m]')
+        plt.grid(True)
+        plt.tight_layout()
+
     if plot_3d:
         ## plot path with changing color as time evolves
         for i in range(len(x) - 1):
@@ -349,5 +364,21 @@ if field_dict['induced_fields_factor'] == False:
     title += ', w/o E fields'
 plt.title(title)
 plt.ylim([-5, 5])
+plt.grid(True)
+plt.tight_layout()
+
+# combined velocity plot
+plt.figure(num=None, figsize=(7, 5))
+colors = cm.rainbow(np.linspace(0, 1, len(t_list)))
+for i, (t, z, v_abs, color) in enumerate(zip(t_list, z_list, v_abs_list, colors)):
+    plt.plot(t * t_fac, v_abs * v_fac, label='#' + str(i), linewidth=linewidth, color=color)
+plt.legend()
+plt.xlabel(t_label)
+plt.ylabel('$v / v_{th}$')
+title = 'main cell: $z_{main}=$' + str(field_dict['MMM_static_main_cell_z']) + 'm, $R_m=$' + str(field_dict['Rm_main'])
+title += ', MMM: $z_{wall}=$' + str(field_dict['MMM_z_wall']) + 'm, $R_m=$' + str(field_dict['Rm'])
+if field_dict['induced_fields_factor'] == False:
+    title += ', w/o E fields'
+plt.title(title)
 plt.grid(True)
 plt.tight_layout()

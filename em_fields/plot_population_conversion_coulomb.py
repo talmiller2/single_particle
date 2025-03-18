@@ -19,7 +19,7 @@ def sol_rate_eqs(t, alpha, N_r0, N_l0, N_c0):
 
 
 # plot theoretic saturation curves for isotropic Coulomb scattering
-Rm = 3
+Rm = 10
 loss_cone_angle_rad = np.arcsin(1 / np.sqrt(Rm))
 alpha = omega_loss_cone_fraction = np.sin(loss_cone_angle_rad / 2) ** 2
 alpha_c = 1 - 2 * alpha
@@ -61,5 +61,5 @@ ax.set_ylabel('$\\frac{ \\Delta N_{i \\rightarrow j} }{ N_{i,0} }$', fontsize=25
 # ax.legend(loc='lower right', fontsize=15)
 ax.legend(fontsize=15)
 ax.grid(True)
-ax.set_title('Populations evolution in isotropic Coulomb scattering ($R_m=' + str(Rm) + '$)')
+ax.set_title('Populations conversion in isotropic Coulomb scattering ($R_m=' + str(Rm) + '$)')
 fig.set_layout_engine(layout='tight')
