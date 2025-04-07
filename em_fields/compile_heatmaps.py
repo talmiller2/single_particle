@@ -2,23 +2,14 @@ import copy
 import os.path
 import pickle
 
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import savemat
 
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_thermal_velocity
 
-plt.rcParams.update({'font.size': 12})
-# plt.rcParams.update({'font.size': 10})
-# plt.rcParams.update({'font.size': 8})
-# plt.rcParams["figure.facecolor"] = 'white'
-# plt.rcParams["axes.facecolor"] = 'green'
-
-plt.close('all')
-
-# save_dir = '/home/talm/code/single_particle/slurm_runs/'
-save_dir = '/Users/talmiller/Downloads/single_particle/'
+save_dir = '/home/talm/code/single_particle/slurm_runs/'
+# save_dir = '/Users/talmiller/Downloads/single_particle/'
 
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
 # save_dir += '/set27_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -97,14 +88,14 @@ radial_distribution = 'uniform'
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50
-# beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56
+beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
-beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
+# beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
 gas_name_list = ['deuterium', 'tritium']
 
