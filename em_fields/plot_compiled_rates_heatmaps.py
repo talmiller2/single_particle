@@ -388,4 +388,3 @@ if do_plots == True:
 #
 # # estimate for a change of order of the temperature as in the RF
 # denergy_RF = settings['kB_eV'] * settings['T_keV'] * 1e3
-#

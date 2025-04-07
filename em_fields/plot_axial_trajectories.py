@@ -18,10 +18,11 @@ plt.close('all')
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set47_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set48_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
-save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+# save_dir += '/set49_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
@@ -44,66 +45,56 @@ select_alpha_list = []
 select_beta_list = []
 set_name_list = []
 
-# select_alpha_list += [1]
-# select_beta_list += [0]
-# set_name_list += ['noRF']
-#
-# select_alpha_list += [0.64]
-# select_beta_list += [-1.8]
-# set_name_list += ['1']
+## For 2025 paper:
 
-# select_alpha_list += [0.7]
-# select_beta_list += [-0.8]
-# set_name_list += ['2']
+select_alpha_list += [1.0]
+select_beta_list += [0.0]
+set_name_list += ['1']
 
-# select_alpha_list += [1.06]
-# select_beta_list += [-1.8]
-# set_name_list += ['3']
+select_alpha_list += [1.0]
+select_beta_list += [-0.6]
+set_name_list += ['2']
 
-# select_alpha_list += [1.12]
-# select_beta_list += [1.4]
-# set_name_list += ['4']
-
-# select_alpha_list += [0.88]
-# select_beta_list += [0.0]
-# set_name_list += ['5']
-
-# select_alpha_list += [1.0]
-# select_beta_list += [-1.8]
-# set_name_list += ['6']
-
-select_alpha_list += [0.88]
+select_alpha_list += [0.4]
 select_beta_list += [-1.8]
-set_name_list += ['7']
+set_name_list += ['3']
 
-plot_theta_trajectories = False
-# plot_theta_trajectories = True
+select_alpha_list += [1.12]
+select_beta_list += [2.0]
+set_name_list += ['4']
 
-# plot_axial_trajectories = False
-plot_axial_trajectories = True
+select_alpha_list += [1.54]
+select_beta_list += [1.2]
+set_name_list += ['5']
 
-# plot_radial_trajectories = False
-plot_radial_trajectories = True
+# plot_theta_trajectories = False
+plot_theta_trajectories = True
+
+plot_axial_trajectories = False
+# plot_axial_trajectories = True
+
+plot_radial_trajectories = False
+# plot_radial_trajectories = True
 
 plot_population_tracker = False
 # plot_population_tracker = True
 
 
 use_RF = True
-# use_RF = False
-with_RF_xy_corrections = True
-# with_RF_xy_corrections = False
-induced_fields_factor = 1
+# with_kr_correction = False
+with_kr_correction = True
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 # time_step_tau_cyclotron_divisions = 20
 # time_step_tau_cyclotron_divisions = 40
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
-sigma_r0 = 0.1
+sigma_r0 = 0.05
+radial_distribution = 'uniform'
 
 fig_num = 0
 
@@ -136,11 +127,15 @@ for gas_name in gas_name_list:
             set_name += '_beta_' + str(beta)
             if induced_fields_factor < 1.0:
                 set_name += '_iff' + str(induced_fields_factor)
-            if with_RF_xy_corrections == False:
-                set_name += '_woxyRFcor'
+            if with_kr_correction == True:
+                set_name += '_withkrcor'
         set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
         if sigma_r0 > 0:
             set_name += '_sigmar' + str(sigma_r0)
+            if radial_distribution == 'normal':
+                set_name += 'norm'
+            elif radial_distribution == 'uniform':
+                set_name += 'unif'
         set_name += '_' + gas_name
         print(set_name)
 
@@ -157,12 +152,17 @@ for gas_name in gas_name_list:
         with open(field_dict_file, 'rb') as fid:
             field_dict = pickle.load(fid)
 
-        num_particles = len(data_dict['t'])
+        # num_particles = len(data_dict['t'])
         # num_particles = 1
         # num_particles = 3
         # num_particles = 50
         # num_particles = 200
+        # num_particles = 500
         # num_particles = 1000
+        num_particles = 2000
+
+        cnt_LC, max_particles_LC = 0, 300
+        cnt_trapped, max_particles_trapped = 0, 300
 
         # define v_th ref
         _, _, mi, _, Z_ion = define_plasma_parameters(gas_name='tritium')
@@ -204,9 +204,10 @@ for gas_name in gas_name_list:
 
             t = np.array(data_dict['t'][ind_p])
 
+            if True:
             # if len(t) < 15:
-            if ind_p == 44:
-                print('index of particle that ended prematurely:', ind_p)
+            # if ind_p == 44:
+            #     print('index of particle that ended prematurely:', ind_p)
 
                 t /= (field_dict['l'] / v_th_ref)
 
@@ -258,27 +259,36 @@ for gas_name in gas_name_list:
                         populations_counter_mat[ind_t, ind_ini, ind_fin] += 1
 
                 if plot_theta_trajectories or plot_axial_trajectories:
+
+                    if theta[0] < theta_LC or theta[0] > 180 - theta_LC:
+                        cnt_LC += 1
+                    else:
+                        cnt_trapped += 1
+
                     ## color the lines according to a metric
                     # metric = abs((max(vz_adjusted) - min(vz_adjusted)) / vz_adjusted[0])
                     # metric = (max(vz_adjusted) - min(vz_adjusted)) / v_th_ref
-                    # metric = (max(theta_adjusted) - min(theta_adjusted)) / 180 * 2
+                    metric = (max(theta_adjusted) - min(theta_adjusted)) / 40
                     # metric = (max(vz_adjusted) - min(vz_adjusted)) / (2 * v_th_ref)
-                    metric = theta[0] / 180
+                    # metric = theta[0] / 180
                     color = cm.rainbow(metric)
 
-                if plot_theta_trajectories:
+            if plot_theta_trajectories:
                     for ind_ax, ax in enumerate(axs):
 
                         # if ind_p == num_particles - 1 and k_RF != 0
                         #     ax.hlines(v_RF / v_th_ref, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                        ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                        ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        if ind_p == 0:
+                            ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                            ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
 
-                        alpha_lines = 0.4
+                        alpha_lines = 0.3
                         plot_particle = False
-                        if ind_ax == 0 and (theta[0] < theta_LC or theta[0] > 180 - theta_LC):
+                        if ind_ax == 0 and (
+                                theta[0] < theta_LC or theta[0] > 180 - theta_LC) and cnt_LC < max_particles_LC:
                             plot_particle = True
-                        if ind_ax == 1 and (theta[0] > theta_LC and theta[0] < 180 - theta_LC):
+                        if ind_ax == 1 and (theta[0] > theta_LC and theta[
+                            0] < 180 - theta_LC) and cnt_trapped < max_particles_trapped:
                             plot_particle = True
 
                         if plot_particle:

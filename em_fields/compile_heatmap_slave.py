@@ -110,7 +110,7 @@ else:
                     for suffix in ['end', 'end_std']:
                         compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(zero_mat)
 
-                for key in ['percent_ok', 'E_ratio_mean']:
+                for key in ['percent_ok', 'E_ratio', 'E_ratio_R', 'E_ratio_L', 'E_ratio_C']:
                     compiled_dict[key] = copy.deepcopy(zero_mat)
 
                 zero_tensor = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list), len(t_array)])
@@ -128,8 +128,31 @@ else:
             for key in data_dict.keys():
                 data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
 
-            compiled_dict['E_ratio_mean'][ind_beta, ind_alpha] = np.nanmean(data_dict['v'][:, -1] ** 2) / np.nanmean(
-                data_dict['v'][:, 0] ** 2)
+            E_ini_mean = np.nanmean(data_dict['v'][:, 0] ** 2)
+            E_fin_mean = np.nanmean(data_dict['v'][:, -1] ** 2)
+            compiled_dict['E_ratio'][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
+
+            if ind_beta == 0 and ind_alpha == 0:
+                theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(Rm))
+                inds_pop = {}
+                for pop in ['R', 'L', 'C']:
+                    inds_pop[pop] = []
+                inds_particles_R, inds_particles_L, inds_particles_C = [], [], []
+                for i in range(num_particles):
+                    vt0 = data_dict['v_transverse'][i, 0]
+                    vz0 = data_dict['v_axial'][i, 0]
+                    theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
+                    if theta0 <= theta_LC:
+                        pop = 'R'
+                    elif theta0 > theta_LC and theta0 > 180 - theta_LC:
+                        pop = 'C'
+                    else:
+                        pop = 'L'
+                    inds_pop[pop] += [i]
+            for pop in ['R', 'L', 'C']:
+                E_ini_mean = np.nanmean(data_dict['v'][inds_pop[pop], 0] ** 2)
+                E_fin_mean = np.nanmean(data_dict['v'][inds_pop[pop], -1] ** 2)
+                compiled_dict['E_ratio_' + pop][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
 
             # divide the phase space by the angle
             if ind_beta == 0 and ind_alpha == 0:
