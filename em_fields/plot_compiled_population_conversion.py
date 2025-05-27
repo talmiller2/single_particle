@@ -62,10 +62,13 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# RF_type = 'electric_transverse'
+# normalize_curves = False
+normalize_curves = True
+
+RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
-# E_RF_kVm = 50  # [kV/m]
-RF_type = 'magnetic_transverse'
+E_RF_kVm = 50  # [kV/m]
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # [T]
 B_RF = 0.04  # [T]
 
@@ -75,11 +78,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-# induced_fields_factor = 1
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
 # sigma_r0 = 0
@@ -177,15 +180,16 @@ do_plots = True
 
 if do_plots == True:
 
-    # processes = ['rc', 'cr', 'rl', 'lc', 'cl', 'lr']
-    # ind_rows = [0, 0, 0, 1, 1, 1]
-    # ind_cols = [0, 1, 2, 0, 1, 2]
-    # process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
-
-    processes = ['rc', 'cr', 'lc', 'cl']
-    ind_rows = [0, 0, 1, 1]
-    ind_cols = [0, 1, 0, 1]
-    process_colors = ['b', 'r', 'g', 'orange']
+    if normalize_curves:
+        processes = ['rc', 'cr', 'lc', 'cl']
+        ind_rows = [0, 0, 1, 1]
+        ind_cols = [0, 1, 0, 1]
+        process_colors = ['b', 'r', 'g', 'orange']
+    else:
+        processes = ['rc', 'cr', 'rl', 'lc', 'cl', 'lr']
+        ind_rows = [0, 0, 0, 1, 1, 1]
+        ind_cols = [0, 1, 2, 0, 1, 2]
+        process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
 
     # processes = ['rc', 'cr']
     # ind_rows = [0, 0]
@@ -197,15 +201,16 @@ if do_plots == True:
     # ind_cols = [0, 0]
     # process_colors = ['b', 'g']
 
-    fac_list = [1 if p in ['rc', 'lc'] else solid_angle_factor for p in processes]
-    # fac_list = [1 if p in ['rc', 'lc'] else 1 for p in processes]
-    # fac_list = [0 for p in processes]
+    if normalize_curves:
+        fac_list = [1 if p in ['rc', 'lc'] else solid_angle_factor for p in processes]
+    else:
+        fac_list = [1 for p in processes]
 
     # pick a lower alpha, beta resolution for the mega figure
-    inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
-    inds_beta = list(range(0, len(beta_loop_list), 1))
-    # inds_alpha = list(range(0, len(alpha_loop_list), 5))
-    # inds_beta = list(range(0, len(beta_loop_list), 5))
+    # inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
+    # inds_beta = list(range(0, len(beta_loop_list), 1))
+    inds_alpha = list(range(0, len(alpha_loop_list), 5))
+    inds_beta = list(range(0, len(beta_loop_list), 5))
     # inds_alpha = list(range(0, len(alpha_loop_list), 10))
     # inds_beta = list(range(0, len(beta_loop_list), 10))
     inds_alpha = inds_alpha[::-1]
@@ -259,8 +264,19 @@ if do_plots == True:
         return fig, axes
 
 
-    # plot_axes_values = True
-    plot_axes_values = False
+    plot_axes_values = True
+    # plot_axes_values = False
 
-    # fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
+    fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
     fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
+
+# ### saving figures
+# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
+#
+# file_name = 'compiled_population_conversion'
+# if normalize_curves: file_name += '_normalized'
+# if RF_type == 'electric_transverse': file_name += '_REF'
+# else: file_name += '_RMF'
+# if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
+# fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+# fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)

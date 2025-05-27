@@ -361,10 +361,10 @@ for gas_name in gas_name_list:
         #     gas_name_shorthand = 'T'
         # # text = '(' + gas_name_shorthand + ',' + RF_set_name + ')'
         # # text = RF_set_name + ' (' + gas_name_shorthand + ')'
-        # E_ratio_mean = np.mean(data_dict['v'][inds_particles, -1] ** 2) / np.mean(
+        # E_ratio = np.mean(data_dict['v'][inds_particles, -1] ** 2) / np.mean(
         #     data_dict['v'][inds_particles, 0] ** 2)
         # # E_ratio_std = np.std(data_dict['v'][inds_particles, -1] ** 2) / np.std(data_dict['v'][inds_particles, 0] ** 2)
-        # text = '$\\bar{E}_{fin}/\\bar{E}_{ini}=$' + '{:.2f}'.format(E_ratio_mean)
+        # text = '$\\bar{E}_{fin}/\\bar{E}_{ini}=$' + '{:.2f}'.format(E_ratio)
         # # text += ', $\\sigma\\left(E_{fin}\\right)/\\sigma\\left(E_{ini}\\right)=$' + '{:.2f}'.format(E_ratio_std)
         # plt.text(
         #     # 0.99, 0.98, text,

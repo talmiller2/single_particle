@@ -17,6 +17,7 @@ plt.rcParams.update({'font.size': 12})
 # cmap = 'viridis'
 # cmap = 'plasma'
 # cmap = 'inferno'
+# cmap = 'turbo'
 cmap = 'coolwarm'
 figsize = (6, 6)
 
@@ -63,10 +64,10 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # # E_RF_kVm = 25  # [kV/m]
-# E_RF_kVm = 50  # [kV/m]
-RF_type = 'magnetic_transverse'
+E_RF_kVm = 50  # [kV/m]
+# RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # [T]
 B_RF = 0.04  # [T]
 
@@ -130,7 +131,7 @@ N_cl_1 = mat_dict_1['N_cl_end']
 N_rl_1 = mat_dict_1['N_rl_end']
 N_lr_1 = mat_dict_1['N_lr_end']
 percent_ok_1 = mat_dict_1['percent_ok']
-E_ratio_mean_1 = mat_dict_1['E_ratio_mean']
+E_ratio_1 = mat_dict_1['E_ratio']
 selectivity_LC_1 = N_rc_1 / N_lc_1
 selectivity_trapped_1 = N_cr_1 / N_cr_1
 cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
@@ -138,8 +139,8 @@ cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) 
 # gas_name = 'deuterium'
 # gas_name = 'DT_mix'
 gas_name = 'tritium'
-# set_name = 'smooth_compiled_'
 set_name = 'compiled_'
+# set_name = 'smooth_compiled_'
 set_name += theta_type + '_'
 if RF_type == 'electric_transverse':
     set_name += 'ERF_' + str(E_RF_kVm)
@@ -171,7 +172,7 @@ N_cl_2 = mat_dict_2['N_cl_end']
 N_rl_2 = mat_dict_2['N_rl_end']
 N_lr_2 = mat_dict_2['N_lr_end']
 percent_ok_2 = mat_dict_2['percent_ok']
-E_ratio_mean_2 = mat_dict_2['E_ratio_mean']
+E_ratio_2 = mat_dict_2['E_ratio']
 selectivity_LC_2 = N_rc_2 / N_lc_2
 selectivity_trapped_2 = N_cr_2 / N_cl_2
 cone_escape_rate_2 = (N_rc_2 * LC_ini_fraction - N_cr_2 * trapped_ini_fraction) / LC_ini_fraction
@@ -345,7 +346,7 @@ if do_plots == True:
     fig.suptitle(title2, fontsize=title_fontsize)
 
     for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
-        E_ratio_mean = mat_dict['E_ratio_mean']
+        E_ratio = mat_dict['E_ratio']
         selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
         selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
 
@@ -361,7 +362,7 @@ if do_plots == True:
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
         plot_resonance_lines(ax, gas_name=gas_name)
 
-        Z = E_ratio_mean
+        Z = E_ratio
         title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
         ax = axes[ind_row, 2]
         ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
@@ -371,7 +372,7 @@ if do_plots == True:
         # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
         # N_particles = 1e21 # density 1e21[m^-3] in volume 1[m^3]
         # E_ini_total = E_ini_per_particle * N_particles  # [Joule]
-        # E_fin_total = E_ini_total * E_ratio_mean
+        # E_fin_total = E_ini_total * E_ratio
         # power_total_W = (E_fin_total - E_ini_total) / settings['t_max'] # [Watt=Joule/s]
         # power_total_MW = power_total_W / 1e6
         # Z = power_total_MW
@@ -379,6 +380,32 @@ if do_plots == True:
         # ax = axes[ind_row, 2]
         # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
         # plot_resonance_lines(ax, gas_name=gas_name)
+
+    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    fig.suptitle(title2, fontsize=title_fontsize)
+
+    for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
+        Z = mat_dict['E_ratio_R']
+        title = 'E_ratio_R (' + gas_name + ')'
+        ax = axes[ind_row, 0]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+        # Z = mat_dict['E_ratio_C']
+        Z = mat_dict['E_ratio_L']  # C,L were mixed in compilation
+        title = 'E_ratio_C (' + gas_name + ')'
+        ax = axes[ind_row, 1]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+        # Z = mat_dict['E_ratio_L']
+        Z = mat_dict['E_ratio_C']  # C,L were mixed in compilation
+        title = 'E_ratio_L (' + gas_name + ')'
+        ax = axes[ind_row, 2]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+
 
 # # estimate power particle gets in constant electric field
 # a_constE = settings['q'] * 50e3 / settings['mi']
@@ -388,3 +415,20 @@ if do_plots == True:
 #
 # # estimate for a change of order of the temperature as in the RF
 # denergy_RF = settings['kB_eV'] * settings['T_keV'] * 1e3
+
+
+# ### saving figures
+# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
+#
+# file_name = 'compiled_rates'
+# if 'smooth' in set_name:
+#     file_name += '_smooth'
+# if RF_type == 'electric_transverse': file_name += '_REF'
+# else: file_name += '_RMF'
+# if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
+#
+# plt.figure(1)
+# plt.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+#
+# plt.figure(2)
+# plt.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)

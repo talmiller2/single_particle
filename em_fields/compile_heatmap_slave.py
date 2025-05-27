@@ -144,7 +144,7 @@ else:
                     theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
                     if theta0 <= theta_LC:
                         pop = 'R'
-                    elif theta0 > theta_LC and theta0 > 180 - theta_LC:
+                    elif theta0 > theta_LC and theta0 < 180 - theta_LC:
                         pop = 'C'
                     else:
                         pop = 'L'

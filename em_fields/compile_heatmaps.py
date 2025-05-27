@@ -225,7 +225,7 @@ for theta_type in theta_type_list:
                                                     compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(
                                                         zero_mat)
 
-                                            for key in ['percent_ok', 'E_ratio_mean']:
+                                            for key in ['percent_ok', 'E_ratio']:
                                                 compiled_dict[key] = copy.deepcopy(zero_mat)
 
                                             zero_tensor = np.nan * np.zeros(
@@ -246,7 +246,7 @@ for theta_type in theta_type_list:
                                         for key in data_dict.keys():
                                             data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
 
-                                        compiled_dict['E_ratio_mean'][ind_beta, ind_alpha] = np.nanmean(
+                                        compiled_dict['E_ratio'][ind_beta, ind_alpha] = np.nanmean(
                                             data_dict['v'][:, -1] ** 2) / np.nanmean(data_dict['v'][:, 0] ** 2)
 
                                         # divide the phase space by the angle
