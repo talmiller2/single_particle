@@ -36,7 +36,7 @@ if settings['ind_set'] is not None:
 else:
     compiled_set_file_name = settings['save_dir'] + '/' + settings['run_name']
 
-sample_keys = ['t', 'z', 'r', 'v', 'v_transverse', 'v_axial', 'Bz']
+sample_keys = ['t', 'z', 'r', 'v', 'v_transverse', 'v_axial', 'Bz', 'B']
 set_data_dict = {}
 for key in sample_keys:
     set_data_dict[key] = []
