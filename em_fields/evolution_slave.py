@@ -153,6 +153,10 @@ for ind_point in settings['points_set']:
         Bz = hist['B'][i, 2]
         curr_data_dict['Bz'] += [Bz]
 
+        # total magnetic field
+        B = np.linalg.norm(hist['B'][i, :])
+        curr_data_dict['B'] += [B]
+
     # combine this point run to larger data dict
     for key in sample_keys:
         set_data_dict[key] += [curr_data_dict[key]]

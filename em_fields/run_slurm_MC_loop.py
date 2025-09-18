@@ -75,7 +75,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 plt.close('all')
 
@@ -122,7 +123,7 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56, 57
 beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52, 53, 53, 55
@@ -151,9 +152,11 @@ beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 RF_type_list = []
 RF_amplitude_list = []
 RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
-RF_amplitude_list += [0.02, 0.04]  # [T]
+RF_amplitude_list += [0.04]  # [T]
+# RF_amplitude_list += [0.02, 0.04]  # [T]
 RF_type_list += ['electric_transverse', 'electric_transverse']
-RF_amplitude_list += [25, 50]  # kV/m
+# RF_amplitude_list += [25, 50]  # kV/m
+RF_amplitude_list += [50]  # kV/m
 
 use_RF = True
 # use_RF = False
@@ -170,8 +173,9 @@ gas_name_list = ['deuterium', 'tritium']
 # gas_name_list = ['deuterium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
+# sigma_r0_list = [0.05]
 # sigma_r0_list = [0.1]
-sigma_r0_list = [0.05]
+sigma_r0_list = [0.3]
 induced_fields_factor_list = [1, 0]
 # induced_fields_factor_list = [1]
 # with_kr_correction_list = [False, True]
@@ -268,7 +272,8 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
 
                             # field_dict['Rm'] = 3.0  # mirror ratio
                             # field_dict['Rm'] = 6.0  # mirror ratio
-                            field_dict['Rm'] = 10.0  # mirror ratio
+                            field_dict['Rm'] = 5.0  # mirror ratio
+                            # field_dict['Rm'] = 10.0  # mirror ratio
 
                             field_dict['RF_type'] = RF_type
                             if RF_type == 'electric_transverse':
