@@ -41,8 +41,6 @@ def define_default_settings(settings=None):
     settings['v_th_for_cyc'] = get_thermal_velocity(settings['T_eV'], settings['mi_for_cyc'], settings['kB_eV'])
     if 'l' not in settings:
         settings['l'] = 1.0  # m (MM cell size)
-    if 'z_0' not in settings:
-        settings['z_0'] = 0.5 * settings['l']
     if 'radial_distribution' not in settings:
         settings['radial_distribution'] = 'uniform'
     if 'sigma_r0' not in settings:

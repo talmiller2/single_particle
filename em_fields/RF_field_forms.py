@@ -25,7 +25,7 @@ def E_RF_function(x_vec, t, **field_dict):
     y = x_vec[1]
     z = x_vec[2]
     clockwise = field_dict['clockwise']
-    z_0 = field_dict['z_0']
+    z_0 = field_dict['z_mirror_shift']
     ind_fac = field_dict['induced_fields_factor']
 
     E_RF_vector = 0
@@ -64,7 +64,7 @@ def B_RF_function(x_vec, t, **field_dict):
     z = x_vec[2]
     clockwise = field_dict['clockwise']
     ind_fac = field_dict['induced_fields_factor']
-    z_0 = field_dict['z_0']
+    z_0 = field_dict['z_mirror_shift']
     c = field_dict['c']
 
     B_RF_vector = 0

@@ -254,8 +254,6 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             # settings['time_step_tau_cyclotron_divisions'] = 80
                             settings['time_step_tau_cyclotron_divisions'] = 50  # for set 49
 
-                            settings['z_0'] = 0.5 * settings['l']
-
                             # settings['sigma_r0'] = 0
                             # settings['sigma_r0'] = 0.1
                             settings['sigma_r0'] = sigma_r0
@@ -274,6 +272,8 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             # field_dict['Rm'] = 6.0  # mirror ratio
                             field_dict['Rm'] = 5.0  # mirror ratio
                             # field_dict['Rm'] = 10.0  # mirror ratio
+
+                            field_dict['z_mirror_shift'] = 0.5 * settings['l']
 
                             field_dict['RF_type'] = RF_type
                             if RF_type == 'electric_transverse':
@@ -446,7 +446,7 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
 
                             x = rand_unit_vec[:, 0] * rand_r0_vec
                             y = rand_unit_vec[:, 1] * rand_r0_vec
-                            z = settings['z_0'] + 0 * rand_r0_vec
+                            z = field_dict['z_mirror_shift'] + 0 * rand_r0_vec
                             x_0 = np.array([x, y, z]).T
                             points_dict['x_0'] = x_0
 
