@@ -7,7 +7,8 @@ from scipy.io import loadmat
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_cyclotron_angular_frequency
 
-plt.rcParams.update({'font.size': 12})
+# plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 18})
 # plt.rcParams.update({'font.size': 10})
 # plt.rcParams.update({'font.size': 8})
 # plt.rcParams["figure.facecolor"] = 'white'
@@ -62,13 +63,13 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# normalize_curves = False
-normalize_curves = True
+normalize_curves = False
+# normalize_curves = True
 
 RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # [T]
 B_RF = 0.04  # [T]
 
@@ -78,11 +79,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
 # sigma_r0 = 0
@@ -213,7 +214,11 @@ if do_plots == True:
     inds_beta = list(range(0, len(beta_loop_list), 5))
     # inds_alpha = list(range(0, len(alpha_loop_list), 10))
     # inds_beta = list(range(0, len(beta_loop_list), 10))
-    inds_alpha = inds_alpha[::-1]
+    # inds_alpha = [10]
+    # inds_beta = [0, 10, 20]
+    # inds_alpha = [12]
+    # inds_beta = [2, 10, 18]
+    # inds_alpha = inds_alpha[::-1]
 
 
     # curves
@@ -221,26 +226,39 @@ if do_plots == True:
     def plot_2d_matrix_of_population_conversion_plots(mat_dict, title, plot_axes_values=True):
         # fig, axes = plt.subplots(len(inds_alpha), len(inds_beta), figsize=(15, 7))
         fig, axes = plt.subplots(len(inds_alpha), len(inds_beta), figsize=(10, 7))
-        plt.suptitle(title, y=0.92)
-        mat_dict = mat_dict
+        # plt.suptitle(title, y=0.92)
+        # mat_dict = mat_dict
         t_array = mat_dict['t_array_normed'][0]
         for i_ax, ind_beta in enumerate(inds_beta):
             for j_ax, ind_alpha in enumerate(inds_alpha):
-                ax = axes[j_ax, i_ax]
+
+                if len(inds_beta) == 1:
+                    ax = axes[j_ax]
+                elif len(inds_alpha) == 1:
+                    ax = axes[i_ax]
+                else:
+                    ax = axes[j_ax, i_ax]
+
                 for process, process_color, fac in zip(processes, process_colors, fac_list):
                     curve_mean = fac * mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
                     curve_std = fac * mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
                     ax.plot(t_array, curve_mean, color=process_color)
                     ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')
-                    ax.set_xticks([])
-                    ax.set_yticks([])
+                    ## for matrix display:
+                    # ax.set_xticks([])
+                    # ax.set_yticks([])
+                    ## for single row display:
+                    ax.set_xlabel('$t / \\tau_{th}$')
+                    if i_ax == 0 and j_ax == 0:
+                        ax.set_ylabel('$\\Delta N / N_0$')
                     ax.set_ylim([0, 1])
                 if j_ax == 0 and i_ax == len(inds_beta) - 1:
                     ax.legend(bbox_to_anchor=(1, 0.5))
+                ## for debugging
                 # ax.set_title('$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(beta_loop_list[ind_beta]) + '$', fontsize=8, y=0.8)
-        plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
-        # fig.set_layout_engine(layout='tight')
+        ## for matrix display:
+        # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
 
         # Add a big common x-axis label for beta values (across columns)
         if plot_axes_values:
@@ -264,8 +282,8 @@ if do_plots == True:
         return fig, axes
 
 
-    plot_axes_values = True
-    # plot_axes_values = False
+    # plot_axes_values = True
+    plot_axes_values = False
 
     fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
     fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
@@ -278,5 +296,6 @@ if do_plots == True:
 # if RF_type == 'electric_transverse': file_name += '_REF'
 # else: file_name += '_RMF'
 # if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
-# fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
-# fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
+# # fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+# # fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
+# # fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)

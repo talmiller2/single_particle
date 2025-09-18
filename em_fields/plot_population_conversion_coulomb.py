@@ -44,7 +44,7 @@ N_cr_full = N_r / 1
 # plt.plot(t, N_l, '--g', label='N_r for N_c0=1')
 # plt.plot(t, N_c, '--r', label='N_r for N_c0=1')
 
-fig, ax = plt.subplots(1, 1, figsize=(9, 6))
+fig, ax = plt.subplots(1, 1, figsize=(8, 5))
 plt.plot(t / tau, N_rc, color='b', label='$N_{rc}=N_{lc}$')
 plt.plot(t / tau, N_cr, color='g', label='$N_{cr}=N_{cl}=N_{rl}=N_{lr}$')
 # plt.plot(t / tau, N_rc_full, linestyle='--', color='cyan', label='$N_{rc}=N_{lc}$')
