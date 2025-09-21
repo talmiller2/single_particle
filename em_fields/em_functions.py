@@ -71,7 +71,7 @@ def evolve_particle_in_em_fields(x_0, v_0, dt, E_function, B_function, field_dic
             dt_curr = min(dt, dt * field_dict['B0'] / B_norm_prev)
         else:
             dt_curr = dt
-        dt_curr = np.max(dt_curr, dt_min)
+        dt_curr = max(dt_curr, dt_min)
         hist['dt'] += [dt_curr]
 
         x_new, v_new = particle_integration_step(hist['x'][-1], hist['v'][-1], hist['t'][-1],

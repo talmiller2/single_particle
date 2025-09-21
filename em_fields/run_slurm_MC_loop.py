@@ -154,9 +154,9 @@ RF_amplitude_list = []
 RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
 RF_amplitude_list += [0.04]  # [T]
 # RF_amplitude_list += [0.02, 0.04]  # [T]
-RF_type_list += ['electric_transverse', 'electric_transverse']
+# RF_type_list += ['electric_transverse', 'electric_transverse']
 # RF_amplitude_list += [25, 50]  # kV/m
-RF_amplitude_list += [50]  # kV/m
+# RF_amplitude_list += [50]  # kV/m
 
 use_RF = True
 # use_RF = False
