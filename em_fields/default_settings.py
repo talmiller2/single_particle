@@ -61,6 +61,8 @@ def define_default_settings(settings=None):
         # settings['stop_criterion'] = 'several_cell_center_crossing'
     if 'r_max' not in settings:
         settings['r_max'] = None
+    if 'dt_min' not in settings:
+        settings['dt_min'] = 0
     if 'number_of_time_intervals' not in settings:
         settings['number_of_time_intervals'] = 1
     if 'num_snapshots' not in settings:

@@ -318,6 +318,7 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             settings['t_max'] = 1 * settings['l'] / settings[
                                 'v_th']  # shorter time that depends on D,T v_th (set 49)
                             settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
+                            settings['dt_min'] = settings['dt'] / settings['Rm'] / 5
                             if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:
                                 settings['num_steps'] = int(1e10)
                             else:

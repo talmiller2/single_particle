@@ -60,7 +60,7 @@ for ind_point in settings['points_set']:
                                         q=settings['q'], m=settings['mi'],
                                         field_dict=field_dict, stop_criterion=settings['stop_criterion'],
                                         num_steps=settings['num_steps'], t_max=settings['t_max'],
-                                        r_max=settings['r_max'],
+                                        r_max=settings['r_max'], dt_min=settings['dt_min'],
                                         number_of_cell_center_crosses=settings['number_of_time_intervals'])
 
     # save snapshots of key simulation metrics
