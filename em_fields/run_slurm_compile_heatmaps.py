@@ -6,9 +6,10 @@ from slurmpy.slurmpy import Slurm
 
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_thermal_velocity
-from em_fields.slurm_functions import get_compile_heatmap_slave
+from em_fields.slurm_functions import get_compile_heatmap_v2_slave
 
-compile_heatmap_slave_script = get_compile_heatmap_slave()
+# compile_heatmap_slave_script = get_compile_heatmap_slave()
+compile_heatmap_slave_script = get_compile_heatmap_v2_slave()
 
 slurm_kwargs = {}
 slurm_kwargs['partition'] = 'core'
@@ -50,7 +51,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set52_B0_1T_l_2m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 use_RF = True
 # use_RF = False
@@ -113,7 +115,8 @@ RF_type_list += ['electric_transverse', 'electric_transverse']
 RF_amplitude_list += [25, 50]  # kV/m
 
 # sigma_r0_list = [0.1]
-sigma_r0_list = [0.05]
+# sigma_r0_list = [0.05]
+sigma_r0_list = [0.3]
 induced_fields_factor_list = [1, 0]
 # with_kr_correction_list = [False, True]
 with_kr_correction_list = [True]
