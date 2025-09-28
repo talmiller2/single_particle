@@ -226,5 +226,5 @@ else:
                 compiled_dict['N_' + process_name + '_end_std'][ind_beta, ind_alpha] = np.std(
                     particles_counter_mat_4d[pi, pj, inds_t_avg, :])
 
-    # save the compiled data for all alpha, beta matrix
+    # save the compiled data for all alpha, beta matrix.
     savemat(compiled_save_file, compiled_dict)
