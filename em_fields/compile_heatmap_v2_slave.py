@@ -96,7 +96,9 @@ else:
 
             # filter out the particles that ended prematurely
             len_t_expected = len(data_dict['t'][0])
+            print(f'len_t_expected={len_t_expected}')
             num_particles = len(data_dict['t'])
+            print(f'num_particles={num_particles}')
 
             if ind_alpha == 0 and ind_beta == 0:
 

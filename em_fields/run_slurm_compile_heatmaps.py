@@ -109,10 +109,14 @@ gas_name_list = ['deuterium', 'tritium']
 
 RF_type_list = []
 RF_amplitude_list = []
-RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
-RF_amplitude_list += [0.02, 0.04]  # [T]
-RF_type_list += ['electric_transverse', 'electric_transverse']
-RF_amplitude_list += [25, 50]  # kV/m
+RF_type_list += ['magnetic_transverse']
+RF_amplitude_list += [0.04]  # [T]
+# RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
+# RF_amplitude_list += [0.02, 0.04]  # [T]
+RF_type_list += ['electric_transverse']
+RF_amplitude_list += [50]  # kV/m
+# RF_type_list += ['electric_transverse', 'electric_transverse']
+# RF_amplitude_list += [25, 50]  # kV/m
 
 # sigma_r0_list = [0.1]
 # sigma_r0_list = [0.05]

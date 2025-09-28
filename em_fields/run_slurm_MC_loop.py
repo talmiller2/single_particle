@@ -151,12 +151,15 @@ beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 RF_type_list = []
 RF_amplitude_list = []
-RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
+RF_type_list += ['magnetic_transverse']
 RF_amplitude_list += [0.04]  # [T]
+# RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
 # RF_amplitude_list += [0.02, 0.04]  # [T]
+RF_type_list += ['electric_transverse']
+RF_amplitude_list += [50]  # kV/m
 # RF_type_list += ['electric_transverse', 'electric_transverse']
 # RF_amplitude_list += [25, 50]  # kV/m
-# RF_amplitude_list += [50]  # kV/m
+
 
 use_RF = True
 # use_RF = False
