@@ -136,23 +136,23 @@ else:
             E_fin_mean = np.nanmean(data_dict['v'][:, -1] ** 2)
             compiled_dict['E_ratio'][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
 
-            if ind_beta == 0 and ind_alpha == 0:
-                theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(Rm))
-                inds_pop = {}
-                for pop in ['R', 'L', 'C']:
-                    inds_pop[pop] = []
-                inds_particles_R, inds_particles_L, inds_particles_C = [], [], []
-                for i in range(num_particles_ok):
-                    vt0 = data_dict['v_transverse'][i, 0]
-                    vz0 = data_dict['v_axial'][i, 0]
-                    theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
-                    if theta0 <= theta_LC:
-                        pop = 'R'
-                    elif theta0 > theta_LC and theta0 < 180 - theta_LC:
-                        pop = 'C'
-                    else:
-                        pop = 'L'
-                    inds_pop[pop] += [i]
+            theta_LC = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(Rm))
+            inds_pop = {}
+            for pop in ['R', 'L', 'C']:
+                inds_pop[pop] = []
+            inds_particles_R, inds_particles_L, inds_particles_C = [], [], []
+            for i in range(num_particles_ok):
+                vt0 = data_dict['v_transverse'][i, 0]
+                vz0 = data_dict['v_axial'][i, 0]
+                theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
+                if theta0 <= theta_LC:
+                    pop = 'R'
+                elif theta0 > theta_LC and theta0 < 180 - theta_LC:
+                    pop = 'C'
+                else:
+                    pop = 'L'
+                inds_pop[pop] += [i]
+
             for pop in ['R', 'L', 'C']:
                 E_ini_mean = np.nanmean(data_dict['v'][inds_pop[pop], 0] ** 2)
                 E_fin_mean = np.nanmean(data_dict['v'][inds_pop[pop], -1] ** 2)
