@@ -124,8 +124,11 @@ else:
             for ind_particle, t in enumerate(data_dict['t']):
                 if len(t) == len_t_expected:
                     inds_ok += [ind_particle]
+            num_particles_ok = len(inds_ok)
+            print(f'num_particles_ok={num_particles_ok}')
             compiled_dict['percent_ok'][ind_beta, ind_alpha] = len(inds_ok) / num_particles * 100
 
+            # filter data_dict to only the particles that finished the full calc (inds_ok) and transofrm to np.array
             for key in data_dict.keys():
                 data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
 
@@ -139,7 +142,7 @@ else:
                 for pop in ['R', 'L', 'C']:
                     inds_pop[pop] = []
                 inds_particles_R, inds_particles_L, inds_particles_C = [], [], []
-                for i in inds_ok:
+                for i in range(num_particles_ok):
                     vt0 = data_dict['v_transverse'][i, 0]
                     vz0 = data_dict['v_axial'][i, 0]
                     theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
@@ -163,10 +166,10 @@ else:
 
             for ind_boot in range(num_bootstrap_samples):
                 if ind_boot == 0:
-                    inds_particles = range(num_particles)
+                    inds_particles = range(num_particles_ok)
                 else:
-                    inds_particles = np.random.randint(low=0, high=num_particles,
-                                                       size=num_particles)  # random set of particles
+                    inds_particles = np.random.randint(low=0, high=num_particles_ok,
+                                                       size=num_particles_ok)  # random set of particles
 
                 for ind_t in range(number_of_time_intervals):
 
@@ -180,7 +183,7 @@ else:
 
                     # initialize
                     if ind_t == 0:
-                        inds_bins_ini = [np.nan for _ in range(num_particles)]
+                        inds_bins_ini = [np.nan for _ in range(num_particles_ok)]
 
                     particles_counter_mat = np.zeros([N_theta, N_theta])
 
