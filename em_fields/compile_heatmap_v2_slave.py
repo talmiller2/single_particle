@@ -139,7 +139,7 @@ else:
                 for pop in ['R', 'L', 'C']:
                     inds_pop[pop] = []
                 inds_particles_R, inds_particles_L, inds_particles_C = [], [], []
-                for i in range(num_particles):
+                for i in inds_ok:
                     vt0 = data_dict['v_transverse'][i, 0]
                     vz0 = data_dict['v_axial'][i, 0]
                     theta0 = np.mod(360 / (2 * np.pi) * np.arctan(vt0 / vz0), 180)
