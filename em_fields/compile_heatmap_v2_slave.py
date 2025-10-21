@@ -188,7 +188,7 @@ else:
                     particles_counter_mat = np.zeros([N_theta, N_theta])
 
                     for ind_p in inds_particles:
-                        if (vt[ind_p] / v[ind_p]) ** 2 < B_max / B[ind_p]:
+                        if (vt[ind_p] / v[ind_p]) ** 2 < B_max[ind_p] / B[ind_p]:
                             if vz[ind_p] > 0:
                                 # in right loss cone
                                 ind_bin_fin = 0
