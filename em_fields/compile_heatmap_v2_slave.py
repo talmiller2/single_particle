@@ -94,7 +94,6 @@ else:
             with open(data_dict_file, 'rb') as fid:
                 data_dict = pickle.load(fid)
 
-            # filter out the particles that ended prematurely
             len_t_expected = len(data_dict['t'][0])
             print(f'len_t_expected={len_t_expected}')
             num_particles = len(data_dict['t'])
@@ -159,7 +158,7 @@ else:
                 compiled_dict['E_ratio_' + pop][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
 
             number_of_time_intervals = len(data_dict['t'][0])
-            # num_bootstrap_samples = 10 # maybe too small?
+            # num_bootstrap_samples = 10 # small for testing
             num_bootstrap_samples = 50
             N_theta = 3
             particles_counter_mat_4d = np.zeros([N_theta, N_theta, number_of_time_intervals, num_bootstrap_samples])
@@ -188,7 +187,7 @@ else:
                     particles_counter_mat = np.zeros([N_theta, N_theta])
 
                     for ind_p in inds_particles:
-                        if (vt[ind_p] / v[ind_p]) ** 2 < B_max[ind_p] / B[ind_p]:
+                        if (vt[ind_p] / v[ind_p]) ** 2 < B[ind_p] / B_max[ind_p]:
                             if vz[ind_p] > 0:
                                 # in right loss cone
                                 ind_bin_fin = 0

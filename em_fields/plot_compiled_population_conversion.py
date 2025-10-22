@@ -7,8 +7,8 @@ from scipy.io import loadmat
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_cyclotron_angular_frequency
 
-# plt.rcParams.update({'font.size': 12})
-plt.rcParams.update({'font.size': 18})
+plt.rcParams.update({'font.size': 12})
+# plt.rcParams.update({'font.size': 18})
 # plt.rcParams.update({'font.size': 10})
 # plt.rcParams.update({'font.size': 8})
 # plt.rcParams["figure.facecolor"] = 'white'
@@ -49,7 +49,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -66,9 +67,9 @@ trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 normalize_curves = False
 # normalize_curves = True
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
-E_RF_kVm = 50  # [kV/m]
+# E_RF_kVm = 50  # [kV/m]
 RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # [T]
 B_RF = 0.04  # [T]
@@ -87,8 +88,9 @@ induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
 # sigma_r0 = 0
-sigma_r0 = 0.05
+# sigma_r0 = 0.05
 # sigma_r0 = 0.1
+sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
@@ -243,7 +245,9 @@ if do_plots == True:
                     curve_mean = fac * mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
                     curve_std = fac * mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
                     ax.plot(t_array, curve_mean, color=process_color)
-                    ax.fill_between(t_array, y1=curve_mean + curve_std, y2=curve_mean - curve_std, color=process_color,
+                    num_sigmas = 2
+                    ax.fill_between(t_array, y1=curve_mean + num_sigmas * curve_std,
+                                    y2=curve_mean - num_sigmas * curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')
                     ## for matrix display:
                     # ax.set_xticks([])
@@ -282,8 +286,8 @@ if do_plots == True:
         return fig, axes
 
 
-    # plot_axes_values = True
-    plot_axes_values = False
+    plot_axes_values = True
+    # plot_axes_values = False
 
     fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
     fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
