@@ -120,10 +120,11 @@ RF_amplitude_list += [50]  # kV/m
 
 # sigma_r0_list = [0.1]
 # sigma_r0_list = [0.05]
-sigma_r0_list = [0.3]
+# sigma_r0_list = [0.3]
+sigma_r0_list = [0, 0.3]
 induced_fields_factor_list = [1, 0]
-# with_kr_correction_list = [False, True]
-with_kr_correction_list = [True]
+with_kr_correction_list = [False, True]
+# with_kr_correction_list = [True]
 time_step_tau_cyclotron_divisions = 50
 
 # theta_type_list = ['sign_vz0', 'sign_vz']

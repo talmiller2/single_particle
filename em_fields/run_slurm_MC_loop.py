@@ -172,17 +172,20 @@ if use_RF is False:
 loop_method = 'matrix'
 # loop_method = 'array'
 
-gas_name_list = ['deuterium', 'tritium']
+# gas_name_list = ['deuterium', 'tritium']
 # gas_name_list = ['deuterium']
+gas_name_list = ['tritium']
 # sigma_r0_list = [0, 0.1]
 # induced_fields_factor_list = [1, 0.5, 0]
 # sigma_r0_list = [0.05]
 # sigma_r0_list = [0.1]
-sigma_r0_list = [0.3]
-induced_fields_factor_list = [1, 0]
-# induced_fields_factor_list = [1]
+# sigma_r0_list = [0.3]
+sigma_r0_list = [0]
+# induced_fields_factor_list = [1, 0]
+induced_fields_factor_list = [1]
 # with_kr_correction_list = [False, True]
 with_kr_correction_list = [True]
+# with_kr_correction_list = [False]
 
 for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
     for induced_fields_factor in induced_fields_factor_list:

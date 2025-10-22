@@ -27,25 +27,25 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
-RF_type = 'electric_transverse'
+# RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
 # E_RF_kVm = 10  # kV/m
 # E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 25  # kV/m
-E_RF_kVm = 50  # kV/m
+# E_RF_kVm = 50  # kV/m
 # E_RF_kVm = 100  # kV/m
 
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
 # B_RF = 0.02  # T
-# B_RF = 0.04  # T
+B_RF = 0.04  # T
 # B_RF = 0.05  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -55,8 +55,12 @@ set_name_list = []
 # select_beta_list += [2.0]
 # set_name_list += ['T1']
 
-select_alpha_list += [0.82]
-select_beta_list += [1.8]
+# select_alpha_list += [0.82]
+# select_beta_list += [1.8]
+# set_name_list += ['T1']
+
+select_alpha_list += [1.3]
+select_beta_list += [0.4]
 set_name_list += ['T1']
 
 use_RF = True
@@ -369,3 +373,8 @@ for gas_name in gas_name_list:
         ax.grid(True)
         ax.set_title(title)
         fig.set_layout_engine(layout='tight')
+
+# plt.figure()
+# for i in range(100):
+#     plt.plot(data_dict['r'][i])
+#     # plt.plot(data_dict['r'][i] - data_dict['r'][i][0])
