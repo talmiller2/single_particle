@@ -80,82 +80,90 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-# induced_fields_factor = 1
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-# sigma_r0 = 0
+sigma_r0 = 0
 # sigma_r0 = 0.05
 # sigma_r0 = 0.1
-sigma_r0 = 0.3
+# sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-# gas_name = 'tritium'
+plot_D = False
+plot_T = True
 
-set_name = 'compiled_'
-# set_name = 'smooth_compiled_'
-set_name += theta_type + '_'
-if RF_type == 'electric_transverse':
-    set_name += 'ERF_' + str(E_RF_kVm)
-elif RF_type == 'magnetic_transverse':
-    set_name += 'BRF_' + str(B_RF)
-if induced_fields_factor < 1.0:
-    set_name += '_iff' + str(induced_fields_factor)
-if with_kr_correction == True:
-    set_name += '_withkrcor'
-set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-if absolute_velocity_sampling_type == 'const_vth':
-    set_name += '_const_vth'
-if sigma_r0 > 0:
-    set_name += '_sigmar' + str(sigma_r0)
-    if radial_distribution == 'normal':
-        set_name += 'norm'
-    elif radial_distribution == 'uniform':
-        set_name += 'unif'
-set_name += '_' + gas_name
-title_1 = set_name
-print(set_name)
-save_file = save_dir + '/' + set_name + '.mat'
-mat_dict_1 = loadmat(save_file)
-alpha_loop_list = mat_dict_1['alpha_loop_list'][0]
-beta_loop_list = mat_dict_1['beta_loop_list'][0]
+if plot_D:
+    gas_name = 'deuterium'
+    # gas_name = 'DT_mix'
+    # gas_name = 'tritium'
 
-# gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-gas_name = 'tritium'
-# set_name = 'smooth_compiled_'
-set_name = 'compiled_'
-set_name += theta_type + '_'
-if RF_type == 'electric_transverse':
-    set_name += 'ERF_' + str(E_RF_kVm)
-elif RF_type == 'magnetic_transverse':
-    set_name += 'BRF_' + str(B_RF)
-if induced_fields_factor < 1.0:
-    set_name += '_iff' + str(induced_fields_factor)
-if with_kr_correction == True:
-    set_name += '_withkrcor'
-set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-if absolute_velocity_sampling_type == 'const_vth':
-    set_name += '_const_vth'
-if sigma_r0 > 0:
-    set_name += '_sigmar' + str(sigma_r0)
-    if radial_distribution == 'normal':
-        set_name += 'norm'
-    elif radial_distribution == 'uniform':
-        set_name += 'unif'
-set_name += '_' + gas_name
-title_2 = set_name
-print(set_name)
-save_file = save_dir + '/' + set_name + '.mat'
-mat_dict_2 = loadmat(save_file)
+    set_name = 'compiled_'
+    # set_name = 'smooth_compiled_'
+    set_name += theta_type + '_'
+    if RF_type == 'electric_transverse':
+        set_name += 'ERF_' + str(E_RF_kVm)
+    elif RF_type == 'magnetic_transverse':
+        set_name += 'BRF_' + str(B_RF)
+    if induced_fields_factor < 1.0:
+        set_name += '_iff' + str(induced_fields_factor)
+    if with_kr_correction == True:
+        set_name += '_withkrcor'
+    set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+    if absolute_velocity_sampling_type == 'const_vth':
+        set_name += '_const_vth'
+    if sigma_r0 > 0:
+        set_name += '_sigmar' + str(sigma_r0)
+        if radial_distribution == 'normal':
+            set_name += 'norm'
+        elif radial_distribution == 'uniform':
+            set_name += 'unif'
+    set_name += '_' + gas_name
+    title_1 = set_name
+    print(set_name)
+    save_file = save_dir + '/' + set_name + '.mat'
+    mat_dict_1 = loadmat(save_file)
+    alpha_loop_list = mat_dict_1['alpha_loop_list'][0]
+    beta_loop_list = mat_dict_1['beta_loop_list'][0]
+
+if plot_T:
+    # gas_name = 'deuterium'
+    # gas_name = 'DT_mix'
+    gas_name = 'tritium'
+    # set_name = 'smooth_compiled_'
+    set_name = 'compiled_'
+    set_name += theta_type + '_'
+    if RF_type == 'electric_transverse':
+        set_name += 'ERF_' + str(E_RF_kVm)
+    elif RF_type == 'magnetic_transverse':
+        set_name += 'BRF_' + str(B_RF)
+    if induced_fields_factor < 1.0:
+        set_name += '_iff' + str(induced_fields_factor)
+    if with_kr_correction == True:
+        set_name += '_withkrcor'
+    set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+    if absolute_velocity_sampling_type == 'const_vth':
+        set_name += '_const_vth'
+    if sigma_r0 > 0:
+        set_name += '_sigmar' + str(sigma_r0)
+        if radial_distribution == 'normal':
+            set_name += 'norm'
+        elif radial_distribution == 'uniform':
+            set_name += 'unif'
+    set_name += '_' + gas_name
+    title_2 = set_name
+    print(set_name)
+    save_file = save_dir + '/' + set_name + '.mat'
+    mat_dict_2 = loadmat(save_file)
+
+    alpha_loop_list = mat_dict_2['alpha_loop_list'][0]
+    beta_loop_list = mat_dict_2['beta_loop_list'][0]
 
 ### PLOTS
 
@@ -286,11 +294,13 @@ if do_plots == True:
         return fig, axes
 
 
-    plot_axes_values = True
-    # plot_axes_values = False
+    # plot_axes_values = True
+    plot_axes_values = False
 
-    fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
-    fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
+    if plot_D:
+        fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
+    if plot_T:
+        fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
 
 # ### saving figures
 # fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'

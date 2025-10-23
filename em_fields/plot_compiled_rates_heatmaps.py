@@ -50,7 +50,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -68,8 +69,8 @@ RF_type = 'electric_transverse'
 # # E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
 # RF_type = 'magnetic_transverse'
-# B_RF = 0.02  # [T]
-B_RF = 0.04  # [T]
+# # B_RF = 0.02  # [T]
+# B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -84,99 +85,107 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-# sigma_r0 = 0
-sigma_r0 = 0.05
+sigma_r0 = 0
+# sigma_r0 = 0.05
 # sigma_r0 = 0.1
+# sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-# gas_name = 'tritium'
+plot_D = False
+# plot_D = True
+plot_T = True
 
-set_name = 'compiled_'
-# set_name = 'smooth_compiled_'
-set_name += theta_type + '_'
-if RF_type == 'electric_transverse':
-    set_name += 'ERF_' + str(E_RF_kVm)
-elif RF_type == 'magnetic_transverse':
-    set_name += 'BRF_' + str(B_RF)
-if induced_fields_factor < 1.0:
-    set_name += '_iff' + str(induced_fields_factor)
-if with_kr_correction == True:
-    set_name += '_withkrcor'
-set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-if absolute_velocity_sampling_type == 'const_vth':
-    set_name += '_const_vth'
-if sigma_r0 > 0:
-    set_name += '_sigmar' + str(sigma_r0)
-    if radial_distribution == 'normal':
-        set_name += 'norm'
-    elif radial_distribution == 'uniform':
-        set_name += 'unif'
-set_name += '_' + gas_name
-title1 = set_name
-print(set_name)
-save_file = save_dir + '/' + set_name + '.mat'
+if plot_D:
+    gas_name = 'deuterium'
+    # gas_name = 'DT_mix'
+    # gas_name = 'tritium'
 
-mat_dict_1 = loadmat(save_file)
-alpha_loop_list = mat_dict_1['alpha_loop_list'][0]
-beta_loop_list = mat_dict_1['beta_loop_list'][0]
-N_rc_1 = mat_dict_1['N_rc_end']
-N_lc_1 = mat_dict_1['N_lc_end']
-N_cr_1 = mat_dict_1['N_cr_end']
-N_cl_1 = mat_dict_1['N_cl_end']
-N_rl_1 = mat_dict_1['N_rl_end']
-N_lr_1 = mat_dict_1['N_lr_end']
-percent_ok_1 = mat_dict_1['percent_ok']
-E_ratio_1 = mat_dict_1['E_ratio']
-selectivity_LC_1 = N_rc_1 / N_lc_1
-selectivity_trapped_1 = N_cr_1 / N_cr_1
-cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
+    set_name = 'compiled_'
+    # set_name = 'smooth_compiled_'
+    set_name += theta_type + '_'
+    if RF_type == 'electric_transverse':
+        set_name += 'ERF_' + str(E_RF_kVm)
+    elif RF_type == 'magnetic_transverse':
+        set_name += 'BRF_' + str(B_RF)
+    if induced_fields_factor < 1.0:
+        set_name += '_iff' + str(induced_fields_factor)
+    if with_kr_correction == True:
+        set_name += '_withkrcor'
+    set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+    if absolute_velocity_sampling_type == 'const_vth':
+        set_name += '_const_vth'
+    if sigma_r0 > 0:
+        set_name += '_sigmar' + str(sigma_r0)
+        if radial_distribution == 'normal':
+            set_name += 'norm'
+        elif radial_distribution == 'uniform':
+            set_name += 'unif'
+    set_name += '_' + gas_name
+    title1 = set_name
+    print(set_name)
+    save_file = save_dir + '/' + set_name + '.mat'
 
-# gas_name = 'deuterium'
-# gas_name = 'DT_mix'
-gas_name = 'tritium'
-set_name = 'compiled_'
-# set_name = 'smooth_compiled_'
-set_name += theta_type + '_'
-if RF_type == 'electric_transverse':
-    set_name += 'ERF_' + str(E_RF_kVm)
-elif RF_type == 'magnetic_transverse':
-    set_name += 'BRF_' + str(B_RF)
-if induced_fields_factor < 1.0:
-    set_name += '_iff' + str(induced_fields_factor)
-if with_kr_correction == True:
-    set_name += '_withkrcor'
-set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
-if absolute_velocity_sampling_type == 'const_vth':
-    set_name += '_const_vth'
-if sigma_r0 > 0:
-    set_name += '_sigmar' + str(sigma_r0)
-    if radial_distribution == 'normal':
-        set_name += 'norm'
-    elif radial_distribution == 'uniform':
-        set_name += 'unif'
-set_name += '_' + gas_name
-title2 = set_name
-print(set_name)
-save_file = save_dir + '/' + set_name + '.mat'
+    mat_dict_1 = loadmat(save_file)
+    alpha_loop_list = mat_dict_1['alpha_loop_list'][0]
+    beta_loop_list = mat_dict_1['beta_loop_list'][0]
+    N_rc_1 = mat_dict_1['N_rc_end']
+    N_lc_1 = mat_dict_1['N_lc_end']
+    N_cr_1 = mat_dict_1['N_cr_end']
+    N_cl_1 = mat_dict_1['N_cl_end']
+    N_rl_1 = mat_dict_1['N_rl_end']
+    N_lr_1 = mat_dict_1['N_lr_end']
+    percent_ok_1 = mat_dict_1['percent_ok']
+    E_ratio_1 = mat_dict_1['E_ratio']
+    selectivity_LC_1 = N_rc_1 / N_lc_1
+    selectivity_trapped_1 = N_cr_1 / N_cr_1
+    cone_escape_rate_1 = (N_rc_1 * LC_ini_fraction - N_cr_1 * trapped_ini_fraction) / LC_ini_fraction
 
-mat_dict_2 = loadmat(save_file)
-N_rc_2 = mat_dict_2['N_rc_end']
-N_lc_2 = mat_dict_2['N_lc_end']
-N_cr_2 = mat_dict_2['N_cr_end']
-N_cl_2 = mat_dict_2['N_cl_end']
-N_rl_2 = mat_dict_2['N_rl_end']
-N_lr_2 = mat_dict_2['N_lr_end']
-percent_ok_2 = mat_dict_2['percent_ok']
-E_ratio_2 = mat_dict_2['E_ratio']
-selectivity_LC_2 = N_rc_2 / N_lc_2
-selectivity_trapped_2 = N_cr_2 / N_cl_2
-cone_escape_rate_2 = (N_rc_2 * LC_ini_fraction - N_cr_2 * trapped_ini_fraction) / LC_ini_fraction
+if plot_T:
+    # gas_name = 'deuterium'
+    # gas_name = 'DT_mix'
+    gas_name = 'tritium'
+    set_name = 'compiled_'
+    # set_name = 'smooth_compiled_'
+    set_name += theta_type + '_'
+    if RF_type == 'electric_transverse':
+        set_name += 'ERF_' + str(E_RF_kVm)
+    elif RF_type == 'magnetic_transverse':
+        set_name += 'BRF_' + str(B_RF)
+    if induced_fields_factor < 1.0:
+        set_name += '_iff' + str(induced_fields_factor)
+    if with_kr_correction == True:
+        set_name += '_withkrcor'
+    set_name += '_tcycdivs' + str(time_step_tau_cyclotron_divisions)
+    if absolute_velocity_sampling_type == 'const_vth':
+        set_name += '_const_vth'
+    if sigma_r0 > 0:
+        set_name += '_sigmar' + str(sigma_r0)
+        if radial_distribution == 'normal':
+            set_name += 'norm'
+        elif radial_distribution == 'uniform':
+            set_name += 'unif'
+    set_name += '_' + gas_name
+    title2 = set_name
+    print(set_name)
+    save_file = save_dir + '/' + set_name + '.mat'
 
+    mat_dict_2 = loadmat(save_file)
+    N_rc_2 = mat_dict_2['N_rc_end']
+    N_lc_2 = mat_dict_2['N_lc_end']
+    N_cr_2 = mat_dict_2['N_cr_end']
+    N_cl_2 = mat_dict_2['N_cl_end']
+    N_rl_2 = mat_dict_2['N_rl_end']
+    N_lr_2 = mat_dict_2['N_lr_end']
+    percent_ok_2 = mat_dict_2['percent_ok']
+    E_ratio_2 = mat_dict_2['E_ratio']
+    selectivity_LC_2 = N_rc_2 / N_lc_2
+    selectivity_trapped_2 = N_cr_2 / N_cl_2
+    cone_escape_rate_2 = (N_rc_2 * LC_ini_fraction - N_cr_2 * trapped_ini_fraction) / LC_ini_fraction
+    alpha_loop_list = mat_dict_2['alpha_loop_list'][0]
+    beta_loop_list = mat_dict_2['beta_loop_list'][0]
 ### PLOTS
 
 annot = False
@@ -291,29 +300,35 @@ if do_plots == True:
     ind_rows = [0, 0, 0, 1, 1, 1]
     ind_cols = [0, 1, 2, 0, 1, 2]
     process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
+    vmin_list = [None for _ in range(len(processes))]
+    vmax_list = [None for _ in range(len(processes))]
+    # vmin_list = [0.5, 0.02, 0, 0.5, 0.02, 0]
+    # vmax_list = [1, 0.05, 0.01, 1, 0.05, 0.01]
 
     # rate values
-    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    mat_dict = mat_dict_1
-    gas_name = 'D'
-    for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
-        Z = mat_dict['N_' + process + '_end']
-        title = '$N_{' + process + '}$ (' + gas_name + ')'
-        ax = axes[ind_row, ind_col]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-    fig.suptitle(title1, fontsize=title_fontsize)
+    if plot_D:
+        fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+        mat_dict = mat_dict_1
+        gas_name = 'D'
+        for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
+            Z = mat_dict['N_' + process + '_end']
+            title = '$N_{' + process + '}$ (' + gas_name + ')'
+            ax = axes[ind_row, ind_col]
+            ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=vmin, vmax=vmax)
+            plot_resonance_lines(ax, gas_name=gas_name)
+        fig.suptitle(title1, fontsize=title_fontsize)
 
-    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    mat_dict = mat_dict_2
-    gas_name = 'T'
-    for process, ind_row, ind_col in zip(processes, ind_rows, ind_cols):
-        Z = mat_dict['N_' + process + '_end']
-        title = '$N_{' + process + '}$ (' + gas_name + ')'
-        ax = axes[ind_row, ind_col]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-    fig.suptitle(title2, fontsize=title_fontsize)
+    if plot_T:
+        fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+        mat_dict = mat_dict_2
+        gas_name = 'T'
+        for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
+            Z = mat_dict['N_' + process + '_end']
+            title = '$N_{' + process + '}$ (' + gas_name + ')'
+            ax = axes[ind_row, ind_col]
+            ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=vmin, vmax=vmax)
+            plot_resonance_lines(ax, gas_name=gas_name)
+        fig.suptitle(title2, fontsize=title_fontsize)
 
     #
     # # rate values after smoothing
@@ -342,49 +357,59 @@ if do_plots == True:
 
     #########################
 
+    mat_dict_list, ind_row_list, gas_name_list = [], [], []
+    if plot_D:
+        mat_dict_list += [mat_dict_1]
+        ind_row_list += [0]
+        gas_name_list += ['D']
+    if plot_T:
+        mat_dict_list += [mat_dict_2]
+        ind_row_list += [1]
+        gas_name_list += ['T']
+
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # fig.suptitle(title2, fontsize=title_fontsize)
+    #
+    # for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
+    #     E_ratio = mat_dict['E_ratio']
+    #     selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
+    #     selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
+    #
+    #     Z = selectivity_LC
+    #     title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 0]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     Z = selectivity_trapped
+    #     title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 1]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     Z = E_ratio
+    #     title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 2]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     # # estimate the power per particle, not just energy difference
+    #     # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
+    #     # N_particles = 1e21 # density 1e21[m^-3] in volume 1[m^3]
+    #     # E_ini_total = E_ini_per_particle * N_particles  # [Joule]
+    #     # E_fin_total = E_ini_total * E_ratio
+    #     # power_total_W = (E_fin_total - E_ini_total) / settings['t_max'] # [Watt=Joule/s]
+    #     # power_total_MW = power_total_W / 1e6
+    #     # Z = power_total_MW
+    #     # title = 'Power [MW] (' + gas_name + ')'
+    #     # ax = axes[ind_row, 2]
+    #     # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     # plot_resonance_lines(ax, gas_name=gas_name)
+
     fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     fig.suptitle(title2, fontsize=title_fontsize)
 
-    for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
-        E_ratio = mat_dict['E_ratio']
-        selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
-        selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
-
-        Z = selectivity_LC
-        title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
-        ax = axes[ind_row, 0]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        Z = selectivity_trapped
-        title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
-        ax = axes[ind_row, 1]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        Z = E_ratio
-        title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
-        ax = axes[ind_row, 2]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        # # estimate the power per particle, not just energy difference
-        # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
-        # N_particles = 1e21 # density 1e21[m^-3] in volume 1[m^3]
-        # E_ini_total = E_ini_per_particle * N_particles  # [Joule]
-        # E_fin_total = E_ini_total * E_ratio
-        # power_total_W = (E_fin_total - E_ini_total) / settings['t_max'] # [Watt=Joule/s]
-        # power_total_MW = power_total_W / 1e6
-        # Z = power_total_MW
-        # title = 'Power [MW] (' + gas_name + ')'
-        # ax = axes[ind_row, 2]
-        # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        # plot_resonance_lines(ax, gas_name=gas_name)
-
-    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    fig.suptitle(title2, fontsize=title_fontsize)
-
-    for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
+    for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
         Z = mat_dict['E_ratio_R']
         title = 'E_ratio_R (' + gas_name + ')'
         ax = axes[ind_row, 0]
