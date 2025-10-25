@@ -49,8 +49,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -64,8 +64,8 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-normalize_curves = False
-# normalize_curves = True
+# normalize_curves = False
+normalize_curves = True
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
@@ -80,15 +80,15 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-sigma_r0 = 0
-# sigma_r0 = 0.05
+# sigma_r0 = 0
+sigma_r0 = 0.05
 # sigma_r0 = 0.1
 # sigma_r0 = 0.3
 radial_distribution = 'uniform'
@@ -258,19 +258,19 @@ if do_plots == True:
                                     y2=curve_mean - num_sigmas * curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')
                     ## for matrix display:
-                    # ax.set_xticks([])
-                    # ax.set_yticks([])
+                    ax.set_xticks([])
+                    ax.set_yticks([])
                     ## for single row display:
-                    ax.set_xlabel('$t / \\tau_{th}$')
-                    if i_ax == 0 and j_ax == 0:
-                        ax.set_ylabel('$\\Delta N / N_0$')
+                    # ax.set_xlabel('$t / \\tau_{th}$')
+                    # if i_ax == 0 and j_ax == 0:
+                    #     ax.set_ylabel('$\\Delta N / N_0$')
                     ax.set_ylim([0, 1])
                 if j_ax == 0 and i_ax == len(inds_beta) - 1:
                     ax.legend(bbox_to_anchor=(1, 0.5))
                 ## for debugging
                 # ax.set_title('$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(beta_loop_list[ind_beta]) + '$', fontsize=8, y=0.8)
         ## for matrix display:
-        # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
+        plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
 
         # Add a big common x-axis label for beta values (across columns)
         if plot_axes_values:
@@ -294,8 +294,8 @@ if do_plots == True:
         return fig, axes
 
 
-    # plot_axes_values = True
-    plot_axes_values = False
+    plot_axes_values = True
+    # plot_axes_values = False
 
     if plot_D:
         fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)

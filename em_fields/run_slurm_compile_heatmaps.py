@@ -52,8 +52,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-# save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
-save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
+save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+# save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 
 use_RF = True
 # use_RF = False
@@ -131,6 +131,9 @@ time_step_tau_cyclotron_divisions = 50
 # theta_type_list = ['sign_vz0', 'sign_vz']
 theta_type_list = ['sign_vz']
 
+loss_cone_condition = 'B_total'  # correct form
+# loss_cone_condition = 'B_axial' # testing the incorrect way implemented in the past
+
 # extract variables from saved single particle calcs
 settings_file = save_dir + 'settings.pickle'
 with open(settings_file, 'rb') as fid:
@@ -170,6 +173,9 @@ for theta_type in theta_type_list:
                             elif radial_distribution == 'uniform':
                                 set_name += 'unif'
                         set_name += '_' + gas_name
+                        if loss_cone_condition == 'B_axial':
+                            set_name += '_LCcondBz'
+
                         compiled_save_file = save_dir + '/' + set_name + '.mat'
                         print('****** compiled_save_file', compiled_save_file)
 
@@ -190,6 +196,7 @@ for theta_type in theta_type_list:
                         passed_dict['radial_distribution'] = radial_distribution
                         passed_dict['gas_name'] = gas_name
                         passed_dict['compiled_save_file'] = compiled_save_file
+                        passed_dict['loss_cone_condition'] = loss_cone_condition
 
                         # additional info
                         passed_dict['Rm'] = field_dict['Rm']

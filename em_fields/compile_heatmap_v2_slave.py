@@ -176,8 +176,12 @@ else:
                     vt = data_dict['v_transverse'][inds_particles, ind_t]
                     vz = data_dict['v_axial'][inds_particles, ind_t]
                     vz0 = data_dict['v_axial'][inds_particles, 0]
-                    B = data_dict['B'][inds_particles, ind_t]
-                    B0 = data_dict['B'][inds_particles, 0]
+                    if passed_dict['loss_cone_condition'] == 'B_axial':
+                        B = data_dict['Bz'][inds_particles, ind_t]
+                        B0 = data_dict['Bz'][inds_particles, 0]
+                    else:
+                        B = data_dict['B'][inds_particles, ind_t]
+                        B0 = data_dict['B'][inds_particles, 0]
                     B_max = B0 * Rm
 
                     # initialize
