@@ -51,6 +51,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+# save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -64,8 +65,8 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-# normalize_curves = False
-normalize_curves = True
+normalize_curves = False
+# normalize_curves = True
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
@@ -80,11 +81,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-# induced_fields_factor = 1
+induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-induced_fields_factor = 0
+# induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
 # sigma_r0 = 0
@@ -95,6 +96,9 @@ radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
+
+loss_cone_condition = 'B_total'  # correct form
+# loss_cone_condition = 'B_axial' # testing the incorrect way implemented in the past
 
 plot_D = False
 plot_T = True
@@ -125,6 +129,9 @@ if plot_D:
         elif radial_distribution == 'uniform':
             set_name += 'unif'
     set_name += '_' + gas_name
+    if loss_cone_condition == 'B_axial':
+        set_name += '_LCcondBz'
+
     title_1 = set_name
     print(set_name)
     save_file = save_dir + '/' + set_name + '.mat'
@@ -157,6 +164,9 @@ if plot_T:
         elif radial_distribution == 'uniform':
             set_name += 'unif'
     set_name += '_' + gas_name
+    if loss_cone_condition == 'B_axial':
+        set_name += '_LCcondBz'
+
     title_2 = set_name
     print(set_name)
     save_file = save_dir + '/' + set_name + '.mat'
@@ -253,7 +263,8 @@ if do_plots == True:
                     curve_mean = fac * mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
                     curve_std = fac * mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
                     ax.plot(t_array, curve_mean, color=process_color)
-                    num_sigmas = 2
+                    num_sigmas = 1
+                    # num_sigmas = 2
                     ax.fill_between(t_array, y1=curve_mean + num_sigmas * curve_std,
                                     y2=curve_mean - num_sigmas * curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')

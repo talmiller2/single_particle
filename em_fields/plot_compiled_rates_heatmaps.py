@@ -52,6 +52,7 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+# save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -85,14 +86,17 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-sigma_r0 = 0
+# sigma_r0 = 0
 # sigma_r0 = 0.05
 # sigma_r0 = 0.1
-# sigma_r0 = 0.3
+sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
+
+# loss_cone_condition = 'B_total'  # correct form
+loss_cone_condition = 'B_axial'  # testing the incorrect way implemented in the past
 
 plot_D = False
 # plot_D = True
@@ -124,6 +128,9 @@ if plot_D:
         elif radial_distribution == 'uniform':
             set_name += 'unif'
     set_name += '_' + gas_name
+    if loss_cone_condition == 'B_axial':
+        set_name += '_LCcondBz'
+
     title1 = set_name
     print(set_name)
     save_file = save_dir + '/' + set_name + '.mat'
@@ -168,6 +175,9 @@ if plot_T:
         elif radial_distribution == 'uniform':
             set_name += 'unif'
     set_name += '_' + gas_name
+    if loss_cone_condition == 'B_axial':
+        set_name += '_LCcondBz'
+
     title2 = set_name
     print(set_name)
     save_file = save_dir + '/' + set_name + '.mat'

@@ -24,8 +24,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 1 # kV/m
@@ -43,9 +43,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-gas_name_list += ['deuterium']
+# gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-# gas_name_list += ['tritium']
+gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -59,9 +59,14 @@ set_name_list = []
 # select_beta_list += [1.8]
 # set_name_list += ['T1']
 
-select_alpha_list += [1.3]
-select_beta_list += [0.4]
+# select_alpha_list += [1.3]
+# select_beta_list += [0.4]
+# set_name_list += ['T1']
+
+select_alpha_list += [1.12]
+select_beta_list += [2.0]
 set_name_list += ['T1']
+
 
 use_RF = True
 # use_RF = False
@@ -77,8 +82,8 @@ induced_fields_factor = 1
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
-# sigma_r0 = 0.05
-sigma_r0 = 0.3
+sigma_r0 = 0.05
+# sigma_r0 = 0.3
 # sigma_r0 = 0.1
 radial_distribution = 'uniform'
 

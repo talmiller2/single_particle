@@ -6,7 +6,7 @@ from slurmpy.slurmpy import Slurm
 
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_thermal_velocity
-from em_fields.slurm_functions import get_compile_heatmap_v2_slave
+from em_fields.slurm_functions import get_compile_heatmap_slave, get_compile_heatmap_v2_slave
 
 # compile_heatmap_slave_script = get_compile_heatmap_slave()
 compile_heatmap_slave_script = get_compile_heatmap_v2_slave()
@@ -133,6 +133,9 @@ theta_type_list = ['sign_vz']
 
 loss_cone_condition = 'B_total'  # correct form
 # loss_cone_condition = 'B_axial' # testing the incorrect way implemented in the past
+loss_cone_condition = 'old_compilation'  # used the old compilation code
+if loss_cone_condition == 'old_compilation':
+    compile_heatmap_slave_script = get_compile_heatmap_slave()
 
 # extract variables from saved single particle calcs
 settings_file = save_dir + 'settings.pickle'
@@ -175,6 +178,8 @@ for theta_type in theta_type_list:
                         set_name += '_' + gas_name
                         if loss_cone_condition == 'B_axial':
                             set_name += '_LCcondBz'
+                        if loss_cone_condition == 'old_compilation':
+                            set_name += '_LCcondOLD'
 
                         compiled_save_file = save_dir + '/' + set_name + '.mat'
                         print('****** compiled_save_file', compiled_save_file)
