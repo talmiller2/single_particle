@@ -457,7 +457,7 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
 
                             x = rand_unit_vec[:, 0] * rand_r0_vec
                             y = rand_unit_vec[:, 1] * rand_r0_vec
-                            z = field_dict['z_mirror_shift'] + 0 * rand_r0_vec
+                            z = field_dict['z_mirror_shift'] + 0.5 * settings['l'] + 0 * rand_r0_vec
                             x_0 = np.array([x, y, z]).T
                             points_dict['x_0'] = x_0
 
