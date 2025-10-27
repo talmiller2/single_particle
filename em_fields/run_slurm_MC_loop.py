@@ -77,7 +77,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
-save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
+# save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
+save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'  # start at z of B0 and not Bmax as in set57
 
 plt.close('all')
 
@@ -152,8 +153,8 @@ beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 RF_type_list = []
 RF_amplitude_list = []
-RF_type_list += ['magnetic_transverse']
-RF_amplitude_list += [0.04]  # [T]
+# RF_type_list += ['magnetic_transverse']
+# RF_amplitude_list += [0.04]  # [T]
 # RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
 # RF_amplitude_list += [0.02, 0.04]  # [T]
 RF_type_list += ['electric_transverse']
@@ -278,10 +279,11 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
 
                             # field_dict['Rm'] = 3.0  # mirror ratio
                             # field_dict['Rm'] = 6.0  # mirror ratio
-                            # field_dict['Rm'] = 5.0  # mirror ratio
-                            field_dict['Rm'] = 10.0  # mirror ratio
+                            field_dict['Rm'] = 5.0  # mirror ratio
+                            # field_dict['Rm'] = 10.0  # mirror ratio
 
-                            field_dict['z_mirror_shift'] = 0.5 * settings['l']
+                            field_dict['z_mirror_shift'] = 0
+                            # field_dict['z_mirror_shift'] = 0.5 * settings['l']
 
                             field_dict['RF_type'] = RF_type
                             if RF_type == 'electric_transverse':

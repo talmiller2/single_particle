@@ -15,8 +15,8 @@ plt.close('all')
 
 l = 1
 # l = 5
-z = np.linspace(0, l, 1000)
-# z = np.linspace(-l, l, 1000)
+# z = np.linspace(0, l, 1000)
+z = np.linspace(-l, l, 1000)
 # z = np.linspace(-2*l, 2*l, 1000)
 
 # mirror ratio
@@ -27,13 +27,16 @@ Rm = 3
 # x = np.array([0*z, 0*z, z])
 x = np.array([0 * z + l / 2, 0 * z + l / 2, z])
 
-B = magnetic_field_logan(x, 1, Rm, l)
+field_dict = {'z_mirror_shift': 0, 'B0': 1, 'Rm': Rm, 'l': 1}
+# field_dict = {'z_mirror_shift': l / 2, 'B0': 1, 'Rm': Rm, 'l': l}
+
+B, _ = magnetic_field_logan(x, field_dict)
 B_logan = B
 
-B = magnetic_field_jaeger(x, 1, Rm, l)
+B, _ = magnetic_field_jaeger(x, field_dict)
 B_jaeger = B
 
-B = magnetic_field_post(x, 1, Rm, l)
+B, _ = magnetic_field_post(x, field_dict)
 B_post = B
 
 B_s = 1.0
@@ -53,7 +56,7 @@ plt.figure(1, figsize=(8, 4))
 # plt.plot(z, B_logan[2], label='Logan', color='r')
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
 # plt.plot(z, B_post[2], label='Post', color='r')
-plt.plot(z, B_post[2], label='Post', color='b')
+plt.plot(z, B_post, label='Post', color='b')
 # plt.plot(z, B_slope, '--', label='slope', color='k')
 # plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
 # plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
