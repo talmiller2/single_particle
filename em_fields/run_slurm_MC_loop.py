@@ -78,7 +78,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
-save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'  # start at z of B0 and not Bmax as in set57
+# save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'  # start at z of B0 and not Bmax as in set57
+save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_5tau/'  # for longer tmax testing
 
 plt.close('all')
 
@@ -125,11 +126,14 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.7, 1.3, 11), 2)  # set43
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56, 57
-beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set47, 49, 50, 56, 59
+# beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52, 53, 53, 55
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
+
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 7), 2)  # set60
+beta_loop_list = np.round(np.linspace(-2, 2, 7), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
 # beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
@@ -153,8 +157,8 @@ beta_loop_list = np.round(np.linspace(-2, 2, 21), 2)
 
 RF_type_list = []
 RF_amplitude_list = []
-# RF_type_list += ['magnetic_transverse']
-# RF_amplitude_list += [0.04]  # [T]
+RF_type_list += ['magnetic_transverse']
+RF_amplitude_list += [0.04]  # [T]
 # RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
 # RF_amplitude_list += [0.02, 0.04]  # [T]
 RF_type_list += ['electric_transverse']
@@ -267,7 +271,8 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             # settings['sigma_r0'] = 0.1
                             settings['sigma_r0'] = sigma_r0
 
-                            settings['r_max'] = settings['l']
+                            # settings['r_max'] = settings['l']
+                            settings['r_max'] = 10 * settings['l']  # for longer tmax testing
 
                             settings = define_default_settings(settings)
 
@@ -315,7 +320,8 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
 
                             # simulation duration
                             # settings['num_snapshots'] = 30
-                            settings['num_snapshots'] = 50
+                            # settings['num_snapshots'] = 50
+                            settings['num_snapshots'] = 500
 
                             # tmax_mirror_lengths = 2
                             # sim_cyclotron_periods = (tmax_mirror_lengths * settings['l']
@@ -324,9 +330,10 @@ for RF_type, RF_amplitude in zip(RF_type_list, RF_amplitude_list):
                             # settings['t_max'] = settings['sim_cyclotron_periods'] * field_dict['tau_cyclotron']
                             # settings['t_max'] = 2.2937178074285e-06 (sets 47 and before)
                             # settings['t_max'] = 2.3e-05  # longer time for specific runs (set 48)
+                            settings['t_max'] = 10 * settings['l'] / settings[
+                                'v_th']  # longer time that depends on D,T v_th (set 49)
                             # settings['t_max'] = 5 * settings['l'] / settings['v_th']  # longer time that depends on D,T v_th (set 49)
-                            settings['t_max'] = 1 * settings['l'] / settings[
-                                'v_th']  # shorter time that depends on D,T v_th (set 49)
+                            # settings['t_max'] = 1 * settings['l'] / settings[ 'v_th']  # shorter time that depends on D,T v_th (set 49)
                             settings['dt'] = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
                             settings['dt_min'] = settings['dt'] / field_dict['Rm'] / 5
                             if settings['stop_criterion'] in ['t_max', 't_max_adaptive_dt']:

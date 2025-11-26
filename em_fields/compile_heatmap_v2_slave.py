@@ -88,8 +88,8 @@ else:
             print('#' + str(ind_file) + '/' + str(num_files) + ': ' + set_name)
             print('loading alpha=' + str(alpha) + ', beta=' + str(beta))
 
-            save_dir_curr = save_dir + set_name
             # load runs data
+            save_dir_curr = save_dir + set_name
             data_dict_file = save_dir_curr + '.pickle'
             with open(data_dict_file, 'rb') as fid:
                 data_dict = pickle.load(fid)
@@ -158,8 +158,8 @@ else:
                 compiled_dict['E_ratio_' + pop][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
 
             number_of_time_intervals = len(data_dict['t'][0])
-            # num_bootstrap_samples = 10 # small for testing
-            num_bootstrap_samples = 50
+            num_bootstrap_samples = 10  # small for testing
+            # num_bootstrap_samples = 50
             N_theta = 3
             particles_counter_mat_4d = np.zeros([N_theta, N_theta, number_of_time_intervals, num_bootstrap_samples])
 
@@ -182,6 +182,7 @@ else:
                     else:
                         B = data_dict['B'][inds_particles, ind_t]
                         B0 = data_dict['B'][inds_particles, 0]
+
                     B_max = B0 * Rm
 
                     # initialize

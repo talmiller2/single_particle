@@ -24,7 +24,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-plt.close('all')
+# plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -51,8 +51,9 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+# save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
+save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -67,11 +68,11 @@ LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
 RF_type = 'electric_transverse'
-# # E_RF_kVm = 25  # [kV/m]
+# # # E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
-# RF_type = 'magnetic_transverse'
-# # B_RF = 0.02  # [T]
-# B_RF = 0.04  # [T]
+RF_type = 'magnetic_transverse'
+# B_RF = 0.02  # [T]
+B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -86,7 +87,7 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-# sigma_r0 = 0
+sigma_r0 = 0
 # sigma_r0 = 0.05
 # sigma_r0 = 0.1
 sigma_r0 = 0.3
@@ -95,12 +96,16 @@ radial_distribution = 'uniform'
 # theta_type = 'sign_vz0'
 theta_type = 'sign_vz'
 
-# loss_cone_condition = 'B_total'  # correct form
-loss_cone_condition = 'B_axial'  # testing the incorrect way implemented in the past
+loss_cone_condition = 'B_total'  # correct form
+# loss_cone_condition = 'B_axial'  # testing the incorrect way implemented in the past
+# loss_cone_condition = 'old_compilation'
 
 plot_D = False
 # plot_D = True
 plot_T = True
+
+load_smoothed_rates = False
+# load_smoothed_rates = True
 
 if plot_D:
     gas_name = 'deuterium'
@@ -108,7 +113,8 @@ if plot_D:
     # gas_name = 'tritium'
 
     set_name = 'compiled_'
-    # set_name = 'smooth_compiled_'
+    if load_smoothed_rates:
+        set_name = 'smooth_compiled_'
     set_name += theta_type + '_'
     if RF_type == 'electric_transverse':
         set_name += 'ERF_' + str(E_RF_kVm)
@@ -130,6 +136,8 @@ if plot_D:
     set_name += '_' + gas_name
     if loss_cone_condition == 'B_axial':
         set_name += '_LCcondBz'
+    if loss_cone_condition == 'old_compilation':
+        set_name += '_LCcondOLD'
 
     title1 = set_name
     print(set_name)
@@ -155,7 +163,8 @@ if plot_T:
     # gas_name = 'DT_mix'
     gas_name = 'tritium'
     set_name = 'compiled_'
-    # set_name = 'smooth_compiled_'
+    if load_smoothed_rates:
+        set_name = 'smooth_compiled_'
     set_name += theta_type + '_'
     if RF_type == 'electric_transverse':
         set_name += 'ERF_' + str(E_RF_kVm)
@@ -177,6 +186,9 @@ if plot_T:
     set_name += '_' + gas_name
     if loss_cone_condition == 'B_axial':
         set_name += '_LCcondBz'
+    if loss_cone_condition == 'old_compilation':
+        set_name += '_LCcondOLD'
+
 
     title2 = set_name
     print(set_name)
@@ -236,7 +248,7 @@ alpha_const_omega_mass3_left = offset - slope * beta_loop_list
 
 
 def plot_line_on_heatmap(ax, x_heatmap, y_line, color='k'):
-    ax.plot(x_heatmap, y_line, color=color, linestyle='--')
+    ax.plot(x_heatmap, y_line, color=color, linestyle='--', linewidth=2)
     return
 
 
@@ -310,10 +322,10 @@ if do_plots == True:
     ind_rows = [0, 0, 0, 1, 1, 1]
     ind_cols = [0, 1, 2, 0, 1, 2]
     process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
-    vmin_list = [None for _ in range(len(processes))]
-    vmax_list = [None for _ in range(len(processes))]
-    # vmin_list = [0.5, 0.02, 0, 0.5, 0.02, 0]
-    # vmax_list = [1, 0.05, 0.01, 1, 0.05, 0.01]
+    # vmin_list = [None for _ in range(len(processes))]
+    # vmax_list = [None for _ in range(len(processes))]
+    vmin_list = [0.2, 0, 0, 0.2, 0, 0]
+    vmax_list = [0.8, 0.08, 0.12, 0.8, 0.08, 0.12]
 
     # rate values
     if plot_D:
@@ -416,29 +428,29 @@ if do_plots == True:
     #     # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
     #     # plot_resonance_lines(ax, gas_name=gas_name)
 
-    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    fig.suptitle(title2, fontsize=title_fontsize)
-
-    for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
-        Z = mat_dict['E_ratio_R']
-        title = 'E_ratio_R (' + gas_name + ')'
-        ax = axes[ind_row, 0]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        # Z = mat_dict['E_ratio_C']
-        Z = mat_dict['E_ratio_L']  # C,L were mixed in compilation
-        title = 'E_ratio_C (' + gas_name + ')'
-        ax = axes[ind_row, 1]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        # Z = mat_dict['E_ratio_L']
-        Z = mat_dict['E_ratio_C']  # C,L were mixed in compilation
-        title = 'E_ratio_L (' + gas_name + ')'
-        ax = axes[ind_row, 2]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # fig.suptitle(title2, fontsize=title_fontsize)
+    #
+    # for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
+    #     Z = mat_dict['E_ratio_R']
+    #     title = 'E_ratio_R (' + gas_name + ')'
+    #     ax = axes[ind_row, 0]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     # Z = mat_dict['E_ratio_C']
+    #     Z = mat_dict['E_ratio_L']  # C,L were mixed in compilation
+    #     title = 'E_ratio_C (' + gas_name + ')'
+    #     ax = axes[ind_row, 1]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     # Z = mat_dict['E_ratio_L']
+    #     Z = mat_dict['E_ratio_C']  # C,L were mixed in compilation
+    #     title = 'E_ratio_L (' + gas_name + ')'
+    #     ax = axes[ind_row, 2]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
 
 
 
@@ -452,7 +464,7 @@ if do_plots == True:
 # denergy_RF = settings['kB_eV'] * settings['T_keV'] * 1e3
 
 
-# ### saving figures
+### saving figures
 # fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
 #
 # file_name = 'compiled_rates'

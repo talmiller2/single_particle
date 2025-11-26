@@ -1,4 +1,3 @@
-import copy
 import pickle
 
 import matplotlib.pyplot as plt
@@ -8,6 +7,7 @@ np.random.seed(0)
 
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_thermal_velocity
+from em_fields.magnetic_forms import get_mirror_magnetic_field
 
 plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 10})
@@ -24,16 +24,17 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set53_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
+save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
 
 # RF_type = 'electric_transverse'
-# E_RF_kVm = 1 # kV/m
-# E_RF_kVm = 10  # kV/m
-# E_RF_kVm = 25  # kV/m
-# E_RF_kVm = 25  # kV/m
+# # E_RF_kVm = 1 # kV/m
+# # E_RF_kVm = 10  # kV/m
+# # E_RF_kVm = 25  # kV/m
+# # E_RF_kVm = 25  # kV/m
 # E_RF_kVm = 50  # kV/m
-# E_RF_kVm = 100  # kV/m
+# # E_RF_kVm = 100  # kV/m
 
 RF_type = 'magnetic_transverse'
 # B_RF = 0.01  # T
@@ -43,9 +44,9 @@ B_RF = 0.04  # T
 # B_RF = 0.1  # T
 
 gas_name_list = []
-# gas_name_list += ['deuterium']
+gas_name_list += ['deuterium']
 # gas_name_list += ['DT_mix']
-gas_name_list += ['tritium']
+# gas_name_list += ['tritium']
 
 select_alpha_list = []
 select_beta_list = []
@@ -63,10 +64,17 @@ set_name_list = []
 # select_beta_list += [0.4]
 # set_name_list += ['T1']
 
-select_alpha_list += [1.12]
-select_beta_list += [2.0]
-set_name_list += ['T1']
+# select_alpha_list += [1.12]
+# select_beta_list += [2.0]
+# set_name_list += ['T1']
 
+# select_alpha_list += [1.6]
+# select_beta_list += [2.0]
+# set_name_list += ['T1']
+
+select_alpha_list += [0.58]
+select_beta_list += [0.0]
+set_name_list += ['T1']
 
 use_RF = True
 # use_RF = False
@@ -82,8 +90,8 @@ induced_fields_factor = 1
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 80
 # sigma_r0 = 0
-sigma_r0 = 0.05
-# sigma_r0 = 0.3
+# sigma_r0 = 0.05
+sigma_r0 = 0.3
 # sigma_r0 = 0.1
 radial_distribution = 'uniform'
 
@@ -174,6 +182,21 @@ for gas_name in gas_name_list:
         for key in data_dict.keys():
             data_dict[key] = np.array([data_dict[key][i] for i in inds_ok])
 
+        # TODO: testing using B associated only with the mirror field without RF influences (small effect, does not require to recalculate)
+        import copy
+
+        data_dict['B_mirror'] = copy.deepcopy(data_dict['B'])
+        for ind_p in range(data_dict['z'].shape[0]):
+            print(ind_p)
+            for ind_t in range(data_dict['z'].shape[1]):
+                x_curr = [data_dict['r'][ind_p, ind_t], 0, data_dict['z'][ind_p, ind_t]]
+                B_mirror = get_mirror_magnetic_field(x_curr, field_dict)
+                data_dict['B_mirror'][ind_p, ind_t] = np.linalg.norm(B_mirror)
+        plt.figure()
+        B_diff = data_dict['B_mirror'] - data_dict['B']
+        plt.pcolormesh(B_diff)
+
+
         E_ini_mean = np.nanmean(data_dict['v'][:, 0] ** 2)
         E_fin_mean = np.nanmean(data_dict['v'][:, -1] ** 2)
         compiled_dict['E_ratio'] = E_fin_mean / E_ini_mean
@@ -223,6 +246,7 @@ for gas_name in gas_name_list:
                 vz0 = data_dict['v_axial'][inds_particles, 0]
                 B = data_dict['B'][inds_particles, ind_t]
                 B0 = data_dict['B'][inds_particles, 0]
+
                 B_max = B0 * Rm
 
                 # initialize

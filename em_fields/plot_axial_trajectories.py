@@ -274,30 +274,27 @@ for gas_name in gas_name_list:
                     color = cm.rainbow(metric)
 
             if plot_theta_trajectories:
-                    for ind_ax, ax in enumerate(axs):
+                for ind_ax, ax in enumerate(axs):
 
-                        # if ind_p == num_particles - 1 and k_RF != 0
-                        #     ax.hlines(v_RF / v_th_ref, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                        if ind_p == 0:
-                            ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
-                            ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                    # if ind_p == num_particles - 1 and k_RF != 0
+                    #     ax.hlines(v_RF / v_th_ref, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                    if ind_p == 0:
+                        ax.hlines(theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
+                        ax.hlines(180 - theta_LC, 0, max(t), colors='k', linestyles='dashed', linewidth=2)
 
-                        alpha_lines = 0.3
-                        plot_particle = False
-                        if ind_ax == 0 and (
-                                theta[0] < theta_LC or theta[0] > 180 - theta_LC) and cnt_LC < max_particles_LC:
-                            plot_particle = True
-                        if ind_ax == 1 and (theta[0] > theta_LC and theta[
-                            0] < 180 - theta_LC) and cnt_trapped < max_particles_trapped:
-                            plot_particle = True
+                    alpha_lines = 0.3
+                    plot_particle = False
+                    if ind_ax == 0 and (
+                            theta[0] < theta_LC or theta[0] > 180 - theta_LC) and cnt_LC < max_particles_LC:
+                        plot_particle = True
+                    if ind_ax == 1 and (
+                            theta[0] > theta_LC and theta[0] < 180 - theta_LC) and cnt_trapped < max_particles_trapped:
+                        plot_particle = True
 
-                        if plot_particle:
-                            ax.plot(t,
-                                    # vz_adjusted / v_th_ref,
-                                    theta_adjusted,
-                                    color=color,
-                                    alpha=alpha_lines,
-                                    )
+                    if plot_particle:
+                        ax.plot(t,
+                                # vz_adjusted / v_th_ref,
+                                theta_adjusted, color=color, alpha=alpha_lines)
 
                 if plot_axial_trajectories:
                     for ind_ax, ax in enumerate(axs2):

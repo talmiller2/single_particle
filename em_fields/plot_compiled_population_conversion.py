@@ -23,7 +23,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-plt.close('all')
+# plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -49,9 +49,10 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set50_B0_1T_l_1m_Post_Rm_3_intervals_D_T/'
 # save_dir += '/set54_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set55_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
-save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
+# save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
+save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -72,7 +73,7 @@ normalize_curves = False
 # E_RF_kVm = 25  # [kV/m]
 # E_RF_kVm = 50  # [kV/m]
 RF_type = 'magnetic_transverse'
-# B_RF = 0.02  # [T]
+# # B_RF = 0.02  # [T]
 B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
@@ -88,8 +89,8 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-# sigma_r0 = 0
-sigma_r0 = 0.05
+sigma_r0 = 0
+# sigma_r0 = 0.05
 # sigma_r0 = 0.1
 # sigma_r0 = 0.3
 radial_distribution = 'uniform'
@@ -99,8 +100,10 @@ theta_type = 'sign_vz'
 
 loss_cone_condition = 'B_total'  # correct form
 # loss_cone_condition = 'B_axial' # testing the incorrect way implemented in the past
+# loss_cone_condition = 'old_compilation'  # used the old compilation code
 
 plot_D = False
+# plot_D = True
 plot_T = True
 
 if plot_D:
@@ -131,6 +134,8 @@ if plot_D:
     set_name += '_' + gas_name
     if loss_cone_condition == 'B_axial':
         set_name += '_LCcondBz'
+    if loss_cone_condition == 'old_compilation':
+        set_name += '_LCcondOLD'
 
     title_1 = set_name
     print(set_name)
@@ -166,6 +171,8 @@ if plot_T:
     set_name += '_' + gas_name
     if loss_cone_condition == 'B_axial':
         set_name += '_LCcondBz'
+    if loss_cone_condition == 'old_compilation':
+        set_name += '_LCcondOLD'
 
     title_2 = set_name
     print(set_name)
@@ -263,8 +270,8 @@ if do_plots == True:
                     curve_mean = fac * mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
                     curve_std = fac * mat_dict['N_' + process + '_curve_std'][ind_beta, ind_alpha]
                     ax.plot(t_array, curve_mean, color=process_color)
-                    num_sigmas = 1
-                    # num_sigmas = 2
+                    # num_sigmas = 1
+                    num_sigmas = 2
                     ax.fill_between(t_array, y1=curve_mean + num_sigmas * curve_std,
                                     y2=curve_mean - num_sigmas * curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')
@@ -313,7 +320,7 @@ if do_plots == True:
     if plot_T:
         fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
 
-# ### saving figures
+### saving figures
 # fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
 #
 # file_name = 'compiled_population_conversion'
@@ -321,6 +328,6 @@ if do_plots == True:
 # if RF_type == 'electric_transverse': file_name += '_REF'
 # else: file_name += '_RMF'
 # if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
-# # fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
-# # fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
+# fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+# fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
 # # fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)

@@ -20,7 +20,8 @@ z = np.linspace(-l, l, 1000)
 # z = np.linspace(-2*l, 2*l, 1000)
 
 # mirror ratio
-Rm = 3
+# Rm = 3
+Rm = 5
 # Rm = 7
 # Rm = 10
 
@@ -29,6 +30,7 @@ x = np.array([0 * z + l / 2, 0 * z + l / 2, z])
 
 field_dict = {'z_mirror_shift': 0, 'B0': 1, 'Rm': Rm, 'l': 1}
 # field_dict = {'z_mirror_shift': l / 2, 'B0': 1, 'Rm': Rm, 'l': l}
+Bmax = field_dict['B0'] * field_dict['Rm']
 
 B, _ = magnetic_field_logan(x, field_dict)
 B_logan = B
@@ -75,7 +77,9 @@ plt.plot(z, B_post, label='Post', color='b')
 # plt.legend()
 # plt.x_label('z [m]')
 plt.xlabel('$z / l$')
-plt.ylabel('$B_z$ [T]')
+# plt.ylabel('$B_z$ [T]')
+# plt.yticks([1, Bmax / 3, Bmax], [1, '$R_m/3$', '$R_m$'])
+plt.ylabel('$B_z / B_0$')
 plt.grid(True)
 plt.tight_layout()
 # plt.layout_engine()
@@ -102,8 +106,10 @@ plt.tight_layout()
 # plt.tight_layout()
 
 ## save plots to file
-# save_dir = '../../../Papers/texts/paper2022/pics/'
+# fig_save_dir = '../../../Papers/texts/paper2022/pics/'
+# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
 # file_name = 'axial_magnetic_field_post_form'
 # beingsaved = plt.figure(1)
-# beingsaved.savefig(save_dir + file_name + '.eps', format='eps')
-# # beingsaved.savefig(save_dir + file_name + '.jpeg', format='jpeg', dpi=300)
+# beingsaved.savefig(fig_save_dir + file_name + '.eps', format='eps')
+# beingsaved.savefig(save_dir + file_name + '.jpeg', format='jpeg', dpi=300)
+# beingsaved.savefig(fig_save_dir + file_name + '.pdf', format='pdf')
