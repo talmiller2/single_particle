@@ -24,7 +24,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -53,7 +53,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
-save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
+# save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
+save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -389,44 +390,45 @@ if do_plots == True:
         ind_row_list += [1]
         gas_name_list += ['T']
 
-    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    # fig.suptitle(title2, fontsize=title_fontsize)
-    #
+    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    fig.suptitle(title2, fontsize=title_fontsize)
+
     # for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
-    #     E_ratio = mat_dict['E_ratio']
-    #     selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
-    #     selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
-    #
-    #     Z = selectivity_LC
-    #     title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
-    #     ax = axes[ind_row, 0]
-    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    #     plot_resonance_lines(ax, gas_name=gas_name)
-    #
-    #     Z = selectivity_trapped
-    #     title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
-    #     ax = axes[ind_row, 1]
-    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    #     plot_resonance_lines(ax, gas_name=gas_name)
-    #
-    #     Z = E_ratio
-    #     title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
-    #     ax = axes[ind_row, 2]
-    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    #     plot_resonance_lines(ax, gas_name=gas_name)
-    #
-    #     # # estimate the power per particle, not just energy difference
-    #     # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
-    #     # N_particles = 1e21 # density 1e21[m^-3] in volume 1[m^3]
-    #     # E_ini_total = E_ini_per_particle * N_particles  # [Joule]
-    #     # E_fin_total = E_ini_total * E_ratio
-    #     # power_total_W = (E_fin_total - E_ini_total) / settings['t_max'] # [Watt=Joule/s]
-    #     # power_total_MW = power_total_W / 1e6
-    #     # Z = power_total_MW
-    #     # title = 'Power [MW] (' + gas_name + ')'
-    #     # ax = axes[ind_row, 2]
-    #     # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-    #     # plot_resonance_lines(ax, gas_name=gas_name)
+    for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
+        E_ratio = mat_dict['E_ratio']
+        selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
+        selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
+
+        Z = selectivity_LC
+        title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
+        ax = axes[ind_row, 0]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+        Z = selectivity_trapped
+        title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
+        ax = axes[ind_row, 1]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+        Z = E_ratio
+        title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
+        ax = axes[ind_row, 2]
+        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        plot_resonance_lines(ax, gas_name=gas_name)
+
+        # # estimate the power per particle, not just energy difference
+        # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
+        # N_particles = 1e21 # density 1e21[m^-3] in volume 1[m^3]
+        # E_ini_total = E_ini_per_particle * N_particles  # [Joule]
+        # E_fin_total = E_ini_total * E_ratio
+        # power_total_W = (E_fin_total - E_ini_total) / settings['t_max'] # [Watt=Joule/s]
+        # power_total_MW = power_total_W / 1e6
+        # Z = power_total_MW
+        # title = 'Power [MW] (' + gas_name + ')'
+        # ax = axes[ind_row, 2]
+        # ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+        # plot_resonance_lines(ax, gas_name=gas_name)
 
     # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
     # fig.suptitle(title2, fontsize=title_fontsize)

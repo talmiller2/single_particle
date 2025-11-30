@@ -110,10 +110,13 @@ else:
                     for suffix in ['end', 'end_std']:
                         compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(zero_mat)
 
-                for key in ['percent_ok', 'E_ratio', 'E_ratio_R', 'E_ratio_L', 'E_ratio_C']:
+                E_ratio_types = ['E_ratio', 'E_ratio_R', 'E_ratio_L', 'E_ratio_C']
+                for key in ['percent_ok'] + E_ratio_types:
                     compiled_dict[key] = copy.deepcopy(zero_mat)
 
                 zero_tensor = np.nan * np.zeros([len(beta_loop_list), len(alpha_loop_list), len(t_array)])
+                for E_ratio_type in E_ratio_types:
+                    compiled_dict[E_ratio_type + '_curve'] = copy.deepcopy(zero_tensor)
                 for process_name in process_names:
                     for suffix in ['curve_mean', 'curve_std']:
                         compiled_dict['N_' + process_name + '_' + suffix] = copy.deepcopy(zero_tensor)
@@ -158,7 +161,19 @@ else:
                 compiled_dict['E_ratio_' + pop][ind_beta, ind_alpha] = E_fin_mean / E_ini_mean
 
             number_of_time_intervals = len(data_dict['t'][0])
-            num_bootstrap_samples = 10  # small for testing
+
+            # E_ratio curve calcs
+            for ind_t in range(number_of_time_intervals):
+                E_ini_mean = np.nanmean(data_dict['v'][:, 0] ** 2)
+                E_fin_mean = np.nanmean(data_dict['v'][:, ind_t] ** 2)
+                compiled_dict['E_ratio_curve'][ind_beta, ind_alpha, ind_t] = E_fin_mean / E_ini_mean
+                for pop in ['R', 'L', 'C']:
+                    E_ini_mean = np.nanmean(data_dict['v'][inds_pop[pop], 0] ** 2)
+                    E_fin_mean = np.nanmean(data_dict['v'][inds_pop[pop], ind_t] ** 2)
+                    compiled_dict['E_ratio_' + pop + '_curve'][ind_beta, ind_alpha, ind_t] = E_fin_mean / E_ini_mean
+
+            num_bootstrap_samples = 3  # very-small for testing
+            # num_bootstrap_samples = 10  # small for testing
             # num_bootstrap_samples = 50
             N_theta = 3
             particles_counter_mat_4d = np.zeros([N_theta, N_theta, number_of_time_intervals, num_bootstrap_samples])

@@ -79,7 +79,7 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 # save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'  # start at z of B0 and not Bmax as in set57
-save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_5tau/'  # for longer tmax testing
+save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
 
 plt.close('all')
 

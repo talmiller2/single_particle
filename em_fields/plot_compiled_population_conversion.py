@@ -23,7 +23,7 @@ figsize = (6, 6)
 axes_label_size = 14
 title_fontsize = 16
 
-# plt.close('all')
+plt.close('all')
 
 save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set26_B0_1T_l_3m_Post_Rm_3_first_cell_center_crossing/'
@@ -52,7 +52,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set56_B0_1T_l_1m_Post_Rm_10_intervals_D_T/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
-save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
+# save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
+save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -69,12 +70,12 @@ trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 normalize_curves = False
 # normalize_curves = True
 
-# RF_type = 'electric_transverse'
+RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
-# E_RF_kVm = 50  # [kV/m]
-RF_type = 'magnetic_transverse'
+E_RF_kVm = 50  # [kV/m]
+# RF_type = 'magnetic_transverse'
 # # B_RF = 0.02  # [T]
-B_RF = 0.04  # [T]
+# B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -89,10 +90,10 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-sigma_r0 = 0
+# sigma_r0 = 0
 # sigma_r0 = 0.05
 # sigma_r0 = 0.1
-# sigma_r0 = 0.3
+sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
@@ -235,10 +236,12 @@ if do_plots == True:
         fac_list = [1 for p in processes]
 
     # pick a lower alpha, beta resolution for the mega figure
-    # inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
-    # inds_beta = list(range(0, len(beta_loop_list), 1))
-    inds_alpha = list(range(0, len(alpha_loop_list), 5))
-    inds_beta = list(range(0, len(beta_loop_list), 5))
+    inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
+    inds_beta = list(range(0, len(beta_loop_list), 1))
+
+
+    # inds_alpha = list(range(0, len(alpha_loop_list), 5))
+    # inds_beta = list(range(0, len(beta_loop_list), 5))
     # inds_alpha = list(range(0, len(alpha_loop_list), 10))
     # inds_beta = list(range(0, len(beta_loop_list), 10))
     # inds_alpha = [10]
