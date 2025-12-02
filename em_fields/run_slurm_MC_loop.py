@@ -139,8 +139,8 @@ plt.close('all')
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
 # beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set61
-beta_loop_list = np.round(np.linspace(-1, 1, 11), 2)
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 21), 2)  # set61
+beta_loop_list = np.round(np.linspace(-1, 1, 21), 2)
 
 # # specific values for set48
 # select_alpha_list = []
