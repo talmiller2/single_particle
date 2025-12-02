@@ -73,9 +73,9 @@ normalize_curves = False
 RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
-# RF_type = 'magnetic_transverse'
+RF_type = 'magnetic_transverse'
 # # B_RF = 0.02  # [T]
-# B_RF = 0.04  # [T]
+B_RF = 0.04  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -90,10 +90,10 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-# sigma_r0 = 0
+sigma_r0 = 0
 # sigma_r0 = 0.05
 # sigma_r0 = 0.1
-sigma_r0 = 0.3
+# sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
@@ -236,10 +236,10 @@ if do_plots == True:
         fac_list = [1 for p in processes]
 
     # pick a lower alpha, beta resolution for the mega figure
-    inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
-    inds_beta = list(range(0, len(beta_loop_list), 1))
-
-
+    # inds_alpha = list(range(0, len(alpha_loop_list), 1))  # full res
+    # inds_beta = list(range(0, len(beta_loop_list), 1))
+    # inds_alpha = list(range(0, len(alpha_loop_list), 2))
+    # inds_beta = list(range(0, len(beta_loop_list), 2))
     # inds_alpha = list(range(0, len(alpha_loop_list), 5))
     # inds_beta = list(range(0, len(beta_loop_list), 5))
     # inds_alpha = list(range(0, len(alpha_loop_list), 10))
@@ -249,7 +249,10 @@ if do_plots == True:
     # inds_alpha = [12]
     # inds_beta = [2, 10, 18]
     # inds_alpha = inds_alpha[::-1]
-
+    # inds_alpha = [0, 2, 3, 4, 6]
+    # inds_beta = [0, 2, 3, 4, 6]
+    inds_alpha = [0, 3, 6]
+    inds_beta = [2, 3, 4]
 
     # curves
 
@@ -291,7 +294,7 @@ if do_plots == True:
                 ## for debugging
                 # ax.set_title('$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(beta_loop_list[ind_beta]) + '$', fontsize=8, y=0.8)
         ## for matrix display:
-        plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
+        # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
 
         # Add a big common x-axis label for beta values (across columns)
         if plot_axes_values:
@@ -315,6 +318,68 @@ if do_plots == True:
         return fig, axes
 
 
+    def plot_2d_matrix_of_E_ratio_plots(mat_dict, title, plot_axes_values=True):
+        E_ratio_types = ['', '_R', '_L', '_C']
+        E_ratio_labels = ['tot', 'R', 'L', 'C']
+        colors = ['k', 'b', 'g', 'r']
+
+        fig, axes = plt.subplots(len(inds_alpha), len(inds_beta), figsize=(10, 7))
+        t_array = mat_dict['t_array_normed'][0]
+        for i_ax, ind_beta in enumerate(inds_beta):
+            for j_ax, ind_alpha in enumerate(inds_alpha):
+
+                if len(inds_beta) == 1:
+                    ax = axes[j_ax]
+                elif len(inds_alpha) == 1:
+                    ax = axes[i_ax]
+                else:
+                    ax = axes[j_ax, i_ax]
+
+                for E_ratio_type, E_ratio_label, color in zip(E_ratio_types, E_ratio_labels, colors):
+                    curve = mat_dict['E_ratio' + E_ratio_type + '_curve'][ind_beta, ind_alpha]
+                    ax.plot(t_array, curve, color=color, label=E_ratio_label)
+                    ## for matrix display:
+                    # ax.set_xticks([])
+                    # ax.set_yticks([])
+                    ## for single row display:
+                    ax.set_xlabel('$t / \\tau_{th}$')
+                    # if i_ax == 0 and j_ax == 0:
+                    if i_ax == 0:
+                        ax.set_ylabel('$E/E_0$')
+                    # ax.set_ylim([0, 1])
+                if j_ax == 0 and i_ax == len(inds_beta) - 1:
+                    ax.legend(bbox_to_anchor=(1, 0.5), loc='center left')
+                ## for debugging
+                ax.set_title(
+                    '$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(beta_loop_list[ind_beta]) + '$',
+                    fontsize=8, y=0.8)
+        ## for matrix display:
+        # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
+
+        # # Add a big common x-axis label for beta values (across columns)
+        # if plot_axes_values:
+        #     fig.text(x=0.51, y=0.04, s=x_label, fontsize=axes_label_size, ha='center', va='center')
+        #     for i_ax, ind_beta in enumerate(inds_beta):
+        #         fig.text(x=0.19 + i_ax * (0.8 / len(inds_beta)), y=0.08,
+        #                  s=f'${beta_loop_list[ind_beta]}$',
+        #                  ha='center', va='center',
+        #                  fontsize=axes_label_size)
+        #
+        #     # Add a big common y-axis label for alpha values (across rows)
+        #     fig.text(x=0.07, y=0.5, s=y_label, rotation=90, fontsize=axes_label_size, ha='center', va='center')
+        #     for j_ax, ind_alpha in enumerate(inds_alpha):
+        #         fig.text(x=0.1, y=0.8 - j_ax * (0.77 / len(inds_alpha)),
+        #                  # s=f'${alpha_loop_list[ind_alpha]}$',
+        #                  s=f'${np.round(y_array[ind_alpha], 2)}$',
+        #                  ha='center', va='center',
+        #                  fontsize=axes_label_size)
+
+        # fig.set_layout_engine(layout='tight')
+        # fig.subplots_adjust(right=0.82)  # manually pull the right edge left a bit
+        fig.suptitle(title)
+        return fig, axes
+
+
     plot_axes_values = True
     # plot_axes_values = False
 
@@ -322,6 +387,7 @@ if do_plots == True:
         fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
     if plot_T:
         fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
+        plot_2d_matrix_of_E_ratio_plots(mat_dict_2, title_2, plot_axes_values)
 
 ### saving figures
 # fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'

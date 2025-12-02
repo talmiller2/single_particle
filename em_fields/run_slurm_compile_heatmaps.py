@@ -55,7 +55,8 @@ save_dir = '/home/talm/code/single_particle/slurm_runs/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 # save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
-save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+# save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+save_dir += '/set61_B0_1T_l_1m_Post_Rm_5_r0max_10cm/'
 
 use_RF = True
 # use_RF = False
@@ -108,25 +109,31 @@ radial_distribution = 'uniform'
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set51, 52, 53, 53, 55
 # beta_loop_list = np.round(np.linspace(-2, 2, 11), 2)
 
-alpha_loop_list = np.round(np.linspace(0.4, 1.6, 7), 2)  # set60
-beta_loop_list = np.round(np.linspace(-2, 2, 7), 2)
+# alpha_loop_list = np.round(np.linspace(0.4, 1.6, 7), 2)  # set60
+# beta_loop_list = np.round(np.linspace(-2, 2, 7), 2)
 
 # alpha_loop_list = np.round(np.linspace(0.4, 1.6, 5), 2)  # set54
 # beta_loop_list = np.round(np.linspace(-2, 2, 5), 2)
 
+alpha_loop_list = np.round(np.linspace(0.4, 1.6, 11), 2)  # set61
+beta_loop_list = np.round(np.linspace(-1, 1, 11), 2)
+
+
 # gas_name_list = ['deuterium', 'tritium']
 gas_name_list = ['tritium']
+# gas_name_list = ['deuterium']
 
 RF_type_list = []
 RF_amplitude_list = []
-RF_type_list += ['magnetic_transverse']
-RF_amplitude_list += [0.04]  # [T]
-# RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
+# RF_type_list += ['magnetic_transverse']
+# RF_amplitude_list += [0.04]  # [T]
+RF_type_list += ['magnetic_transverse', 'magnetic_transverse']
 # RF_amplitude_list += [0.02, 0.04]  # [T]
-RF_type_list += ['electric_transverse']
-RF_amplitude_list += [50]  # kV/m
-# RF_type_list += ['electric_transverse', 'electric_transverse']
-# RF_amplitude_list += [25, 50]  # kV/m
+RF_amplitude_list += [0.025, 0.05]  # [T]
+# RF_type_list += ['electric_transverse']
+# RF_amplitude_list += [50]  # kV/m
+RF_type_list += ['electric_transverse', 'electric_transverse']
+RF_amplitude_list += [25, 50]  # kV/m
 
 # sigma_r0_list = [0.1]
 # sigma_r0_list = [0.05]
