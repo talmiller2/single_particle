@@ -7,7 +7,8 @@ from scipy.io import loadmat
 from em_fields.default_settings import define_plasma_parameters
 from em_fields.em_functions import get_cyclotron_angular_frequency
 
-plt.rcParams.update({'font.size': 12})
+# plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 14})
 # plt.rcParams.update({'font.size': 18})
 # plt.rcParams.update({'font.size': 10})
 # plt.rcParams.update({'font.size': 8})
@@ -53,7 +54,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 # save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
-save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+# save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+save_dir += '/set61_B0_1T_l_1m_Post_Rm_5_r0max_10cm/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -75,7 +77,8 @@ RF_type = 'electric_transverse'
 E_RF_kVm = 50  # [kV/m]
 RF_type = 'magnetic_transverse'
 # # B_RF = 0.02  # [T]
-B_RF = 0.04  # [T]
+# B_RF = 0.04  # [T]
+B_RF = 0.05  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -90,9 +93,9 @@ induced_fields_factor = 1
 # induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-sigma_r0 = 0
+# sigma_r0 = 0
 # sigma_r0 = 0.05
-# sigma_r0 = 0.1
+sigma_r0 = 0.1
 # sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
@@ -103,8 +106,8 @@ loss_cone_condition = 'B_total'  # correct form
 # loss_cone_condition = 'B_axial' # testing the incorrect way implemented in the past
 # loss_cone_condition = 'old_compilation'  # used the old compilation code
 
-plot_D = False
-# plot_D = True
+# plot_D = False
+plot_D = True
 plot_T = True
 
 if plot_D:
@@ -251,26 +254,31 @@ if do_plots == True:
     # inds_alpha = inds_alpha[::-1]
     # inds_alpha = [0, 2, 3, 4, 6]
     # inds_beta = [0, 2, 3, 4, 6]
-    inds_alpha = [0, 3, 6]
-    inds_beta = [2, 3, 4]
+    inds_alpha = [15]
+    inds_beta = [20]
 
     # curves
 
-    def plot_2d_matrix_of_population_conversion_plots(mat_dict, title, plot_axes_values=True):
+    def plot_2d_matrix_of_population_conversion_plots(mat_dict, title, plot_axes_values=True, display_type='matrix'):
         # fig, axes = plt.subplots(len(inds_alpha), len(inds_beta), figsize=(15, 7))
         fig, axes = plt.subplots(len(inds_alpha), len(inds_beta), figsize=(10, 7))
+        # axes = np.atleast_2d(axes)
         # plt.suptitle(title, y=0.92)
         # mat_dict = mat_dict
         t_array = mat_dict['t_array_normed'][0]
         for i_ax, ind_beta in enumerate(inds_beta):
             for j_ax, ind_alpha in enumerate(inds_alpha):
 
-                if len(inds_beta) == 1:
+                if len(inds_beta) == 1 and len(inds_alpha) == 1:
+                    ax = axes
+                elif len(inds_beta) == 1:
                     ax = axes[j_ax]
                 elif len(inds_alpha) == 1:
                     ax = axes[i_ax]
                 else:
-                    ax = axes[j_ax, i_ax]
+                    # ax = axes[j_ax, i_ax]
+                    ax = axes[
+                        len(inds_alpha) - 1 - j_ax, i_ax]  # change the direction of rows for alpha to rise in the up direction
 
                 for process, process_color, fac in zip(processes, process_colors, fac_list):
                     curve_mean = fac * mat_dict['N_' + process + '_curve_mean'][ind_beta, ind_alpha]
@@ -281,19 +289,31 @@ if do_plots == True:
                     ax.fill_between(t_array, y1=curve_mean + num_sigmas * curve_std,
                                     y2=curve_mean - num_sigmas * curve_std, color=process_color,
                                     alpha=0.5, label='$N_{' + process + '}$')
-                    ## for matrix display:
-                    ax.set_xticks([])
-                    ax.set_yticks([])
-                    ## for single row display:
-                    # ax.set_xlabel('$t / \\tau_{th}$')
-                    # if i_ax == 0 and j_ax == 0:
-                    #     ax.set_ylabel('$\\Delta N / N_0$')
+                    if display_type == 'matrix':
+                        ## for matrix display:
+                        ax.set_xticks([])
+                        ax.set_yticks([])
+                    else:
+                        ## for single row display:
+                        ax.set_xlabel('$t / \\tau_{th}$')
+                        if i_ax == 0 and j_ax == 0:
+                            ax.set_ylabel('$\\Delta N / N_0$')
                     ax.set_ylim([0, 1])
-                if j_ax == 0 and i_ax == len(inds_beta) - 1:
-                    ax.legend(bbox_to_anchor=(1, 0.5))
-                ## for debugging
-                # ax.set_title('$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(beta_loop_list[ind_beta]) + '$', fontsize=8, y=0.8)
-        ## for matrix display:
+
+                # if j_ax == 0 and i_ax == 0:
+                # if j_ax == len(inds_alpha) - 1 and i_ax == 0:
+                if j_ax == len(inds_alpha) - 1 and i_ax == len(inds_beta) - 1:
+                    if display_type == 'matrix':
+                        ax.legend(bbox_to_anchor=(1, 0.5))
+                    else:
+                        ax.legend()
+                        ## for debugging
+                        # ax.set_title('$\\alpha=' + str(alpha_loop_list[ind_alpha]) + ', \\beta=' + str(
+                        #     beta_loop_list[ind_beta]) + '$',
+                        #              # fontsize=8, y=0.8
+                        #              )
+
+                    ## for matrix display:
         # plt.subplots_adjust(hspace=0, wspace=0)  # hspace for vertical space, wspace for horizontal space
 
         # Add a big common x-axis label for beta values (across columns)
@@ -308,7 +328,11 @@ if do_plots == True:
             # Add a big common y-axis label for alpha values (across rows)
             fig.text(x=0.07, y=0.5, s=y_label, rotation=90, fontsize=axes_label_size, ha='center', va='center')
             for j_ax, ind_alpha in enumerate(inds_alpha):
-                fig.text(x=0.1, y=0.8 - j_ax * (0.77 / len(inds_alpha)),
+                fig.text(
+                    # x=0.1,
+                    x=0.095,
+                    # y=0.8 - j_ax * (0.77 / len(inds_alpha)),
+                    y=0.175 + j_ax * (0.8 / len(inds_alpha)),
                          # s=f'${alpha_loop_list[ind_alpha]}$',
                          s=f'${np.round(y_array[ind_alpha], 2)}$',
                          ha='center', va='center',
@@ -380,23 +404,31 @@ if do_plots == True:
         return fig, axes
 
 
-    plot_axes_values = True
-    # plot_axes_values = False
+    # plot_axes_values = True
+    plot_axes_values = False
+
+    # display_type = 'matrix'
+    display_type = 'single'
 
     if plot_D:
-        fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values)
+        fig_1, axes_1 = plot_2d_matrix_of_population_conversion_plots(mat_dict_1, title_1, plot_axes_values,
+                                                                      display_type)
     if plot_T:
-        fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values)
-        plot_2d_matrix_of_E_ratio_plots(mat_dict_2, title_2, plot_axes_values)
+        fig_2, axes_2 = plot_2d_matrix_of_population_conversion_plots(mat_dict_2, title_2, plot_axes_values,
+                                                                      display_type)
+        # plot_2d_matrix_of_E_ratio_plots(mat_dict_2, title_2, plot_axes_values)
 
-### saving figures
-# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
-#
-# file_name = 'compiled_population_conversion'
-# if normalize_curves: file_name += '_normalized'
-# if RF_type == 'electric_transverse': file_name += '_REF'
-# else: file_name += '_RMF'
-# if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
+## saving figures
+fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
+
+file_name = 'compiled_population_conversion'
+if normalize_curves: file_name += '_normalized'
+if RF_type == 'electric_transverse':
+    file_name += '_REF'
+else:
+    file_name += '_RMF'
+if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
 # fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
 # fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
-# # fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)
+# fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)
+fig_2.savefig(fig_save_dir + file_name + '_T_single' + '.pdf', format='pdf', dpi=600)

@@ -54,7 +54,8 @@ save_dir = '/Users/talmiller/Downloads/single_particle/'
 # save_dir += '/set57_B0_1T_l_1m_Post_Rm_5_r0max_30cm_intervals_D_T/'
 # save_dir += '/set58_B0_1T_l_1m_Post_Rm_10_r0max_30cm_intervals_D_T/'
 # save_dir += '/set59_B0_1T_l_1m_Post_Rm_5_r0max_30cm/'
-save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+# save_dir += '/set60_B0_1T_l_1m_Post_Rm_5_r0max_30cm_tmax_10tau/'  # for longer tmax testing
+save_dir += '/set61_B0_1T_l_1m_Post_Rm_5_r0max_10cm/'
 
 
 save_dir_curr = save_dir + 'without_RF'
@@ -68,12 +69,14 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
-RF_type = 'electric_transverse'
-# # # E_RF_kVm = 25  # [kV/m]
+# RF_type = 'electric_transverse'
+# E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
 RF_type = 'magnetic_transverse'
 # B_RF = 0.02  # [T]
-B_RF = 0.04  # [T]
+# B_RF = 0.025  # [T]
+# B_RF = 0.04  # [T]
+B_RF = 0.05  # [T]
 
 absolute_velocity_sampling_type = 'maxwell'
 # absolute_velocity_sampling_type = 'const_vth'
@@ -81,17 +84,17 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
-sigma_r0 = 0
+# sigma_r0 = 0
 # sigma_r0 = 0.05
-# sigma_r0 = 0.1
-sigma_r0 = 0.3
+sigma_r0 = 0.1
+# sigma_r0 = 0.3
 radial_distribution = 'uniform'
 
 # theta_type = 'sign_vz0'
@@ -101,8 +104,8 @@ loss_cone_condition = 'B_total'  # correct form
 # loss_cone_condition = 'B_axial'  # testing the incorrect way implemented in the past
 # loss_cone_condition = 'old_compilation'
 
-plot_D = False
-# plot_D = True
+# plot_D = False
+plot_D = True
 plot_T = True
 
 load_smoothed_rates = False
@@ -380,42 +383,42 @@ if do_plots == True:
 
     #########################
 
-    mat_dict_list, ind_row_list, gas_name_list = [], [], []
-    if plot_D:
-        mat_dict_list += [mat_dict_1]
-        ind_row_list += [0]
-        gas_name_list += ['D']
-    if plot_T:
-        mat_dict_list += [mat_dict_2]
-        ind_row_list += [1]
-        gas_name_list += ['T']
+    # mat_dict_list, ind_row_list, gas_name_list = [], [], []
+    # if plot_D:
+    #     mat_dict_list += [mat_dict_1]
+    #     ind_row_list += [0]
+    #     gas_name_list += ['D']
+    # if plot_T:
+    #     mat_dict_list += [mat_dict_2]
+    #     ind_row_list += [1]
+    #     gas_name_list += ['T']
 
-    fig, axes = plt.subplots(2, 3, figsize=(15, 7))
-    fig.suptitle(title2, fontsize=title_fontsize)
-
-    # for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
-    for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
-        E_ratio = mat_dict['E_ratio']
-        selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
-        selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
-
-        Z = selectivity_LC
-        title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
-        ax = axes[ind_row, 0]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        Z = selectivity_trapped
-        title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
-        ax = axes[ind_row, 1]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
-
-        Z = E_ratio
-        title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
-        ax = axes[ind_row, 2]
-        ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
-        plot_resonance_lines(ax, gas_name=gas_name)
+    # fig, axes = plt.subplots(2, 3, figsize=(15, 7))
+    # fig.suptitle(title2, fontsize=title_fontsize)
+    #
+    # # for mat_dict, ind_row, gas_name in zip([mat_dict_1, mat_dict_2], [0, 1], ['D', 'T']):
+    # for mat_dict, ind_row, gas_name in zip(mat_dict_list, ind_row_list, gas_name_list):
+    #     E_ratio = mat_dict['E_ratio']
+    #     selectivity_LC = mat_dict['N_rc_end'] / mat_dict['N_lc_end']
+    #     selectivity_trapped = mat_dict['N_cr_end'] / mat_dict['N_cl_end']
+    #
+    #     Z = selectivity_LC
+    #     title = '$N_{rc} / N_{lc}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 0]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     Z = selectivity_trapped
+    #     title = '$N_{cr} / N_{cl}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 1]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
+    #
+    #     Z = E_ratio
+    #     title = '$\\bar{E}_{fin}/\\bar{E}_{ini}$ (' + gas_name + ')'
+    #     ax = axes[ind_row, 2]
+    #     ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=None, vmax=None)
+    #     plot_resonance_lines(ax, gas_name=gas_name)
 
         # # estimate the power per particle, not just energy difference
         # E_ini_per_particle = settings['kB_eV'] * settings['T_keV'] * 1e3 # [Joule]
@@ -466,7 +469,7 @@ if do_plots == True:
 # denergy_RF = settings['kB_eV'] * settings['T_keV'] * 1e3
 
 
-### saving figures
+# ## saving figures
 # fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
 #
 # file_name = 'compiled_rates'
