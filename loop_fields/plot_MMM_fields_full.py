@@ -1,24 +1,29 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from em_fields.MMM_field_forms import get_MMM_magnetic_field, get_MMM_electric_field
+from em_fields.MMM_field_forms import get_MMM_magnetic_field, get_MMM_electric_field, get_main_cell_static_field
 from em_fields.default_settings import define_default_settings, define_default_field
+from em_fields.magnetic_forms import get_transverse_magnetic_fields
 
 axes_label_size = 12
 # axes_label_size = 18
 title_fontsize = 12
 
+# figsize = (7, 5)
+figsize = (12, 4)
+
 plt.close('all')
 
 # z = np.linspace(-10, 10, 1000)
-z = np.linspace(-4, 4, 1000)
+# z = np.linspace(-4, 4, 1000)
+z = np.linspace(-3, 3, 1000)
 # z = np.linspace(-5, 5, 1000)
 
 ## definitions
 settings = define_default_settings()
 field_dict = {}
-field_dict['use_static_main_cell'] = False
-# field_dict['use_static_main_cell'] = True
+# field_dict['use_static_main_cell'] = False
+field_dict['use_static_main_cell'] = True
 field_dict['Rm'] = 6
 # field_dict['Rm'] = 5
 field_dict['Rm_main'] = 3
@@ -28,6 +33,16 @@ field_dict['U_MMM'] = 0.1 * settings['v_th']
 # field_dict['U_MMM'] = 1.0 * settings['v_th']
 # tau = settings['l'] / settings['v_th']
 tau = settings['l'] / field_dict['U_MMM']
+
+if field_dict['use_static_main_cell'] == True:
+    title_suffix = ' (with static mirror)'
+    static_mirror_plt_kwargs = {}
+    static_mirror_plt_kwargs['label'] = 'static mirror only'
+    static_mirror_plt_kwargs['color'] = 'k'
+    static_mirror_plt_kwargs['linestyle'] = '--'
+    static_mirror_plt_kwargs['linewidth'] = 2
+else:
+    title_suffix = ''
 
 # frac_list = [0]
 # frac_list = [0, 0.5, 1.0]
@@ -44,58 +59,89 @@ def plot_wall_lines():
     return
 
 
-fig, ax = plt.subplots(1, 1, figsize=(7, 5))
+### Plot Bz
+fig, ax = plt.subplots(1, 1, figsize=figsize)
 plot_wall_lines()
+
 for frac, color in zip(frac_list, colors):
     Bz_MMM = []
     for z_curr in z:
         x = [0, 0, z_curr]
         t = frac * tau
-        Bz_MMM += [get_MMM_magnetic_field(x, t, **field_dict)[2]]
+
+        B_MMM = get_MMM_magnetic_field(x, t, **field_dict)
+        Bz_MMM += [B_MMM[2]]
     plt.plot(z, Bz_MMM, color=color, label='$t/\\tau$=' + str(frac))
+
+if field_dict['use_static_main_cell'] == True:
+    Bz_static, Br_static = [], []
+    for z_curr in z:
+        x = [0, 0, z_curr]
+        Bz_static_curr, _ = get_main_cell_static_field(x, **field_dict)
+        Bz_static_curr += field_dict['B0']
+        Bz_static += [Bz_static_curr]
+    plt.plot(z, Bz_static, **static_mirror_plt_kwargs)
+
 plt.xlabel('z [m]', fontsize=axes_label_size)
 plt.ylabel('$B_z$ [T]', fontsize=axes_label_size)
-plt.title('Axial magnetic field of MMM', fontsize=title_fontsize)
+plt.xlim([min(z), max(z)])
+title = 'Axial magnetic field of MMM'
+plt.title(title + title_suffix, fontsize=title_fontsize)
 plt.grid(True)
-plt.legend(fontsize=axes_label_size, loc='upper left')
+plt.legend(fontsize=axes_label_size)
 plt.tight_layout()
 
-fig2, ax2 = plt.subplots(1, 1, figsize=(7, 5))
+### Plot Br
+
+fig2, ax2 = plt.subplots(1, 1, figsize=figsize)
 plot_wall_lines()
 r = 0.1  # [m]
 # r = 0.2 # [m]
+
 for frac, color in zip(frac_list, colors):
     Br_MMM = []
     for z_curr in z:
         x = [r, 0, z_curr]
         t = frac * tau
-        Bz_MMM = get_MMM_magnetic_field(x, t, **field_dict)
-        # Br_MMM += [np.sqrt(Bz_MMM[0] ** 2 + Bz_MMM[1] ** 2)]
-        Br_MMM += [Bz_MMM[0]]
+        B_MMM = get_MMM_magnetic_field(x, t, **field_dict)
+        Br_MMM += [B_MMM[0]]
     plt.plot(z, Br_MMM, color=color, label='$t/\\tau$=' + str(frac))
+
+if field_dict['use_static_main_cell'] == True:
+    Bz_static, Br_static = [], []
+    for z_curr in z:
+        x = [r, 0, z_curr]
+        _, dB_dz_static_curr = get_main_cell_static_field(x, **field_dict)
+        Br_static_curr = get_transverse_magnetic_fields(x, dB_dz_static_curr)
+        Br_static += [Br_static_curr[0]]
+    plt.plot(z, Br_static, **static_mirror_plt_kwargs)
+
 plt.xlabel('z [m]', fontsize=axes_label_size)
-# plt.ylabel('$B_r$ [T]')
-# plt.title('Radial magnetic field of MMM at r=' + str(r) + '[m]')
 plt.ylabel('$B_x$ [T]', fontsize=axes_label_size)
-plt.title('Transverse magnetic field of MMM at r=' + str(r) + '[m]', fontsize=title_fontsize)
+plt.xlim([min(z), max(z)])
+title = 'Transverse magnetic field of MMM at r=' + str(r) + '[m]'
+plt.title(title + title_suffix, fontsize=title_fontsize)
 plt.grid(True)
 plt.legend(fontsize=axes_label_size)
 plt.tight_layout()
 
-fig3, ax3 = plt.subplots(1, 1, figsize=(7, 5))
+### Plot Ey
+
+fig3, ax3 = plt.subplots(1, 1, figsize=figsize)
 plot_wall_lines()
 for frac, color in zip(frac_list, colors):
     Etheta_MMM = []
     for z_curr in z:
         x = [r, 0, z_curr]
         t = frac * tau
-        Etheta_MMM += [get_MMM_electric_field(x, t, **field_dict)[1] / 1e3]
+        E_MMM = get_MMM_electric_field(x, t, **field_dict)
+        Etheta_MMM += [E_MMM[1] / 1e3]
     plt.plot(z, Etheta_MMM, color=color, label='$t/\\tau$=' + str(frac))
 plt.xlabel('z [m]', fontsize=axes_label_size)
-# plt.ylabel('$E_\\theta$ [kV/m]')
-# plt.title('Tangential electric field of MMM at r=' + str(r) + '[m]')
 plt.ylabel('$E_y$ [kV/m]', fontsize=axes_label_size)
-plt.title('Transverse electric field of MMM at r=' + str(r) + '[m]', fontsize=title_fontsize)
+plt.xlim([min(z), max(z)])
+title = 'Transverse electric field of MMM at r=' + str(r) + '[m]'
+plt.title(title + title_suffix, fontsize=title_fontsize)
 plt.grid(True)
 plt.legend(fontsize=axes_label_size)
 plt.tight_layout()

@@ -34,8 +34,8 @@ settings['stop_criterion'] = 't_max_adaptive_dt'
 settings = define_default_settings(settings)
 
 field_dict = {}
-# field_dict['use_static_main_cell'] = True
-field_dict['use_static_main_cell'] = False
+field_dict['use_static_main_cell'] = True
+# field_dict['use_static_main_cell'] = False
 field_dict['Rm'] = 6
 # field_dict['Rm'] = 5
 # field_dict['Rm'] = 3
@@ -87,8 +87,8 @@ def plot_MMM_lines(t, t_fac, plot_static_cell):
 # use_random_particles = False
 use_random_particles = True
 
-initialize_inside_MMM = False
-# initialize_inside_MMM = True
+# initialize_inside_MMM = False
+initialize_inside_MMM = True
 
 save_figures = False
 # save_figures = True

@@ -86,11 +86,11 @@ absolute_velocity_sampling_type = 'maxwell'
 # with_kr_correction = False
 with_kr_correction = True
 
-induced_fields_factor = 1
+# induced_fields_factor = 1
 # induced_fields_factor = 0.5
 # induced_fields_factor = 0.1
 # induced_fields_factor = 0.01
-# induced_fields_factor = 0
+induced_fields_factor = 0
 time_step_tau_cyclotron_divisions = 50
 # time_step_tau_cyclotron_divisions = 100
 # sigma_r0 = 0
@@ -418,17 +418,17 @@ if do_plots == True:
                                                                       display_type)
         # plot_2d_matrix_of_E_ratio_plots(mat_dict_2, title_2, plot_axes_values)
 
-## saving figures
-fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
-
-file_name = 'compiled_population_conversion'
-if normalize_curves: file_name += '_normalized'
-if RF_type == 'electric_transverse':
-    file_name += '_REF'
-else:
-    file_name += '_RMF'
-if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
-# fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
-# fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
-# fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)
-fig_2.savefig(fig_save_dir + file_name + '_T_single' + '.pdf', format='pdf', dpi=600)
+# ## saving figures
+# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
+#
+# file_name = 'compiled_population_conversion'
+# if normalize_curves: file_name += '_normalized'
+# if RF_type == 'electric_transverse':
+#     file_name += '_REF'
+# else:
+#     file_name += '_RMF'
+# if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
+# # fig_1.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+# # fig_2.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
+# # fig_2.savefig(fig_save_dir + file_name + '_T_single_row' + '.pdf', format='pdf', dpi=600)
+# fig_2.savefig(fig_save_dir + file_name + '_T_single' + '.pdf', format='pdf', dpi=600)

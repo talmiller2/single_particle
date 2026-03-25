@@ -69,6 +69,14 @@ with open(field_dict_file, 'rb') as fid:
 LC_ini_fraction = np.sin(np.arcsin(field_dict['Rm'] ** (-0.5)) / 2) ** 2
 trapped_ini_fraction = 1 - 2 * LC_ini_fraction
 
+
+def loss_cone_norm_factor(process):
+    # original version with loss cone solid angle normalization should return 1
+    if process in ['cr', 'cl', 'lr', 'rl']:
+        return 1 / LC_ini_fraction
+    else:
+        return 1 / (1 - 2 * LC_ini_fraction)
+
 # RF_type = 'electric_transverse'
 # E_RF_kVm = 25  # [kV/m]
 E_RF_kVm = 50  # [kV/m]
@@ -108,8 +116,8 @@ loss_cone_condition = 'B_total'  # correct form
 plot_D = True
 plot_T = True
 
-load_smoothed_rates = False
-# load_smoothed_rates = True
+# load_smoothed_rates = False
+load_smoothed_rates = True
 
 if plot_D:
     gas_name = 'deuterium'
@@ -328,17 +336,19 @@ if do_plots == True:
     process_colors = ['b', 'r', 'k', 'g', 'orange', 'brown']
     # vmin_list = [None for _ in range(len(processes))]
     # vmax_list = [None for _ in range(len(processes))]
-    vmin_list = [0.2, 0, 0, 0.2, 0, 0]
-    vmax_list = [0.8, 0.08, 0.12, 0.8, 0.08, 0.12]
-
+    # vmin_list = [0.2, 0, 0, 0.2, 0, 0]
+    # vmax_list = [0.8, 0.08, 0.12, 0.8, 0.08, 0.12]
+    vmin_list = [0, 0, 0, 0, 0, 0]  # for version with loss cone solid angle normalization
+    vmax_list = [0.9, 1.5, 2, 0.9, 1.5, 2]  # for version with loss cone solid angle normalization
+    # vmax_list = [0.9, 0.6, 2, 0.9, 0.6, 2] # for version with loss cone solid angle normalization
     # rate values
     if plot_D:
         fig, axes = plt.subplots(2, 3, figsize=(15, 7))
         mat_dict = mat_dict_1
         gas_name = 'D'
         for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
-            Z = mat_dict['N_' + process + '_end']
-            title = '$N_{' + process + '}$ (' + gas_name + ')'
+            Z = mat_dict['N_' + process + '_end'] * loss_cone_norm_factor(process)
+            title = '$\\bar N_{' + process + '}$ (' + gas_name + ')'
             ax = axes[ind_row, ind_col]
             ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=vmin, vmax=vmax)
             plot_resonance_lines(ax, gas_name=gas_name)
@@ -349,8 +359,8 @@ if do_plots == True:
         mat_dict = mat_dict_2
         gas_name = 'T'
         for process, ind_row, ind_col, vmin, vmax in zip(processes, ind_rows, ind_cols, vmin_list, vmax_list):
-            Z = mat_dict['N_' + process + '_end']
-            title = '$N_{' + process + '}$ (' + gas_name + ')'
+            Z = mat_dict['N_' + process + '_end'] * loss_cone_norm_factor(process)
+            title = '$\\bar N_{' + process + '}$ (' + gas_name + ')'
             ax = axes[ind_row, ind_col]
             ax = plot_colormesh(Z.T, title, fig=fig, ax=ax, vmin=vmin, vmax=vmax)
             plot_resonance_lines(ax, gas_name=gas_name)
@@ -469,18 +479,22 @@ if do_plots == True:
 # denergy_RF = settings['kB_eV'] * settings['T_keV'] * 1e3
 
 
-# ## saving figures
-# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
-#
-# file_name = 'compiled_rates'
-# if 'smooth' in set_name:
-#     file_name += '_smooth'
-# if RF_type == 'electric_transverse': file_name += '_REF'
-# else: file_name += '_RMF'
-# if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
-#
-# plt.figure(1)
-# plt.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
-#
-# plt.figure(2)
-# plt.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
+## saving figures
+fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2025/pics/'
+
+file_name = 'compiled_rates'
+if 'smooth' in set_name:
+    file_name += '_smooth'
+if RF_type == 'electric_transverse':
+    file_name += '_REF'
+else:
+    file_name += '_RMF'
+if induced_fields_factor < 1.0: file_name += '_iff' + str(induced_fields_factor)
+
+file_name += '_LCnorm'
+
+plt.figure(1)
+plt.savefig(fig_save_dir + file_name + '_D' + '.pdf', format='pdf', dpi=600)
+
+plt.figure(2)
+plt.savefig(fig_save_dir + file_name + '_T' + '.pdf', format='pdf', dpi=600)
