@@ -5,12 +5,17 @@ from em_fields.MMM_field_forms import get_MMM_magnetic_field, get_MMM_electric_f
 from em_fields.default_settings import define_default_settings, define_default_field
 from em_fields.magnetic_forms import get_transverse_magnetic_fields
 
-axes_label_size = 12
-# axes_label_size = 18
-title_fontsize = 12
+# plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'axes.labelpad': 5})
 
 # figsize = (7, 5)
 figsize = (12, 4)
+
+show_title = False
+
+save_figures = False
+# save_figures = True
 
 plt.close('all')
 
@@ -22,11 +27,12 @@ z = np.linspace(-3, 3, 1000)
 ## definitions
 settings = define_default_settings()
 field_dict = {}
-# field_dict['use_static_main_cell'] = False
-field_dict['use_static_main_cell'] = True
+field_dict['use_static_main_cell'] = False
+# field_dict['use_static_main_cell'] = True
 field_dict['Rm'] = 6
 # field_dict['Rm'] = 5
 field_dict['Rm_main'] = 3
+field_dict['MMM_static_main_cell_z'] = 0.8  # [m]
 field_dict = define_default_field(settings, field_dict)
 # field_dict['U_MMM'] = 1e-4
 field_dict['U_MMM'] = 0.1 * settings['v_th']
@@ -37,7 +43,8 @@ tau = settings['l'] / field_dict['U_MMM']
 if field_dict['use_static_main_cell'] == True:
     title_suffix = ' (with static mirror)'
     static_mirror_plt_kwargs = {}
-    static_mirror_plt_kwargs['label'] = 'static mirror only'
+    # static_mirror_plt_kwargs['label'] = 'static mirror only'
+    static_mirror_plt_kwargs['label'] = '$z_{static}$'
     static_mirror_plt_kwargs['color'] = 'k'
     static_mirror_plt_kwargs['linestyle'] = '--'
     static_mirror_plt_kwargs['linewidth'] = 2
@@ -54,8 +61,8 @@ colors = ['b', 'g', 'orange', 'r']
 
 
 def plot_wall_lines():
-    plt.axvline(field_dict['MMM_z_wall'], label='main cell wall', color='grey', linestyle='--')
-    plt.axvline(- field_dict['MMM_z_wall'], color='grey', linestyle='--')
+    plt.axvline(field_dict['MMM_z_wall'], label='$z_{wall}$', color='grey', linestyle=':')
+    plt.axvline(- field_dict['MMM_z_wall'], color='grey', linestyle=':')
     return
 
 
@@ -82,13 +89,14 @@ if field_dict['use_static_main_cell'] == True:
         Bz_static += [Bz_static_curr]
     plt.plot(z, Bz_static, **static_mirror_plt_kwargs)
 
-plt.xlabel('z [m]', fontsize=axes_label_size)
-plt.ylabel('$B_z$ [T]', fontsize=axes_label_size)
+plt.xlabel('z [m]')
+plt.ylabel('$B_z$ [T]')
 plt.xlim([min(z), max(z)])
 title = 'Axial magnetic field of MMM'
-plt.title(title + title_suffix, fontsize=title_fontsize)
+if show_title:
+    plt.title(title + title_suffix)
 plt.grid(True)
-plt.legend(fontsize=axes_label_size)
+plt.legend()
 plt.tight_layout()
 
 ### Plot Br
@@ -116,13 +124,14 @@ if field_dict['use_static_main_cell'] == True:
         Br_static += [Br_static_curr[0]]
     plt.plot(z, Br_static, **static_mirror_plt_kwargs)
 
-plt.xlabel('z [m]', fontsize=axes_label_size)
-plt.ylabel('$B_x$ [T]', fontsize=axes_label_size)
+plt.xlabel('z [m]')
+plt.ylabel('$B_x$ [T]')
 plt.xlim([min(z), max(z)])
 title = 'Transverse magnetic field of MMM at r=' + str(r) + '[m]'
-plt.title(title + title_suffix, fontsize=title_fontsize)
+if show_title:
+    plt.title(title + title_suffix)
 plt.grid(True)
-plt.legend(fontsize=axes_label_size)
+plt.legend()
 plt.tight_layout()
 
 ### Plot Ey
@@ -137,18 +146,20 @@ for frac, color in zip(frac_list, colors):
         E_MMM = get_MMM_electric_field(x, t, **field_dict)
         Etheta_MMM += [E_MMM[1] / 1e3]
     plt.plot(z, Etheta_MMM, color=color, label='$t/\\tau$=' + str(frac))
-plt.xlabel('z [m]', fontsize=axes_label_size)
-plt.ylabel('$E_y$ [kV/m]', fontsize=axes_label_size)
+plt.xlabel('z [m]')
+plt.ylabel('$E_y$ [kV/m]')
 plt.xlim([min(z), max(z)])
 title = 'Transverse electric field of MMM at r=' + str(r) + '[m]'
-plt.title(title + title_suffix, fontsize=title_fontsize)
+if show_title:
+    plt.title(title + title_suffix)
 plt.grid(True)
-plt.legend(fontsize=axes_label_size)
+plt.legend()
 plt.tight_layout()
 
-# ### saving figures
-# fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2026/pics/'
-# file_name = 'full_MMM_axial_B_field'
-# if field_dict['use_static_main_cell']:
-#     file_name += '_with_static_maincell'
-# fig.savefig(fig_save_dir + file_name + '.pdf', format='pdf', dpi=600)
+### saving figures
+if save_figures:
+    fig_save_dir = '/Users/talmiller/Data/UNI/Courses Graduate/Plasma/Papers/texts/paper_2026/pics/'
+    file_name = 'full_MMM_axial_B_field'
+    if field_dict['use_static_main_cell']:
+        file_name += '_with_static_maincell'
+    fig.savefig(fig_save_dir + file_name + '.pdf', format='pdf', dpi=600)

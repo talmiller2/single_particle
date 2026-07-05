@@ -11,7 +11,7 @@ plt.rcParams.update({'lines.linestyle': '-'})
 # plt.rcParams.update({'lines.linestyle': '--'})
 # plt.rcParams.update({'lines.linestyle': ':'})
 
-plt.close('all')
+# plt.close('all')
 
 l = 1
 # l = 5
@@ -29,6 +29,7 @@ Rm = 5
 x = np.array([0 * z + l / 2, 0 * z + l / 2, z])
 
 field_dict = {'z_mirror_shift': 0, 'B0': 1, 'Rm': Rm, 'l': 1}
+# field_dict['lambda_post'] = 100
 # field_dict = {'z_mirror_shift': l / 2, 'B0': 1, 'Rm': Rm, 'l': l}
 Bmax = field_dict['B0'] * field_dict['Rm']
 
@@ -59,6 +60,7 @@ plt.figure(1, figsize=(8, 4))
 # plt.plot(z, B_jaeger[2], '--', label='Jaeger et al', color='g')
 # plt.plot(z, B_post[2], label='Post', color='r')
 plt.plot(z, B_post, label='Post', color='b')
+# plt.plot(z, B_post, label='Post2', color='m')
 # plt.plot(z, B_slope, '--', label='slope', color='k')
 # plt.plot(z, B_logan_slope, '--', label='Logan + slope', color='b')
 # plt.plot(z, B_post_slope, '--', label='Post + slope', color='r')
