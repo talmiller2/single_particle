@@ -43,7 +43,7 @@ def get_MMM_magnetic_field(x, t, **field_dict):
 
     for sign in [+1, -1]:
         # moving field component
-        x_m = [x[0], x[1], x[2] + sign * field_dict['U_MMM'] * t]
+        x_m = [x[0], x[1], x[2] + sign * field_dict['U_MMM'] * (t - field_dict['MMM_t_shift'])]
         B_mz, dB_mz_dz = get_mirror_magnetic_field_z_component(x_m, field_dict)
         B_mz -= field_dict['B0']
 
@@ -76,7 +76,7 @@ def get_MMM_electric_field(x, t, **field_dict):
         E_MMM_magnitude = 0
         for sign in [+1, -1]:
             # moving field component
-            x_m = [x[0], x[1], x[2] + sign * field_dict['U_MMM'] * t]
+            x_m = [x[0], x[1], x[2] + sign * field_dict['U_MMM'] * (t - field_dict['MMM_t_shift'])]
             _, dB_mz_dz = get_mirror_magnetic_field_z_component(x_m, field_dict)
 
             # static main-cell-wall field component

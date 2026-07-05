@@ -184,6 +184,8 @@ def define_default_field(settings, field_dict=None):
     if 'MMM_static_main_cell_dz' not in field_dict:
         field_dict['MMM_static_main_cell_dz'] = 0.05  # [m]
         # field_dict['MMM_static_main_cell_dz'] = 0.1 # [m]
+    if 'MMM_t_shift' not in field_dict:
+        field_dict['MMM_t_shift'] = 0  # [s]
 
     return field_dict
 

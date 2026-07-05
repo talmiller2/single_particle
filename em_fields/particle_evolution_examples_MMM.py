@@ -9,10 +9,10 @@ from em_fields.em_functions import evolve_particle_in_em_fields
 # from mpl_toolkits.mplot3d import Axes3D
 # Axes3D = Axes3D  # pycharm auto import
 
-plt.rcParams.update({'font.size': 12})
+# plt.rcParams.update({'font.size': 12})
 # plt.rcParams.update({'font.size': 14})
-# plt.rcParams.update({'font.size': 16})
-plt.rcParams.update({'axes.labelpad': 15})
+plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'axes.labelpad': 5})
 
 plt.close('all')
 
@@ -29,7 +29,9 @@ if plot_3d:
 
 settings = {}
 # settings['time_step_tau_cyclotron_divisions'] = 5
-settings['time_step_tau_cyclotron_divisions'] = 20
+# settings['time_step_tau_cyclotron_divisions'] = 20
+settings['time_step_tau_cyclotron_divisions'] = 50  # used in the plots in the paper
+# settings['time_step_tau_cyclotron_divisions'] = 100
 settings['stop_criterion'] = 't_max_adaptive_dt'
 settings = define_default_settings(settings)
 
@@ -43,6 +45,9 @@ field_dict['Rm_main'] = 3
 field_dict['MMM_z_wall'] = 1.0  # [m]
 # field_dict['MMM_z_wall'] = 1.2  # [m]
 # field_dict['MMM_z_wall'] = 0.8  # [m]
+field_dict['MMM_static_main_cell_z'] = 0.8  # [m]
+# field_dict['MMM_dz_wall'] = 0.05  # [m]
+# field_dict['MMM_static_main_cell_dz'] = 0.05  # [m]
 # field_dict['U_MMM'] = 0
 # field_dict['U_MMM'] = 1e-4 * settings['v_th']
 # field_dict['U_MMM'] = 0.01 * settings['v_th']
@@ -52,6 +57,7 @@ field_dict['U_MMM'] = 0.1 * settings['v_th']
 # field_dict['U_MMM'] = 1.0 * settings['v_th']
 # field_dict['induced_fields_factor'] = 0
 field_dict['induced_fields_factor'] = 1
+# field_dict['MMM_t_shift'] = settings['l'] / field_dict['U_MMM'] / 8
 field_dict = define_default_field(settings, field_dict)
 # tau = settings['l'] / settings['v_th']
 # tau = settings['l'] / field_dict['U_MMM']
@@ -62,17 +68,20 @@ cyclotron_radius = settings['v_th'] / field_dict['omega_cyclotron']
 loss_cone_angle = 360 / (2 * np.pi) * np.arcsin(1 / np.sqrt(field_dict['Rm_main']))
 
 def plot_MMM_lines(t, t_fac, plot_static_cell):
-    num_lines = 10
+    num_lines = 20
     for sign in [+1, -1]:
         for i in range(num_lines):
-            z = field_dict['z_mirror_shift'] + i * field_dict['l'] - field_dict['U_MMM'] * t
+            # z = field_dict['z_mirror_shift'] + i * field_dict['l'] - field_dict['U_MMM'] * t_shifted
+            z = field_dict['z_mirror_shift'] + i * field_dict['l'] - field_dict['U_MMM'] * (
+                        t - field_dict['MMM_t_shift'])
             z *= sign
             ind_wall_first = np.where(abs(z) < field_dict['MMM_z_wall'])[0]
             if len(ind_wall_first) > 0:
                 z[ind_wall_first[0]:] = np.nan
             if sign == 1 and i == 0:
                 # label = '$B_{max}$'
-                label = '$B_{max}$ lines'
+                # label = '$B_{max}$ lines'
+                label = 'max B lines'
             else:
                 label = None
             plt.plot(t * t_fac, z, linewidth=2, color='grey', alpha=0.5, label=label)
@@ -87,21 +96,31 @@ def plot_MMM_lines(t, t_fac, plot_static_cell):
 # use_random_particles = False
 use_random_particles = True
 
-# initialize_inside_MMM = False
-initialize_inside_MMM = True
+initialize_inside_MMM = False
+# initialize_inside_MMM = True
 
 save_figures = False
 # save_figures = True
 
+show_title = False
+
 
 if use_random_particles:
     # generate several particles that are in the static LC, with general angle
-    num_particles = 10
-    inds_sim = range(num_particles)
+    # num_particles = 5
+    # num_particles = 10
+    # num_particles = 20
+    # inds_sim = range(num_particles)
 
     np.random.seed(0)
-    theta_angles = np.random.uniform(loss_cone_angle, 180 - loss_cone_angle, num_particles)
-    phi_angles = np.random.uniform(0, 360, num_particles)
+    # theta_angles = np.random.uniform(loss_cone_angle, 180 - loss_cone_angle, num_particles)
+    # theta_angles = (loss_cone_angle + 0.5 * (180 - loss_cone_angle)) * np.ones(num_particles)
+    # theta_angles = np.linspace(loss_cone_angle + 5, 90 -5, num_particles)
+    # theta_angles = np.linspace(40, 80, num_particles)
+    # theta_angles = np.arange(40, 86, 5) # array([40, 45, 50, 55, 60, 65, 70, 75, 80, 85])
+    theta_angles = np.arange(36, 81, 4)
+    # phi_angles = np.random.uniform(0, 360, len(theta_angles))
+    phi_angles = 0 * theta_angles
 
     x = np.sin(theta_angles / 360 * 2 * np.pi) * np.cos(phi_angles / 360 * 2 * np.pi)
     y = np.sin(theta_angles / 360 * 2 * np.pi) * np.sin(phi_angles / 360 * 2 * np.pi)
@@ -111,6 +130,8 @@ if use_random_particles:
     # # check units vectors are indeed unit
     # for i in range(unit_vecs.shape[0]):
     #     print(np.linalg.norm(unit_vecs[i, :]))
+
+    inds_sim = range(len(theta_angles))
 
 else:
     inds_sim = []
@@ -123,7 +144,7 @@ else:
     # inds_sim += [6]
     # inds_sim += [7]
 
-t_list, x_list, y_list, R_list, z_list, v_abs_list, dE_list = [], [], [], [], [], [], []
+t_list, x_list, y_list, R_list, z_list, v_abs_list, dE_list, vt_over_vabs_squared_list = [], [], [], [], [], [], [], []
 
 for ind_sim in inds_sim:
     print(f'ind_sim={ind_sim}')
@@ -191,8 +212,8 @@ for ind_sim in inds_sim:
 
     dt = field_dict['tau_cyclotron'] / settings['time_step_tau_cyclotron_divisions']
     # tmax_mirror_lengths = 10
-    tmax_mirror_lengths = 50
-    # tmax_mirror_lengths = 60
+    # tmax_mirror_lengths = 50
+    tmax_mirror_lengths = 60
     sim_cyclotron_periods = int(
         tmax_mirror_lengths * settings['l'] / settings['v_th'] / field_dict['tau_cyclotron'])
     settings['sim_cyclotron_periods'] = sim_cyclotron_periods
@@ -220,8 +241,10 @@ for ind_sim in inds_sim:
     if initialize_inside_MMM:
         v_abs_moving = np.sqrt(vx ** 2 + vy ** 2 + (vz + field_dict['U_MMM']) ** 2)
         dE = 100.0 * (v_abs_moving - v_abs_moving[0]) / v_abs_moving[0]
+        vt_over_vabs_squared = (vt / v_abs_moving) ** 2
     else:
         dE = 100.0 * (v_abs - v_abs[0]) / v_abs[0]
+        vt_over_vabs_squared = (vt / v_abs) ** 2
 
     # v_norm = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
 
@@ -231,7 +254,8 @@ for ind_sim in inds_sim:
 
     # t_label = '$t$ [s]'
     # t_fac = 1
-    t_label = '$t \cdot v_{th} / l$'
+    # t_label = '$t \cdot v_{th} / l$'
+    t_label = '$t / \\tau$'
     t_fac = settings['v_th'] / settings['l']
     v_fac = 1 / settings['v_th']
 
@@ -242,6 +266,7 @@ for ind_sim in inds_sim:
     z_list += [z]
     v_abs_list += [v_abs]
     dE_list += [dE]
+    vt_over_vabs_squared_list += [vt_over_vabs_squared]
 
     if plot_1d:
         # plt.figure(2, figsize=(14, 5))
@@ -256,7 +281,8 @@ for ind_sim in inds_sim:
         plt.legend()
         plt.xlabel(t_label)
         plt.ylabel('coordinate [m]')
-        plt.title('ind_sim = ' + str(ind_sim))
+        if show_title:
+            plt.title('ind_sim = ' + str(ind_sim))
         plt.grid(True)
         plt.tight_layout()
 
@@ -363,16 +389,35 @@ for ind_sim in inds_sim:
         plt.tight_layout()
         # plt.tight_layout(h_pad=0.05, w_pad=0.05)
 
+# # combined vt_over_vabs_squared plot
+# fig, ax = plt.subplots(1, 1, figsize=(7, 5))
+# colors = cm.rainbow(np.linspace(0, 1, len(t_list)))
+# for i, (t, z, vt_over_vabs_squared, color) in enumerate(zip(t_list, z_list, vt_over_vabs_squared_list, colors)):
+#     plt.plot(t * t_fac, vt_over_vabs_squared,
+#              label='#' + str(i + 1),
+#              linewidth=linewidth, color=color)
+# ax.axhline(1 / field_dict['Rm_main'], linestyle='--', color='grey')
+# # plt.legend(loc='upper left')
+# plt.xlabel(t_label)
+# plt.ylabel('vt_over_vabs_squared')
+
+
+
 # combined trajectories plot
 # plt.figure(figsize=(7, 5))
-plt.figure(figsize=(14, 5))
+# plt.figure(figsize=(14, 5))
+plt.figure(figsize=(14, 6))
 colors = cm.rainbow(np.linspace(0, 1, len(t_list)))
+alpha = 0.7
+# alpha = 1
 plt.subplot(1, 2, 1)
 plot_MMM_lines(t, t_fac, field_dict['use_static_main_cell'])
 for i, (t, z, color) in enumerate(zip(t_list, z_list, colors)):
     plt.plot(t * t_fac, z,
              # label='#' + str(i + 1),
-             linewidth=linewidth, color=color)
+             linewidth=linewidth, color=color,
+             alpha=alpha,
+             )
 plt.legend(loc='upper right')
 plt.xlabel(t_label)
 plt.ylabel('z [m]')
@@ -382,8 +427,8 @@ if field_dict['use_static_main_cell']:
     title += f", static main cell: $z_{{main}}=${field_dict['MMM_static_main_cell_z']}m, $R_m=${field_dict['Rm_main']}"
 if field_dict['induced_fields_factor'] == 0:
     title += ', w/o E fields'
-# plt.title(title)
-plt.suptitle(title)
+if show_title:
+    plt.suptitle(title)
 plt.ylim([-5, 5])
 # plt.grid(True)
 # plt.tight_layout()
@@ -394,19 +439,21 @@ plt.subplot(1, 2, 2)
 colors = cm.rainbow(np.linspace(0, 1, len(t_list)))
 for i, (t, z, dE, color) in enumerate(zip(t_list, z_list, dE_list, colors)):
     plt.plot(t * t_fac, dE,
-             label='#' + str(i + 1),
-             linewidth=linewidth, color=color)
+             # label='#' + str(i + 1),
+             label=f'$\\theta$={theta_angles[i]}°',
+             linewidth=linewidth, color=color,
+             alpha=alpha,
+             )
 plt.legend(loc='upper left')
 plt.xlabel(t_label)
 if initialize_inside_MMM:
     plt.ylabel('$\\Delta E$ [%] (in MMM reference frame)')
 else:
     plt.ylabel('$\\Delta E$ [%] (in lab frame)')
-# title = 'main cell: $z_{main}=$' + str(field_dict['MMM_static_main_cell_z']) + 'm, $R_m=$' + str(field_dict['Rm_main'])
-# title += ', MMM: $z_{wall}=$' + str(field_dict['MMM_z_wall']) + 'm, $R_m=$' + str(field_dict['Rm'])
-# if field_dict['induced_fields_factor'] == False:
-#     title += ', w/o E fields'
-# plt.title(title)
+if field_dict['use_static_main_cell'] == True and initialize_inside_MMM == False:
+    plt.ylim([-1, 1])
+else:
+    plt.ylim([-10, 150])
 plt.grid(True)
 plt.tight_layout()
 
